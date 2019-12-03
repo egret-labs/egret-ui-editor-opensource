@@ -1,0 +1,9 @@
+
+ @keyframes big{
+	from {height: 0px;opacity: 0;}
+	to {height: 200px;opacity: 1;}
+}
+
+@keyframes small{
+	to {width: 0px;height: 500px;opacity: 1;}
+}

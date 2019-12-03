@@ -1,0 +1,7 @@
+input[type="checkbox"].reactCheckBox:focus {
+    outline: 2px solid rgb(60, 60, 240) !important;
+}
+
+input[type="checkbox"].reactCheckBox {
+    cursor: pointer;
+}

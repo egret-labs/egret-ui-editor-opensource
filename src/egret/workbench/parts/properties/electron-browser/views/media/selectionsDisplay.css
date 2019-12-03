@@ -1,0 +1,13 @@
+.selections-display-container{
+	display: none;
+	align-items: center;
+	height: 26px;
+	padding-left: 5px;
+    padding-right: 5px;
+}
+.selections-display-container.visible{
+	display: flex;
+}
+.selections-display-container span{
+	margin-left: 5px;
+}

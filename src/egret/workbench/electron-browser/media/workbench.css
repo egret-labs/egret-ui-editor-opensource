@@ -1,0 +1,43 @@
+.eui-default .close-btn{	  
+	background: url(close_dark.svg) center center no-repeat;
+	width: 16px;
+	height:16px;
+	margin-top: 4px;
+	margin-left: 3px;
+	opacity: 0.8;
+}
+
+.eui-default .close-btn:hover{	  
+	opacity: 1; 
+}
+
+.eui-default .close-btn:active{
+	transform: scale(0.9);
+}
+
+
+.eui-black .close-btn{	  
+	background: url(close_dark.svg) center center no-repeat;
+	width: 16px;
+	height:16px;
+	margin-left: 3px;
+	opacity: 0.8;
+}
+
+.eui-black .close-btn:hover{	  
+	opacity: 1; 
+}
+
+.eui-black .close-btn:active{
+	transform: scale(0.9);
+}
+
+/* exml 编辑界面单独处理 */
+.eui-black .document-group .tabbar-item-title{
+	margin-left: 17px !important;
+}
+
+.eui-black .document-group .tabbar-item .tabbar-item-title.preview{
+	font-style: italic;
+}
+

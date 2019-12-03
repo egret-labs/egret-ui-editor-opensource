@@ -1,0 +1,42 @@
+.egret-text-input,
+.eui-default .egret-text-input {
+	background-color: #1e2329;
+	border: 1px solid #191e23;
+	text-align: left;
+}
+.eui-black .egret-text-input {
+	background-color: #303030;
+	border: 1px solid #252525;
+	text-align: left;
+}
+
+.egret-text-input:focus,
+.eui-default .egret-text-input:focus {
+	outline: 1px solid rgba(14,99,156,0.6);
+	outline-offset: -1px;
+	opacity: 1 !important;
+}
+.eui-black .egret-text-input:focus {
+	outline: 1px solid rgba(14,99,156,1);
+	outline-offset: -1px;
+	opacity: 1 !important;
+}
+
+.egret-text-input.error,
+.eui-default .egret-text-input.error {
+	outline: 1px solid rgba(238, 36, 9, 0.6);
+	outline-offset: -1px;
+	opacity: 1 !important;
+}
+.eui-black .egret-text-input.error {
+	outline: 1px solid rgba(238, 36, 9, 1);
+	outline-offset: -1px;
+	opacity: 1 !important;
+}
+
+.egret-text-input{
+	color:#cbcbcb;
+}
+.egret-text-input::-webkit-input-placeholder {
+	color:#757575;
+}

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 15 15" enable-background="new 0 0 15 15" xml:space="preserve">
+	<rect y="5" fill="#3695FF" width="4" height="1"/>
+	<rect y="9" fill="#3695FF" width="4" height="1"/>
+	<path fill="#BFBFBF" d="M15,9v5H5V9H15z M14,13v-3H6v3H14z"/>
+	<rect x="5" y="2" fill="#BFBFBF" width="7" height="4"/>
+	<rect fill="none" width="15" height="15"/>
+</svg>

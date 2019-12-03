@@ -1,0 +1,19 @@
+.egret-h-group,
+.egret-attribute-item-group{
+	display: flex;
+	align-items: center;
+}
+
+.egret-v-group{
+	display: flex;
+	flex-direction: column;
+}
+
+.egret-attribute-item-group .contentGroup{
+	flex-grow: 1;
+	flex-shrink: 1;
+}
+.egret-attribute-item-group .additionalGroup{
+	flex-grow: 0;
+	flex-shrink: 0;
+}

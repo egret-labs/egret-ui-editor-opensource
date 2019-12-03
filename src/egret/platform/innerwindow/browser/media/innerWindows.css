@@ -1,0 +1,202 @@
+.innerWindow{
+	position: absolute;
+	pointer-events: auto;
+	background-color: #232c33;
+	border-radius: 5px;
+	box-shadow: 0px 15px 40px 0px 
+		rgba(0, 0, 0, 0.5);
+}
+.innerWindow.win{
+	border-radius: 0px;
+}
+.innerWindow:focus{
+	outline: none;
+}
+.innerWindow.deactivated{
+	box-shadow: 0px 10px 30px 0px 
+		rgba(0, 0, 0, 0.25);
+}
+.innerWindow.lightShadow{
+	box-shadow: 0px 15px 40px 0px 
+		rgba(0, 0, 0, 0.3);
+}
+
+
+.eui-default .innerWindow{
+	background-color: #232c33;
+}
+.eui-black .innerWindow{
+	background-color: #3b3b3b;
+}
+
+.eui-black .innerWindow.win.deactivated{
+	background-color: #4b4b4b;
+}
+
+
+
+.innerWindow .mask{
+	position: absolute;
+	width: 100%;
+}
+.innerWindow .mask-container{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	top: 0;
+	left: 0;
+}
+
+
+.innerWindow.mac .mask-container{
+	border-radius: 5px;
+}
+.innerWindow.win .mask-container{
+	border-radius: 0px;
+}
+.innerWindow.mac .mask{
+	position: absolute;
+	top: 22px;
+	left: 0;
+	bottom: 0;
+}
+
+
+.innerWindow .windowContainer{
+	width: 100%;
+	height: 100%;
+	pointer-events: auto;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+}
+
+.innerWindow.mac .windowContainer{
+	box-shadow: 0px 1px 4px 0px 
+	rgba(0, 0, 0, 0.2);
+	border-radius: 5px;
+}
+
+
+.innerWindow .header-container{
+	width: 100%;
+	pointer-events: auto;
+	flex-grow: 0;
+	flex-shrink: 0;
+}
+
+.innerWindow .header-container.mac {
+	height: 22px;
+	border-top: 1px solid #f5f4f5;
+	border-bottom: 1px solid #b3b3b3;
+	background-image: linear-gradient(0deg,#d1d0d1 0%,#e7e6e7 100%);
+}
+.innerWindow .header-container.mac.deactivated{
+	border-top: 1px solid #fafafa;
+	border-bottom: 1px solid #b2b1b2;
+	background-image: linear-gradient(0deg,#f6f6f6 0%,#f6f6f6 100%);
+}
+
+
+
+.innerWindow .header-container.win {
+	height: 32px;
+    background-color: #5c5c5c;
+    border-bottom: 1px solid #2a2a2a;
+}
+.innerWindow .header-container.win.deactivated{
+	background-color: #6c6c6c;
+}
+
+
+
+
+.innerWindow .header-container *{
+	cursor: default;
+}
+.innerWindow .header-container .title-display{
+	color:#4e4e4e;
+	text-align: center;
+	line-height: 22px;
+	font-size: 13px;
+	vertical-align: middle;
+	pointer-events: auto;
+}
+.innerWindow .header-container.mac .title-display{
+	color:#4e4e4e;
+	line-height: 22px;
+}
+.innerWindow .header-container.win .title-display{
+	color: #fff;
+    line-height: 30px;
+}
+
+
+
+.innerWindow .header-container.mac .title-display.deactivated{
+	color:#b2b2b2;
+}
+.innerWindow .header-container.win .title-display.deactivated{
+	color:#a2a2a2;
+}
+
+
+
+
+.innerWindow .header-container.mac .header-close-btn{
+	top: 5px;
+	left: 8px;
+	width: 12px;
+	height: 12px;
+	position: absolute;
+	background-image: -webkit-image-set(url(./close_normal.png) 1x,url(./close_normal@2x.png) 2x);
+}
+.innerWindow .header-container.mac .header-close-btn.deactivated{
+	background-image: -webkit-image-set(url(./disabled.png) 1x,url(./disabled@2x.png) 2x);
+}
+
+.innerWindow .header-container.mac .header-close-btn:hover{
+	background-image: -webkit-image-set(url(./close_hover.png) 1x,url(./close_hover@2x.png) 2x);
+}
+.innerWindow .header-container.mac .header-close-btn:active{
+	background-image: -webkit-image-set(url(./close_down.png) 1x,url(./close_down@2x.png) 2x);
+}
+
+
+.innerWindow .header-container.win .header-close-btn{
+	top: 4px;
+	right: 4px;
+	width: 24px;
+	height: 24px;
+	opacity: 0.6;
+	position: absolute;
+	background-size: 8px 8px;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-image: url(./close_win.svg);
+}
+.innerWindow .header-container.win .header-close-btn.deactivated{
+	opacity: 0.3;
+}
+.innerWindow .header-container.win .header-close-btn:hover{
+	opacity: 1;
+}
+.innerWindow .header-container.win .header-close-btn:active{
+	opacity: 0.8;
+}
+
+
+.innerWindow .content-group{
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+.innerWindow .button-container{
+	position: relative;
+	width: 100%;
+	display: flex;
+	flex-direction: row-reverse;
+	align-items: center;
+	padding:15px;
+}

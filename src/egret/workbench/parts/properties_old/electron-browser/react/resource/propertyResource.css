@@ -1,0 +1,147 @@
+.icon-button.unbinding {
+    background-image: url('light/unbinding.svg');
+}
+.icon-button.quick_binding {
+    background-image: url('light/quick_binding.svg');
+}
+.icon-button.delete {
+    background-image: url('light/delete.svg');
+}
+.icon-button.myhelp {
+    background-image: url('light/myhelp.svg');
+}
+.icon-button.mykeychange {
+    background-image: url('light/mykeychange.svg');
+}
+.icon-button.align_left {
+    background-image: url('light/align_left.svg');
+}
+.icon-button.align_right {
+    background-image: url('light/align_right.svg');
+}
+.icon-button.align_bottom {
+    background-image: url('light/align_bottom.svg');
+}
+.icon-button.algin_top {
+    background-image: url('light/align_top.svg');
+}
+.icon-button.align_hcenter {
+    background-image: url('light/align_center.svg');
+}
+.icon-button.align_vcenter {
+    background-image: url('light/align_middle.svg');
+}
+.icon-button.spread_top {
+    background-image: url('light/align_avg_top.svg');
+}
+.icon-button.spread_vcenter {
+    background-image: url('light/align_avg_middle.svg');
+}
+.icon-button.spread_bottom {
+    background-image: url('light/align_avg_bottom.svg');
+}
+.icon-button.spread_left {
+    background-image: url('light/align_avg_left.svg');
+}
+.icon-button.spread_hcenter {
+    background-image: url('light/align_avg_center.svg');
+}
+.icon-button.spread_right {
+    background-image: url('light/align_avg_right.svg');
+}
+.icon-button.spread_spaceh {
+    background-image: url('light/spaceh_dark.svg');
+}
+.icon-button.spread_spacev {
+    background-image: url('light/spacev_dark.svg');
+}
+.icon-button.front_front {
+    background-image: url('light/bringToFront.svg');
+}
+.icon-button.front_forward {
+    background-image: url('light/bringForward.svg');
+}
+.icon-button.front_back {
+    background-image: url('light/sendToBack.svg');
+}
+.icon-button.front_backward {
+    background-image: url('light/sendBackWard.svg');
+}
+
+
+/* style group */
+
+
+/* font */
+.icon-button.font_bold {
+    background-image: url('light/C_Bold_md.png');
+}
+
+.icon-button.font_italics {
+    background-image: url('light/C_Italics_md.png');
+}
+.icon-button.font_align_left {
+    background-image: url('light/align-left.png');
+}
+.icon-button.font_align_right {
+    background-image: url('light/align-right.png');
+}
+.icon-button.font_align_center {
+    background-image: url('light/align-center.png');
+}
+.icon-button.font_valign_bottom {
+    background-image: url('light/valign-bottom.png');
+}
+.icon-button.font_valign_center {
+    background-image: url('light/valign-center.png');
+}
+.icon-button.font_valign_top {
+    background-image: url('light/valign-top.png');
+}
+.icon-button.font_valign_justify {
+    background-image: url('light/valign-justify.png');
+}
+
+
+/* font */
+
+.icon-button.scale_9_grid {
+    background-image: url('light/scale_9_grid.svg');
+}
+.icon-button.layout_left {
+    background-image: url('light/pos_left.svg');
+}
+.icon-button.layout_hcenter {
+    background-image: url('light/pos_horizontalCenter.svg');
+}
+.icon-button.layout_right {
+    background-image: url('light/pos_right.svg');
+}
+.icon-button.layout_top {
+    background-image: url('light/pos_top.svg');
+}
+.icon-button.layout_vcenter {
+    background-image: url('light/pos_verticalCenter.svg');
+}
+.icon-button.layout_bottom {
+    background-image: url('light/pos_bottom.svg');
+}
+.icon-button.layout_leftandright {
+    background-image: url('light/size_percentWidth.svg');
+}
+.icon-button.layout_topandbottom {
+    background-image: url('light/size_percentHeight.svg');
+}
+.icon-button.layout_all {
+    background-image: url('light/size_percentAll.svg');
+}
+.icon-button.propertymode_all {
+    background-image: url('light/prop_all.svg');
+}
+
+.icon-button.propertymode_normal {
+    background-image: url('light/prop_normal.svg');
+}
+.icon-button.AddLayer {
+    background-image: url("light/addLayer.svg");
+}

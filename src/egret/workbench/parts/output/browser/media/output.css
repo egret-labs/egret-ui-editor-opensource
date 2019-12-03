@@ -1,0 +1,22 @@
+.output-action.clear-output {
+	width: 18px;
+	height: 18px;
+	background: url('clear_output_inverse.svg') center center no-repeat;
+}
+
+.output-action.output-scroll-lock {
+	width: 18px;
+	height: 18px;
+	background: url('output_lock_inverse.svg') center center no-repeat;
+}
+
+.output-action.output-scroll-unlock {
+	width: 18px;
+	height: 18px;
+	background: url('output_unlock_inverse.svg') center center no-repeat;
+}
+.output-content {
+	color: #cbcbcb;
+	cursor: auto;
+	padding: 0 10px;
+}

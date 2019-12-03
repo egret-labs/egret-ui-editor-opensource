@@ -1,0 +1,44 @@
+.icon-button {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    position: relative;
+    flex-shrink: 0;
+    background-repeat: no-repeat;
+    background-size: 15px 15px;
+    background-position: 50% 50%;
+    border-radius: 4px;
+	cursor: pointer;
+	/* background-color: #E3E3E3; */
+}
+
+.icon-button.just-icon:hover {
+    background-color: rgba(0, 0, 0, 0)!important;
+}
+
+.icon-button:hover {
+    background-color: #6f9cff;
+}
+
+.icon-button.down {
+    background-color: #4F86FF;
+}
+
+.icon-button.down:hover {
+    background-color: #5d8ffe;
+}
+
+/* .vs-dark .icon-button:hover, .hc-black */
+.icon-button:hover {
+    background-color: #555555;
+}
+
+/* .vs-dark .icon-button.down,.hc-black  */
+.icon-button.down {
+    background-color: #3c3c3c;
+}
+
+/* .vs-dark .icon-button.down:hover,.hc-black  */
+.icon-button.down:hover {
+    background-color: #454444;
+}

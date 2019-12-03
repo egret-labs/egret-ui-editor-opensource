@@ -1,0 +1,22 @@
+.egret-select,
+.eui-default .egret-select {
+	background-color: #1e2329;
+	border: 1px solid #191e23;
+	text-align: left;
+}
+.eui-black .egret-select {
+	background-color: #303030;
+	border: 1px solid #252525;
+	text-align: left;
+}
+.egret-select:focus,
+.eui-default .egret-select:focus {
+	outline: 1px solid rgba(14,99,156,0.6);
+	outline-offset: -1px;
+	opacity: 1 !important;
+}
+.eui-black .egret-select:focus {
+	outline: 1px solid rgba(14,99,156,1);
+	outline-offset: -1px;
+	opacity: 1 !important;
+}

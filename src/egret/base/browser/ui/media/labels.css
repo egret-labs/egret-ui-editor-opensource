@@ -1,0 +1,8 @@
+.egret-label {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-size: 13px;
+	vertical-align: middle;
+	flex-shrink: 0;
+	flex-grow: 0;
+}

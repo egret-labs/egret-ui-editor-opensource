@@ -1,0 +1,130 @@
+.component-icon{
+	width: 16px;
+    height: 16px;
+}
+
+.component-icon.Custom { background-image: url("dark/Custom.svg"); }
+.eui-black .component-icon.Custom { background-image: url("light/Custom.svg"); }
+
+.component-icon.BitmapLabel { background-image: url("dark/BitmapLabel.svg"); }
+.eui-black .component-icon.BitmapLabel { background-image: url("light/BitmapLabel.svg"); }
+
+.component-icon.Button { background-image: url("dark/Button.svg"); }
+.eui-black .component-icon.Button { background-image: url("light/Button.svg"); }
+
+.component-icon.CheckBox { background-image: url("dark/CheckBox.svg"); }
+.eui-black .component-icon.CheckBox { background-image: url("light/CheckBox.svg"); }
+
+.component-icon.ComboBox { background-image: url("dark/ComboBox.svg"); }
+.eui-black .component-icon.ComboBox { background-image: url("light/ComboBox.svg"); }
+
+.component-icon.Component { background-image: url("dark/Component.svg"); }
+.eui-black .component-icon.Component { background-image: url("light/Component.svg"); }
+
+.component-icon.Custom { background-image: url("dark/Custom.svg"); }
+.eui-black .component-icon.Custom { background-image: url("light/Custom.svg"); }
+
+.component-icon.DataGroup { background-image: url("dark/DataGroup.svg"); }
+.eui-black .component-icon.DataGroup { background-image: url("light/DataGroup.svg"); }
+
+.component-icon.DropDownList { background-image: url("dark/DropDownList.svg"); }
+.eui-black .component-icon.DropDownList { background-image: url("light/DropDownList.svg"); }
+
+.component-icon.EditableText { background-image: url("dark/EditableText.svg"); }
+.eui-black .component-icon.EditableText { background-image: url("light/EditableText.svg"); }
+
+.component-icon.Group { background-image: url("dark/Group.svg"); }
+.eui-black .component-icon.Group { background-image: url("light/Group.svg"); }
+
+.component-icon.HScrollBar { background-image: url("dark/HScrollBar.svg"); }
+.eui-black .component-icon.HScrollBar { background-image: url("light/HScrollBar.svg"); }
+
+.component-icon.HSlider { background-image: url("dark/HSlider.svg"); }
+.eui-black .component-icon.HSlider { background-image: url("light/HSlider.svg"); }
+
+.component-icon.Image { background-image: url("dark/Image.svg"); }
+.eui-black .component-icon.Image { background-image: url("light/Image.svg"); }
+
+.component-icon.Label { background-image: url("dark/Label.svg"); }
+.eui-black .component-icon.Label { background-image: url("light/Label.svg"); }
+
+.component-icon.List { background-image: url("dark/List.svg"); }
+.eui-black .component-icon.List { background-image: url("light/List.svg"); }
+
+.component-icon.PageNavigator { background-image: url("dark/PageNavigator.svg"); }
+.eui-black .component-icon.PageNavigator { background-image: url("light/PageNavigator.svg"); }
+
+.component-icon.Panel { background-image: url("dark/Panel.svg"); }
+.eui-black .component-icon.Panel { background-image: url("light/Panel.svg"); }
+
+.component-icon.PopUpAnchor { background-image: url("dark/PopUpAnchor.svg"); }
+.eui-black .component-icon.PopUpAnchor { background-image: url("light/PopUpAnchor.svg"); }
+
+.component-icon.ProgressBar { background-image: url("dark/ProgressBar.svg"); }
+.eui-black .component-icon.ProgressBar { background-image: url("light/ProgressBar.svg"); }
+
+.component-icon.RadioButton { background-image: url("dark/RadioButton.svg"); }
+.eui-black .component-icon.RadioButton { background-image: url("light/RadioButton.svg"); }
+
+.component-icon.Rect { background-image: url("dark/Rect.svg"); }
+.eui-black .component-icon.Rect { background-image: url("light/Rect.svg"); }
+
+.component-icon.RichText { background-image: url("dark/RichText.svg"); }
+.eui-black .component-icon.RichText { background-image: url("light/RichText.svg"); }
+
+.component-icon.Scroller { background-image: url("dark/Scroller.svg"); }
+.eui-black .component-icon.Scroller { background-image: url("light/Scroller.svg"); }
+
+.component-icon.Skin { background-image: url("dark/Skin.svg"); }
+.eui-black .component-icon.Skin { background-image: url("light/Skin.svg"); }
+
+.component-icon.SkinnableContainer { background-image: url("dark/SkinnableContainer.svg"); }
+.eui-black .component-icon.SkinnableContainer { background-image: url("light/SkinnableContainer.svg"); }
+
+.component-icon.SkinnableDataContainer { background-image: url("dark/SkinnableDataContainer.svg"); }
+.eui-black .component-icon.SkinnableDataContainer { background-image: url("light/SkinnableDataContainer.svg"); }
+
+.component-icon.Spacer { background-image: url("dark/Spacer.svg"); }
+.eui-black .component-icon.Spacer { background-image: url("light/Spacer.svg"); }
+
+.component-icon.Spinner { background-image: url("dark/Spinner.svg"); }
+.eui-black .component-icon.Spinner { background-image: url("light/Spinner.svg"); }
+
+.component-icon.TabBar { background-image: url("dark/TabBar.svg"); }
+.eui-black .component-icon.TabBar { background-image: url("light/TabBar.svg"); }
+
+.component-icon.TabNavigator { background-image: url("dark/TabNavigator.svg"); }
+.eui-black .component-icon.TabNavigator { background-image: url("light/TabNavigator.svg"); }
+
+.component-icon.TextArea { background-image: url("dark/TextArea.svg"); }
+.eui-black .component-icon.TextArea { background-image: url("light/TextArea.svg"); }
+
+.component-icon.TextInput { background-image: url("dark/TextInput.svg"); }
+.eui-black .component-icon.TextInput { background-image: url("light/TextInput.svg"); }
+
+.component-icon.TileGroup { background-image: url("dark/TileGroup.svg"); }
+.eui-black .component-icon.TileGroup { background-image: url("light/TileGroup.svg"); }
+
+.component-icon.TitleWindow { background-image: url("dark/TitleWindow.svg"); }
+.eui-black .component-icon.TitleWindow { background-image: url("light/TitleWindow.svg"); }
+
+.component-icon.ToggleButton { background-image: url("dark/ToggleButton.svg"); }
+.eui-black .component-icon.ToggleButton { background-image: url("light/ToggleButton.svg"); }
+
+.component-icon.ToggleSwitch { background-image: url("dark/ToggleSwitch.svg"); }
+.eui-black .component-icon.ToggleSwitch { background-image: url("light/ToggleSwitch.svg"); }
+
+.component-icon.Tree { background-image: url("dark/Tree.svg"); }
+.eui-black .component-icon.Tree { background-image: url("light/Tree.svg"); }
+
+.component-icon.UIAsset { background-image: url("dark/UIAsset.svg"); }
+.eui-black .component-icon.UIAsset { background-image: url("light/UIAsset.svg"); }
+
+.component-icon.ViewStack { background-image: url("dark/ViewStack.svg"); }
+.eui-black .component-icon.ViewStack { background-image: url("light/ViewStack.svg"); }
+
+.component-icon.VScrollBar { background-image: url("dark/VScrollBar.svg"); }
+.eui-black .component-icon.VScrollBar { background-image: url("light/VScrollBar.svg"); }
+
+.component-icon.VSlider { background-image: url("dark/VSlider.svg"); }
+.eui-black .component-icon.VSlider { background-image: url("light/VSlider.svg"); }

@@ -1,0 +1,32 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+ .component-item-container .component-icon,
+ .component-item-container .component-label{
+	 display:inline-block;
+	 vertical-align: middle;
+ }
+ .component-item-container .component-label{
+	 margin-left: 5px;
+ }
+ 
+ .component-item-container .component-icon{
+	 width: 16px;
+	 height: 16px;
+	 background-repeat: no-repeat;
+	 background-size: contain;
+ }
+
+ 
+
+.componentPanelFolder {
+	/* height: 16px; */
+	width: 16px;
+    background: url("light/folder.svg") no-repeat center;
+}
+.expanded .componentPanelFolder {
+	/* height: 16px; */
+	width: 16px;
+    background-image: url("light/folder_open.svg");
+}

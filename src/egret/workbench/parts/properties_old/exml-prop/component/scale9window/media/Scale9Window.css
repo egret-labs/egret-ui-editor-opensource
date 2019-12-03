@@ -1,0 +1,140 @@
+.container {
+	width: 100%;
+	margin: 5px 10px;
+}
+
+.prompt-title {
+	font-size: 12px;
+}
+
+.scale9-panel {
+	background: rgba(0, 0, 0, .1);
+	position: relative;
+	overflow: hidden;
+}
+
+.axis-horizontal {
+	border-top: 1px dashed #fff;
+	overflow: hidden;
+	width: 100%;
+	height: 1px;
+	padding: 1px 0 0 0;
+	position: absolute;
+	left: 0;
+	z-index: 999;
+}
+
+.axis-vertical {
+	border-left: 1px dashed #fff;
+	overflow: hidden;
+	width: 1px;
+	height: 100%;
+	padding: 0 1px 0 0;
+	position: absolute;
+	top: 0;
+	z-index: 999;
+}
+
+.axis-horizontal:hover,
+.axis-vertical:hover {
+	outline: 2px solid rgba(130, 166, 245, .75);
+	background: rgba(130, 166, 245, .75);
+}
+
+.axis-active {
+	outline: 2px solid rgba(130, 166, 245, .75);
+	background: rgba(130, 166, 245, .75);
+}
+
+.operator-items,
+.image-params {
+	width: 450px;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+}
+
+.image-params {
+	justify-content: center;
+}
+
+.image-params span {
+	width: 20%;
+	text-align: left;
+}
+
+
+.axis-horizontal {
+    background-color: transparent;
+    overflow: hidden;
+    width: 100%;
+    height: 1px;
+    position: absolute;
+    left: 0px;
+    z-index: 999;
+}
+
+.axis-horizontal-line {
+    pointer-events: none;
+    /* background-color: #00FAFF; */
+    width: 100%;
+    height: 1px;
+    position: absolute;
+    left: 0px;
+    top: 1px;
+}
+
+.axis-vertical {
+    background-color: transparent;
+    overflow: hidden;
+    width: 1px;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    z-index: 999;
+}
+
+.axis-vertical-line {
+    pointer-events: none;
+    /* background-color: #00FAFF; */
+    width: 1px;
+    height: 100%;
+    position: absolute;
+    left: 1px;
+    top: 0px;
+}
+
+.axis-horizontal:hover,
+.axis-vertical:hover {
+    outline: 2px solid transparent;
+    background: transparent;
+}
+
+.axis-horizontal:hover {
+    cursor: row-resize;
+}
+
+.axis-vertical:hover {
+    cursor: col-resize;
+}
+
+.axis-active {
+    outline: 2px solid transparent;
+    background: transparent;
+}
+
+
+.icon-button.ZoomDown {
+	background-image: url("light/zoomin.svg");
+	background-size: 16px 16px;
+}
+
+.icon-button.ZoomUp {
+	background-image: url("light/zoomout.svg");
+	background-size: 16px 16px;
+}
+
+.icon-button.ViewMin {
+	background-image: url("light/min.svg");
+	background-size: 16px 16px;
+}

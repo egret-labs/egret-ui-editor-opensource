@@ -1,0 +1,234 @@
+/**面板组之间的分割线*/
+
+.eui-default .split-line {
+    background-color: black;
+}
+
+/**面板标题栏*/
+
+.eui-default .tabbar {
+    background-color: #22282e
+}
+
+/**面板标题栏标题项*/
+
+.eui-default .tabbar-item {
+    box-sizing: border-box;
+    border-right: 1px solid #1b2025;
+    background-color: #22282e;
+}
+
+/**面板标题栏标题项：焦点*/
+
+.eui-default .tabbar-item.tabbar-item-focus {
+    background-color: #313e4c;
+}
+
+/**面板标题栏标题项：选中*/
+
+.eui-default .tabbar-item.tabbar-item-selected {
+    background-color: #29323b;
+}
+
+/**面板标题栏标题字体*/
+
+.eui-default .tabbar-item-title {
+    font-size: 13px;
+    color: #888888
+}
+
+/**面板标题栏标题字体：焦点*/
+
+.eui-default .tabbar-item-title.tabbar-item-title-focus {
+    color: #f0f0f0
+}
+
+/**面板标题栏标题字体：选中*/
+
+.eui-default .tabbar-item-title.tabbar-item-title-selected {
+    color: #f0f0f0
+}
+
+/**面板*/
+.tab-panel,
+.eui-default .tab-panel {
+    background: #232c33;
+    border: 2px solid #29323b;
+    box-sizing: border-box;
+}
+
+/**面板：焦点*/
+
+.eui-default .tab-panel.tab-panel-focus {
+    border: 2px solid #313e4c;
+}
+
+/**拖拽标志*/
+
+.eui-default .drag-element {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(0, 184, 255, 0.26)
+}
+
+.eui-default .tabbar-append-container {
+    display: flex;
+    align-items: center;
+    border-color: #2A2A2A !important;
+    border-style: solid;
+    border-left-width: 0px !important;
+    border-right-width: 0px !important;
+    border-top-width: 0px !important;
+    border-bottom-width: 1px !important;
+    height: 100%;
+}
+
+/*-------------------------------------------- 新主题-------------------------------------------- */
+
+/**面板组之间的分割线*/
+
+.eui-black .split-line {
+    background-color: #282828;
+}
+
+
+
+/**面板标题栏*/
+
+.eui-black .tabbar {
+    background-color: #3b3b3b;
+}
+
+
+
+/**面板标题栏标题项*/
+
+.eui-black .tabbar-item {
+    box-sizing: border-box;
+    cursor: default;
+    /* background-color: transparent !important; */
+    /* background: transparent !important; */
+    /* padding-left: 16px !important;
+    padding-right: 16px !important; */
+    align-items: center !important;
+    border-color: #282828;
+    border-style: solid;
+    border-left-width: 0px;
+    border-right-width: 1px;
+    border-top-width: 0px;
+    border-bottom-width: 1px;
+}
+
+.eui-black .tabbar-item  .close-btn{
+	visibility: hidden !important;
+}
+.eui-black .tabbar-item.tabbar-item-mouseenter .close-btn,
+.eui-black .tabbar-item.tabbar-item-selected .close-btn{
+	visibility: visible !important
+}
+
+/**面板标题栏标题项：焦点*/
+
+.eui-black .tabbar-item.tabbar-item-focus {
+    background-color: #313e4c;
+}
+
+/**面板标题栏标题项：选中*/
+.eui-black .tabbar-item.tabbar-item-selected {
+    background-color: #444444;
+    border-bottom-width: 0px !important;
+}
+
+/**面板标题栏标题字体*/
+
+.eui-black .tabbar-item-title {
+    font-size: 13px;
+    color: #888888
+}
+
+
+
+/**面板标题栏标题字体：焦点*/
+
+.eui-black .tabbar-item-title.tabbar-item-title-focus {
+    color: #f0f0f0
+}
+
+/**面板标题栏标题字体：选中*/
+
+.eui-black .tabbar-item-title.tabbar-item-title-selected {
+    color: #f0f0f0
+}
+
+/**面板*/
+
+.eui-black .tab-panel {
+    background: #3b3b3b !important;
+	box-sizing: border-box;
+	border: 2px solid #444444;
+    /* border-width: 2px !important; */
+    color: #f0f0f0;
+}
+
+/**面板：焦点*/
+
+.eui-black .tab-panel.tab-panel-focus {
+    border: 2px solid #505050;
+}
+
+/**拖拽标志*/
+
+.drag-element {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(0, 184, 255, 0.26)
+}
+
+.eui-black .document-group .babbar-item {
+    border-right-width: 0px !important;
+    border-bottom-width: 1px !important;
+}
+
+.eui-black .document-group .tabbar-item.tabbar-item-selected {
+    border-right-width: 1px !important;
+    border-bottom-width: 0px !important;
+}
+
+
+.eui-black .document-group .split-line {
+	background-color: #282828;
+	background: url("./media/egret_icon.png") no-repeat center center;
+}
+
+
+.eui-black .title {
+    user-select: none;
+    background-color: #3b3b3b !important;
+    align-items: stretch !important;
+    border-width: 0px !important;
+}
+
+.eui-black .tabbar-item-container {
+    border-width: 0px !important;
+    height: 100%;
+}
+
+.eui-black .tabbar-item-remain-container {
+    height: 100%;
+    border-color: #282828;
+    border-style: solid;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    border-top-width: 0px;
+    border-bottom-width: 1px;
+}
+
+.eui-black .tabbar-append-container {
+    display: flex;
+    align-items: center;
+    border-color: #282828 !important;
+    border-style: solid;
+    border-left-width: 0px !important;
+    border-right-width: 0px !important;
+    border-top-width: 0px !important;
+    border-bottom-width: 1px !important;
+    height: 100%;
+}

@@ -1,0 +1,50 @@
+.eui-black .property-tabbar.egret-tabbar{
+	flex-grow: 0;
+	flex-shrink: 0;
+}
+.eui-black .property-tabbar.egret-tabbar .egret-button {
+	border-top-left-radius: 0 !important;
+	border-bottom-left-radius: 0 !important;
+	border-bottom-right-radius: 0 !important;
+	border-top-right-radius: 0 !important;
+	border: solid 1px #505050 !important;
+	background-color: #303030 !important;
+	color: #888888 !important;
+	flex-grow: 1;
+	justify-content: space-around;
+}
+.eui-black .property-tabbar.egret-tabbar .egret-button.end {
+	margin-left: -1px !important;
+}
+.eui-black .property-tabbar.egret-tabbar .egret-button.icon.label.selected,
+.eui-black .property-tabbar.egret-tabbar .egret-button.icon.label.begin.selected,
+.eui-black .property-tabbar.egret-tabbar .egret-button.icon.label.middle.selected {
+	border: solid 1px #505050 !important;
+	background-color: #444444 !important;
+	color: #ffffff !important;
+}
+.property-container{
+	width: 100%;
+	height: 100%;
+	display: flex;
+    flex-direction: column;
+}
+.property-content-container{
+	flex-grow: 1;
+	display: flex;
+    flex-direction: column;
+}
+.propertie-kind-container{
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	overflow: hidden;
+}
+
+
+.property-container .property-attribute-item{
+	margin: 4px 0px 4px 0px;
+}
+.property-container .property-attribute-item.invisible{
+	display: none;
+}

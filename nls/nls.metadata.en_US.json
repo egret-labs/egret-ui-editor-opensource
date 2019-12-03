@@ -1,0 +1,1846 @@
+{
+	"aboutPanel.render.address": {
+		"s": "Address",
+		"t": "Address"
+	},
+	"aboutPanel.render.address.detail": {
+		"s": "Chaoyang District, Beijing Wangjing Road on the 9th Ye Qing Building D Block 12",
+		"t": "Chaoyang District, Beijing Wangjing Road on the 9th Ye Qing Building D Block 12"
+	},
+	"aboutPanel.render.bbs": {
+		"s": "Community",
+		"t": "Community"
+	},
+	"aboutPanel.render.bd": {
+		"s": "Business",
+		"t": "Business"
+	},
+	"aboutPanel.render.qq": {
+		"s": "QQ Group",
+		"t": "QQ Group"
+	},
+	"aboutPanel.render.suport": {
+		"s": "Tech-Support",
+		"t": "Tech-Support"
+	},
+	"aboutPanel.render.tel": {
+		"s": "Tel",
+		"t": "Tel"
+	},
+	"aboutPanel.render.websit": {
+		"s": "Official Website",
+		"t": "Official Website"
+	},
+	"alert.button.cancel": {
+		"s": "Cancel",
+		"t": "Cancel"
+	},
+	"alert.button.clear": {
+		"s": "Clear",
+		"t": "Clear"
+	},
+	"alert.button.confirm": {
+		"s": "Confirm",
+		"t": "Confirm"
+	},
+	"alert.button.continue": {
+		"s": "Continue",
+		"t": "Continue"
+	},
+	"alert.button.doNotSave": {
+		"s": "Don't Save",
+		"t": "Don't Save"
+	},
+	"alert.button.ok": {
+		"s": "Ok",
+		"t": "Ok"
+	},
+	"alert.button.open": {
+		"s": "Open",
+		"t": "Open"
+	},
+	"alert.button.reset": {
+		"s": "Reset",
+		"t": "Reset"
+	},
+	"alert.button.saveAll": {
+		"s": "Save All",
+		"t": "Save All"
+	},
+	"alert.button.saveAndContinue": {
+		"s": "Save And Continue",
+		"t": "Save And Continue"
+	},
+	"alignPart.doRender.align": {
+		"s": "Align",
+		"t": "Align"
+	},
+	"alignView.title": {
+		"s": "Align",
+		"t": "Align"
+	},
+	"allPropertyPanel.getRestrictByProperty.tips": {
+		"s": "Please enter numeric type.",
+		"t": "Please enter numeric type."
+	},
+	"allPropertyPanel.updateDisplay.editInCode": {
+		"s": "< Edit in code >",
+		"t": "< Edit in code >"
+	},
+	"aouomarkLayer.initView.desc": {
+		"s": "Move between containers - Alt",
+		"t": "Move between containers - Alt"
+	},
+	"assetAdapterEUI.doReload.loadError": {
+		"s": "Resource configuration file loading error",
+		"t": "Resource configuration file loading error"
+	},
+	"assetAdapterEUI.doReload.loadResError": {
+		"s": "The RES module could not be found in editor runtime",
+		"t": "The RES module could not be found in editor runtime"
+	},
+	"assetAdapterEUI.doReload.runtimeError": {
+		"s": "Runtime Error!",
+		"t": "Runtime Error!"
+	},
+	"assetAdapterEUI.reload.preConfig": {
+		"s": "You need to set the runtime before loading the resource configuration file.",
+		"t": "You need to set the runtime before loading the resource configuration file."
+	},
+	"assets.search.prompt": {
+		"s": "Search Assets",
+		"t": "Search Assets"
+	},
+	"assetsView.title": {
+		"s": "Assets",
+		"t": "Assets"
+	},
+	"boundPart.render.anchorX": {
+		"s": "Anchor X:",
+		"t": "Anchor X:"
+	},
+	"boundPart.render.anchorY": {
+		"s": "Anchor Y:",
+		"t": "Anchor Y:"
+	},
+	"boundPart.render.height": {
+		"s": "Height:",
+		"t": "Height:"
+	},
+	"boundPart.render.scaleX": {
+		"s": "Scale X:",
+		"t": "Scale X:"
+	},
+	"boundPart.render.scaleY": {
+		"s": "Scale Y:",
+		"t": "Scale Y:"
+	},
+	"boundPart.render.width": {
+		"s": "Width:",
+		"t": "Width:"
+	},
+	"button": {
+		"s": "Button",
+		"t": "Button"
+	},
+	"buttonSkinGroup.render.clickDown": {
+		"s": "Down:",
+		"t": "Down:"
+	},
+	"buttonSkinGroup.render.clickDownResource": {
+		"s": "Asset of Down",
+		"t": "Asset of Down"
+	},
+	"buttonSkinGroup.render.disabledResource": {
+		"s": "Asset of Disable",
+		"t": "Asset of Disable"
+	},
+	"buttonSkinGroup.render.disabledSkin": {
+		"s": "Disable:",
+		"t": "Disable:"
+	},
+	"buttonSkinGroup.render.normal": {
+		"s": "Normal:",
+		"t": "Normal:"
+	},
+	"buttonSkinGroup.render.normalResource": {
+		"s": "Asset of Normal",
+		"t": "Asset of Normal"
+	},
+	"buttonSkinGroup.render.skinTemplate": {
+		"s": "Skin Shortcut Template",
+		"t": "Skin Shortcut Template"
+	},
+	"changes.will.lost": {
+		"s": "Your changes will be lost if you don't save them.",
+		"t": "Your changes will be lost if you don't save them."
+	},
+	"checkBox": {
+		"s": "CheckBox",
+		"t": "CheckBox"
+	},
+	"colorPickerPanel.contructor.title": {
+		"s": "Color Picker",
+		"t": "Color Picker"
+	},
+	"commonGroup.idCheckTooltipCallBack.idNotCN": {
+		"s": "ID cannot be Chinese.",
+		"t": "ID cannot be Chinese."
+	},
+	"commonGroup.idCheckTooltipCallBack.isExistID": {
+		"s": "The ID is already exist in current skin.",
+		"t": "The ID is already exist in current skin."
+	},
+	"commonGroup.render.alpha": {
+		"s": "Alpha:",
+		"t": "Alpha:"
+	},
+	"commonGroup.render.className": {
+		"s": "Class Name:",
+		"t": "Class Name:"
+	},
+	"commonGroup.render.enable": {
+		"s": "Enable:",
+		"t": "Enable:"
+	},
+	"commonGroup.render.label": {
+		"s": "Label:",
+		"t": "Label:"
+	},
+	"commonGroup.render.status": {
+		"s": "Status:",
+		"t": "Status:"
+	},
+	"commonGroup.render.touchChildren": {
+		"s": "Touch Children:",
+		"t": "Touch Children:"
+	},
+	"commonGroup.render.touchEnabled": {
+		"s": "Touch Enable:",
+		"t": "Touch Enable:"
+	},
+	"component.search.prompt": {
+		"s": "Search Components",
+		"t": "Search Components"
+	},
+	"componentSourceDataCreater.getRoot.component": {
+		"s": "Component",
+		"t": "Component"
+	},
+	"componentSourceDataCreater.getRoot.container": {
+		"s": "Container",
+		"t": "Container"
+	},
+	"componentSourceDataCreater.getRoot.custom": {
+		"s": "Custom",
+		"t": "Custom"
+	},
+	"componentView.title": {
+		"s": "Component",
+		"t": "Component"
+	},
+	"constraintImage.makeContent.bottom": {
+		"s": "Bottom:",
+		"t": "Bottom:"
+	},
+	"constraintImage.makeContent.horizontalCenter": {
+		"s": "Horizontal Center:",
+		"t": "Horizontal Center:"
+	},
+	"constraintImage.makeContent.left": {
+		"s": "Left:",
+		"t": "Left:"
+	},
+	"constraintImage.makeContent.right": {
+		"s": "Right:",
+		"t": "Right:"
+	},
+	"constraintImage.makeContent.up": {
+		"s": "Top:",
+		"t": "Top:"
+	},
+	"constraintImage.makeContent.veticallyCenter": {
+		"s": "Vetically Center:",
+		"t": "Vetically Center:"
+	},
+	"createStatePanel.btnClick_handler.duplicateName": {
+		"s": "Duplicate status name \"{0}\"",
+		"t": "Duplicate status name \"{0}\""
+	},
+	"createStatePanel.btnClick_handler.statusNameCantNull": {
+		"s": "The status name must not be empty.",
+		"t": "The status name must not be empty."
+	},
+	"createStatePanel.constructor.allStatus": {
+		"s": "[ All Status ]",
+		"t": "[ All Status ]"
+	},
+	"createStatePanel.constructor.title": {
+		"s": "Create Status",
+		"t": "Create Status"
+	},
+	"createStatePanel.render.blankStatus": {
+		"s": "Blank Status",
+		"t": "Blank Status"
+	},
+	"createStatePanel.render.copy": {
+		"s": "Copy of the following status",
+		"t": "Copy of the following status"
+	},
+	"createStatePanel.render.create": {
+		"s": "Create as:",
+		"t": "Create as:"
+	},
+	"createStatePanel.render.name": {
+		"s": "Name:",
+		"t": "Name:"
+	},
+	"createStatePanel.render.setStartStatus": {
+		"s": "Set to start Status",
+		"t": "Set to start Status"
+	},
+	"createStatePanel.render.startStatus": {
+		"s": "Start Status:",
+		"t": "Start Status:"
+	},
+	"deleteFileOperation.run.canResetThem": {
+		"s": "You can restore from the Trash.",
+		"t": "You can restore from the Trash."
+	},
+	"deleteFileOperation.run.confirmDelete": {
+		"s": "Are you sure you want to delete the following {0} files/directories and their contents?",
+		"t": "Are you sure you want to delete the following {0} files/directories and their contents?"
+	},
+	"deleteFileOperation.run.confirmDeleteAndContent": {
+		"s": "Are you sure you want to delete the following {0} directories and their contents?",
+		"t": "Are you sure you want to delete the following {0} directories and their contents?"
+	},
+	"deleteFileOperation.run.confirmDeleteAndName": {
+		"s": "Are you sure you want to delete the following {0} files?",
+		"t": "Are you sure you want to delete the following {0} files?"
+	},
+	"deleteFileOperation.run.haveNotSave": {
+		"s": "You are deleting files with unsaved changes. Do you want to continue?",
+		"t": "You are deleting files with unsaved changes. Do you want to continue?"
+	},
+	"deleteFileOperation.run.haveOneNotSave": {
+		"s": "You are deleting a folder with unsaved changes in 1 file. Do you want to continue?",
+		"t": "You are deleting a folder with unsaved changes in 1 file. Do you want to continue?"
+	},
+	"deleteFileOperation.run.haveSomeNotSave": {
+		"s": "You are deleting a folder with unsaved changes in {0} files. Do you want to continue?",
+		"t": "You are deleting a folder with unsaved changes in {0} files. Do you want to continue?"
+	},
+	"deleteFileOperation.run.know": {
+		"s": "I know",
+		"t": "I know"
+	},
+	"deleteFileOperation.run.noPromise": {
+		"s": "Failed to delete the file, you may not have permission to operate the directory currently.",
+		"t": "Failed to delete the file, you may not have permission to operate the directory currently."
+	},
+	"deleteFileOperation.run.notSave": {
+		"s": "You are deleting a file with unsaved changes. Do you want to continue?",
+		"t": "You are deleting a file with unsaved changes. Do you want to continue?"
+	},
+	"editor.contextMenu.close": {
+		"s": "Close",
+		"t": "Close"
+	},
+	"editor.contextMenu.closeAll": {
+		"s": "Close All",
+		"t": "Close All"
+	},
+	"editor.contextMenu.closeAllSaved": {
+		"s": "Close Saved",
+		"t": "Close Saved"
+	},
+	"editor.contextMenu.closeOthers": {
+		"s": "Close Others",
+		"t": "Close Others"
+	},
+	"editor.contextMenu.closeRight": {
+		"s": "Close to the Right",
+		"t": "Close to the Right"
+	},
+	"editor.contextMenu.saveError": {
+		"s": "Save the changes made to file {0} fail.",
+		"t": "Save the changes made to file {0} fail."
+	},
+	"editor.contextMenu.saveErrors": {
+		"s": "Save the changes made to the following {0} files fail.",
+		"t": "Save the changes made to the following {0} files fail."
+	},
+	"editorPart.doOpenEidtor.errorTips": {
+		"s": "Unable to get registered editor description via input",
+		"t": "Unable to get registered editor description via input"
+	},
+	"egretChecker.checkProject.euiProjectError": {
+		"s": "This is not a valid Egret EUI project",
+		"t": "This is not a valid Egret EUI project"
+	},
+	"egretSDK.versions.envError": {
+		"s": "Failed to get the engine list, try to restore the engine environment variable to ensure that the 'egret verions' command can be executed normally.",
+		"t": "Failed to get the engine list, try to restore the engine environment variable to ensure that the 'egret verions' command can be executed normally."
+	},
+	"engineInfo.NotFound": {
+		"s": "Please install Egret Launcher",
+		"t": "Please install Egret Launcher"
+	},
+	"engineInfo.OperationFailed": {
+		"s": "{0} failed: {1}",
+		"t": "{0} failed: {1}"
+	},
+	"engineInfo.ToEgretWebsite": {
+		"s": "Go to download at official website：{0}",
+		"t": "Go to download at official website：{0}"
+	},
+	"engineInfo.VersionNotMatch": {
+		"s": "Version of Egret Launcher should not be lower than {0}",
+		"t": "Version of Egret Launcher should not be lower than {0}"
+	},
+	"engineInfo.defaultOperation": {
+		"s": "Operation",
+		"t": "Operation"
+	},
+	"engineInfo.error": {
+		"s": "Unable to find the {0} version of the Egret engine. Please re-do this after installing or modifying the project engine version.",
+		"t": "Unable to find the {0} version of the Egret engine. Please re-do this after installing or modifying the project engine version."
+	},
+	"engineInfo.innerError": {
+		"s": "Inner error",
+		"t": "Inner error"
+	},
+	"engineInfo.login": {
+		"s": "Login",
+		"t": "Login"
+	},
+	"exml.editor.adaptContent": {
+		"s": "Fit Content",
+		"t": "Fit Content"
+	},
+	"exml.editor.adaptivewindow": {
+		"s": "Fit Screen",
+		"t": "Fit Screen"
+	},
+	"exml.editor.design": {
+		"s": "Design",
+		"t": "Design"
+	},
+	"exml.editor.noDevice": {
+		"s": "No Device",
+		"t": "No Device"
+	},
+	"exml.editor.preview": {
+		"s": "Preview",
+		"t": "Preview"
+	},
+	"exmlComponentPanel.constructor.title": {
+		"s": "Select Host Component",
+		"t": "Select Host Component"
+	},
+	"exmlFileEditor.initCommands.fitScreen": {
+		"s": "Fit Screen",
+		"t": "Fit Screen"
+	},
+	"exmlFileEditor.initCommands.fitScreenDes": {
+		"s": "Display current Exml by screen size",
+		"t": "Display current Exml by screen size"
+	},
+	"exmlFileEditor.initCommands.freshEidtor": {
+		"s": "Refresh Exml editor",
+		"t": "Refresh Exml editor"
+	},
+	"exmlFileEditor.initCommands.freshEidtorDes": {
+		"s": "Refresh the currently active Exml editor",
+		"t": "Refresh the currently active Exml editor"
+	},
+	"exmlFileEditor.initCommands.group": {
+		"s": "EUI Group",
+		"t": "EUI Group"
+	},
+	"exmlFileEditor.initCommands.groupDes": {
+		"s": "Group the selected component in current Exml",
+		"t": "Group the selected component in current Exml"
+	},
+	"exmlFileEditor.initCommands.noScale": {
+		"s": "No Scale",
+		"t": "No Scale"
+	},
+	"exmlFileEditor.initCommands.noScaleDes": {
+		"s": "100% display current Exml",
+		"t": "100% display current Exml"
+	},
+	"exmlFileEditor.initCommands.ungroup": {
+		"s": "EUI Ungroup",
+		"t": "EUI Ungroup"
+	},
+	"exmlFileEditor.initCommands.ungroupDes": {
+		"s": "Unpack the selected group in current Exml",
+		"t": "Unpack the selected group in current Exml"
+	},
+	"exmlFileEditor.initCommands.zoomIn": {
+		"s": "Zoom in Exml editor",
+		"t": "Zoom in Exml editor"
+	},
+	"exmlFileEditor.initCommands.zoomInDes": {
+		"s": "Zoom in on the currently active Exml editor",
+		"t": "Zoom in on the currently active Exml editor"
+	},
+	"exmlFileEditor.initCommands.zoomOut": {
+		"s": "Zoom out Exml editor",
+		"t": "Zoom out Exml editor"
+	},
+	"exmlFileEditor.initCommands.zoomOutDes": {
+		"s": "Zoom put on the currently active Exml editor",
+		"t": "Zoom put on the currently active Exml editor"
+	},
+	"exmlView.initContextMenuGeneral.convertToInner": {
+		"s": "Convert to Inline Skin",
+		"t": "Convert to Inline Skin"
+	},
+	"exmlView.initContextMenuGeneral.copy": {
+		"s": "Copy",
+		"t": "Copy"
+	},
+	"exmlView.initContextMenuGeneral.copyProperty": {
+		"s": "Copy Property",
+		"t": "Copy Property"
+	},
+	"exmlView.initContextMenuGeneral.cut": {
+		"s": "Cut",
+		"t": "Cut"
+	},
+	"exmlView.initContextMenuGeneral.group": {
+		"s": "Group",
+		"t": "Group"
+	},
+	"exmlView.initContextMenuGeneral.paste": {
+		"s": "Paste",
+		"t": "Paste"
+	},
+	"exmlView.initContextMenuGeneral.pastePos": {
+		"s": "Paste Pos",
+		"t": "Paste Pos"
+	},
+	"exmlView.initContextMenuGeneral.pasteRestrict": {
+		"s": "Paste Restrict",
+		"t": "Paste Restrict"
+	},
+	"exmlView.initContextMenuGeneral.pasteSize": {
+		"s": "Paste Size",
+		"t": "Paste Size"
+	},
+	"exmlView.initContextMenuGeneral.upgroup": {
+		"s": "Ungroup",
+		"t": "Ungroup"
+	},
+	"explorerView.createViewer.fileResourceManager": {
+		"s": "File Explorer",
+		"t": "File Explorer"
+	},
+	"explorerView.resourceManager": {
+		"s": "Explorer",
+		"t": "Explorer"
+	},
+	"fileController.initContextMenuGeneral.copy": {
+		"s": "Copy",
+		"t": "Copy"
+	},
+	"fileController.initContextMenuGeneral.copyPath": {
+		"s": "Copy Path",
+		"t": "Copy Path"
+	},
+	"fileController.initContextMenuGeneral.createFolder": {
+		"s": "Create Folder",
+		"t": "Create Folder"
+	},
+	"fileController.initContextMenuGeneral.createSkin": {
+		"s": "Create Skin",
+		"t": "Create Skin"
+	},
+	"fileController.initContextMenuGeneral.openInFinder": {
+		"s": "Reveal in Finder",
+		"t": "Reveal in Finder"
+	},
+	"fileController.initContextMenuGeneral.openInResourceManager": {
+		"s": "Reveal in System Explorer",
+		"t": "Reveal in System Explorer"
+	},
+	"fileController.initContextMenuGeneral.paste": {
+		"s": "Paste",
+		"t": "Paste"
+	},
+	"fileController.initContextMenuGeneral.rename": {
+		"s": "Rename",
+		"t": "Rename"
+	},
+	"fileDragAndDrop2.handleExplorerDrop.confirmContinueMove": {
+		"s": "You are moving a file with unsaved changes. Do you want to continue?",
+		"t": "You are moving a file with unsaved changes. Do you want to continue?"
+	},
+	"fileDragAndDrop2.handleExplorerDrop.confirmModifyMulitDir": {
+		"s": "Are you sure you want to modify the order of multiple root directories in your workspace?",
+		"t": "Are you sure you want to modify the order of multiple root directories in your workspace?"
+	},
+	"fileDragAndDrop2.handleExplorerDrop.confirmMoveDir": {
+		"s": "Are you sure you want to move the following {0} directories and their contents？",
+		"t": "Are you sure you want to move the following {0} directories and their contents？"
+	},
+	"fileDragAndDrop2.handleExplorerDrop.confirmMoveFile": {
+		"s": "Are you sure you want to move the file {0} ？",
+		"t": "Are you sure you want to move the file {0} ？"
+	},
+	"fileDragAndDrop2.handleExplorerDrop.confirmMoveSome": {
+		"s": "Are you sure you want to move the following {0} files?",
+		"t": "Are you sure you want to move the following {0} files?"
+	},
+	"fileDragAndDrop2.handleExplorerDrop.moveHaveSomeFile": {
+		"s": "You are moving a folder with unsaved changes in {0} files. Do you want to continue?",
+		"t": "You are moving a folder with unsaved changes in {0} files. Do you want to continue?"
+	},
+	"fileDragAndDrop2.handleExplorerDrop.moveNotSave": {
+		"s": "You are moving a folder with unsaved changes in 1 file. Do you want to continue?",
+		"t": "You are moving a folder with unsaved changes in 1 file. Do you want to continue?"
+	},
+	"fileDragAndDrop2.handleExplorerDrop.moveNotSaveAndContinue": {
+		"s": "You are moving files with unsaved changes. Do you want to continue?",
+		"t": "You are moving files with unsaved changes. Do you want to continue?"
+	},
+	"fileService.checkFile.isDirectory": {
+		"s": "The file to be changed is a folder",
+		"t": "The file to be changed is a folder"
+	},
+	"fileService.checkFile.isReadonly": {
+		"s": "Read-only files are not writable",
+		"t": "Read-only files are not writable"
+	},
+	"fileService.checkFile.pathExistAndIsFile": {
+		"s": "The {0} path already exists and is not a folder.",
+		"t": "The {0} path already exists and is not a folder."
+	},
+	"fileService.createFile.exist": {
+		"s": "{0} file already exists and cannot be created.",
+		"t": "{0} file already exists and cannot be created."
+	},
+	"fileService.del.deleteError": {
+		"s": "Delete {0} error",
+		"t": "Delete {0} error"
+	},
+	"fileService.doMoveOrCopyFile.existNoMoveOrCopy": {
+		"s": "The target path already exists and cannot be moved or copied",
+		"t": "The target path already exists and cannot be moved or copied"
+	},
+	"fileService.doMoveOrCopyFile.noMoveOrCopyToParentDirectory": {
+		"s": "Unable to move or copy to replace its parent folder",
+		"t": "Unable to move or copy to replace its parent folder"
+	},
+	"fileService.rmRecursive.cantDeleteDirectory": {
+		"s": "Unable to delete root directory",
+		"t": "Unable to delete root directory"
+	},
+	"focusablePartCommandHelper.registerCommand.blank": {
+		"s": "Registration operation command must not be empty.",
+		"t": "Registration operation command must not be empty."
+	},
+	"focusablePartCommandHelper.registerCommand.repeat": {
+		"s": "Registration operation command: {0} repeat",
+		"t": "Registration operation command: {0} repeat"
+	},
+	"frontPart.doRender.rank": {
+		"s": "Rank",
+		"t": "Rank"
+	},
+	"getConfirmMessage.hiddenOne": {
+		"s": "...hidden display of 1 file",
+		"t": "...hidden display of 1 file"
+	},
+	"getConfirmMessage.hiddenSome": {
+		"s": "...hidden display of {0} files",
+		"t": "...hidden display of {0} files"
+	},
+	"group": {
+		"s": "Group",
+		"t": "Group"
+	},
+	"innerWindow.title": {
+		"s": "Title",
+		"t": "Title"
+	},
+	"inputRegistry.registerFileInput.error": {
+		"s": "Duplicate registration of input stream with file type {0}.",
+		"t": "Duplicate registration of input stream with file type {0}."
+	},
+	"inputSelect.render.notSelectEmpty": {
+		"s": "No related items found",
+		"t": "No related items found"
+	},
+	"ipcseriver.cp.message_handler": {
+		"s": "Method {0} was not found in the child process",
+		"t": "Method {0} was not found in the child process"
+	},
+	"keybindPanel.constructor.title": {
+		"s": "Shortcut Key Settings",
+		"t": "Shortcut Key Settings"
+	},
+	"keybindingPanel.checkError.keyRepeat": {
+		"s": "Shortcut key Duplicate",
+		"t": "Shortcut key Duplicate"
+	},
+	"keybindingPanel.confirmClick_handler.configError": {
+		"s": "The shortcut key configuration is incorrect. Please solve the red prompt error and click OK.",
+		"t": "The shortcut key configuration is incorrect. Please solve the red prompt error and click OK."
+	},
+	"keybindingPanel.create.keyDown": {
+		"s": "Key Down",
+		"t": "Key Down"
+	},
+	"keybindingPanel.create.keyUp": {
+		"s": "Key Up",
+		"t": "Key Up"
+	},
+	"label": {
+		"s": "Label",
+		"t": "Label"
+	},
+	"labelGroup.render.text": {
+		"s": "text",
+		"t": "text"
+	},
+	"layerView.handleOperation.groupNodes": {
+		"s": "Group",
+		"t": "Group"
+	},
+	"layerView.handleOperation.removeSelectedNodes": {
+		"s": "Delete Layer",
+		"t": "Delete Layer"
+	},
+	"layerView.handleOperation.searchNodes": {
+		"s": "Search layers",
+		"t": "Search layers"
+	},
+	"layerView.handleOperation.tsCopyAction": {
+		"s": "Copy definition",
+		"t": "Copy definition"
+	},
+	"layerView.handleOperation.unGroupNodes": {
+		"s": "Ungroup",
+		"t": "Ungroup"
+	},
+	"layerView.title": {
+		"s": "Layer",
+		"t": "Layer"
+	},
+	"layout.align": {
+		"s": "Align",
+		"t": "对齐"
+	},
+	"layout.align.horizontal": {
+		"s": "Horizontal:",
+		"t": "水平:"
+	},
+	"layout.align.vertical": {
+		"s": "Vertical:",
+		"t": "垂直:"
+	},
+	"layout.alignBoth": {
+		"s": "Endpoint Alignment",
+		"t": "两端对齐"
+	},
+	"layout.alignBoth.column": {
+		"s": "Column Alignment:",
+		"t": "列两端:"
+	},
+	"layout.alignBoth.row": {
+		"s": "Row Alignment:",
+		"t": "行两端:"
+	},
+	"layout.column": {
+		"s": "Column",
+		"t": "列"
+	},
+	"layout.column.columnWidth": {
+		"s": "Column Width:",
+		"t": "列宽:"
+	},
+	"layout.column.numColumn": {
+		"s": "Column Number:",
+		"t": "列数:"
+	},
+	"layout.direction": {
+		"s": "Direction",
+		"t": "方向"
+	},
+	"layout.direction.direction": {
+		"s": "Direction:",
+		"t": "方向:"
+	},
+	"layout.gap": {
+		"s": "Gap",
+		"t": "间隔"
+	},
+	"layout.gap.hgap": {
+		"s": "HGap:",
+		"t": "水平:"
+	},
+	"layout.gap.vgap": {
+		"s": "VGap:",
+		"t": "垂直:"
+	},
+	"layout.padding": {
+		"s": "Padding",
+		"t": "内边距"
+	},
+	"layout.padding.bottom": {
+		"s": "Down:",
+		"t": "下:"
+	},
+	"layout.padding.left": {
+		"s": "Left:",
+		"t": "左:"
+	},
+	"layout.padding.right": {
+		"s": "Right:",
+		"t": "右:"
+	},
+	"layout.padding.top": {
+		"s": "Top:",
+		"t": "上:"
+	},
+	"layout.row": {
+		"s": "行",
+		"t": "行"
+	},
+	"layout.row.numberRow": {
+		"s": "Row Number:",
+		"t": "行数:"
+	},
+	"layout.row.rowHeight": {
+		"s": "Row Height:",
+		"t": "行高:"
+	},
+	"login.content": {
+		"s": "Please log in in Egret Launcher",
+		"t": "Please log in in Egret Launcher"
+	},
+	"login.title": {
+		"s": "Please wait...",
+		"t": "Please wait..."
+	},
+	"menus.getPreferencesMenu.euiConfigure": {
+		"s": "EUI Project Setting(&&P)",
+		"t": "EUI Project Setting(&&P)"
+	},
+	"menus.getPreferencesMenu.preference": {
+		"s": "Preference(&&P)",
+		"t": "Preference(&&P)"
+	},
+	"menus.getPreferencesMenu.shortcut": {
+		"s": "Shortcut key settings(&&K)",
+		"t": "Shortcut key settings(&&K)"
+	},
+	"menus.install.editMenu": {
+		"s": "Edit(&&E)",
+		"t": "Edit(&&E)"
+	},
+	"menus.install.fileMenu": {
+		"s": "File(&&F)",
+		"t": "File(&&F)"
+	},
+	"menus.install.help": {
+		"s": "Help(&&H)",
+		"t": "Help(&&H)"
+	},
+	"menus.install.windowMenu": {
+		"s": "Window(&&W)",
+		"t": "Window(&&W)"
+	},
+	"menus.setEditMenu.allSelect": {
+		"s": "Select All(&&A)",
+		"t": "Select All(&&A)"
+	},
+	"menus.setEditMenu.allSelectOpt": {
+		"s": "Select all operation",
+		"t": "Select all operation"
+	},
+	"menus.setEditMenu.allSelectTxt": {
+		"s": "Select All",
+		"t": "Select All"
+	},
+	"menus.setEditMenu.copy": {
+		"s": "Copy(&&C)",
+		"t": "Copy(&&C)"
+	},
+	"menus.setEditMenu.copyOpt": {
+		"s": "Copy operation",
+		"t": "Copy operation"
+	},
+	"menus.setEditMenu.copyTxt": {
+		"s": "Copy",
+		"t": "Copy"
+	},
+	"menus.setEditMenu.cut": {
+		"s": "Cut(&&T)",
+		"t": "Cut(&&T)"
+	},
+	"menus.setEditMenu.cutOpt": {
+		"s": "Cut operation",
+		"t": "Cut operation"
+	},
+	"menus.setEditMenu.cutTxt": {
+		"s": "Cut",
+		"t": "Cut"
+	},
+	"menus.setEditMenu.paste": {
+		"s": "Paste(&&P)",
+		"t": "Paste(&&P)"
+	},
+	"menus.setEditMenu.pasteOpt": {
+		"s": "Paste operation",
+		"t": "Paste operation"
+	},
+	"menus.setEditMenu.pasteTxt": {
+		"s": "Paste",
+		"t": "Paste"
+	},
+	"menus.setEditMenu.redo": {
+		"s": "Redo(&&R)",
+		"t": "Redo(&&R)"
+	},
+	"menus.setEditMenu.redoOpt": {
+		"s": "Redo operation",
+		"t": "Redo operation"
+	},
+	"menus.setEditMenu.redoTxt": {
+		"s": "Redo",
+		"t": "Redo"
+	},
+	"menus.setEditMenu.undo": {
+		"s": "Undo(&&U)",
+		"t": "Undo(&&U)"
+	},
+	"menus.setEditMenu.undoOpt": {
+		"s": "Undo operation",
+		"t": "Undo operation"
+	},
+	"menus.setEditMenu.undoTxt": {
+		"s": "Undo",
+		"t": "Undo"
+	},
+	"menus.setFileMenu.allSave": {
+		"s": "Save All(&&L)",
+		"t": "Save All(&&L)"
+	},
+	"menus.setFileMenu.allSaveOpt": {
+		"s": "Save all open editors",
+		"t": "Save all open editors"
+	},
+	"menus.setFileMenu.allSaveTxt": {
+		"s": "Save All",
+		"t": "Save All"
+	},
+	"menus.setFileMenu.closeEditor": {
+		"s": "Close Editor(&&C)",
+		"t": "Close Editor(&&C)"
+	},
+	"menus.setFileMenu.closeEditorOpt": {
+		"s": "Close the current editor",
+		"t": "Close the current editor"
+	},
+	"menus.setFileMenu.closeEditorTxt": {
+		"s": "Close Editor",
+		"t": "Close Editor"
+	},
+	"menus.setFileMenu.newExml": {
+		"s": "Create EXML Skin(&&N)",
+		"t": "Create EXML Skin(&&N)"
+	},
+	"menus.setFileMenu.newExmlOpt": {
+		"s": "Create a new Exml skin in the currently selected directory",
+		"t": "Create a new Exml skin in the currently selected directory"
+	},
+	"menus.setFileMenu.newExmlTxt": {
+		"s": "Create EXML Skin",
+		"t": "Create EXML Skin"
+	},
+	"menus.setFileMenu.newFolder": {
+		"s": "Create Folder(&&F)",
+		"t": "Create Folder(&&F)"
+	},
+	"menus.setFileMenu.newFolderOpt": {
+		"s": "Create a folder in the currently selected directory",
+		"t": "Create a folder in the currently selected directory"
+	},
+	"menus.setFileMenu.newFolderTxt": {
+		"s": "Create Folder",
+		"t": "Create Folder"
+	},
+	"menus.setFileMenu.openFolder": {
+		"s": "Open Folder(&&P)",
+		"t": "Open Folder(&&P)"
+	},
+	"menus.setFileMenu.openFolderOpt": {
+		"s": "Open folder (project) operation",
+		"t": "Open folder (project) operation"
+	},
+	"menus.setFileMenu.openFolderTxt": {
+		"s": "Open Folder",
+		"t": "Open Folder"
+	},
+	"menus.setFileMenu.quit": {
+		"s": "Quit(&&X)",
+		"t": "Quit(&&X)"
+	},
+	"menus.setFileMenu.reload": {
+		"s": "Reload(&&R)",
+		"t": "Reload(&&R)"
+	},
+	"menus.setFileMenu.save": {
+		"s": "Save(&&S)",
+		"t": "Save(&&S)"
+	},
+	"menus.setFileMenu.saveOpt": {
+		"s": "Save the current editor",
+		"t": "Save the current editor"
+	},
+	"menus.setFileMenu.saveTxt": {
+		"s": "Save",
+		"t": "Save"
+	},
+	"menus.setHelpMenu.toggleDev": {
+		"s": "Toggle Dev(&&T)",
+		"t": "Toggle Dev(&&T)"
+	},
+	"menus.setMacApplicationMenu.hide": {
+		"s": "Hide {0}",
+		"t": "Hide {0}"
+	},
+	"menus.setMacApplicationMenu.hideothers": {
+		"s": "Hide Other",
+		"t": "Hide Other"
+	},
+	"menus.setMacApplicationMenu.quit": {
+		"s": "Quit {0}",
+		"t": "Quit {0}"
+	},
+	"menus.setMacApplicationMenu.services": {
+		"s": "Services",
+		"t": "Services"
+	},
+	"menus.setMacApplicationMenu.unhide": {
+		"s": "Show All",
+		"t": "Show All"
+	},
+	"menus.setWindowsMenu.minimize": {
+		"s": "Minimize(&&M)",
+		"t": "Minimize(&&M)"
+	},
+	"menus.setWindowsMenu.togglefullscreen": {
+		"s": "Toggle Full Screen",
+		"t": "Toggle Full Screen"
+	},
+	"menus.viewMenu.align": {
+		"s": "Align(&&A)",
+		"t": "Align(&&A)"
+	},
+	"menus.viewMenu.component": {
+		"s": "Component(&&C)",
+		"t": "Component(&&C)"
+	},
+	"menus.viewMenu.explorer": {
+		"s": "Explorer(&&U)",
+		"t": "Explorer(&&U)"
+	},
+	"menus.viewMenu.layer": {
+		"s": "Layer(&&L)",
+		"t": "Layer(&&L)"
+	},
+	"menus.viewMenu.output": {
+		"s": "Output(&&O)",
+		"t": "Output(&&O)"
+	},
+	"menus.viewMenu.property": {
+		"s": "Property(&&P)",
+		"t": "Property(&&P)"
+	},
+	"menus.viewMenu.property2": {
+		"s": "Property2(&&P)",
+		"t": "Property2(&&P)"
+	},
+	"menus.viewMenu.quickOpen": {
+		"s": "Quick Open(&&Q)",
+		"t": "Quick Open(&&Q)"
+	},
+	"menus.viewMenu.quickOpenDes": {
+		"s": "Quick Open EXML file operation",
+		"t": "Quick Open EXML file operation"
+	},
+	"menus.viewMenu.quickOpenLabel": {
+		"s": "Quick Open",
+		"t": "Quick Open"
+	},
+	"menus.viewMenu.resource": {
+		"s": "Resource(&&R)",
+		"t": "Resource(&&R)"
+	},
+	"modelServices.confirmSave.confirmModify": {
+		"s": "Need to save the changes made to file {0}?",
+		"t": "Need to save the changes made to file {0}?"
+	},
+	"modelServices.confirmSave.confirmModifyMessage": {
+		"s": "Need to save the changes made to the following {0} files?",
+		"t": "Need to save the changes made to the following {0} files?"
+	},
+	"modelServices.confirmSave.save": {
+		"s": "Save",
+		"t": "Save"
+	},
+	"modelServices.confirmSave.saveTips": {
+		"s": "Save Tips",
+		"t": "Save Tips"
+	},
+	"modelServices.confirmSave.warning": {
+		"s": "If you don't save, all the changes you made will be lost.",
+		"t": "If you don't save, all the changes you made will be lost."
+	},
+	"newExmlOperation.run.notEuiProject": {
+		"s": "Currently is not an Egret EUI project, you can't create Exml skin",
+		"t": "Currently is not an Egret EUI project, you can't create Exml skin"
+	},
+	"newExmlOperation.run.notProject": {
+		"s": "No items are currently open, and Exml skin cannot be created",
+		"t": "No items are currently open, and Exml skin cannot be created"
+	},
+	"newExmlPanel.constructor.title": {
+		"s": "Create EXML Skin",
+		"t": "Create EXML Skin"
+	},
+	"newExmlPanel.createExml.browser": {
+		"s": "Browser",
+		"t": "Browser"
+	},
+	"newExmlPanel.createExml.comTitle": {
+		"s": "Select Host Component",
+		"t": "Select Host Component"
+	},
+	"newExmlPanel.createExml.fileCreateSuccess": {
+		"s": "The file was created successfully: {0}",
+		"t": "The file was created successfully: {0}"
+	},
+	"newExmlPanel.createExml.fileIsExist": {
+		"s": "The file already exists, please change the name.",
+		"t": "The file already exists, please change the name."
+	},
+	"newExmlPanel.createExml.height": {
+		"s": "Height:",
+		"t": "Height:"
+	},
+	"newExmlPanel.createExml.host": {
+		"s": "Host Component:",
+		"t": "Host Component:"
+	},
+	"newExmlPanel.createExml.name": {
+		"s": "Name:",
+		"t": "Name:"
+	},
+	"newExmlPanel.createExml.path": {
+		"s": "Path:",
+		"t": "Path:"
+	},
+	"newExmlPanel.createExml.selectPath": {
+		"s": "Select Path",
+		"t": "Select Path"
+	},
+	"newExmlPanel.createExml.skinName": {
+		"s": "Skin Name",
+		"t": "Skin Name"
+	},
+	"newExmlPanel.createExml.width": {
+		"s": "Width:",
+		"t": "Width:"
+	},
+	"newExmlPanel.pathHandle.notExistCurrentProject": {
+		"s": "The selection path is not in the current project, please re-select.",
+		"t": "The selection path is not in the current project, please re-select."
+	},
+	"newExmlPanel.pathHandle.path": {
+		"s": "Please select the path.",
+		"t": "Please select the path."
+	},
+	"newExmlPanel.validate.comblank": {
+		"s": "Please select the host component.",
+		"t": "Please select the host component."
+	},
+	"newExmlPanel.validate.heightblank": {
+		"s": "The height cannot be empty.",
+		"t": "The height cannot be empty."
+	},
+	"newExmlPanel.validate.path": {
+		"s": "Please select the path.",
+		"t": "Please select the path."
+	},
+	"newExmlPanel.validate.skinName": {
+		"s": "The skin name cannot be empty, please fill in the name.",
+		"t": "The skin name cannot be empty, please fill in the name."
+	},
+	"newExmlPanel.validate.widthblank": {
+		"s": "The width cannot be empty.",
+		"t": "The width cannot be empty."
+	},
+	"newFolderOperation.run.notExistParentFolder": {
+		"s": "There is no parent folder and cannot create a folder",
+		"t": "There is no parent folder and cannot create a folder"
+	},
+	"newFolderOperation.run.notOpenProject": {
+		"s": "No project are currently open, can't create folder",
+		"t": "No project are currently open, can't create folder"
+	},
+	"newFolderPanel.firstBtnHandle.folderNotBlank": {
+		"s": "The folder name cannot be empty!",
+		"t": "The folder name cannot be empty!"
+	},
+	"newFolderPanel.firstBtnHandle.success": {
+		"s": "Successfully created new folder: {0}",
+		"t": "Successfully created new folder: {0}"
+	},
+	"newFolderPanel.render.folderName": {
+		"s": "Folder Name:",
+		"t": "Folder Name:"
+	},
+	"newwFolderPanel.constructor.title": {
+		"s": "New Folder",
+		"t": "New Folder"
+	},
+	"operationMainService.registerListener.existMainProcess": {
+		"s": "The command {0} already exists in the main process and cannot be resumed in the re-rendering process.",
+		"t": "The command {0} already exists in the main process and cannot be resumed in the re-rendering process."
+	},
+	"outputView.title": {
+		"s": "Output",
+		"t": "Output"
+	},
+	"pasteFileOperation.run.copyError": {
+		"s": "Paste file failed: {0}",
+		"t": "Paste file failed: {0}"
+	},
+	"property.all.title.property": {
+		"s": "Property",
+		"t": "Property"
+	},
+	"property.all.title.value": {
+		"s": "Value",
+		"t": "Value"
+	},
+	"property.general.alpha": {
+		"s": "Alpha:",
+		"t": "Alpha:"
+	},
+	"property.general.className": {
+		"s": "Class Name:",
+		"t": "Class Name:"
+	},
+	"property.general.enable": {
+		"s": "Enable:",
+		"t": "Enable:"
+	},
+	"property.general.label": {
+		"s": "Label:",
+		"t": "Label:"
+	},
+	"property.general.name": {
+		"s": "Name:",
+		"t": "Name:"
+	},
+	"property.general.state.default": {
+		"s": "[All Status]",
+		"t": "[All Status]"
+	},
+	"property.general.status": {
+		"s": "Status:",
+		"t": "Status:"
+	},
+	"property.general.text": {
+		"s": "Text:",
+		"t": "Text:"
+	},
+	"property.general.touchChildren": {
+		"s": "Touch Children:",
+		"t": "Touch Children:"
+	},
+	"property.general.touchEnabled": {
+		"s": "Touch Enable:",
+		"t": "Touch Enable:"
+	},
+	"property.layout.hv.gap": {
+		"s": "Gap:",
+		"t": "Gap:"
+	},
+	"property.layout.hv.horizontalAlign": {
+		"s": "Horizontal:",
+		"t": "Horizontal:"
+	},
+	"property.layout.hv.paddingBottom": {
+		"s": "Bottom:",
+		"t": "Bottom:"
+	},
+	"property.layout.hv.paddingLeft": {
+		"s": "Left:",
+		"t": "Left:"
+	},
+	"property.layout.hv.paddingRight": {
+		"s": "Right:",
+		"t": "Right:"
+	},
+	"property.layout.hv.paddingTop": {
+		"s": "Top:",
+		"t": "Left:"
+	},
+	"property.layout.hv.verticalAlign": {
+		"s": "Vertical:",
+		"t": "Vertical:"
+	},
+	"property.layout.layout": {
+		"s": "Layout:",
+		"t": "Layout:"
+	},
+	"property.layout.tile.alignBoth.column": {
+		"s": "Column:",
+		"t": "Column:"
+	},
+	"property.layout.tile.alignBoth.row": {
+		"s": "Row:",
+		"t": "Row:"
+	},
+	"property.layout.tile.columnCount": {
+		"s": "Count:",
+		"t": "Count:"
+	},
+	"property.layout.tile.columnWidth": {
+		"s": "Width:",
+		"t": "Width:"
+	},
+	"property.layout.tile.horizontalAlign": {
+		"s": "Horizontal:",
+		"t": "Horizontal:"
+	},
+	"property.layout.tile.horizontalGap": {
+		"s": "Horizontal:",
+		"t": "Horizontal:"
+	},
+	"property.layout.tile.orientation": {
+		"s": "Orientation:",
+		"t": "Orientation:"
+	},
+	"property.layout.tile.paddingBottom": {
+		"s": "Bottom:",
+		"t": "Bottom:"
+	},
+	"property.layout.tile.paddingLeft": {
+		"s": "Left:",
+		"t": "Left:"
+	},
+	"property.layout.tile.paddingRight": {
+		"s": "Right:",
+		"t": "Right:"
+	},
+	"property.layout.tile.paddingTop": {
+		"s": "Top:",
+		"t": "Top:"
+	},
+	"property.layout.tile.rowCount": {
+		"s": "Count:",
+		"t": "Count:"
+	},
+	"property.layout.tile.rowHeight": {
+		"s": "Height:",
+		"t": "Height:"
+	},
+	"property.layout.tile.verticalAlign": {
+		"s": "Vertical:",
+		"t": "Vertical:"
+	},
+	"property.layout.tile.verticalGap": {
+		"s": "Vertical:",
+		"t": "Vertical:"
+	},
+	"property.layout.title.hv.align": {
+		"s": "Align",
+		"t": "Align"
+	},
+	"property.layout.title.hv.gap": {
+		"s": "Gap",
+		"t": "Gap"
+	},
+	"property.layout.title.hv.padding": {
+		"s": "Padding",
+		"t": "Padding"
+	},
+	"property.layout.title.tile.align": {
+		"s": "Align",
+		"t": "Align"
+	},
+	"property.layout.title.tile.column": {
+		"s": "Column",
+		"t": "Column"
+	},
+	"property.layout.title.tile.endpoint": {
+		"s": "Endpoint Alignment",
+		"t": "Endpoint Alignment"
+	},
+	"property.layout.title.tile.gap": {
+		"s": "Gap",
+		"t": "Gap"
+	},
+	"property.layout.title.tile.orientation": {
+		"s": "Orientation",
+		"t": "Orientation"
+	},
+	"property.layout.title.tile.padding": {
+		"s": "Padding",
+		"t": "Padding"
+	},
+	"property.layout.title.tile.row": {
+		"s": "Row",
+		"t": "Row"
+	},
+	"property.sizepos.anchorX": {
+		"s": "Anchor X:",
+		"t": "Anchor X:"
+	},
+	"property.sizepos.anchorY": {
+		"s": "Anchor Y:",
+		"t": "Anchor Y:"
+	},
+	"property.sizepos.height": {
+		"s": "Height:",
+		"t": "Height:"
+	},
+	"property.sizepos.scaleX": {
+		"s": "Scale X:",
+		"t": "Scale X:"
+	},
+	"property.sizepos.scaleY": {
+		"s": "Scale Y:",
+		"t": "Scale Y:"
+	},
+	"property.sizepos.title.detailConstrain": {
+		"s": "Detail Constrain",
+		"t": "Detail Constrain"
+	},
+	"property.sizepos.title.fastConstrain": {
+		"s": "Fast Constrain",
+		"t": "Fast Constrain"
+	},
+	"property.sizepos.width": {
+		"s": "Width:",
+		"t": "Width:"
+	},
+	"property.sizepos.x": {
+		"s": "X:",
+		"t": "X:"
+	},
+	"property.sizepos.y": {
+		"s": "Y:",
+		"t": "Y:"
+	},
+	"property.style.bitmapLabel.font": {
+		"s": "Bitmap Font:",
+		"t": "Bitmap Font:"
+	},
+	"property.style.buttonSkin.disable": {
+		"s": "Disable:",
+		"t": "Disable:"
+	},
+	"property.style.buttonSkin.down": {
+		"s": "Press Down:",
+		"t": "Press Down:"
+	},
+	"property.style.buttonSkin.normal": {
+		"s": "Normal:",
+		"t": "Normal:"
+	},
+	"property.style.rect.ellipse.height": {
+		"s": "Ellipse Height:",
+		"t": "Ellipse Height:"
+	},
+	"property.style.rect.ellipse.width": {
+		"s": "Ellipse Width:",
+		"t": "Ellipse Width:"
+	},
+	"property.style.rect.fill.alpha": {
+		"s": "Alpha:",
+		"t": "Alpha:"
+	},
+	"property.style.rect.fill.color": {
+		"s": "Color:",
+		"t": "Color:"
+	},
+	"property.style.rect.stroke.alpha": {
+		"s": "Alpha:",
+		"t": "Alpha:"
+	},
+	"property.style.rect.stroke.color": {
+		"s": "Color:",
+		"t": "Color:"
+	},
+	"property.style.rect.stroke.weight": {
+		"s": "Weight:",
+		"t": "Weight:"
+	},
+	"property.style.skin.itemSkinName": {
+		"s": "Item Skin:",
+		"t": "Item Skin:"
+	},
+	"property.style.skin.skinName": {
+		"s": "Skin:",
+		"t": "Skin:"
+	},
+	"property.style.source.fillMode": {
+		"s": "Fill Mode:",
+		"t": "Fill Mode:"
+	},
+	"property.style.source.source": {
+		"s": "Asset Name:",
+		"t": "Asset Name:"
+	},
+	"property.style.title.bitmapLabel": {
+		"s": "Bitmap Label",
+		"t": "Bitmap Label:"
+	},
+	"property.style.title.buttonSkin": {
+		"s": "Button Sample Skin",
+		"t": "Quick Button Skin"
+	},
+	"property.style.title.label": {
+		"s": "Label",
+		"t": "Label"
+	},
+	"property.style.title.rect.ellipse": {
+		"s": "Ellipse",
+		"t": "Ellipse"
+	},
+	"property.style.title.rect.fill": {
+		"s": "Fill",
+		"t": "Fill"
+	},
+	"property.style.title.rect.stroke": {
+		"s": "Stroke",
+		"t": "Stroke"
+	},
+	"property.style.title.skin": {
+		"s": "Skin",
+		"t": "Skin"
+	},
+	"property.style.title.source": {
+		"s": "Asset",
+		"t": "Asset"
+	},
+	"property.title.general": {
+		"s": "General",
+		"t": "General"
+	},
+	"propertyView.initTab.all": {
+		"s": "All",
+		"t": "All"
+	},
+	"propertyView.initTab.classify": {
+		"s": "Common",
+		"t": "Common"
+	},
+	"propertyView.numSelected": {
+		"s": "{0} items is Selected",
+		"t": "{0} items is Selected"
+	},
+	"propertyView.render.common": {
+		"s": "Common",
+		"t": "Common"
+	},
+	"propertyView.render.layout": {
+		"s": "Layout",
+		"t": "Layout"
+	},
+	"propertyView.render.sizeAndLocation": {
+		"s": "Size & Position",
+		"t": "Size & Position"
+	},
+	"propertyView.render.style": {
+		"s": "Style",
+		"t": "Style"
+	},
+	"propertyView.title": {
+		"s": "Property",
+		"t": "Property"
+	},
+	"propertyView.title2": {
+		"s": "Property2",
+		"t": "Property2"
+	},
+	"radioButton": {
+		"s": "RadioButton",
+		"t": "RadioButton"
+	},
+	"reactGroup.render.color": {
+		"s": "Color:",
+		"t": "Color:"
+	},
+	"reactGroup.render.fill": {
+		"s": "Fill",
+		"t": "Fill"
+	},
+	"reactGroup.render.fillAlpha": {
+		"s": "Alpha:",
+		"t": "Alpha:"
+	},
+	"reactGroup.render.line": {
+		"s": "Stroke",
+		"t": "Stroke"
+	},
+	"reactGroup.render.strokeWeight": {
+		"s": "Stroke Weight:",
+		"t": "Stroke Weight:"
+	},
+	"rename.dirtyMessageFileRename": {
+		"s": "You need to save the file {0} before renaming.",
+		"t": "You need to save the file {0} before renaming."
+	},
+	"rename.dirtyMessageFilesRename": {
+		"s": "You need to save the following {0} files before renaming.",
+		"t": "You need to save the following {0} files before renaming?"
+	},
+	"rename.dirtyWarning": {
+		"s": "You need save the dirty files before renaming",
+		"t": "You need save the dirty files before renaming"
+	},
+	"renamePanel.constructor.title": {
+		"s": "Rename",
+		"t": "Rename"
+	},
+	"renamePanel.handleBtnClick.success": {
+		"s": "Rename success:{0}",
+		"t": "Rename success:{0}"
+	},
+	"renamePanel.initDefaultData.error": {
+		"s": "The file that needs to rename does not exist!",
+		"t": "The file that needs to rename does not exist!"
+	},
+	"renamePanel.render.newName": {
+		"s": "New name:",
+		"t": "New name:"
+	},
+	"resType.bin": {
+		"s": "Bin",
+		"t": "Bin"
+	},
+	"resType.dbbin": {
+		"s": "Dragon bones bin",
+		"t": "Dragon bones bin"
+	},
+	"resType.font": {
+		"s": "Font",
+		"t": "Font"
+	},
+	"resType.image": {
+		"s": "Image",
+		"t": "Image"
+	},
+	"resType.sound": {
+		"s": "Sound",
+		"t": "Sound"
+	},
+	"resType.text": {
+		"s": "Text",
+		"t": "Text"
+	},
+	"revealFileInOsOperation.run.notSelectFile": {
+		"s": "There are currently no selected files and cannot be displayed in the System Explorer",
+		"t": "There are currently no selected files and cannot be displayed in the System Explorer"
+	},
+	"scale9Window.render.description": {
+		"s": "Mouse Wheel:Scale | Drag:Move | Dotted Line: Edito Scale9Grid",
+		"t": "Mouse Wheel:Scale | Drag:Move | Dotted Line: Edito Scale9Grid"
+	},
+	"scale9Window.render.startScale": {
+		"s": "Enable",
+		"t": "Enable"
+	},
+	"scale9Window.render.zoomDown": {
+		"s": "Zoom Out",
+		"t": "Zoom Out"
+	},
+	"scale9Window.render.zoomUp": {
+		"s": "Zoom In",
+		"t": "Zoom In"
+	},
+	"scale9WindowPanel.constructor.title": {
+		"s": "Scale9Grid Setting",
+		"t": "Scale9Grid Setting"
+	},
+	"searchFilePanel.matchedFile": {
+		"s": "Matched file:",
+		"t": "Matched file:"
+	},
+	"searchFilePanel.selectFile": {
+		"s": "Select file to open:",
+		"t": "Select file to open:"
+	},
+	"searchFilePanel.title": {
+		"s": "Quick Open",
+		"t": "Quick Open"
+	},
+	"sev.error": {
+		"s": "Error",
+		"t": "Error"
+	},
+	"sev.info": {
+		"s": "Info",
+		"t": "Info"
+	},
+	"sev.warning": {
+		"s": "Warning",
+		"t": "Warning"
+	},
+	"sizeAndGroup.render.detailConstrain": {
+		"s": "Detail Constrain",
+		"t": "Detail Constrain"
+	},
+	"skinGroup.render.skin": {
+		"s": "Skin",
+		"t": "Skin"
+	},
+	"skinGroup.render.skinFlag": {
+		"s": "Skin:",
+		"t": "Skin:"
+	},
+	"skinGroup.render.skinItem": {
+		"s": "Skin Item:",
+		"t": "Skin Item:"
+	},
+	"spacePart.doRender.space": {
+		"s": "Space",
+		"t": "Space"
+	},
+	"spreadPart.doRender.spread": {
+		"s": "Spread",
+		"t": "Spread"
+	},
+	"stateBar.initView.status": {
+		"s": "Status",
+		"t": "Status"
+	},
+	"stateSelect.render.allSelect": {
+		"s": "Select All",
+		"t": "Select All"
+	},
+	"styleSource.render.fillModeDisplay": {
+		"s": "Fill Mode:",
+		"t": "Fill Mode:"
+	},
+	"styleSource.render.resource": {
+		"s": "Asset",
+		"t": "Asset"
+	},
+	"styleSource.render.resourceName": {
+		"s": "Asset Name:",
+		"t": "Asset Name:"
+	},
+	"system.about": {
+		"s": "About {0}",
+		"t": "About {0}"
+	},
+	"system.checkUpdate": {
+		"s": "Check Update...",
+		"t": "Check Update..."
+	},
+	"system.delete": {
+		"s": "Delete",
+		"t": "Delete"
+	},
+	"system.feedback": {
+		"s": "Send Feedback...",
+		"t": "Send Feedback..."
+	},
+	"table.render.property": {
+		"s": "Property",
+		"t": "Property"
+	},
+	"table.render.value": {
+		"s": "Value",
+		"t": "Value"
+	},
+	"textField.numberRegulatorCheckTooltip.illegalValueOrExpression": {
+		"s": "Illegal value or expression",
+		"t": "Illegal value or expression"
+	},
+	"theme.error.noFile": {
+		"s": "No skin file {0} defined in theme",
+		"t": "No skin file {0} defined in theme"
+	},
+	"themeEui.reload.notExistTheme": {
+		"s": "Project theme configuration not found",
+		"t": "Project theme configuration not found"
+	},
+	"toggleButton": {
+		"s": "ToggleButton",
+		"t": "ToggleButton"
+	},
+	"windowsMainService.doPickAndOpen.open": {
+		"s": "Open",
+		"t": "Open"
+	},
+	"windowsMainService.doPickAndOpen.openFile": {
+		"s": "Open File",
+		"t": "Open File"
+	},
+	"windowsMainService.doPickAndOpen.openFolder": {
+		"s": "Open Folder",
+		"t": "Open Folder"
+	},
+	"wingPropertyPanel.constructor,title": {
+		"s": "wingProperty.json Setting",
+		"t": "wingProperty.json Setting"
+	},
+	"wingPropertyPanel.render.browse": {
+		"s": "Browse",
+		"t": "Browse"
+	},
+	"wingPropertyPanel.render.description": {
+		"s": "The resource <resourcePlugin.configs> and theme <theme> in the project root directory wingProperties.json are required to display the EUI project.",
+		"t": "The resource <resourcePlugin.configs> and theme <theme> in the project root directory wingProperties.json are required to display the EUI project."
+	},
+	"wingPropertyPanel.render.resource": {
+		"s": "Resource:",
+		"t": "Resource:"
+	},
+	"wingPropertyPanel.render.selectSourceFile": {
+		"s": "Select Add resource file",
+		"t": "Select Add resource file"
+	},
+	"wingPropertyPanel.render.selectTopicFile": {
+		"s": "Select add theme file",
+		"t": "Select add theme file"
+	},
+	"wingPropertyPanel.render.topic": {
+		"s": "Theme:",
+		"t": "Theme:"
+	},
+	"wingPropertyPanel.themeClick.notExistCurrectProject": {
+		"s": "{0} is not in the current project!",
+		"t": "{0} is not in the current project!"
+	},
+	"wingPropertyPanel.validateProperty.configFileNotExist": {
+		"s": "Theme profile does not exist",
+		"t": "Theme profile does not exist"
+	},
+	"wingPropertyPanel.validateProperty.notExistFile": {
+		"s": "Unable to find file {0}",
+		"t": "Unable to find file {0}"
+	},
+	"wingPropertyPanel.validateProperty.resourceFileNotExist": {
+		"s": "Need to set the resource configuration file",
+		"t": "Need to set the resource configuration file"
+	},
+	"workbench.initCommands.deleteSys": {
+		"s": "System delete command",
+		"t": "System delete command"
+	}
+}

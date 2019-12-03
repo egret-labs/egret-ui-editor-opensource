@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Egret</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="full-screen" content="true" />
+    <meta name="screen-orientation" content="portrait" />
+    <meta name="x5-fullscreen" content="true" />
+    <meta name="360-fullscreen" content="true" />
+    <style>
+        html,
+        body {
+            -ms-touch-action: none;
+            padding: 0;
+            border: 0;
+            margin: 0;
+            height: 100%;
+        }
+    </style>
+    <script>
+		var params = location.search.substr(1).split("&");
+        var paramsObject = {};
+        for (var i = 0; i < params.length; i++) {
+            var pair = params[i].split("=");
+            var value = pair.length > 1 ? decodeURIComponent(pair[1]) : "";
+            paramsObject[pair[0]] = value;
+        }
+        var projectRoot = paramsObject["project"] || "";
+        var egretLibPath = paramsObject["egretLibPath"] || "";
+        var egretWebLibPath = paramsObject["egretWebLibPath"] || "";
+        var uiLibPath = paramsObject["uiLibPath"] || "";
+		var tweenPath = paramsObject["tweenPath"] || "";
+		var runtimeId = paramsObject["id"] || "";
+	</script>
+</head>
+
+<body>
+    <div style="margin: auto;width: 100%;height: 100%;" class="egret-player" data-entry-class="RuntimeRootContainer" data-orientation="auto"
+        data-scale-mode="noScale" data-resolution-mode="retina" data-frame-rate="60" data-content-width="480" data-content-height="800"
+        data-show-paint-rect="false" data-multi-fingered="2" data-show-fps="false" data-show-log="false" data-log-filter="" data-show-fps-style="x:0,y:0,size:30">
+    </div>
+    <script>
+		window["AudioContext"] = null;
+		window["webkitAudioContext"] = null;
+		window["mozAudioContext"] = null;
+
+
+        function addScripts(scripts,callBack){
+            var src = scripts.shift();
+            if(src){
+                var head= document.getElementsByTagName('head')[0];
+                var script= document.createElement('script');
+                script.type= 'text/javascript';
+                script.onload = function() {
+                    script.onload = null;
+                    addScripts(scripts,callBack);
+                };
+                script.onerror = function(e){
+                    console.log(e);
+                }
+                script.src= src;
+                head.appendChild(script);
+            }else{
+                callBack();
+            }
+        }
+
+        var scripts = [
+            egretLibPath,
+            egretWebLibPath,
+            uiLibPath,
+            tweenPath,
+            'libs/modules/res/res.js',
+            'libs/api.js',
+            'AssetAdapter.js',
+            'Theme.js',
+            'Main.js'
+		];
+        addScripts(scripts,function(){
+            var base = document.createElement("base");
+            base.href=decodeURIComponent(projectRoot)+"/";
+			document.head.appendChild(base);
+			egret.runEgret({ calculateCanvasScaleFactor:function(context) {return 1;}});
+			window.parent.postMessage('egret_loaded:'+runtimeId,'*');
+        });
+	</script>
+</body>
+
+</html>

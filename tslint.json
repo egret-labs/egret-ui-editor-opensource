@@ -1,0 +1,36 @@
+{
+	"rulesDirectory": [
+		"build/lib/tslint"
+	],
+	"linterOptions": {
+		"exclude": [
+			"src/vs/**/*",
+			"src/egret/exts/exml-exts/exml/browser/exmleditor/**/*"
+		]
+	},
+	"rules": {
+		"no-unused-expression": false,
+		"no-duplicate-variable": false,
+		"no-duplicate-key": true,
+		"no-unused-variable": true,
+		"curly": true,
+		"class-name": true,
+		"indent": [
+			true,
+			"tabs",
+			2
+		],
+		"semicolon": [
+			true,
+			"always"
+		],
+		"quotemark": [
+			true,
+			"single"
+		],
+		"check-comment": [
+			true
+		]
+	},
+	"defaultSeverity": "error"
+}

@@ -1,0 +1,63 @@
+.scale_9_grid {
+    background-image: url('light/scale_9_grid.svg');
+}
+
+/* font */
+.font_bold {
+    background-image: url('light/C_Bold_md.png');
+}
+.font_italics {
+    background-image: url('light/C_Italics_md.png');
+}
+
+.font_valign_bottom {
+    background-image: url('light/valign-bottom.png');
+}
+.font_valign_center {
+    background-image: url('light/valign-center.png');
+}
+.font_valign_top {
+    background-image: url('light/valign-top.png');
+}
+.font_valign_justify {
+    background-image: url('light/valign-justify.png');
+}
+
+.font_align_left {
+    background-image: url('light/align-left.png');
+}
+.font_align_right {
+    background-image: url('light/align-right.png');
+}
+.font_align_center {
+    background-image: url('light/align-center.png');
+}
+
+/* constraint */
+.layout_left {
+    background-image: url('light/pos_left.svg');
+}
+.layout_hcenter {
+    background-image: url('light/pos_horizontalCenter.svg');
+}
+.layout_right {
+    background-image: url('light/pos_right.svg');
+}
+.layout_top {
+    background-image: url('light/pos_top.svg');
+}
+.layout_vcenter {
+    background-image: url('light/pos_verticalCenter.svg');
+}
+.layout_bottom {
+    background-image: url('light/pos_bottom.svg');
+}
+.layout_leftandright {
+    background-image: url('light/size_percentWidth.svg');
+}
+.layout_topandbottom {
+    background-image: url('light/size_percentHeight.svg');
+}
+.layout_all {
+    background-image: url('light/size_percentAll.svg');
+}

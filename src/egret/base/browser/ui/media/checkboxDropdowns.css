@@ -1,0 +1,44 @@
+
+.egret-dropdown .checkbox-dropdown-label-part{
+	position: relative;
+}
+.egret-dropdown .checkbox-dropdown-label{
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	padding-right: 20px;
+	width: 100%;
+	position: absolute;
+	left: 0;
+}
+
+.dropdown-display-container .checkbox-dropdown-item {
+    display: flex;
+    text-decoration: none;
+    line-height: 24px;
+	padding: 0 10px;
+    transition: background-color 0.2s ease-out;
+	cursor: pointer;
+	flex-direction: row;
+    align-items: center;
+}
+.dropdown-display-container .checkbox-dropdown-item.hover{
+    background-color: rgba(53,149,255,0.54);
+}
+
+.dropdown-display-container .checkbox-dropdown-item span{
+	pointer-events: none;
+	margin-left: 6px;
+}
+
+.dropdown-display-container .checkbox-dropdown-item input{
+	pointer-events: none;
+	flex-grow: 0;
+	flex-shrink: 0;
+	font-size: 26px;
+}
+
+.dropdown-display-container .checkbox-dropdown-item.select-all-button{
+	text-align: center;
+	display: block;
+}

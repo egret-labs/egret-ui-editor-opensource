@@ -1,0 +1,43 @@
+{
+	// See https://go.microsoft.com/fwlink/?LinkId=733558
+	// for the documentation about the tasks.json format
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Kill Debug Renderer Process",
+			"type": "shell",
+			"command": "lsof -ti:9225 | xargs kill",
+			"windows": {
+				"command": ".\\scripts\\killdebug.bat"
+			},
+			"group": "test",
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared"
+			}
+		},
+		{
+			"type": "npm",
+			"script": "setup",
+			"problemMatcher": []
+		},
+		{
+			"type": "gulp",
+			"task": "tslint",
+			"label": "tslint 扫描",
+			"problemMatcher": [
+				"$tslint5"
+			]
+		},
+		{
+			"type": "npm",
+			"script": "watch",
+			"problemMatcher": []
+		},
+		{
+			"type": "npm",
+			"script": "package-mac",
+			"problemMatcher": []
+		}
+	]
+}

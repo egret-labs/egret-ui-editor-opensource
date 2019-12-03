@@ -1,0 +1,63 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.composite.leftplusbar.completed {
+    display: none;
+}
+
+.composite.leftplusbar.completed.active {
+    display: block;
+}
+
+.component-viewlet {
+    height: 100%;
+}
+
+.monaco-workbench .part.leftplusbar .monaco-action-bar .action-label.material {
+	mask-image: url('material_panel_light.svg');
+	background-repeat: no-repeat;
+}
+
+.monaco-workbench .part.leftplusbar .monaco-action-bar .action-label.component {
+	mask-image: url('components_panel_light.svg');
+	background-repeat: no-repeat;
+}
+
+.iconFallBack {
+	background-image: url("light/Custom.svg");
+	background-repeat: no-repeat;
+}
+
+.vs .iconFallBack {
+	background-image: url("light/Custom.svg");
+	background-repeat: no-repeat;
+}
+
+.componentPanelFolder {
+	background-image: url("light/folder.svg");
+	background-repeat: no-repeat;
+}
+
+.componentPanelFolder {
+	background-image: url("light/folder.svg");
+	background-repeat: no-repeat;
+}
+
+.expanded .componentPanelFolder {
+	background-image: url("light/folder_open.svg");
+	background-repeat: no-repeat;
+}
+
+.componentPanelSpanItem {
+    background-repeat: no-repeat;
+    background-position-x: 0%;
+    background-position-y: 50%;
+    background-size: 15px;
+}
+
+.classIcon {
+	background-image: url("light/classIcon.svg");
+	background-repeat: no-repeat;
+}

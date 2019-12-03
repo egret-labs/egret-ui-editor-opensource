@@ -1,0 +1,137 @@
+* {
+    font-family: "Microsoft YaHei", PingFangSC-Regular, Arial, Helvetica, sans-serif !important;
+    font-size: 12px;
+}
+
+html {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+body {
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    color: #A2A2A2;
+}
+
+#container {
+    height: 100%;
+    width: 100%;
+}
+
+.aboutPage {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-size: cover;
+}
+
+.aboutPage .eggs-container {   
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.aboutPage .eggs-container .eggs {
+    flex-wrap: wrap;
+    margin: 30px;
+    width: 300px;
+    word-wrap: break-word;
+    user-select: text;
+    font-size: 12px;
+}
+
+.aboutPage .top {
+    display: flex;
+    margin-top: 30px;
+}
+
+.aboutPage .log {
+    width: 80px;
+    height: 80px;
+}
+
+.aboutPage .titlePanel {
+    cursor: default;
+    align-self: center;
+    margin-left: 12px;
+}
+
+.aboutPage .seperate {
+    height: 2px;
+    width: 100%;
+    background-color: #161616;
+    margin-top: 30px;
+}
+
+.aboutPage .info {
+    margin-top: 30px;
+    margin-left: 24px;
+    margin-right: 24px;
+}
+
+.aboutPage .info .infoItem {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 4px;
+}
+
+.aboutPage .info .infoItem .infoItemNamePanel {
+    display: flex;
+    align-items: center;
+}
+
+.aboutPage .info .infoItemName {
+    cursor: default;
+    min-width: 60px;
+    text-align: center;
+    text-align-last: justify;
+    margin: 0px 12px;
+}
+
+.aboutPage .info .infoItemValue {
+    margin-left: 10px;
+    user-select: text;
+}
+
+.aboutPage .info .vline {
+    width: 1px;
+    background: #737373;
+    height: 12px;
+}
+
+.aboutPage .no-color a {
+    color: #A2A2A2;
+    text-decoration: none;
+}
+
+.aboutPage .no-color a:hover {
+    color: #A2A2A2;
+}
+
+.aboutPage .infoItem.linkItem a {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.aboutPage .infoItem.linkItem a:hover {
+    text-decoration: underline;
+}
+.aboutPage .copyRight{
+    cursor: default;
+    margin-top: 22px;
+    color: #606060;
+    font-size: 12px; 
+    text-align: center;
+}

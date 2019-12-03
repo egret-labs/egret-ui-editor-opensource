@@ -1,0 +1,70 @@
+.eui-black .egret-picker.pcr-app{
+	background: #3b3b3b;
+	box-shadow: 0px 15px 40px 0px rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+}	
+
+.pickr .pcr-button{
+	height: 22px;
+}
+
+.egret-picker.pcr-app .pcr-interaction .pcr-result{
+	color:#cbcbcb;
+	transition:none;
+	padding-left: 4px;
+    padding-right: 4px;
+	font-size: 12px;
+	height: 24px;
+    line-height: 24px;
+}
+
+.egret-picker.pcr-app .pcr-interaction .pcr-result::-webkit-input-placeholder{
+	color:#757575;
+}
+.eui-black .egret-picker.pcr-app .pcr-interaction .pcr-result{
+	background-color: #303030;
+	border: 1px solid #252525;
+	text-align: left;
+}
+
+.eui-black .egret-picker.pcr-app .pcr-interaction .pcr-result:focus{
+	outline: 1px solid rgba(14,99,156,1);
+	outline-offset: -1px;
+	opacity: 1 !important;
+}
+
+
+.egret-picker.pcr-app .pcr-interaction .pcr-type{
+	border: solid 1px rgba(255,255,255,0.2);
+    border-radius: 3px;
+	background: none;
+	height: 22px;
+    vertical-align: middle;
+    padding-top: initial;
+    padding-bottom: initial;
+}
+.egret-picker.pcr-app .pcr-interaction .pcr-clear,
+.egret-picker.pcr-app .pcr-interaction .pcr-save{
+	height: 22px;
+	min-height: 22px !important;
+	max-height: 22px !important;
+	line-height: 20px !important;
+	vertical-align: middle;
+    padding-top: initial !important;
+	padding-bottom: initial !important;
+	min-width: 60px !important;
+}
+
+.egret-picker.pcr-app .pcr-interaction .pcr-type.active{
+	border: solid 1px rgba(255,255,255,0.5) !important;
+    background-color: #303030;
+}
+
+.egret-picker.pcr-app .pcr-interaction .pcr-type.active{
+	border: solid 1px rgba(255,255,255,0.5) !important;
+    background-color: #303030;
+}
+
+/* .egret-picker.pcr-app .pcr-interaction .pcr-clear{
+	display: none !important;
+} */

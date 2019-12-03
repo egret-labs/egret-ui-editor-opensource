@@ -1,0 +1,196 @@
+
+.iconFallBack {
+	background-image: url("light/Custom.svg");
+	background-repeat: no-repeat;
+}
+
+.layerPanelSpanItem {
+	text-indent: 19px;
+	line-height: 22px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	flex-grow: 1;
+	box-sizing: border-box;
+}
+
+.layerPanelSpanItem.invisible {
+	opacity: 0.4;
+}
+
+.layerItemContainer{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	flex-wrap: nowrap;
+}
+.layerItemMask{
+    content: ' ';
+    position: absolute;
+    display: block;
+    /* background-color: #ff0000; */
+    width: 16px;
+    height: 100%;
+    top: 0;
+    left: -16px;
+}
+
+.layerItem{
+	/*flex: 1;*/
+	/*text-overflow: ellipsis;*/
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	flex-grow: 1;
+	margin-right: 10px;
+}
+
+.layerActionBar{
+	flex-shrink: 0;
+	line-height: 22px;
+	margin-right: 5px;
+	display: none;
+}
+
+.layerActionBar.shouldShow{
+	display: inline-flex;
+}
+
+.layerItemContainer:hover>.layerActionBar{
+	display: inline-flex;
+}
+/* actions */
+.layerBlockAction{
+	height: 15px;
+	width:15px;
+	/*background-position-y: 3px;*/
+	position: relative;
+    top: 2px;
+}
+
+.layerBlockAction {
+	background-image: url("light/layer_locked.svg");
+	background-repeat: no-repeat;
+}
+
+.layerBlockAction {
+	background-image: url("light/layer_locked.svg");
+	background-repeat: no-repeat;
+}
+
+.layerBlockAction.unblock {
+	background-image: url("light/block.svg");
+	background-repeat: no-repeat;
+}
+
+/**/
+.layerItemContainer:hover>.layerActionBar.monaco-action-bar .action-item > .icon.visibleAction{
+	display: inline-block;
+}
+.monaco-action-bar .action-item .icon.visibleAction{
+	height: 15px;
+	width:15px;
+	position: relative;
+    top: 2px;
+	display: none;
+	/*background-position-y: 3px;*/
+}
+
+.visibleAction.invisible{
+	opacity: 0.4;
+}
+
+.visibleAction {
+	background-image: url("light/layer_visible.svg");
+	background-repeat: no-repeat;
+}
+/**/
+.deleteAction{
+	height: 15px;
+	width:15px;
+	background-image: url("light/delete.svg");
+	background-repeat: no-repeat;
+}
+/**/
+.tsCopyAction{
+	height: 15px;
+	width:15px;
+	background-image: url("light/ts_copy.svg");
+	background-repeat: no-repeat;
+}
+
+.tsCopyAction {
+	background-image: url("light/ts_copy.svg");
+	background-repeat: no-repeat;
+}
+/**/
+.makeGroupAction{
+	height: 15px;
+	width:15px;
+	background-image: url("light/make_group.svg");
+	background-repeat: no-repeat;
+}
+
+/**/
+.makeUngroupAction{
+	height: 15px;
+	width:15px;
+	background-image: url("light/make_ungroup.svg");
+	background-repeat: no-repeat;
+}
+
+/**/
+.searchClearAction{
+	height: 16px;
+	width:16px;
+	background-size: 16px;
+}
+
+.searchClearAction {
+	background-image: url("light/close.svg");
+	background-repeat: no-repeat;
+}
+/**/
+.monaco-tree .monaco-tree-rows > .monaco-tree-row.has-children > .layerItemContainer.content:before {
+	left: -17px;
+}
+
+.layerPanelHeaderActionBar{
+	justify-content: center !important;
+	border-bottom: 1px solid rgb(64, 64, 64);
+}
+
+.layerPanelHeaderActionBar .action-item{
+	width: 15px;
+	height: 15px;
+	margin: 5px;
+}
+
+.layerPanelHeaderActionBar .action-item .action-label{
+	width: 100%;
+	height: 100%;
+	min-width: 15px;
+	min-height: 15px;
+	background-repeat: no-repeat;
+}
+
+/*图层面板搜索输入框容器的样式*/
+.euiLayerSearchContainer{
+	top: 2px;
+	position: relative;
+	margin-left: 5px;
+	margin-right: 5px;
+	width: 100%;
+	height: 35px;
+	border-top: 1px solid rgb(64,64,64);
+}
+
+.ant-input-abc input{
+	background-color: transparent;
+	color: aliceblue
+}
+
+
+.layerview.closesearch{
+	background-image: url('./closebtn.svg');
+}

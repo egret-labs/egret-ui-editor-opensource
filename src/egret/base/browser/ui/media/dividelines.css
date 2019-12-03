@@ -1,0 +1,25 @@
+.separator-label {
+    align-items: center;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.separator-label > .line {
+    width: 100%;
+}
+
+.separator-label > .line {
+    border-top: 1px dashed rgba(255,255,255,0.3);
+}
+
+.separator-label > .tagText {
+    font-size: 12px;
+    padding-left: 5px;
+    padding-right: 5px;
+    word-break: break-all;
+    white-space: nowrap;
+    cursor: default;
+}
+
+
+

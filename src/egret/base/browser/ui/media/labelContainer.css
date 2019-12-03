@@ -1,0 +1,16 @@
+.labelContainer{
+	margin-top: 7px;
+	margin-right: 15px;
+	margin-left: 5px;
+	margin-bottom: 7px;
+	display: flex;
+    align-items: center;
+}
+
+.labelContainer.inline{
+	display: inline-block;
+}
+
+.labelContainer.hidden,.labelContainer.inline.hidden{
+	display: none;
+}

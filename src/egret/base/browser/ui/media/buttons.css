@@ -1,0 +1,154 @@
+.egret-button.system.mac{
+	min-width:  79px !important;
+	min-height: 21px !important;
+	background-image: linear-gradient(0deg,#fff 0%,#fff 100%) !important;
+	color:#272727 !important;
+	text-align: center;
+	line-height: 19px !important;
+	font-size: 13px !important;
+	vertical-align: middle !important;
+	pointer-events: auto !important;
+	display: inline-block !important;
+	border: 1px solid #aeb0b1 !important;
+	border-radius: 4px !important;
+	flex-grow: 0 !important;
+	flex-shrink: 0 !important;
+	padding-left: 10px !important;
+	padding-right: 10px !important;
+	padding-bottom: 0px !important;
+	padding-top: 0px !important;
+	cursor: default !important;
+	position: relative !important;
+}
+.egret-button.system.mac.default{
+	background-image: linear-gradient(0deg,#0080fa 0%,#5bb1f6 100%) !important;
+	color:#ffffff !important;
+	border: 1px solid #0088f6 !important;
+}
+
+.egret-button.system.mac.inactive,
+.egret-button.system.mac.default.inactive,
+.egret-button.system.mac.disable,
+.egret-button.system.mac.default.disable
+{
+	background-image: linear-gradient(0deg,#fff 0%,#fff 100%) !important;
+	color:#272727 !important;
+	border: 1px solid #aeb0b1 !important;
+}
+.egret-button.system.mac.disable,
+.egret-button.system.mac.default.disable{
+	opacity: 0.6 !important;
+	pointer-events: none !important;
+}
+
+.egret-button.system.mac:active,
+.egret-button.system.mac.default:active{
+	background-image: linear-gradient(0deg,#0067df 0%,#3596f8 100%) !important;
+	color:#deedf8 !important;
+	border: 1px solid #0057e6 !important;
+}
+
+
+.egret-button.system.win{
+	min-width: 80px !important;
+    min-height: 26px !important;
+    color: #d6d6d6 !important;
+    background-color: rgba(255,255,255,0) !important;
+    text-align: center !important;
+    line-height: 24px !important;
+    font-size: 13px !important;
+    vertical-align: middle !important;
+    pointer-events: auto !important;
+    display: inline-block !important;
+    flex-grow: 0 !important;
+    flex-shrink: 0 !important;
+    padding-left: 10px !important;
+	padding-right: 10px !important;
+	padding-bottom: 0px !important;
+	padding-top: 0px !important;
+    cursor: default !important;
+    position: relative !important;
+    border-radius: 2px !important;
+    border: solid 1px #979797 !important;
+}
+.egret-button.system.win:hover{
+	background-color: rgba(255,255,255,0.15) !important;
+}
+.egret-button.system.win:active{
+	background-color: rgba(255,255,255,0.05) !important;
+}
+.egret-button.system.win.default{
+	color: #161616 !important;
+    border: 1px solid #d6d6d6 !important;
+    background-color: #d6d6d6 !important;
+}
+.egret-button.system.win.default:hover{
+	border: 1px solid #eeeeee !important;
+    background-color: #eeeeee !important;
+}
+.egret-button.system.win.default:active{
+	border: 1px solid #e0e0e0 !important;
+    background-color: #e0e0e0 !important;
+}
+
+.egret-button.system.win.inactive,
+.egret-button.system.win.default.inactive{
+	background-color: rgba(255,255,255,0) !important;
+	color: #b6b6b6 !important;
+	border: solid 1px #878787 !important;
+}
+.egret-button.system.win.inactive:hover,
+.egret-button.system.win.default.inactive:hover{
+	background-color: rgba(255,255,255,0.15) !important;
+}
+.egret-button.system.win.inactive:active,
+.egret-button.system.win.default.inactive:active{
+	background-color: rgba(255,255,255,0.05) !important;
+}
+
+.egret-button.system.win.disable,
+.egret-button.system.win.default.disable{
+	opacity: 0.6 !important;
+	pointer-events: none !important;
+}
+
+
+
+.egret-button.icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    position: relative;
+    flex-shrink: 0;
+    background-repeat: no-repeat;
+    background-size: 15px 15px;
+    background-position: center;
+    border-radius: 2px;
+	cursor: pointer;
+}
+.egret-button.icon:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+.egret-button.icon:active {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.egret-button.icon.selected {
+	background-color: rgba(0, 0, 0, 0.4);
+	border: solid 1px rgba(255,255,255,0.4);
+}
+.egret-button.icon.selected:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+.egret-button.icon.selected:active {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.egret-button.icon.label {
+	width: initial;
+	padding-left: 6px;
+	padding-right: 6px;
+	display: flex;
+	align-items: center;
+	border-radius: 3px;
+}

@@ -1,0 +1,30 @@
+.egret-tabbar{
+	display: flex;
+}
+
+.egret-tabbar .egret-button.icon.label {
+	border: solid 1px rgba(255,255,255,0.2);
+	border-radius: 3px;
+}
+.egret-tabbar .egret-button.icon.label.begin {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+	border-right: solid 1px rgba(255,255,255,0.1);
+}
+.egret-tabbar .egret-button.icon.label.middle {
+	border-radius: 0;
+	margin-left: -1px;
+	border-right: solid 1px rgba(255,255,255,0.1);
+}
+.egret-tabbar .egret-button.icon.label.end {
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	margin-left: -1px;
+}
+
+.egret-tabbar .egret-button.icon.label.selected,
+.egret-tabbar .egret-button.icon.label.begin.selected,
+.egret-tabbar .egret-button.icon.label.middle.selected  {
+	border: solid 1px rgba(255,255,255,0.5) !important;
+	background-color: #303030;
+}

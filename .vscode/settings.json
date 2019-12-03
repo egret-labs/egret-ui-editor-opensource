@@ -1,0 +1,15 @@
+{
+	"typescript.tsdk": "node_modules/typescript/lib",
+	"editor.insertSpaces": false,
+	"editor.detectIndentation": false,
+	"todo-tree.flat": true,
+	"todo-tree.expanded": true,
+	"files.hotExit": "off",
+	"eslint.autoFixOnSave": true,
+	"eslint.validate": [
+        {
+            "language": "typescript",
+            "autoFix": true
+        },
+    ],
+}

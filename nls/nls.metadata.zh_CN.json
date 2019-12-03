@@ -1,0 +1,1846 @@
+{
+	"aboutPanel.render.address": {
+		"s": "Address",
+		"t": "地址"
+	},
+	"aboutPanel.render.address.detail": {
+		"s": "Chaoyang District, Beijing Wangjing Road on the 9th Ye Qing Building D Block 12",
+		"t": "北京市朝阳区望京北路9号叶青大厦D座12层"
+	},
+	"aboutPanel.render.bbs": {
+		"s": "Community",
+		"t": "社区"
+	},
+	"aboutPanel.render.bd": {
+		"s": "Business",
+		"t": "商务"
+	},
+	"aboutPanel.render.qq": {
+		"s": "QQ Group",
+		"t": "QQ群"
+	},
+	"aboutPanel.render.suport": {
+		"s": "Tech-Support",
+		"t": "技术支持"
+	},
+	"aboutPanel.render.tel": {
+		"s": "Tel",
+		"t": "电话"
+	},
+	"aboutPanel.render.websit": {
+		"s": "Official Website",
+		"t": "官网"
+	},
+	"alert.button.cancel": {
+		"s": "Cancel",
+		"t": "取消"
+	},
+	"alert.button.clear": {
+		"s": "Clear",
+		"t": "清除"
+	},
+	"alert.button.confirm": {
+		"s": "Confirm",
+		"t": "确认"
+	},
+	"alert.button.continue": {
+		"s": "Continue",
+		"t": "继续"
+	},
+	"alert.button.doNotSave": {
+		"s": "Don't Save",
+		"t": "不保存"
+	},
+	"alert.button.ok": {
+		"s": "Ok",
+		"t": "好的"
+	},
+	"alert.button.open": {
+		"s": "Open",
+		"t": "打开"
+	},
+	"alert.button.reset": {
+		"s": "Reset",
+		"t": "还原"
+	},
+	"alert.button.saveAll": {
+		"s": "Save All",
+		"t": "保存全部"
+	},
+	"alert.button.saveAndContinue": {
+		"s": "Save And Continue",
+		"t": "保存并继续"
+	},
+	"alignPart.doRender.align": {
+		"s": "Align",
+		"t": "对齐"
+	},
+	"alignView.title": {
+		"s": "Align",
+		"t": "对齐"
+	},
+	"allPropertyPanel.getRestrictByProperty.tips": {
+		"s": "Please enter numeric type.",
+		"t": "请输入数值类型"
+	},
+	"allPropertyPanel.updateDisplay.editInCode": {
+		"s": "< Edit in code >",
+		"t": "在代码中编辑"
+	},
+	"aouomarkLayer.initView.desc": {
+		"s": "Move between containers - Alt",
+		"t": "容器间移动 - Alt"
+	},
+	"assetAdapterEUI.doReload.loadError": {
+		"s": "Resource configuration file loading error",
+		"t": "资源配置文件加载错误"
+	},
+	"assetAdapterEUI.doReload.loadResError": {
+		"s": "The RES module could not be found in editor runtime",
+		"t": "在编辑器运行时中无法找到RES模块"
+	},
+	"assetAdapterEUI.doReload.runtimeError": {
+		"s": "Runtime Error!",
+		"t": "编辑器运行时错误！"
+	},
+	"assetAdapterEUI.reload.preConfig": {
+		"s": "You need to set the runtime before loading the resource configuration file.",
+		"t": "需要先设置运行时才能加载资源配置文件"
+	},
+	"assets.search.prompt": {
+		"s": "Search Assets",
+		"t": "搜索资源"
+	},
+	"assetsView.title": {
+		"s": "Assets",
+		"t": "资源库"
+	},
+	"boundPart.render.anchorX": {
+		"s": "Anchor X:",
+		"t": "X锚点:"
+	},
+	"boundPart.render.anchorY": {
+		"s": "Anchor Y:",
+		"t": "Y锚点:"
+	},
+	"boundPart.render.height": {
+		"s": "Height:",
+		"t": "高:"
+	},
+	"boundPart.render.scaleX": {
+		"s": "Scale X:",
+		"t": "X缩放:"
+	},
+	"boundPart.render.scaleY": {
+		"s": "Scale Y:",
+		"t": "Y缩放:"
+	},
+	"boundPart.render.width": {
+		"s": "Width:",
+		"t": "宽:"
+	},
+	"button": {
+		"s": "Button",
+		"t": "Button"
+	},
+	"buttonSkinGroup.render.clickDown": {
+		"s": "Down:",
+		"t": "按下:"
+	},
+	"buttonSkinGroup.render.clickDownResource": {
+		"s": "Asset of Down",
+		"t": "按下资源"
+	},
+	"buttonSkinGroup.render.disabledResource": {
+		"s": "Asset of Disable",
+		"t": "禁用资源"
+	},
+	"buttonSkinGroup.render.disabledSkin": {
+		"s": "Disable:",
+		"t": "禁用:"
+	},
+	"buttonSkinGroup.render.normal": {
+		"s": "Normal:",
+		"t": "正常:"
+	},
+	"buttonSkinGroup.render.normalResource": {
+		"s": "Asset of Normal",
+		"t": "正常资源"
+	},
+	"buttonSkinGroup.render.skinTemplate": {
+		"s": "Skin Shortcut Template",
+		"t": "皮肤快捷模板"
+	},
+	"changes.will.lost": {
+		"s": "Your changes will be lost if you don't save them.",
+		"t": "如果不保存，你所做的所有修改将丢失。"
+	},
+	"checkBox": {
+		"s": "CheckBox",
+		"t": "CheckBox"
+	},
+	"colorPickerPanel.contructor.title": {
+		"s": "Color Picker",
+		"t": "颜色拾取"
+	},
+	"commonGroup.idCheckTooltipCallBack.idNotCN": {
+		"s": "ID cannot be Chinese.",
+		"t": "ID 不能为中文"
+	},
+	"commonGroup.idCheckTooltipCallBack.isExistID": {
+		"s": "The ID is already exist in current skin.",
+		"t": "当前皮肤已经存在该ID"
+	},
+	"commonGroup.render.alpha": {
+		"s": "Alpha:",
+		"t": "透明度:"
+	},
+	"commonGroup.render.className": {
+		"s": "Class Name:",
+		"t": "类名:"
+	},
+	"commonGroup.render.enable": {
+		"s": "Enable:",
+		"t": "启用:"
+	},
+	"commonGroup.render.label": {
+		"s": "Label:",
+		"t": "标签:"
+	},
+	"commonGroup.render.status": {
+		"s": "Status:",
+		"t": "状态:"
+	},
+	"commonGroup.render.touchChildren": {
+		"s": "Touch Children:",
+		"t": "子项触碰:"
+	},
+	"commonGroup.render.touchEnabled": {
+		"s": "Touch Enable:",
+		"t": "自身触碰:"
+	},
+	"component.search.prompt": {
+		"s": "Search Components",
+		"t": "搜索组件"
+	},
+	"componentSourceDataCreater.getRoot.component": {
+		"s": "Component",
+		"t": "控件"
+	},
+	"componentSourceDataCreater.getRoot.container": {
+		"s": "Container",
+		"t": "布局"
+	},
+	"componentSourceDataCreater.getRoot.custom": {
+		"s": "Custom",
+		"t": "自定义"
+	},
+	"componentView.title": {
+		"s": "Component",
+		"t": "组件"
+	},
+	"constraintImage.makeContent.bottom": {
+		"s": "Bottom:",
+		"t": "下:"
+	},
+	"constraintImage.makeContent.horizontalCenter": {
+		"s": "Horizontal Center:",
+		"t": "水平居中:"
+	},
+	"constraintImage.makeContent.left": {
+		"s": "Left:",
+		"t": "左:"
+	},
+	"constraintImage.makeContent.right": {
+		"s": "Right:",
+		"t": "右:"
+	},
+	"constraintImage.makeContent.up": {
+		"s": "Top:",
+		"t": "上:"
+	},
+	"constraintImage.makeContent.veticallyCenter": {
+		"s": "Vetically Center:",
+		"t": "垂直居中:"
+	},
+	"createStatePanel.btnClick_handler.duplicateName": {
+		"s": "Duplicate status name \"{0}\"",
+		"t": "状态名已存在"
+	},
+	"createStatePanel.btnClick_handler.statusNameCantNull": {
+		"s": "The status name must not be empty.",
+		"t": "状态名不得为空"
+	},
+	"createStatePanel.constructor.allStatus": {
+		"s": "[ All Status ]",
+		"t": "[所有状态]"
+	},
+	"createStatePanel.constructor.title": {
+		"s": "Create Status",
+		"t": "创建状态"
+	},
+	"createStatePanel.render.blankStatus": {
+		"s": "Blank Status",
+		"t": "空白状态"
+	},
+	"createStatePanel.render.copy": {
+		"s": "Copy of the following status",
+		"t": "以下状态的副本"
+	},
+	"createStatePanel.render.create": {
+		"s": "Create as:",
+		"t": "创建为:"
+	},
+	"createStatePanel.render.name": {
+		"s": "Name:",
+		"t": "名称:"
+	},
+	"createStatePanel.render.setStartStatus": {
+		"s": "Set to start Status",
+		"t": "设置为起始状态"
+	},
+	"createStatePanel.render.startStatus": {
+		"s": "Start Status:",
+		"t": "初始状态:"
+	},
+	"deleteFileOperation.run.canResetThem": {
+		"s": "You can restore from the Trash.",
+		"t": "你可以从回收站中恢复他们"
+	},
+	"deleteFileOperation.run.confirmDelete": {
+		"s": "Are you sure you want to delete the following {0} files/directories and their contents?",
+		"t": "确认要删除如下的{0}个文件么?"
+	},
+	"deleteFileOperation.run.confirmDeleteAndContent": {
+		"s": "Are you sure you want to delete the following {0} directories and their contents?",
+		"t": "确认要删除文件夹{0}以及他的所有内容么?"
+	},
+	"deleteFileOperation.run.confirmDeleteAndName": {
+		"s": "Are you sure you want to delete the following {0} files?",
+		"t": "确认要删除文件{0}么?"
+	},
+	"deleteFileOperation.run.haveNotSave": {
+		"s": "You are deleting files with unsaved changes. Do you want to continue?",
+		"t": "你要删除文件中包含未保存的文件，是否要继续删除？"
+	},
+	"deleteFileOperation.run.haveOneNotSave": {
+		"s": "You are deleting a folder with unsaved changes in 1 file. Do you want to continue?",
+		"t": "你要删除的文件夹中包含一个未保存的文件，是否要继续删除？"
+	},
+	"deleteFileOperation.run.haveSomeNotSave": {
+		"s": "You are deleting a folder with unsaved changes in {0} files. Do you want to continue?",
+		"t": "你要删除的文件夹中包含{0}个未保存的文件，是否要继续删除？"
+	},
+	"deleteFileOperation.run.know": {
+		"s": "I know",
+		"t": "知道了"
+	},
+	"deleteFileOperation.run.noPromise": {
+		"s": "Failed to delete the file, you may not have permission to operate the directory currently.",
+		"t": "删除文件失败，你当前可能没有对该目录的操作权限"
+	},
+	"deleteFileOperation.run.notSave": {
+		"s": "You are deleting a file with unsaved changes. Do you want to continue?",
+		"t": "你要删除的文件未保存，是否要继续删除？"
+	},
+	"editor.contextMenu.close": {
+		"s": "Close",
+		"t": "关闭"
+	},
+	"editor.contextMenu.closeAll": {
+		"s": "Close All",
+		"t": "全部关闭"
+	},
+	"editor.contextMenu.closeAllSaved": {
+		"s": "Close Saved",
+		"t": "关闭已保存"
+	},
+	"editor.contextMenu.closeOthers": {
+		"s": "Close Others",
+		"t": "关闭其他"
+	},
+	"editor.contextMenu.closeRight": {
+		"s": "Close to the Right",
+		"t": "关闭右侧"
+	},
+	"editor.contextMenu.saveError": {
+		"s": "Save the changes made to file {0} fail.",
+		"t": "保存修改到文件{0}失败。"
+	},
+	"editor.contextMenu.saveErrors": {
+		"s": "Save the changes made to the following {0} files fail.",
+		"t": "保存修改到如下文件{0}失败。"
+	},
+	"editorPart.doOpenEidtor.errorTips": {
+		"s": "Unable to get registered editor description via input",
+		"t": "无法通过input 得到注册的编辑器描述"
+	},
+	"egretChecker.checkProject.euiProjectError": {
+		"s": "This is not a valid Egret EUI project",
+		"t": "这不是一个有效的 Egret EUI 项目"
+	},
+	"egretSDK.versions.envError": {
+		"s": "Failed to get the engine list, try to restore the engine environment variable to ensure that the 'egret verions' command can be executed normally.",
+		"t": "获取引擎列表失败，请尝试恢复引擎环境变量以保证 \\"
+	},
+	"engineInfo.NotFound": {
+		"s": "Please install Egret Launcher",
+		"t": "请安装 Egret Launcher"
+	},
+	"engineInfo.OperationFailed": {
+		"s": "{0} failed: {1}",
+		"t": "{0}失败: {1}"
+	},
+	"engineInfo.ToEgretWebsite": {
+		"s": "Go to download at official website：{0}",
+		"t": "前往官网下载：{0}"
+	},
+	"engineInfo.VersionNotMatch": {
+		"s": "Version of Egret Launcher should not be lower than {0}",
+		"t": "Egret Launcher 的版本不能低于 {0}"
+	},
+	"engineInfo.defaultOperation": {
+		"s": "Operation",
+		"t": "操作"
+	},
+	"engineInfo.error": {
+		"s": "Unable to find the {0} version of the Egret engine. Please re-do this after installing or modifying the project engine version.",
+		"t": "无法找到{0}版本Egret引擎，请安装或修改项目引擎版本后重新执行此操作"
+	},
+	"engineInfo.innerError": {
+		"s": "Inner error",
+		"t": "内部错误"
+	},
+	"engineInfo.login": {
+		"s": "Login",
+		"t": "登录"
+	},
+	"exml.editor.adaptContent": {
+		"s": "Fit Content",
+		"t": "适应内容"
+	},
+	"exml.editor.adaptivewindow": {
+		"s": "Fit Screen",
+		"t": "适合窗口"
+	},
+	"exml.editor.design": {
+		"s": "Design",
+		"t": "设计"
+	},
+	"exml.editor.noDevice": {
+		"s": "No Device",
+		"t": "无设备"
+	},
+	"exml.editor.preview": {
+		"s": "Preview",
+		"t": "预览"
+	},
+	"exmlComponentPanel.constructor.title": {
+		"s": "Select Host Component",
+		"t": "选择主机组件"
+	},
+	"exmlFileEditor.initCommands.fitScreen": {
+		"s": "Fit Screen",
+		"t": "按屏幕大小显示"
+	},
+	"exmlFileEditor.initCommands.fitScreenDes": {
+		"s": "Display current Exml by screen size",
+		"t": "按屏幕大小显示当前 Exml"
+	},
+	"exmlFileEditor.initCommands.freshEidtor": {
+		"s": "Refresh Exml editor",
+		"t": "刷新 Exml 编辑器"
+	},
+	"exmlFileEditor.initCommands.freshEidtorDes": {
+		"s": "Refresh the currently active Exml editor",
+		"t": "刷新当前激活的 Exml 编辑器"
+	},
+	"exmlFileEditor.initCommands.group": {
+		"s": "EUI Group",
+		"t": "EUI 打组"
+	},
+	"exmlFileEditor.initCommands.groupDes": {
+		"s": "Group the selected component in current Exml",
+		"t": "将 Exml 中选中的控件进行打组"
+	},
+	"exmlFileEditor.initCommands.noScale": {
+		"s": "No Scale",
+		"t": "100%显示"
+	},
+	"exmlFileEditor.initCommands.noScaleDes": {
+		"s": "100% display current Exml",
+		"t": "100%显示当前 Exml"
+	},
+	"exmlFileEditor.initCommands.ungroup": {
+		"s": "EUI Ungroup",
+		"t": "EUI 解组"
+	},
+	"exmlFileEditor.initCommands.ungroupDes": {
+		"s": "Unpack the selected group in current Exml",
+		"t": "将 Exml 中选中的组解开"
+	},
+	"exmlFileEditor.initCommands.zoomIn": {
+		"s": "Zoom in Exml editor",
+		"t": "放大 Exml 编辑器"
+	},
+	"exmlFileEditor.initCommands.zoomInDes": {
+		"s": "Zoom in on the currently active Exml editor",
+		"t": "放大当前激活的 Exml 编辑器"
+	},
+	"exmlFileEditor.initCommands.zoomOut": {
+		"s": "Zoom out Exml editor",
+		"t": "缩小 Exml 编辑器"
+	},
+	"exmlFileEditor.initCommands.zoomOutDes": {
+		"s": "Zoom put on the currently active Exml editor",
+		"t": "缩小当前激活的 Exml 编辑器"
+	},
+	"exmlView.initContextMenuGeneral.convertToInner": {
+		"s": "Convert to Inline Skin",
+		"t": "转换皮肤为内嵌皮肤"
+	},
+	"exmlView.initContextMenuGeneral.copy": {
+		"s": "Copy",
+		"t": "复制"
+	},
+	"exmlView.initContextMenuGeneral.copyProperty": {
+		"s": "Copy Property",
+		"t": "复制属性值"
+	},
+	"exmlView.initContextMenuGeneral.cut": {
+		"s": "Cut",
+		"t": "剪贴"
+	},
+	"exmlView.initContextMenuGeneral.group": {
+		"s": "Group",
+		"t": "合组"
+	},
+	"exmlView.initContextMenuGeneral.paste": {
+		"s": "Paste",
+		"t": "粘贴"
+	},
+	"exmlView.initContextMenuGeneral.pastePos": {
+		"s": "Paste Pos",
+		"t": "粘贴位置"
+	},
+	"exmlView.initContextMenuGeneral.pasteRestrict": {
+		"s": "Paste Restrict",
+		"t": "粘贴约束"
+	},
+	"exmlView.initContextMenuGeneral.pasteSize": {
+		"s": "Paste Size",
+		"t": "粘贴大小"
+	},
+	"exmlView.initContextMenuGeneral.upgroup": {
+		"s": "Ungroup",
+		"t": "解组"
+	},
+	"explorerView.createViewer.fileResourceManager": {
+		"s": "File Explorer",
+		"t": "文件资源管理器"
+	},
+	"explorerView.resourceManager": {
+		"s": "Explorer",
+		"t": "资源管理器"
+	},
+	"fileController.initContextMenuGeneral.copy": {
+		"s": "Copy",
+		"t": "复制"
+	},
+	"fileController.initContextMenuGeneral.copyPath": {
+		"s": "Copy Path",
+		"t": "复制路径"
+	},
+	"fileController.initContextMenuGeneral.createFolder": {
+		"s": "Create Folder",
+		"t": "新建文件夹"
+	},
+	"fileController.initContextMenuGeneral.createSkin": {
+		"s": "Create Skin",
+		"t": "新建皮肤"
+	},
+	"fileController.initContextMenuGeneral.openInFinder": {
+		"s": "Reveal in Finder",
+		"t": "在 Finder 中打开"
+	},
+	"fileController.initContextMenuGeneral.openInResourceManager": {
+		"s": "Reveal in System Explorer",
+		"t": "在资源管理器中打开"
+	},
+	"fileController.initContextMenuGeneral.paste": {
+		"s": "Paste",
+		"t": "粘贴"
+	},
+	"fileController.initContextMenuGeneral.rename": {
+		"s": "Rename",
+		"t": "重命名"
+	},
+	"fileDragAndDrop2.handleExplorerDrop.confirmContinueMove": {
+		"s": "You are moving a file with unsaved changes. Do you want to continue?",
+		"t": "你要移动的文件未保存，是否要继续移动？"
+	},
+	"fileDragAndDrop2.handleExplorerDrop.confirmModifyMulitDir": {
+		"s": "Are you sure you want to modify the order of multiple root directories in your workspace?",
+		"t": "确定要修改工作空间中多个根目录的顺序么？"
+	},
+	"fileDragAndDrop2.handleExplorerDrop.confirmMoveDir": {
+		"s": "Are you sure you want to move the following {0} directories and their contents？",
+		"t": "确定要修改工作空间中根目录{0}的顺序么？?"
+	},
+	"fileDragAndDrop2.handleExplorerDrop.confirmMoveFile": {
+		"s": "Are you sure you want to move the file {0} ？",
+		"t": "确定要移动文件{0}么?"
+	},
+	"fileDragAndDrop2.handleExplorerDrop.confirmMoveSome": {
+		"s": "Are you sure you want to move the following {0} files?",
+		"t": "确定要移动如下的{0}个文件么?"
+	},
+	"fileDragAndDrop2.handleExplorerDrop.moveHaveSomeFile": {
+		"s": "You are moving a folder with unsaved changes in {0} files. Do you want to continue?",
+		"t": "你要移动的文件夹中包含{0}个未保存的文件，是否要继续删除？"
+	},
+	"fileDragAndDrop2.handleExplorerDrop.moveNotSave": {
+		"s": "You are moving a folder with unsaved changes in 1 file. Do you want to continue?",
+		"t": "你要移动的文件夹中包含一个未保存的文件，是否要继续删除？"
+	},
+	"fileDragAndDrop2.handleExplorerDrop.moveNotSaveAndContinue": {
+		"s": "You are moving files with unsaved changes. Do you want to continue?",
+		"t": "你要移动的文件中包含未保存的文件，是否要继续删除？"
+	},
+	"fileService.checkFile.isDirectory": {
+		"s": "The file to be changed is a folder",
+		"t": "要更改的文件是文件夹"
+	},
+	"fileService.checkFile.isReadonly": {
+		"s": "Read-only files are not writable",
+		"t": "只读文件不可写"
+	},
+	"fileService.checkFile.pathExistAndIsFile": {
+		"s": "The {0} path already exists and is not a folder.",
+		"t": "{0} 路径已存在并且不是一个文件夹。"
+	},
+	"fileService.createFile.exist": {
+		"s": "{0} file already exists and cannot be created.",
+		"t": "{0} 文件已存在，无法创建"
+	},
+	"fileService.del.deleteError": {
+		"s": "Delete {0} error",
+		"t": "删除 {0} 错误"
+	},
+	"fileService.doMoveOrCopyFile.existNoMoveOrCopy": {
+		"s": "The target path already exists and cannot be moved or copied",
+		"t": "目标路径已存在，无法移动或复制。"
+	},
+	"fileService.doMoveOrCopyFile.noMoveOrCopyToParentDirectory": {
+		"s": "Unable to move or copy to replace its parent folder",
+		"t": "无法移动或复制替换其父级文件夹"
+	},
+	"fileService.rmRecursive.cantDeleteDirectory": {
+		"s": "Unable to delete root directory",
+		"t": "无法删除根目录"
+	},
+	"focusablePartCommandHelper.registerCommand.blank": {
+		"s": "Registration operation command must not be empty.",
+		"t": "注册的操作 command 不得为空"
+	},
+	"focusablePartCommandHelper.registerCommand.repeat": {
+		"s": "Registration operation command: {0} repeat",
+		"t": "注册的操作 command: {0} 重复"
+	},
+	"frontPart.doRender.rank": {
+		"s": "Rank",
+		"t": "排列"
+	},
+	"getConfirmMessage.hiddenOne": {
+		"s": "...hidden display of 1 file",
+		"t": "...已隐藏 1 个文件的显示"
+	},
+	"getConfirmMessage.hiddenSome": {
+		"s": "...hidden display of {0} files",
+		"t": "...已隐藏{0}个文件的显示"
+	},
+	"group": {
+		"s": "Group",
+		"t": "Group"
+	},
+	"innerWindow.title": {
+		"s": "Title",
+		"t": "标题"
+	},
+	"inputRegistry.registerFileInput.error": {
+		"s": "Duplicate registration of input stream with file type {0}.",
+		"t": "已经注册了文件类型为{0}的输入流"
+	},
+	"inputSelect.render.notSelectEmpty": {
+		"s": "No related items found",
+		"t": "没有找到相关项"
+	},
+	"ipcseriver.cp.message_handler": {
+		"s": "Method {0} was not found in the child process",
+		"t": "方法 {0} 在子进程中没有找到"
+	},
+	"keybindPanel.constructor.title": {
+		"s": "Shortcut Key Settings",
+		"t": "快捷键设置"
+	},
+	"keybindingPanel.checkError.keyRepeat": {
+		"s": "Shortcut key Duplicate",
+		"t": "快捷键重复"
+	},
+	"keybindingPanel.confirmClick_handler.configError": {
+		"s": "The shortcut key configuration is incorrect. Please solve the red prompt error and click OK.",
+		"t": "快捷键配置错误，请解决红色提示的错误之后再点击确认。"
+	},
+	"keybindingPanel.create.keyDown": {
+		"s": "Key Down",
+		"t": "按下"
+	},
+	"keybindingPanel.create.keyUp": {
+		"s": "Key Up",
+		"t": "松起"
+	},
+	"label": {
+		"s": "Label",
+		"t": "Label"
+	},
+	"labelGroup.render.text": {
+		"s": "text",
+		"t": "文本"
+	},
+	"layerView.handleOperation.groupNodes": {
+		"s": "Group",
+		"t": "合组"
+	},
+	"layerView.handleOperation.removeSelectedNodes": {
+		"s": "Delete Layer",
+		"t": "删除层"
+	},
+	"layerView.handleOperation.searchNodes": {
+		"s": "Search layers",
+		"t": "查找图层"
+	},
+	"layerView.handleOperation.tsCopyAction": {
+		"s": "Copy definition",
+		"t": "复制定义"
+	},
+	"layerView.handleOperation.unGroupNodes": {
+		"s": "Ungroup",
+		"t": "解组"
+	},
+	"layerView.title": {
+		"s": "Layer",
+		"t": "图层"
+	},
+	"layout.align": {
+		"s": "Align",
+		"t": "对齐"
+	},
+	"layout.align.horizontal": {
+		"s": "Horizontal:",
+		"t": "水平:"
+	},
+	"layout.align.vertical": {
+		"s": "Vertical:",
+		"t": "垂直:"
+	},
+	"layout.alignBoth": {
+		"s": "Endpoint Alignment",
+		"t": "两端对齐"
+	},
+	"layout.alignBoth.column": {
+		"s": "Column Alignment:",
+		"t": "列两端:"
+	},
+	"layout.alignBoth.row": {
+		"s": "Row Alignment:",
+		"t": "行两端:"
+	},
+	"layout.column": {
+		"s": "Column",
+		"t": "列"
+	},
+	"layout.column.columnWidth": {
+		"s": "Column Width:",
+		"t": "列宽:"
+	},
+	"layout.column.numColumn": {
+		"s": "Column Number:",
+		"t": "列数:"
+	},
+	"layout.direction": {
+		"s": "Direction",
+		"t": "方向"
+	},
+	"layout.direction.direction": {
+		"s": "Direction:",
+		"t": "方向:"
+	},
+	"layout.gap": {
+		"s": "Gap",
+		"t": "间隔"
+	},
+	"layout.gap.hgap": {
+		"s": "HGap:",
+		"t": "水平:"
+	},
+	"layout.gap.vgap": {
+		"s": "VGap:",
+		"t": "垂直:"
+	},
+	"layout.padding": {
+		"s": "Padding",
+		"t": "内边距"
+	},
+	"layout.padding.bottom": {
+		"s": "Down:",
+		"t": "下:"
+	},
+	"layout.padding.left": {
+		"s": "Left:",
+		"t": "左:"
+	},
+	"layout.padding.right": {
+		"s": "Right:",
+		"t": "右:"
+	},
+	"layout.padding.top": {
+		"s": "Top:",
+		"t": "上:"
+	},
+	"layout.row": {
+		"s": "行",
+		"t": "行"
+	},
+	"layout.row.numberRow": {
+		"s": "Row Number:",
+		"t": "行数:"
+	},
+	"layout.row.rowHeight": {
+		"s": "Row Height:",
+		"t": "行高:"
+	},
+	"login.content": {
+		"s": "Please log in in Egret Launcher",
+		"t": "请通过 Egret Launcher 进行登录"
+	},
+	"login.title": {
+		"s": "Please wait...",
+		"t": "请稍后..."
+	},
+	"menus.getPreferencesMenu.euiConfigure": {
+		"s": "EUI Project Setting(&&P)",
+		"t": "EUI 项目设置(&&P)"
+	},
+	"menus.getPreferencesMenu.preference": {
+		"s": "Preference(&&P)",
+		"t": "首选项(&&P)"
+	},
+	"menus.getPreferencesMenu.shortcut": {
+		"s": "Shortcut key settings(&&K)",
+		"t": "快捷键设置(&&K)"
+	},
+	"menus.install.editMenu": {
+		"s": "Edit(&&E)",
+		"t": "编辑(&&E)"
+	},
+	"menus.install.fileMenu": {
+		"s": "File(&&F)",
+		"t": "文件(&&F)"
+	},
+	"menus.install.help": {
+		"s": "Help(&&H)",
+		"t": "帮助(&&H)"
+	},
+	"menus.install.windowMenu": {
+		"s": "Window(&&W)",
+		"t": "窗口(&&W)"
+	},
+	"menus.setEditMenu.allSelect": {
+		"s": "Select All(&&A)",
+		"t": "全选(&&A)"
+	},
+	"menus.setEditMenu.allSelectOpt": {
+		"s": "Select all operation",
+		"t": "全选操作"
+	},
+	"menus.setEditMenu.allSelectTxt": {
+		"s": "Select All",
+		"t": "全选"
+	},
+	"menus.setEditMenu.copy": {
+		"s": "Copy(&&C)",
+		"t": "复制(&&C)"
+	},
+	"menus.setEditMenu.copyOpt": {
+		"s": "Copy operation",
+		"t": "复制操作"
+	},
+	"menus.setEditMenu.copyTxt": {
+		"s": "Copy",
+		"t": "复制"
+	},
+	"menus.setEditMenu.cut": {
+		"s": "Cut(&&T)",
+		"t": "剪切(&&T)"
+	},
+	"menus.setEditMenu.cutOpt": {
+		"s": "Cut operation",
+		"t": "剪切操作"
+	},
+	"menus.setEditMenu.cutTxt": {
+		"s": "Cut",
+		"t": "剪切"
+	},
+	"menus.setEditMenu.paste": {
+		"s": "Paste(&&P)",
+		"t": "粘贴(&&P)"
+	},
+	"menus.setEditMenu.pasteOpt": {
+		"s": "Paste operation",
+		"t": "粘贴操作"
+	},
+	"menus.setEditMenu.pasteTxt": {
+		"s": "Paste",
+		"t": "粘贴"
+	},
+	"menus.setEditMenu.redo": {
+		"s": "Redo(&&R)",
+		"t": "恢复(&&R)"
+	},
+	"menus.setEditMenu.redoOpt": {
+		"s": "Redo operation",
+		"t": "恢复撤销的操作"
+	},
+	"menus.setEditMenu.redoTxt": {
+		"s": "Redo",
+		"t": "恢复"
+	},
+	"menus.setEditMenu.undo": {
+		"s": "Undo(&&U)",
+		"t": "撤销(&&U)"
+	},
+	"menus.setEditMenu.undoOpt": {
+		"s": "Undo operation",
+		"t": "撤销当前的操作"
+	},
+	"menus.setEditMenu.undoTxt": {
+		"s": "Undo",
+		"t": "撤销"
+	},
+	"menus.setFileMenu.allSave": {
+		"s": "Save All(&&L)",
+		"t": "保存全部(&&L)"
+	},
+	"menus.setFileMenu.allSaveOpt": {
+		"s": "Save all open editors",
+		"t": "保存所有已打开的编辑器"
+	},
+	"menus.setFileMenu.allSaveTxt": {
+		"s": "Save All",
+		"t": "全部保存"
+	},
+	"menus.setFileMenu.closeEditor": {
+		"s": "Close Editor(&&C)",
+		"t": "关闭编辑器(&&C)"
+	},
+	"menus.setFileMenu.closeEditorOpt": {
+		"s": "Close the current editor",
+		"t": "关闭当前编辑器"
+	},
+	"menus.setFileMenu.closeEditorTxt": {
+		"s": "Close Editor",
+		"t": "关闭编辑器"
+	},
+	"menus.setFileMenu.newExml": {
+		"s": "Create EXML Skin(&&N)",
+		"t": "新建 EXML 皮肤(&&N)"
+	},
+	"menus.setFileMenu.newExmlOpt": {
+		"s": "Create a new Exml skin in the currently selected directory",
+		"t": "在当前所选目录下新建 Exml 皮肤"
+	},
+	"menus.setFileMenu.newExmlTxt": {
+		"s": "Create EXML Skin",
+		"t": "新建 EXML 皮肤"
+	},
+	"menus.setFileMenu.newFolder": {
+		"s": "Create Folder(&&F)",
+		"t": "新建文件夹(&&F)"
+	},
+	"menus.setFileMenu.newFolderOpt": {
+		"s": "Create a folder in the currently selected directory",
+		"t": "在当前所目录下新建文件夹"
+	},
+	"menus.setFileMenu.newFolderTxt": {
+		"s": "Create Folder",
+		"t": "新建文件夹"
+	},
+	"menus.setFileMenu.openFolder": {
+		"s": "Open Folder(&&P)",
+		"t": "打开文件夹(&&P)"
+	},
+	"menus.setFileMenu.openFolderOpt": {
+		"s": "Open folder (project) operation",
+		"t": "打开文件夹(项目)操作"
+	},
+	"menus.setFileMenu.openFolderTxt": {
+		"s": "Open Folder",
+		"t": "打开文件夹"
+	},
+	"menus.setFileMenu.quit": {
+		"s": "Quit(&&X)",
+		"t": "退出(&&X)"
+	},
+	"menus.setFileMenu.reload": {
+		"s": "Reload(&&R)",
+		"t": "重新加载(&&R)"
+	},
+	"menus.setFileMenu.save": {
+		"s": "Save(&&S)",
+		"t": "保存(&&S)"
+	},
+	"menus.setFileMenu.saveOpt": {
+		"s": "Save the current editor",
+		"t": "保存当前激活的编辑器"
+	},
+	"menus.setFileMenu.saveTxt": {
+		"s": "Save",
+		"t": "保存"
+	},
+	"menus.setHelpMenu.toggleDev": {
+		"s": "Toggle Dev(&&T)",
+		"t": "切换开发者工具(&&T)"
+	},
+	"menus.setMacApplicationMenu.hide": {
+		"s": "Hide {0}",
+		"t": "隐藏 {0}"
+	},
+	"menus.setMacApplicationMenu.hideothers": {
+		"s": "Hide Other",
+		"t": "隐藏其他"
+	},
+	"menus.setMacApplicationMenu.quit": {
+		"s": "Quit {0}",
+		"t": "退出 {0}"
+	},
+	"menus.setMacApplicationMenu.services": {
+		"s": "Services",
+		"t": "服务"
+	},
+	"menus.setMacApplicationMenu.unhide": {
+		"s": "Show All",
+		"t": "全部显示"
+	},
+	"menus.setWindowsMenu.minimize": {
+		"s": "Minimize(&&M)",
+		"t": "最小化(&&M)"
+	},
+	"menus.setWindowsMenu.togglefullscreen": {
+		"s": "Toggle Full Screen",
+		"t": "切换全屏"
+	},
+	"menus.viewMenu.align": {
+		"s": "Align(&&A)",
+		"t": "对齐(&&A)"
+	},
+	"menus.viewMenu.component": {
+		"s": "Component(&&C)",
+		"t": "组件(&&C)"
+	},
+	"menus.viewMenu.explorer": {
+		"s": "Explorer(&&U)",
+		"t": "资源管理器(&&U)"
+	},
+	"menus.viewMenu.layer": {
+		"s": "Layer(&&L)",
+		"t": "图层(&&L)"
+	},
+	"menus.viewMenu.output": {
+		"s": "Output(&&O)",
+		"t": "输出(&&O)"
+	},
+	"menus.viewMenu.property": {
+		"s": "Property(&&P)",
+		"t": "属性(&&P)"
+	},
+	"menus.viewMenu.property2": {
+		"s": "Property2(&&P)",
+		"t": "Property2(&&P)"
+	},
+	"menus.viewMenu.quickOpen": {
+		"s": "Quick Open(&&Q)",
+		"t": "快速打开文件(&&Q)"
+	},
+	"menus.viewMenu.quickOpenDes": {
+		"s": "Quick Open EXML file operation",
+		"t": "快速打开Exml文件操作"
+	},
+	"menus.viewMenu.quickOpenLabel": {
+		"s": "Quick Open",
+		"t": "快速打开文件"
+	},
+	"menus.viewMenu.resource": {
+		"s": "Resource(&&R)",
+		"t": "资源库(&&R)"
+	},
+	"modelServices.confirmSave.confirmModify": {
+		"s": "Need to save the changes made to file {0}?",
+		"t": "需要保存对文件 {0} 所做的修改么？"
+	},
+	"modelServices.confirmSave.confirmModifyMessage": {
+		"s": "Need to save the changes made to the following {0} files?",
+		"t": "需要保存对如下 {0} 个文件做的修改么？"
+	},
+	"modelServices.confirmSave.save": {
+		"s": "Save",
+		"t": "全部"
+	},
+	"modelServices.confirmSave.saveTips": {
+		"s": "Save Tips",
+		"t": "保存提示"
+	},
+	"modelServices.confirmSave.warning": {
+		"s": "If you don't save, all the changes you made will be lost.",
+		"t": "如果不保存，你所做的所有修改将丢失。"
+	},
+	"newExmlOperation.run.notEuiProject": {
+		"s": "Currently is not an Egret EUI project, you can't create Exml skin",
+		"t": "当前不是 Egret EUI 项目, 无法新建 Exml 皮肤"
+	},
+	"newExmlOperation.run.notProject": {
+		"s": "No items are currently open, and Exml skin cannot be created",
+		"t": "当前尚未打开任何项目，无法创建 Exml 皮肤"
+	},
+	"newExmlPanel.constructor.title": {
+		"s": "Create EXML Skin",
+		"t": "新建EXML皮肤"
+	},
+	"newExmlPanel.createExml.browser": {
+		"s": "Browser",
+		"t": "浏览"
+	},
+	"newExmlPanel.createExml.comTitle": {
+		"s": "Select Host Component",
+		"t": "选择主机组件"
+	},
+	"newExmlPanel.createExml.fileCreateSuccess": {
+		"s": "The file was created successfully: {0}",
+		"t": "文件创建成功:{0}"
+	},
+	"newExmlPanel.createExml.fileIsExist": {
+		"s": "The file already exists, please change the name.",
+		"t": "文件已存在,请修改名称!"
+	},
+	"newExmlPanel.createExml.height": {
+		"s": "Height:",
+		"t": "高度:"
+	},
+	"newExmlPanel.createExml.host": {
+		"s": "Host Component:",
+		"t": "主机组件:"
+	},
+	"newExmlPanel.createExml.name": {
+		"s": "Name:",
+		"t": "名称:"
+	},
+	"newExmlPanel.createExml.path": {
+		"s": "Path:",
+		"t": "路径:"
+	},
+	"newExmlPanel.createExml.selectPath": {
+		"s": "Select Path",
+		"t": "请选择路径"
+	},
+	"newExmlPanel.createExml.skinName": {
+		"s": "Skin Name",
+		"t": "请填写皮肤名称"
+	},
+	"newExmlPanel.createExml.width": {
+		"s": "Width:",
+		"t": "宽度:"
+	},
+	"newExmlPanel.pathHandle.notExistCurrentProject": {
+		"s": "The selection path is not in the current project, please re-select.",
+		"t": "选择路径不在当前项目中,请重新选择!"
+	},
+	"newExmlPanel.pathHandle.path": {
+		"s": "Please select the path.",
+		"t": "请选择路径!"
+	},
+	"newExmlPanel.validate.comblank": {
+		"s": "Please select the host component.",
+		"t": "请选择主机组件!"
+	},
+	"newExmlPanel.validate.heightblank": {
+		"s": "The height cannot be empty.",
+		"t": "高度不能为空!"
+	},
+	"newExmlPanel.validate.path": {
+		"s": "Please select the path.",
+		"t": "请选择路径!"
+	},
+	"newExmlPanel.validate.skinName": {
+		"s": "The skin name cannot be empty, please fill in the name.",
+		"t": "皮肤名字不能为空,请选填写名称!"
+	},
+	"newExmlPanel.validate.widthblank": {
+		"s": "The width cannot be empty.",
+		"t": "宽度不能为空!"
+	},
+	"newFolderOperation.run.notExistParentFolder": {
+		"s": "There is no parent folder and cannot create a folder",
+		"t": "不存在父级文件夹，无法创建文件夹"
+	},
+	"newFolderOperation.run.notOpenProject": {
+		"s": "No project are currently open, can't create folder",
+		"t": "当前尚未打开任何项目，无法创建文件夹"
+	},
+	"newFolderPanel.firstBtnHandle.folderNotBlank": {
+		"s": "The folder name cannot be empty!",
+		"t": "文件夹名字不能为空！"
+	},
+	"newFolderPanel.firstBtnHandle.success": {
+		"s": "Successfully created new folder: {0}",
+		"t": "成功新建文件夹:{0}"
+	},
+	"newFolderPanel.render.folderName": {
+		"s": "Folder Name:",
+		"t": "文件夹名:"
+	},
+	"newwFolderPanel.constructor.title": {
+		"s": "New Folder",
+		"t": "新建文件"
+	},
+	"operationMainService.registerListener.existMainProcess": {
+		"s": "The command {0} already exists in the main process and cannot be resumed in the re-rendering process.",
+		"t": "命令{0}已存在于主进程中，无法继续再渲染进程中注册快捷键"
+	},
+	"outputView.title": {
+		"s": "Output",
+		"t": "输出"
+	},
+	"pasteFileOperation.run.copyError": {
+		"s": "Paste file failed: {0}",
+		"t": "粘贴文件失败:{0}"
+	},
+	"property.all.title.property": {
+		"s": "Property",
+		"t": "属性名"
+	},
+	"property.all.title.value": {
+		"s": "Value",
+		"t": "属性值"
+	},
+	"property.general.alpha": {
+		"s": "Alpha:",
+		"t": "不透明度:"
+	},
+	"property.general.className": {
+		"s": "Class Name:",
+		"t": "类名:"
+	},
+	"property.general.enable": {
+		"s": "Enable:",
+		"t": "启用:"
+	},
+	"property.general.label": {
+		"s": "Label:",
+		"t": "标签:"
+	},
+	"property.general.name": {
+		"s": "Name:",
+		"t": "名称:"
+	},
+	"property.general.state.default": {
+		"s": "[All Status]",
+		"t": "[所有状态]"
+	},
+	"property.general.status": {
+		"s": "Status:",
+		"t": "状态:"
+	},
+	"property.general.text": {
+		"s": "Text:",
+		"t": "文本:"
+	},
+	"property.general.touchChildren": {
+		"s": "Touch Children:",
+		"t": "子项触碰:"
+	},
+	"property.general.touchEnabled": {
+		"s": "Touch Enable:",
+		"t": "自身触碰:"
+	},
+	"property.layout.hv.gap": {
+		"s": "Gap:",
+		"t": "间隔:"
+	},
+	"property.layout.hv.horizontalAlign": {
+		"s": "Horizontal:",
+		"t": "水平:"
+	},
+	"property.layout.hv.paddingBottom": {
+		"s": "Bottom:",
+		"t": "下:"
+	},
+	"property.layout.hv.paddingLeft": {
+		"s": "Left:",
+		"t": "左:"
+	},
+	"property.layout.hv.paddingRight": {
+		"s": "Right:",
+		"t": "右:"
+	},
+	"property.layout.hv.paddingTop": {
+		"s": "Top:",
+		"t": "上:"
+	},
+	"property.layout.hv.verticalAlign": {
+		"s": "Vertical:",
+		"t": "垂直:"
+	},
+	"property.layout.layout": {
+		"s": "Layout:",
+		"t": "布局:"
+	},
+	"property.layout.tile.alignBoth.column": {
+		"s": "Column:",
+		"t": "列两端:"
+	},
+	"property.layout.tile.alignBoth.row": {
+		"s": "Row:",
+		"t": "行两端:"
+	},
+	"property.layout.tile.columnCount": {
+		"s": "Count:",
+		"t": "列数:"
+	},
+	"property.layout.tile.columnWidth": {
+		"s": "Width:",
+		"t": "列宽:"
+	},
+	"property.layout.tile.horizontalAlign": {
+		"s": "Horizontal:",
+		"t": "水平:"
+	},
+	"property.layout.tile.horizontalGap": {
+		"s": "Horizontal:",
+		"t": "水平:"
+	},
+	"property.layout.tile.orientation": {
+		"s": "Orientation:",
+		"t": "方向:"
+	},
+	"property.layout.tile.paddingBottom": {
+		"s": "Bottom:",
+		"t": "下:"
+	},
+	"property.layout.tile.paddingLeft": {
+		"s": "Left:",
+		"t": "左:"
+	},
+	"property.layout.tile.paddingRight": {
+		"s": "Right:",
+		"t": "右:"
+	},
+	"property.layout.tile.paddingTop": {
+		"s": "Top:",
+		"t": "上:"
+	},
+	"property.layout.tile.rowCount": {
+		"s": "Count:",
+		"t": "行数:"
+	},
+	"property.layout.tile.rowHeight": {
+		"s": "Height:",
+		"t": "行高:"
+	},
+	"property.layout.tile.verticalAlign": {
+		"s": "Vertical:",
+		"t": "垂直:"
+	},
+	"property.layout.tile.verticalGap": {
+		"s": "Vertical:",
+		"t": "垂直:"
+	},
+	"property.layout.title.hv.align": {
+		"s": "Align",
+		"t": "对齐"
+	},
+	"property.layout.title.hv.gap": {
+		"s": "Gap",
+		"t": "间隔"
+	},
+	"property.layout.title.hv.padding": {
+		"s": "Padding",
+		"t": "内边距"
+	},
+	"property.layout.title.tile.align": {
+		"s": "Align",
+		"t": "对齐"
+	},
+	"property.layout.title.tile.column": {
+		"s": "Column",
+		"t": "列"
+	},
+	"property.layout.title.tile.endpoint": {
+		"s": "Endpoint Alignment",
+		"t": "两端对齐"
+	},
+	"property.layout.title.tile.gap": {
+		"s": "Gap",
+		"t": "间隔"
+	},
+	"property.layout.title.tile.orientation": {
+		"s": "Orientation",
+		"t": "方向"
+	},
+	"property.layout.title.tile.padding": {
+		"s": "Padding",
+		"t": "内边距"
+	},
+	"property.layout.title.tile.row": {
+		"s": "Row",
+		"t": "行"
+	},
+	"property.sizepos.anchorX": {
+		"s": "Anchor X:",
+		"t": "X锚点:"
+	},
+	"property.sizepos.anchorY": {
+		"s": "Anchor Y:",
+		"t": "Y锚点:"
+	},
+	"property.sizepos.height": {
+		"s": "Height:",
+		"t": "高度:"
+	},
+	"property.sizepos.scaleX": {
+		"s": "Scale X:",
+		"t": "X缩放:"
+	},
+	"property.sizepos.scaleY": {
+		"s": "Scale Y:",
+		"t": "Y缩放:"
+	},
+	"property.sizepos.title.detailConstrain": {
+		"s": "Detail Constrain",
+		"t": "详细约束"
+	},
+	"property.sizepos.title.fastConstrain": {
+		"s": "Fast Constrain",
+		"t": "快捷约束"
+	},
+	"property.sizepos.width": {
+		"s": "Width:",
+		"t": "宽度:"
+	},
+	"property.sizepos.x": {
+		"s": "X:",
+		"t": "X:"
+	},
+	"property.sizepos.y": {
+		"s": "Y:",
+		"t": "Y:"
+	},
+	"property.style.bitmapLabel.font": {
+		"s": "Bitmap Font:",
+		"t": "位图字体:"
+	},
+	"property.style.buttonSkin.disable": {
+		"s": "Disable:",
+		"t": "禁用:"
+	},
+	"property.style.buttonSkin.down": {
+		"s": "Press Down:",
+		"t": "按下:"
+	},
+	"property.style.buttonSkin.normal": {
+		"s": "Normal:",
+		"t": "正常:"
+	},
+	"property.style.rect.ellipse.height": {
+		"s": "Ellipse Height:",
+		"t": "圆角高度:"
+	},
+	"property.style.rect.ellipse.width": {
+		"s": "Ellipse Width:",
+		"t": "圆角宽度:"
+	},
+	"property.style.rect.fill.alpha": {
+		"s": "Alpha:",
+		"t": "透明度:"
+	},
+	"property.style.rect.fill.color": {
+		"s": "Color:",
+		"t": "填充:"
+	},
+	"property.style.rect.stroke.alpha": {
+		"s": "Alpha:",
+		"t": "透明度:"
+	},
+	"property.style.rect.stroke.color": {
+		"s": "Color:",
+		"t": "颜色:"
+	},
+	"property.style.rect.stroke.weight": {
+		"s": "Weight:",
+		"t": "粗细:"
+	},
+	"property.style.skin.itemSkinName": {
+		"s": "Item Skin:",
+		"t": "条目皮肤:"
+	},
+	"property.style.skin.skinName": {
+		"s": "Skin:",
+		"t": "皮肤:"
+	},
+	"property.style.source.fillMode": {
+		"s": "Fill Mode:",
+		"t": "填充模式:"
+	},
+	"property.style.source.source": {
+		"s": "Asset Name:",
+		"t": "资源名:"
+	},
+	"property.style.title.bitmapLabel": {
+		"s": "Bitmap Label",
+		"t": "位图文本"
+	},
+	"property.style.title.buttonSkin": {
+		"s": "Button Sample Skin",
+		"t": "按钮快捷皮肤"
+	},
+	"property.style.title.label": {
+		"s": "Label",
+		"t": "文本"
+	},
+	"property.style.title.rect.ellipse": {
+		"s": "Ellipse",
+		"t": "圆角"
+	},
+	"property.style.title.rect.fill": {
+		"s": "Fill",
+		"t": "填充"
+	},
+	"property.style.title.rect.stroke": {
+		"s": "Stroke",
+		"t": "线条"
+	},
+	"property.style.title.skin": {
+		"s": "Skin",
+		"t": "皮肤"
+	},
+	"property.style.title.source": {
+		"s": "Asset",
+		"t": "资源"
+	},
+	"property.title.general": {
+		"s": "General",
+		"t": "常用"
+	},
+	"propertyView.initTab.all": {
+		"s": "All",
+		"t": "所有属性"
+	},
+	"propertyView.initTab.classify": {
+		"s": "Common",
+		"t": "常用属性"
+	},
+	"propertyView.numSelected": {
+		"s": "{0} items is Selected",
+		"t": "{0} 项被选中"
+	},
+	"propertyView.render.common": {
+		"s": "Common",
+		"t": "通常"
+	},
+	"propertyView.render.layout": {
+		"s": "Layout",
+		"t": "布局"
+	},
+	"propertyView.render.sizeAndLocation": {
+		"s": "Size & Position",
+		"t": "大小&位置"
+	},
+	"propertyView.render.style": {
+		"s": "Style",
+		"t": "样式"
+	},
+	"propertyView.title": {
+		"s": "Property",
+		"t": "属性"
+	},
+	"propertyView.title2": {
+		"s": "Property2",
+		"t": "Property2"
+	},
+	"radioButton": {
+		"s": "RadioButton",
+		"t": "RadioButton"
+	},
+	"reactGroup.render.color": {
+		"s": "Color:",
+		"t": "颜色:"
+	},
+	"reactGroup.render.fill": {
+		"s": "Fill",
+		"t": "填充"
+	},
+	"reactGroup.render.fillAlpha": {
+		"s": "Alpha:",
+		"t": "透明度:"
+	},
+	"reactGroup.render.line": {
+		"s": "Stroke",
+		"t": "线条"
+	},
+	"reactGroup.render.strokeWeight": {
+		"s": "Stroke Weight:",
+		"t": "触笔:"
+	},
+	"rename.dirtyMessageFileRename": {
+		"s": "You need to save the file {0} before renaming.",
+		"t": "重命名之前你需要保存文件 {0} ."
+	},
+	"rename.dirtyMessageFilesRename": {
+		"s": "You need to save the following {0} files before renaming.",
+		"t": "重命名之前你需要保存如下 {0} 个文件."
+	},
+	"rename.dirtyWarning": {
+		"s": "You need save the dirty files before renaming",
+		"t": "重命名之前需要确保文件已保存."
+	},
+	"renamePanel.constructor.title": {
+		"s": "Rename",
+		"t": "重命名"
+	},
+	"renamePanel.handleBtnClick.success": {
+		"s": "Rename success:{0}",
+		"t": "重命名成功:{0}"
+	},
+	"renamePanel.initDefaultData.error": {
+		"s": "The file that needs to rename does not exist!",
+		"t": "需要重命名的文件不存在！"
+	},
+	"renamePanel.render.newName": {
+		"s": "New name:",
+		"t": "新名称:"
+	},
+	"resType.bin": {
+		"s": "Bin",
+		"t": "二进制"
+	},
+	"resType.dbbin": {
+		"s": "Dragon bones bin",
+		"t": "龙骨二进制"
+	},
+	"resType.font": {
+		"s": "Font",
+		"t": "字体"
+	},
+	"resType.image": {
+		"s": "Image",
+		"t": "图片"
+	},
+	"resType.sound": {
+		"s": "Sound",
+		"t": "声音"
+	},
+	"resType.text": {
+		"s": "Text",
+		"t": "文本"
+	},
+	"revealFileInOsOperation.run.notSelectFile": {
+		"s": "There are currently no selected files and cannot be displayed in the System Explorer",
+		"t": "当前没有选择的文件，无法在系统资源管理器中显示"
+	},
+	"scale9Window.render.description": {
+		"s": "Mouse Wheel:Scale | Drag:Move | Dotted Line: Edito Scale9Grid",
+		"t": "滚动：缩放；拖拽图片：挪动图片；拖拽虚线：编辑九宫格"
+	},
+	"scale9Window.render.startScale": {
+		"s": "Enable",
+		"t": "开启九宫格"
+	},
+	"scale9Window.render.zoomDown": {
+		"s": "Zoom Out",
+		"t": "缩小"
+	},
+	"scale9Window.render.zoomUp": {
+		"s": "Zoom In",
+		"t": "放大"
+	},
+	"scale9WindowPanel.constructor.title": {
+		"s": "Scale9Grid Setting",
+		"t": "九宫格编辑"
+	},
+	"searchFilePanel.matchedFile": {
+		"s": "Matched file:",
+		"t": "匹配文件:"
+	},
+	"searchFilePanel.selectFile": {
+		"s": "Select file to open:",
+		"t": "选择要打开的文件："
+	},
+	"searchFilePanel.title": {
+		"s": "Quick Open",
+		"t": "快速打开文件"
+	},
+	"sev.error": {
+		"s": "Error",
+		"t": "错误"
+	},
+	"sev.info": {
+		"s": "Info",
+		"t": "消息"
+	},
+	"sev.warning": {
+		"s": "Warning",
+		"t": "警告"
+	},
+	"sizeAndGroup.render.detailConstrain": {
+		"s": "Detail Constrain",
+		"t": "详细约束"
+	},
+	"skinGroup.render.skin": {
+		"s": "Skin",
+		"t": "皮肤"
+	},
+	"skinGroup.render.skinFlag": {
+		"s": "Skin:",
+		"t": "皮肤:"
+	},
+	"skinGroup.render.skinItem": {
+		"s": "Skin Item:",
+		"t": "条目皮肤:"
+	},
+	"spacePart.doRender.space": {
+		"s": "Space",
+		"t": "间隔"
+	},
+	"spreadPart.doRender.spread": {
+		"s": "Spread",
+		"t": "分布"
+	},
+	"stateBar.initView.status": {
+		"s": "Status",
+		"t": "状态"
+	},
+	"stateSelect.render.allSelect": {
+		"s": "Select All",
+		"t": "全选"
+	},
+	"styleSource.render.fillModeDisplay": {
+		"s": "Fill Mode:",
+		"t": "填充模式:"
+	},
+	"styleSource.render.resource": {
+		"s": "Asset",
+		"t": "资源"
+	},
+	"styleSource.render.resourceName": {
+		"s": "Asset Name:",
+		"t": "资源名:"
+	},
+	"system.about": {
+		"s": "About {0}",
+		"t": "关于 {0}"
+	},
+	"system.checkUpdate": {
+		"s": "Check Update...",
+		"t": "检查更新..."
+	},
+	"system.delete": {
+		"s": "Delete",
+		"t": "删除"
+	},
+	"system.feedback": {
+		"s": "Send Feedback...",
+		"t": "发送反馈..."
+	},
+	"table.render.property": {
+		"s": "Property",
+		"t": "属性"
+	},
+	"table.render.value": {
+		"s": "Value",
+		"t": "值"
+	},
+	"textField.numberRegulatorCheckTooltip.illegalValueOrExpression": {
+		"s": "Illegal value or expression",
+		"t": "不合法的值或表达式"
+	},
+	"theme.error.noFile": {
+		"s": "No skin file {0} defined in theme",
+		"t": "未找到主题中定义的皮肤文件: {0} "
+	},
+	"themeEui.reload.notExistTheme": {
+		"s": "Project theme configuration not found",
+		"t": "未找到项目主题配置"
+	},
+	"toggleButton": {
+		"s": "ToggleButton",
+		"t": "ToggleButton"
+	},
+	"windowsMainService.doPickAndOpen.open": {
+		"s": "Open",
+		"t": "打开"
+	},
+	"windowsMainService.doPickAndOpen.openFile": {
+		"s": "Open File",
+		"t": "打开文件"
+	},
+	"windowsMainService.doPickAndOpen.openFolder": {
+		"s": "Open Folder",
+		"t": "打开文件夹"
+	},
+	"wingPropertyPanel.constructor,title": {
+		"s": "wingProperty.json Setting",
+		"t": "WingProperty.json 设置"
+	},
+	"wingPropertyPanel.render.browse": {
+		"s": "Browse",
+		"t": "浏览"
+	},
+	"wingPropertyPanel.render.description": {
+		"s": "The resource <resourcePlugin.configs> and theme <theme> in the project root directory wingProperties.json are required to display the EUI project.",
+		"t": "项目根目录wingProperties.json中资源<resourcePlugin.configs>、主题<theme>两项是显示EUI项目必须的"
+	},
+	"wingPropertyPanel.render.resource": {
+		"s": "Resource:",
+		"t": "资源:"
+	},
+	"wingPropertyPanel.render.selectSourceFile": {
+		"s": "Select Add resource file",
+		"t": "选择添加资源文件"
+	},
+	"wingPropertyPanel.render.selectTopicFile": {
+		"s": "Select add theme file",
+		"t": "选择添加主题文件"
+	},
+	"wingPropertyPanel.render.topic": {
+		"s": "Theme:",
+		"t": "主题:"
+	},
+	"wingPropertyPanel.themeClick.notExistCurrectProject": {
+		"s": "{0} is not in the current project!",
+		"t": "{0}不在当前项目中！"
+	},
+	"wingPropertyPanel.validateProperty.configFileNotExist": {
+		"s": "Theme profile does not exist",
+		"t": "主题配置文件不存在"
+	},
+	"wingPropertyPanel.validateProperty.notExistFile": {
+		"s": "Unable to find file {0}",
+		"t": "无法找到 {0} 文件"
+	},
+	"wingPropertyPanel.validateProperty.resourceFileNotExist": {
+		"s": "Need to set the resource configuration file",
+		"t": "需要设置资源配置文件"
+	},
+	"workbench.initCommands.deleteSys": {
+		"s": "System delete command",
+		"t": "系统删除命令"
+	}
+}

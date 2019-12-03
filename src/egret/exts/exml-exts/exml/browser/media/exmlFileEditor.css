@@ -1,0 +1,38 @@
+.refresh-icon{	  
+	background-image: url(./light/refresh.svg);
+}
+.design-icon{	  
+	background-image: url(./light/design.svg);
+}
+.preview-icon{	  
+	background-image: url(./light/preview.svg);
+}
+
+.min-icon{	  
+	background-image: url(./light/min.svg);
+}
+.max-icon{	  
+	background-image: url(./light/max.svg);
+}
+.zoomin-icon{	  
+	background-image: url(./light/zoomin.svg);
+}
+.zoomout-icon{	  
+	background-image: url(./light/zoomout.svg);
+}
+
+.adsorb-icon{	  
+	background-image: url(./light/adsorb.svg);
+}
+.lockgroup-icon{	  
+	background-image: url(./light/lockgroup.svg);
+}
+
+
+.exml-editor-navigation{
+	display: flex;
+	height: 34px;
+	align-items: center;
+	padding-left: 6px;
+	padding-right: 6px;
+}

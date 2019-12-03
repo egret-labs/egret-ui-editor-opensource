@@ -1,0 +1,19 @@
+.assetsview.separatorline,
+.eui-default .assetsview.separatorline{
+	width: 100%;
+    height: 4px;
+    display: block;
+    background-color: rgba(0,0,0,0);
+    z-index: 10000000;
+    border-top: solid 1px #282828;
+}
+
+.eui-black .assetsview.separatorline{
+	width: 100%;
+    height: 4px;
+    display: block;
+	background-color: rgba(0,0,0,0);
+    z-index: 10000000;
+    border-top: solid 1px #282828;
+}
+

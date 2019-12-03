@@ -1,0 +1,41 @@
+.explorer-item-container .file-icon,
+.explorer-item-container .file-label{
+	display:inline-block;
+	vertical-align: middle;
+}
+.explorer-item-container .file-label{
+	margin-left: 5px;
+}
+
+.explorer-item-container .file-icon{
+	width: 16px;
+	height: 16px;
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+
+
+.has-children .explorer-item-container .file-icon{
+	background-image: url(./folder.svg);
+}
+.has-children.expanded .explorer-item-container .file-icon{
+	background-image: url(./folder_expanded.svg);
+}
+
+
+
+.explorer-item-container .file-icon.exml{
+	background-image: url(./exml.svg);
+}
+.explorer-item-container .file-icon.js{
+	background-image: url(./js.svg);
+}
+.explorer-item-container .file-icon.json{
+	background-image: url(./json.svg);
+}
+.explorer-item-container .file-icon.text{
+	background-image: url(./text.svg);
+}
+.explorer-item-container .file-icon.unknown{
+	background-image: url(./unknown.svg);
+}

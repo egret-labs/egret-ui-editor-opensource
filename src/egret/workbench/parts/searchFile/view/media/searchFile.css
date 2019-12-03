@@ -1,0 +1,65 @@
+.searchfile-item-container{
+	display: flex;
+}
+.searchfile-icon-display.exml-icon{
+	background-image: url(./exml.svg);
+	width: 16px;
+    height: 16px;
+	background-repeat: no-repeat;
+    background-size: contain;
+    flex-shrink: 0;
+	margin-top: 3px;
+	margin-left: 4px;
+}
+.searchfile-name-display{
+	margin-left: 5px;
+	flex-shrink: 0;
+	line-height: 20px;
+}
+.searchfile-name-display .highlight{
+	color:#0090fe;
+}
+
+
+
+
+.searchfile-class-display{
+    margin-left: 2px;
+    opacity: 0.6;
+	flex-shrink: 0;
+	line-height: 20px;
+}
+.searchfile-class-display .highlight{
+	color:#0090fe;
+}
+
+
+
+.searchfile-path-display{
+	font-size: 10px;
+    margin-left: 5px;
+    opacity: 0.6;
+    overflow: hidden;
+    text-overflow: ellipsis;
+	white-space: nowrap;
+	line-height: 22px;
+}
+.searchfile-path-display .highlight{
+	color:#0090fe;
+}
+
+
+.search-list-container{
+	background-color: #303030;
+	border: 1px solid #252525;
+}
+.search-file-panel .monaco-tree .monaco-tree-rows {
+	background-color: rgba(255,255,255,0); 
+}
+.search-file-panel .monaco-tree .monaco-tree-rows > .monaco-tree-row.selected {
+	background-color: #052d4b !important;
+}
+.search-file-panel .monaco-tree .monaco-tree-rows > .monaco-tree-row:hover:not(.selected),
+.search-file-panel .monaco-tree .monaco-tree-rows > .monaco-tree-row:hover:not(.highlighted):not(.selected):not(.focused) {
+    background-color: rgba(255,255,255,0.05) !important;
+}

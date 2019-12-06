@@ -7,6 +7,9 @@
 .preview-icon{	  
 	background-image: url(./light/preview.svg);
 }
+.code-icon{	  
+	background-image: url(./light/source.svg);
+}
 
 .min-icon{	  
 	background-image: url(./light/min.svg);

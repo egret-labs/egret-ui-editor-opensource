@@ -123,14 +123,19 @@ export class ExmlFileEditorNavigation {
 	private initView(container: HTMLElement): void {
 		this.modeTabbar = new Tabbar(container);
 		this.modeDataSources.push({
-			label:localize('exml.editor.design','Design'),
+			label: localize('exml.editor.design', 'Design'),
 			iconClass: 'design-icon',
 			id: EditMode.DESIGN
 		});
 		this.modeDataSources.push({
-			label: localize('exml.editor.preview','Preview'),
+			label: localize('exml.editor.preview', 'Preview'),
 			iconClass: 'preview-icon',
 			id: EditMode.PREVIEW
+		});
+		this.modeDataSources.push({
+			label: localize('exml.editor.code', 'Code'),
+			iconClass: 'code-icon',
+			id: EditMode.CODE
 		});
 
 		this.modeTabbar.dataProvider = this.modeDataSources;
@@ -146,13 +151,13 @@ export class ExmlFileEditorNavigation {
 		this.mobileFitContainer.style.marginLeft = '10px';
 
 		this.fitContentButton = new ToggleButton(this.mobileFitContainer);
-		this.fitContentButton.label = localize('exml.editor.adaptContent','Fit Content');
+		this.fitContentButton.label = localize('exml.editor.adaptContent', 'Fit Content');
 		this.fitContentButton.selected = false;
 		this.fitContentButton.onSelectedChanged(e => { this._onPreviewOptionChanged.fire(); });
 
 		this.deviceSelect = new Select(this.mobileFitContainer);
 		this.deviceSelect.style.marginLeft = '5px';
-		this.deviceDataProvider.push({ label: localize('exml.editor.noDevice','No Device'), id: localize('exml.editor.noDevice','No Device'), data: { w: 0, h: 0 } });
+		this.deviceDataProvider.push({ label: localize('exml.editor.noDevice', 'No Device'), id: localize('exml.editor.noDevice', 'No Device'), data: { w: 0, h: 0 } });
 		this.deviceDataProvider.push({ label: 'Galaxy S5', id: 'Galaxy S5', data: { w: 360, h: 640 } });
 		this.deviceDataProvider.push({ label: 'Pixel 2', id: 'Pixel 2', data: { w: 411, h: 731 } });
 		this.deviceDataProvider.push({ label: 'Pixel 2 XL', id: 'Pixel 2 XL', data: { w: 411, h: 823 } });
@@ -167,7 +172,7 @@ export class ExmlFileEditorNavigation {
 
 		this.scaleSelect = new Select(this.mobileFitContainer);
 		this.scaleSelect.style.marginLeft = '5px';
-		this.scaleDataProvider.push({ label: localize('exml.editor.adaptivewindow','Fit Screen'), id: 'fitWindows', data: 0 });
+		this.scaleDataProvider.push({ label: localize('exml.editor.adaptivewindow', 'Fit Screen'), id: 'fitWindows', data: 0 });
 		this.scaleDataProvider.push({ label: '25%', id: '25%', data: 0.25 });
 		this.scaleDataProvider.push({ label: '50%', id: '50%', data: 0.5 });
 		this.scaleDataProvider.push({ label: '75%', id: '75%', data: 0.75 });
@@ -242,7 +247,7 @@ export class ExmlFileEditorNavigation {
 	private currentSelectionModel: EditMode;
 	private modeTabbarChanged_handler(selection: DataSource): void {
 		this.currentSelectionModel = selection.id as EditMode;
-		this.updatePreviewOptionVisible();
+		this.updateExmlOptionVisible();
 		this._onEditModeChanged.fire(this.currentSelectionModel);
 	}
 
@@ -257,7 +262,7 @@ export class ExmlFileEditorNavigation {
 			this.modeTabbar.selection = this.modeDataSources.filter(data => data.id == value)[0];
 			this._onEditModeChanged.fire(value);
 		}
-		this.updatePreviewOptionVisible();
+		this.updateExmlOptionVisible();
 	}
 	/**
 	 * 是否开启了吸附
@@ -287,6 +292,35 @@ export class ExmlFileEditorNavigation {
 			}
 		}
 	}
+
+	private updateExmlOptionVisible(): void {
+		if (this.currentSelectionModel === EditMode.CODE) {
+			if (this.refreshBtn) {
+				this.refreshBtn.style.display = 'none';
+			}
+			if (this.mobileFitContainer) {
+				this.mobileFitContainer.visible = false;
+			}
+			if (this.funcContainer) {
+				this.funcContainer.visible = false;
+			}
+			if (this.zoomContainer) {
+				this.zoomContainer.visible = false;
+			}
+		} else {
+			if (this.refreshBtn) {
+				this.refreshBtn.style.display = 'block';
+			}
+			this.updatePreviewOptionVisible();
+			if (this.funcContainer) {
+				this.funcContainer.visible = true;
+			}
+			if (this.zoomContainer) {
+				this.zoomContainer.visible = true;
+			}
+		}
+	}
+
 	private refreshClick_handler(): void {
 		this._onRefreshClick.fire(void 0);
 	}

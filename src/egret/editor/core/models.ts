@@ -104,6 +104,10 @@ export interface IFileEditorModel extends IEditorModel {
 	 */
 	isDirty(): boolean;
 	/**
+	 * 立即检查模块是否脏了
+	 */
+	updateDirty(): void;
+	/**
 	 * 这个数据model是否已经被加载过
 	 */
 	isResolved(): boolean;

@@ -315,6 +315,12 @@ export abstract class FileEditorModel extends EditorModel implements IFileEditor
 		this.dirty = dirty;
 		this._onDidStateChange.fire(StateChange.DIRTY);
 	}
+	
+	/**
+	 * 立即检查模块是否脏了
+	 */
+	public updateDirty(): void {
+	}
 
 	/**
 	 * 这个数据model是否已经被加载过

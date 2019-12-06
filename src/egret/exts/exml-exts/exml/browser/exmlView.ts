@@ -245,7 +245,7 @@ export class ExmlView implements IExmlView {
 	 * 适应屏幕
 	 */
 	public fitScreen(): void {
-		this.exmlEditor.focusRectLayer.fitScreen(NaN, true, true,true);
+		this.exmlEditor.focusRectLayer.fitScreen(NaN, true, true, true);
 	}
 	/**
 	 * 无缩放
@@ -286,32 +286,32 @@ export class ExmlView implements IExmlView {
 	/**
 	 * 刷新布局
 	 */
-	public doResize():void{
-		if(this.runtime){
-			this.runtime.getRuntime().then(runtime=>{
+	public doResize(): void {
+		if (this.runtime) {
+			this.runtime.getRuntime().then(runtime => {
 				runtime.resumeOnceGlobal();
 			});
 		}
 	}
 
-	private _focused:boolean = false;
+	private _focused: boolean = false;
 	/**
 	 * 是否有焦点
 	 */
-	public get focused():boolean{
+	public get focused(): boolean {
 		return this._focused;
 	}
 	/**
 	 * 赋予焦点
 	 */
-	public doFosusIn():void{
+	public doFosusIn(): void {
 		this._focused = true;
-		if(this.runtime){
+		if (this.runtime) {
 			this.runtime.getRuntime().then(api => {
 				api.resumeGlobal();
 			});
 		}
-		if(this.subview){
+		if (this.subview) {
 			this.subview.doFosusIn();
 		}
 	}
@@ -320,15 +320,15 @@ export class ExmlView implements IExmlView {
 	/**
 	 * 失去焦点
 	 */
-	public doFosusOut():void{
+	public doFosusOut(): void {
 		this._focused = false;
-		if(this.runtime){
+		if (this.runtime) {
 			this.runtime.getRuntime().then(api => {
 				api.pauseGlobal();
 				api.resumeOnceGlobal();
 			});
 		}
-		if(this.subview){
+		if (this.subview) {
 			this.subview.doFosusOut();
 		}
 	}
@@ -399,8 +399,8 @@ export class ExmlView implements IExmlView {
 	/**
 	 * 刷新运行时
 	 */
-	public refreshRuntime():void{
-		this.egretProjectService.ensureLoaded().then(()=>{
+	public refreshRuntime(): void {
+		this.egretProjectService.ensureLoaded().then(() => {
 			if (this.egretProjectService.exmlConfig) {
 				this.egretProjectService.exmlConfig.ensureLoaded().then(() => {
 					const exmlConfig = this.egretProjectService.exmlConfig as EUIExmlConfig;
@@ -436,8 +436,7 @@ export class ExmlView implements IExmlView {
 		};
 		const tryInstallView = (property: string) => {
 			let propertyClassName: string;
-			let innerClass: IClass;
-			innerClass = node.getProperty(property) as IClass;
+			const innerClass = node.getProperty(property) as IClass;
 			if (innerClass) {
 				propertyClassName = innerClass.getClassName();
 				if (innerClass.getIsInner()) {
@@ -502,7 +501,7 @@ export class ExmlView implements IExmlView {
 
 			this._model.getExmlConfig().setRuntime(this._runtime);
 			this._model.refreshTree();
-		}else{
+		} else {
 			this.exmlEditor.clearRuntime();
 		}
 	}
@@ -626,20 +625,20 @@ export class ExmlView implements IExmlView {
 	 * 添加一般的上下文菜单
 	 */
 	private initContextMenuGeneral(): void {
-		this.addContextMenuItemGeneral({ label: localize('exmlView.initContextMenuGeneral.copy','Copy'), id: SystemCommands.COPY });
-		this.addContextMenuItemGeneral({ label: localize('exmlView.initContextMenuGeneral.cut','Cut'), id: SystemCommands.CUT });
-		this.addContextMenuItemGeneral({ label: localize('exmlView.initContextMenuGeneral.paste','Paste'), id: SystemCommands.PASTE });
-		this.addContextMenuItemGeneral({ label: localize('system.delete','Delete'), id: SystemCommands.DELETE });
+		this.addContextMenuItemGeneral({ label: localize('exmlView.initContextMenuGeneral.copy', 'Copy'), id: SystemCommands.COPY });
+		this.addContextMenuItemGeneral({ label: localize('exmlView.initContextMenuGeneral.cut', 'Cut'), id: SystemCommands.CUT });
+		this.addContextMenuItemGeneral({ label: localize('exmlView.initContextMenuGeneral.paste', 'Paste'), id: SystemCommands.PASTE });
+		this.addContextMenuItemGeneral({ label: localize('system.delete', 'Delete'), id: SystemCommands.DELETE });
 		this.addContextMenuSeparator();
-		this.addContextMenuItemGeneral({ label: localize('exmlView.initContextMenuGeneral.group','Group'), id: EuiCommands.GROUP });
-		this.addContextMenuItemGeneral({ label: localize('exmlView.initContextMenuGeneral.upgroup','Ungroup'), id: EuiCommands.UNGROUP });
+		this.addContextMenuItemGeneral({ label: localize('exmlView.initContextMenuGeneral.group', 'Group'), id: EuiCommands.GROUP });
+		this.addContextMenuItemGeneral({ label: localize('exmlView.initContextMenuGeneral.upgroup', 'Ungroup'), id: EuiCommands.UNGROUP });
 		this.addContextMenuSeparator();
-		this.addContextMenuItemGeneral({ label: localize('exmlView.initContextMenuGeneral.copyProperty','Copy Property'), id: EuiCommands.COPY_PROPERTY });
-		this.addContextMenuItemGeneral({ label: localize('exmlView.initContextMenuGeneral.pastePos','Paste Pos'), id: EuiCommands.PASTE_POS });
-		this.addContextMenuItemGeneral({ label: localize('exmlView.initContextMenuGeneral.pasteSize','Paste Size'), id: EuiCommands.PASTE_SIZE });
-		this.addContextMenuItemGeneral({ label: localize('exmlView.initContextMenuGeneral.pasteRestrict','Paste Restrict'), id: EuiCommands.PASTE_RESTRICT });
+		this.addContextMenuItemGeneral({ label: localize('exmlView.initContextMenuGeneral.copyProperty', 'Copy Property'), id: EuiCommands.COPY_PROPERTY });
+		this.addContextMenuItemGeneral({ label: localize('exmlView.initContextMenuGeneral.pastePos', 'Paste Pos'), id: EuiCommands.PASTE_POS });
+		this.addContextMenuItemGeneral({ label: localize('exmlView.initContextMenuGeneral.pasteSize', 'Paste Size'), id: EuiCommands.PASTE_SIZE });
+		this.addContextMenuItemGeneral({ label: localize('exmlView.initContextMenuGeneral.pasteRestrict', 'Paste Restrict'), id: EuiCommands.PASTE_RESTRICT });
 		this.addContextMenuSeparator();
-		this.addContextMenuItemGeneral({ label: localize('exmlView.initContextMenuGeneral.convertToInner','Convert to Inline Skin'), id: EuiCommands.CONVERT_TO_INNER });
+		this.addContextMenuItemGeneral({ label: localize('exmlView.initContextMenuGeneral.convertToInner', 'Convert to Inline Skin'), id: EuiCommands.CONVERT_TO_INNER });
 	}
 
 
@@ -755,8 +754,9 @@ export class ExmlView implements IExmlView {
 	 * @param option 
 	 */
 	private addContextMenuItemDynamic(option: MenuItemConstructorOptions, itemData: any): void {
+		let clickRef: { doClick: Function };
 		if (option.type != 'separator') {
-			var clickRef = {
+			clickRef = {
 				doClick: () => {
 					this.contextMenuDynamicSelected_handler(itemData);
 				}
@@ -810,10 +810,10 @@ export class ExmlView implements IExmlView {
 	 */
 	private createContextMenu(): Menu {
 		const menu = new remote.Menu();
-		for (var i = 0; i < this.contextMenuItemsDynamic.length; i++) {
+		for (let i = 0; i < this.contextMenuItemsDynamic.length; i++) {
 			menu.append(this.contextMenuItemsDynamic[i].item);
 		}
-		for (var i = 0; i < this.contextMenuItemsGeneral.length; i++) {
+		for (let i = 0; i < this.contextMenuItemsGeneral.length; i++) {
 			menu.append(this.contextMenuItemsGeneral[i].item);
 		}
 		return menu;
@@ -826,14 +826,14 @@ export class ExmlView implements IExmlView {
 	 */
 	private setContextMenuEnable(enable: boolean, id: string = null): void {
 		if (id) {
-			for (var i = 0; i < this.contextMenuItemsGeneral.length; i++) {
+			for (let i = 0; i < this.contextMenuItemsGeneral.length; i++) {
 				if (this.contextMenuItemsGeneral[i].option.id == id) {
 					this.contextMenuItemsGeneral[i].item.enabled = enable;
 					break;
 				}
 			}
 		} else {
-			for (var i = 0; i < this.contextMenuItemsGeneral.length; i++) {
+			for (let i = 0; i < this.contextMenuItemsGeneral.length; i++) {
 				this.contextMenuItemsGeneral[i].item.enabled = enable;
 			}
 		}
@@ -935,7 +935,7 @@ export class SubExmlView extends ExmlView implements IExmlView {
 		super(rootContainer, instantiationService, egretProjectService, editorService, outputService, clipboardService);
 		this.initView();
 		this.instalView();
-		if(this.parentView.focused){
+		if (this.parentView.focused) {
 			this.doFosusIn();
 		}
 	}
@@ -1027,7 +1027,7 @@ export class SubExmlView extends ExmlView implements IExmlView {
 	}
 
 	protected initView(): void {
-		if(!this.parentView){
+		if (!this.parentView) {
 			return;
 		}
 		super.initView();

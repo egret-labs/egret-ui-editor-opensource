@@ -413,7 +413,7 @@ export class EditorPart implements IEditorPart, IFocusablePart {
 	 */
 	public closeEditors(editors: IEditor[]): Promise<void> {
 		return new Promise((resolve, reject) => {
-			var closeNext = () => {
+			const closeNext = () => {
 				if (editors.length == 0) {
 					resolve();
 					return;

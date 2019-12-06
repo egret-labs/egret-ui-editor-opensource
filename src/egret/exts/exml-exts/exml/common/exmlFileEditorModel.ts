@@ -51,7 +51,10 @@ export class ExmlFileEditorModel extends FileEditorModel implements IExmlFileEdi
 	}
 
 	private historyCache: HistoryInfo = null;
-	private updateDirty(): void {
+	/**
+	 * 立即检查模块是否脏了
+	 */
+	public updateDirty(): void {
 		if(this.getModel()){
 			const currentHistory = this.getModel().peekUndo();
 			if (!currentHistory && !this.historyCache) {

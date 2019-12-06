@@ -121,9 +121,10 @@ export abstract class BaseEditor extends Panel implements IEditor {
 
 	protected updateTitle(): void {
 		let title = this.input.getTitle();
-		this.getModel().then(model => {
-			if (model.isDirty()) {
+		this.isDirty().then((dirty)=> {
+			if (dirty) {
 				title = '*' + title;
+				this.setPreview(false);
 			}
 			if (this.fileRemoved) {
 				title += '(磁盘上已删除)';
@@ -133,6 +134,11 @@ export abstract class BaseEditor extends Panel implements IEditor {
 		});
 	}
 
+	protected async isDirty(): Promise<boolean> {
+		return this.getModel().then(model => {
+			return model.isDirty();
+		});
+	}
 
 	/**
 	 * 清除当前编辑器的input

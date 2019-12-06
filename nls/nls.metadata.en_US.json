@@ -435,6 +435,10 @@
 		"s": "Preview",
 		"t": "Preview"
 	},
+	"exml.editor.code": {
+		"s": "Code",
+		"t": "Code"
+	},
 	"exmlComponentPanel.constructor.title": {
 		"s": "Select Host Component",
 		"t": "Select Host Component"

@@ -20,6 +20,7 @@ import { IEgretProjectService } from 'egret/exts/exml-exts/project';
 import { localize } from 'egret/base/localization/nls';
 import { EUIExmlConfig } from 'egret/exts/exml-exts/exml/common/project/exmlConfigs';
 import { IClipboardService } from 'egret/platform/clipboard/common/clipboardService';
+import { ExmlFileEditor } from 'egret/exts/exml-exts/exml/browser/exmlFileEditor';
 
 
 //TODO 这个新建exml的和框架层无关，未来不应该放在这里
@@ -429,6 +430,9 @@ export class SaveActiveOperation implements IOperation {
 	public run(): Promise<any> {
 		const currentEditor = this.editorService.getActiveEditor();
 		if (currentEditor && currentEditor.input) {
+			if(currentEditor instanceof ExmlFileEditor){
+				(currentEditor as ExmlFileEditor).syncModelData();
+			}
 			return this.fileModelService.save(currentEditor.input.getResource());
 		}
 		return Promise.resolve(void 0);
@@ -450,12 +454,20 @@ export class SaveAllOperation implements IOperation {
 
 	constructor(
 		@IFileModelService private fileModelService: IFileModelService,
+		@IWorkbenchEditorService private editorService: IWorkbenchEditorService
 	) {
 	}
 	/**
 	 * 运行
 	 */
 	public run(): Promise<any> {
+		const editors = this.editorService.getOpenEditors();
+		for (let i = 0; i < editors.length; i++) {
+			const editor = editors[i];
+			if(editor instanceof ExmlFileEditor){
+				(editor as ExmlFileEditor).syncModelData();
+			}
+		}
 		return this.fileModelService.saveAll();
 	}
 	/**

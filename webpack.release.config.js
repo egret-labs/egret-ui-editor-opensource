@@ -1,15 +1,18 @@
 let path = require('path')
 let fs = require('fs')
 let htmlPlugin = require('html-webpack-plugin');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var glob = require('glob');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 function getEntry() {
 	var entry = {};
-	entry['main.js'] = './main.ts';
-	entry['./egret/workbench/electron-browser/bootstrap/index.js'] = './egret/workbench/electron-browser/bootstrap/index.ts';
+	entry['main'] = './main.ts';
+	entry['egret/workbench/electron-browser/bootstrap/index'] = './egret/workbench/electron-browser/bootstrap/index.ts';
+	// monaco-editor
+	entry['egret/workbench/electron-browser/bootstrap/monaco-editor/monaco-editor'] = './monaco-editor.js';
+	entry['egret/workbench/electron-browser/bootstrap/monaco-editor/editor.worker'] = "monaco-editor/esm/vs/editor/editor.worker.js"
 	var srcDirName = './src/**/*.node.ts'; //需要获取的文件路径
 	glob.sync(srcDirName).forEach(function (name) {
 		var target = name;
@@ -19,7 +22,7 @@ function getEntry() {
 		entry[source] = target;
 	});
 	for (var key in entry) {
-		console.log(key + ' : ' + entry[key]);
+		console.log(key + ' : ' + entry[key] + '\n');
 	}
 	return entry;
 }
@@ -40,7 +43,7 @@ module.exports = {
 	},
 	entry: getEntry(),
 	output: {
-		filename: '[name]',
+		filename: '[name].js',
 		path: __dirname + '/out',
 		publicPath:'../../../../'
 	},
@@ -57,12 +60,23 @@ module.exports = {
 				loader: 'babel' 
 			}, {
 				test: /\.css$/,
-				loader: ExtractTextPlugin.extract('css-loader'),
-				exclude: /node_modules/
-			}, {
+				use: [
+					MiniCssExtractPlugin.loader,
+					"css-loader"
+				]
+			},{
 				test: /\.less$/,
-				loader: ExtractTextPlugin.extract('css-loader!less-loader'),
-				exclude: /node_modules/
+				use: [MiniCssExtractPlugin.loader,
+					"css-loader",
+				{
+					loader: "less-loader",
+					options: {
+						paths: [
+							path.resolve(__dirname, "node_modules")
+						],
+						javascriptEnabled: true
+					}
+				}]
 			}, {
 				test: /\.node$/,
 				use: 'node-loader',
@@ -75,6 +89,12 @@ module.exports = {
 		]
 	},
 	plugins: [
+        new MiniCssExtractPlugin({
+            // Options similar to the same options in webpackOptions.output
+            // both options are optional
+            filename: "[name].css",
+            chunkFilename: "[id].css"
+        }),
 		new htmlPlugin({
 			minify: false,
 			hash: false,
@@ -86,7 +106,6 @@ module.exports = {
 			{ from: '../resources/',to:'./egret/workbench/electron-browser/bootstrap/resources/' },
 			{ from: './egret/workbench/services/files/watcher/win32/CodeHelper.exe',to:'./egret/workbench/services/files/watcher/win32/CodeHelper.exe' }
         ]),
-		new ExtractTextPlugin('[name].css'),
 		new UglifyJsPlugin({
 			sourceMap:false,
 			uglifyOptions: {
@@ -122,7 +141,10 @@ function _externals() {
 	
 	let externals = {};
 	for(let name in nameMap){
-		externals[name] = 'commonjs ' + name;
+		if (nameMap[name] === true) {
+			// console.log('external: ' + 'commonjs ' + name);
+			externals[name] = 'commonjs ' + name;
+		}
 	}
 
     return externals;

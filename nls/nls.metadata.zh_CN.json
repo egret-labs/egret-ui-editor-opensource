@@ -435,6 +435,10 @@
 		"s": "Preview",
 		"t": "预览"
 	},
+	"exml.editor.code": {
+		"s": "Code",
+		"t": "源码"
+	},
 	"exmlComponentPanel.constructor.title": {
 		"s": "Select Host Component",
 		"t": "选择主机组件"

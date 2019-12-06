@@ -3,7 +3,7 @@ import { EditorInput } from 'egret/editor/common/input/editorInput';
 import { IInstantiationService } from 'egret/platform/instantiation/common/instantiation';
 import { ExmlView } from './exmlView';
 import { IExmlFileEditorModel } from '../common/exml/models';
-import { IExmlViewContainer, IExmlView } from './editors';
+import { IExmlViewContainer, IExmlView, ICodeViewContainer, ICodeView } from './editors';
 import { dispose } from 'egret/base/common/lifecycle';
 import { ExmlFileEditorNavigation } from './exmlFileEditorNavigation';
 import { EditMode } from './commons';
@@ -15,12 +15,13 @@ import { IOperationBrowserService } from 'egret/platform/operations/common/opera
 import { IFocusablePart, KeybindingType } from 'egret/platform/operations/common/operations';
 import { localize } from 'egret/base/localization/nls';
 import { SystemCommands } from 'egret/platform/operations/commands/systemCommands';
+import { CodeView } from './codeView';
 
 //TODO 销毁方法
 /**
  * Exml文件编辑器
  */
-export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IFocusablePart {
+export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, ICodeViewContainer, IFocusablePart {
 
 	constructor(
 		@IInstantiationService protected instantiationService: IInstantiationService,
@@ -38,13 +39,13 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IF
 	/** 注册当前编辑器可以执行的命令 */
 	private initCommands(): void {
 		this.operationService.registerFocusablePart(this);
-		this.operationService.registerKeybingding(EuiCommands.GROUP, 'mod+g', KeybindingType.KEY_DOWN,localize('exmlFileEditor.initCommands.group','EUI Group'),localize('exmlFileEditor.initCommands.groupDes','Group the selected component in current Exml'), false);
-		this.operationService.registerKeybingding(EuiCommands.UNGROUP, 'mod+u', KeybindingType.KEY_DOWN,localize('exmlFileEditor.initCommands.ungroup','EUI Ungroup'),localize('exmlFileEditor.initCommands.ungroupDes','Unpack the selected group in current Exml'), false);
-		this.operationService.registerKeybingding(EuiCommands.REFRESH, 'mod+r', KeybindingType.KEY_DOWN,localize('exmlFileEditor.initCommands.freshEidtor','Refresh Exml editor'),localize('exmlFileEditor.initCommands.freshEidtorDes','Refresh the currently active Exml editor'), false);
-		this.operationService.registerKeybingding(EuiCommands.ZOOM_IN, 'mod+=', KeybindingType.KEY_DOWN,localize('exmlFileEditor.initCommands.zoomIn','Zoom in Exml editor'),localize('exmlFileEditor.initCommands.zoomInDes','Zoom in on the currently active Exml editor'), false);
-		this.operationService.registerKeybingding(EuiCommands.ZOOM_OUT, 'mod+-', KeybindingType.KEY_DOWN,localize('exmlFileEditor.initCommands.zoomOut','Zoom out Exml editor'),localize('exmlFileEditor.initCommands.zoomOutDes','Zoom put on the currently active Exml editor'), false);
-		this.operationService.registerKeybingding(EuiCommands.FIT_SCREEN, 'mod+0', KeybindingType.KEY_DOWN,localize('exmlFileEditor.initCommands.fitScreen','Fit Screen'),localize('exmlFileEditor.initCommands.fitScreenDes','Display current Exml by screen size'), false);
-		this.operationService.registerKeybingding(EuiCommands.NO_SCALE, 'mod+1', KeybindingType.KEY_DOWN,localize('exmlFileEditor.initCommands.noScale','No Scale'),localize('exmlFileEditor.initCommands.noScaleDes','100% display current Exml'), false);
+		this.operationService.registerKeybingding(EuiCommands.GROUP, 'mod+g', KeybindingType.KEY_DOWN, localize('exmlFileEditor.initCommands.group', 'EUI Group'), localize('exmlFileEditor.initCommands.groupDes', 'Group the selected component in current Exml'), false);
+		this.operationService.registerKeybingding(EuiCommands.UNGROUP, 'mod+u', KeybindingType.KEY_DOWN, localize('exmlFileEditor.initCommands.ungroup', 'EUI Ungroup'), localize('exmlFileEditor.initCommands.ungroupDes', 'Unpack the selected group in current Exml'), false);
+		this.operationService.registerKeybingding(EuiCommands.REFRESH, 'mod+r', KeybindingType.KEY_DOWN, localize('exmlFileEditor.initCommands.freshEidtor', 'Refresh Exml editor'), localize('exmlFileEditor.initCommands.freshEidtorDes', 'Refresh the currently active Exml editor'), false);
+		this.operationService.registerKeybingding(EuiCommands.ZOOM_IN, 'mod+=', KeybindingType.KEY_DOWN, localize('exmlFileEditor.initCommands.zoomIn', 'Zoom in Exml editor'), localize('exmlFileEditor.initCommands.zoomInDes', 'Zoom in on the currently active Exml editor'), false);
+		this.operationService.registerKeybingding(EuiCommands.ZOOM_OUT, 'mod+-', KeybindingType.KEY_DOWN, localize('exmlFileEditor.initCommands.zoomOut', 'Zoom out Exml editor'), localize('exmlFileEditor.initCommands.zoomOutDes', 'Zoom put on the currently active Exml editor'), false);
+		this.operationService.registerKeybingding(EuiCommands.FIT_SCREEN, 'mod+0', KeybindingType.KEY_DOWN, localize('exmlFileEditor.initCommands.fitScreen', 'Fit Screen'), localize('exmlFileEditor.initCommands.fitScreenDes', 'Display current Exml by screen size'), false);
+		this.operationService.registerKeybingding(EuiCommands.NO_SCALE, 'mod+1', KeybindingType.KEY_DOWN, localize('exmlFileEditor.initCommands.noScale', 'No Scale'), localize('exmlFileEditor.initCommands.noScaleDes', '100% display current Exml'), false);
 		//TODO 可以把其他快捷键也写进去，然后计入一个空的
 	}
 
@@ -117,7 +118,7 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IF
 	 */
 	public doFocusIn(): void {
 		super.doFocusIn();
-		if(this.exmlView){
+		if (this.exmlView) {
 			this.exmlView.doFosusIn();
 		}
 	}
@@ -150,11 +151,22 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IF
 			});
 		});
 	}
+
+	/**
+	 * 同步各个子编辑器的数据
+	 */
+	public syncModelData(): void {
+		this.codeView.syncModelData();
+		if (this._model) {
+			this._model.updateDirty();
+		}
+	}
+
 	/**
 	 * 刷新输入流
 	 */
-	private doRefreshInput(refresh:boolean):Promise<void>{
-		if(this.input){
+	private doRefreshInput(refresh: boolean): Promise<void> {
+		if (this.input) {
 			return this.input.resolve(refresh).then(resolvedModel => {
 				this._model = resolvedModel as IExmlFileEditorModel;
 				this.updateModel(this._model);
@@ -171,8 +183,8 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IF
 	/**
 	 * 刷新输入流
 	 */
-	public refreshInput():void{
-		this.doRefreshInput(true).then(()=>{
+	public refreshInput(): void {
+		this.doRefreshInput(true).then(() => {
 			this.refreshExml();
 		});
 	}
@@ -182,9 +194,12 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IF
 	protected updateModel(model: IExmlFileEditorModel): void {
 		super.updateModel(model);
 		this.exmlView.setModel(model.getModel());
+		this.codeView.setModel(model);
 		this.stateBar.setModel(model.getModel());
 	}
 
+	private _isCodeDirty: boolean;
+	private _previousMode: EditMode = EditMode.DESIGN;
 	private _model: IExmlFileEditorModel;
 
 	private resolveModelPromise: Promise<IExmlFileEditorModel>;
@@ -206,23 +221,39 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IF
 	}
 
 	private navigationContainer: HTMLElement;
-	private viewContainer: HTMLElement;
+	private exmlRootContainer: HTMLElement;
+	private exmlViewContainer: HTMLElement;
 	private stateBarContainer: HTMLElement;
+	private codeViewContainer: HTMLElement;
 
 	private navigation: ExmlFileEditorNavigation;
 	private exmlView: ExmlView;
+	private codeView: CodeView;
 	private stateBar: StateBar;
 	private initParts(): void {
 		this.navigationContainer = document.createElement('div');
 		this.navigationContainer.style.width = '100%';
 		this.navigationContainer.style.flexShrink = '0';
 
-		this.viewContainer = document.createElement('div');
-		this.viewContainer.style.width = '100%';
-		this.viewContainer.style.height = '100%';
-		this.viewContainer.style.position = 'relative';
-		this.viewContainer.setAttribute('className', 'exmlview-container-root');
+		this.exmlRootContainer = document.createElement('div');
+		this.exmlRootContainer.style.width = '100%';
+		this.exmlRootContainer.style.height = '100%';
+		this.exmlRootContainer.style.display = 'flex';
+		this.exmlRootContainer.style.flexDirection = 'column';
+
+		this.exmlViewContainer = document.createElement('div');
+		this.exmlViewContainer.style.width = '100%';
+		this.exmlViewContainer.style.height = '100%';
+		this.exmlViewContainer.style.position = 'relative';
+		this.exmlViewContainer.setAttribute('className', 'exmlview-container-root');
 		this.exmlView = this.instantiationService.createInstance(ExmlView, this);
+
+		this.codeViewContainer = document.createElement('div');
+		this.codeViewContainer.style.width = '100%';
+		this.codeViewContainer.style.height = '100%';
+		this.codeViewContainer.style.position = 'relative';
+		this.codeViewContainer.setAttribute('className', 'codeview-container-root');
+		this.codeView = this.instantiationService.createInstance(CodeView, this);
 
 		this.navigation = new ExmlFileEditorNavigation(this.navigationContainer);
 		this.navigation.onEditModeChanged(e => this.updateEditMode(e));
@@ -238,10 +269,11 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IF
 		this.stateBarContainer = document.createElement('div');
 		this.stateBarContainer.style.width = '100%';
 		this.stateBarContainer.style.marginBottom = '2px';
-		this.viewContainer.style.position = 'relative';
+		this.exmlViewContainer.style.position = 'relative';
 		this.stateBarContainer.setAttribute('className', 'state-bar-container-root');
 		this.stateBar = this.instantiationService.createInstance(StateBar, this.stateBarContainer);
 		this.initExmlView();
+		this.initCodeView();
 	}
 
 	private initExmlView(): void {
@@ -252,13 +284,28 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IF
 		this.updateEditMode(this.navigation.editMode);
 		this.exmlView.doResize();
 	}
+	private initCodeView(): void {
+		this.codeView.onDirtyStateChanged(dirty => this.codeDirtyStateChanged(dirty));
+		this.codeView.doResize();
+	}
 	protected resize(newWidth: number, newHeight: any): void {
 		super.resize(newWidth, newHeight);
-		if(this.exmlView){
+		if (this.exmlView) {
 			this.exmlView.doResize();
+		}
+		if (this.codeView) {
+			this.codeView.doResize();
 		}
 	}
 
+	protected async isDirty(): Promise<boolean> {
+		if (this._isCodeDirty) {
+			return Promise.resolve(true);
+		}
+		return this.getModel().then(model => {
+			return model.isDirty();
+		});
+	}
 
 	private refreshClick_handler(): void {
 		this.refreshExml();
@@ -266,15 +313,42 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IF
 	/**
 	 * 刷新
 	 */
-	public refreshExml():void{
-		if(this.exmlView){
+	public refreshExml(): void {
+		if (this.exmlView) {
 			this.exmlView.refreshRuntime();
 			this.exmlView.refresh();
 		}
 	}
 
+	private codeDirtyStateChanged(dirty: boolean): void {
+		this._isCodeDirty = dirty;
+		this.updateTitle();
+	}
+
 	private updateEditMode(mode: EditMode): void {
-		this.exmlView.setEditMode(mode, this.navigation.previewConfig);
+		if (mode === EditMode.CODE) {
+			this.codeViewContainer.style.display = 'block';
+			this.exmlRootContainer.style.display = 'none';
+			if (this.codeView) {
+				this.codeView.setActive(true);
+				this.codeView.doResize();
+			}
+		} else {
+			let shouldRefresh: boolean = false;
+			if (this._previousMode === EditMode.CODE) {
+				shouldRefresh = this._isCodeDirty;
+			}
+			if (this.codeView) {
+				this.codeView.setActive(false);
+			}
+			if(shouldRefresh){
+				this.refreshExml();
+			}
+			this.codeViewContainer.style.display = 'none';
+			this.exmlRootContainer.style.display = 'flex';
+			this.exmlView.setEditMode(mode, this.navigation.previewConfig);
+		}
+		this._previousMode = mode;
 	}
 	private updatePreviewConfig(): void {
 		this.exmlView.updatePreviewConfig(this.navigation.previewConfig);
@@ -321,8 +395,10 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IF
 		container.appendChild(editorContainer);
 
 		editorContainer.appendChild(this.navigationContainer);
-		editorContainer.appendChild(this.viewContainer);
-		editorContainer.appendChild(this.stateBarContainer);
+		this.exmlRootContainer.appendChild(this.exmlViewContainer);
+		this.exmlRootContainer.appendChild(this.stateBarContainer);
+		editorContainer.appendChild(this.exmlRootContainer);
+		editorContainer.appendChild(this.codeViewContainer);
 
 		container.addEventListener('keydown', this.keydown_handler);
 		container.addEventListener('keyup', this.keyup_handler);
@@ -339,8 +415,8 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IF
 	 * 通知键盘事件
 	 * @param e 
 	 */
-	public notifyKeyboardEvent(e:KeyboardEvent):void{
-		if(e.type == 'keydown'){
+	public notifyKeyboardEvent(e: KeyboardEvent): void {
+		if (e.type == 'keydown') {
 			if (e.keyCode == Keyboard.ALTERNATE) {
 				this.navigation.lockGroup = !this.navigation.lockGroup;
 				this.exmlView.lockGroup = this.navigation.lockGroup;
@@ -349,7 +425,7 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IF
 			if (this.exmlView) {
 				this.exmlView.notifyKeyboardEvent(e);
 			}
-		}else{
+		} else {
 			if (e.keyCode == Keyboard.ALTERNATE) {
 				this.navigation.lockGroup = !this.navigation.lockGroup;
 				this.exmlView.lockGroup = this.navigation.lockGroup;
@@ -398,14 +474,30 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IF
 	 * @param view 
 	 */
 	public addExmlView(view: IExmlView): void {
-		this.viewContainer.appendChild(view.container);
+		this.exmlViewContainer.appendChild(view.container);
 	}
 	/**
 	 * 移除ExmlView
 	 * @param view 
 	 */
 	public removeExmlView(view: IExmlView): void {
-		this.viewContainer.removeChild(view.container);
+		this.exmlViewContainer.removeChild(view.container);
+		dispose(view);
+	}
+
+	/**
+	 * 添加一个CodeView
+	 * @param view 
+	 */
+	public addCodeView(view: ICodeView): void {
+		this.codeViewContainer.appendChild(view.container);
+	}
+	/**
+	 * 移除CodeView
+	 * @param view 
+	 */
+	public removeCodeView(view: ICodeView): void {
+		this.codeViewContainer.removeChild(view.container);
 		dispose(view);
 	}
 

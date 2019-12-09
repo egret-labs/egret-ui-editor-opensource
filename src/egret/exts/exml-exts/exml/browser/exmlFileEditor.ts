@@ -265,6 +265,7 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 		this.navigation.onNoScaleClick(e => this.noScaleClick_handler());
 		this.navigation.onAdsortChanged(e => this.adsortChanged_handler(e));
 		this.navigation.onLockGroupChanged(e => this.lockGroupChanged_handler(e));
+		this.navigation.onGrabChanged(e => this.grabChanged_handler(e));
 
 		this.stateBarContainer = document.createElement('div');
 		this.stateBarContainer.style.width = '100%';
@@ -377,6 +378,9 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 	private lockGroupChanged_handler(value: boolean): void {
 		this.exmlView.lockGroup = value;
 		this.exmlView.promptLockGroupTips();
+	}
+	private grabChanged_handler(value: boolean): void {
+		this.exmlView.exmlEditor.dragEnabled = value;
 	}
 
 	private _container: HTMLElement;

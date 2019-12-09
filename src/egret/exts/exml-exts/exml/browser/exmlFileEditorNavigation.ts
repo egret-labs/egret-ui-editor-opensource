@@ -23,6 +23,7 @@ export class ExmlFileEditorNavigation {
 	private _onShowAllClick: Emitter<void>;
 	private _onNoScaleClick: Emitter<void>;
 
+	private _onGrabChanged: Emitter<boolean>;
 	private _onLockGroupChanged: Emitter<boolean>;
 	private _onAdsortChanged: Emitter<boolean>;
 
@@ -37,6 +38,7 @@ export class ExmlFileEditorNavigation {
 		this._onZoomOutClick = new Emitter<void>();
 		this._onShowAllClick = new Emitter<void>();
 		this._onNoScaleClick = new Emitter<void>();
+		this._onGrabChanged = new Emitter<boolean>();
 		this._onLockGroupChanged = new Emitter<boolean>();
 		this._onAdsortChanged = new Emitter<boolean>();
 
@@ -82,6 +84,10 @@ export class ExmlFileEditorNavigation {
 	public get onLockGroupChanged(): Event<boolean> {
 		return this._onLockGroupChanged.event;
 	}
+	/** 使用🤚移动场景 */
+	public get onGrabChanged(): Event<boolean> {
+		return this._onGrabChanged.event;
+	}
 
 
 
@@ -97,6 +103,7 @@ export class ExmlFileEditorNavigation {
 	private fitContentButton: ToggleButton;
 
 	private funcContainer: HGroup;
+	private grabBtn: ToggleIconButton;
 	private lockGroupBtn: ToggleIconButton;
 	private adsorbBtn: ToggleIconButton;
 
@@ -188,6 +195,10 @@ export class ExmlFileEditorNavigation {
 
 		this.funcContainer = new HGroup(container);
 		this.funcContainer.style.marginRight = '30px';
+
+		this.grabBtn = new ToggleIconButton(this.funcContainer);
+		this.grabBtn.iconClass = 'grab-icon';
+		this.grabBtn.onSelectedChanged(() => this._onGrabChanged.fire(this.grabBtn.selected));
 
 		this.lockGroupBtn = new ToggleIconButton(this.funcContainer);
 		this.lockGroupBtn.iconClass = 'lockgroup-icon';

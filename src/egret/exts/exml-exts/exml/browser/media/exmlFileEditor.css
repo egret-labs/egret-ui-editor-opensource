@@ -10,6 +10,9 @@
 .code-icon{	  
 	background-image: url(./light/source.svg);
 }
+.grab-icon{	  
+	background-image: url(./light/grab.svg);
+}
 
 .min-icon{	  
 	background-image: url(./light/min.svg);

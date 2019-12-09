@@ -117,6 +117,7 @@ export class ExmlEditor extends EventDispatcher {
 		this.operateLayer = new OperateLayer();
 		//添加变换层
 		this.transformLayer = new TransformLayer(this.operateLayer);
+		this.transformLayer.dragEnabled = this.dragEnabled;
 		this.transformLayer.render(this.transformContainer);
 		this.transformContainer.addEventListener('mousedown', this.contextMenuHanlder);
 		this.transformContainer.addEventListener('mouseup', this.contextMenuHanlder);
@@ -184,12 +185,18 @@ export class ExmlEditor extends EventDispatcher {
 		this.autoMarkLayer.promptTips();
 	}
 
-
-
-
-	
-
-
+	private _dragEnabled: boolean = false;
+	public get dragEnabled(): boolean {
+		return this._dragEnabled;
+	}
+	public set dragEnabled(value: boolean) {
+		if (this._dragEnabled != value) {
+			this._dragEnabled = value;
+			if(this.transformLayer){
+				this.transformLayer.dragEnabled = value;
+			}
+		}
+	}	
 
 	public getViewInfo(): { x: number, y: number, scale: number } {
 		return this.focusRectLayer.getViewInfo();

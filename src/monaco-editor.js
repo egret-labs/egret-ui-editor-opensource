@@ -1,5 +1,6 @@
 // import 'monaco-editor/esm/vs/editor/editor.main.js';
 import 'monaco-editor/esm/vs/editor/edcore.main';
+import { MenuRegistry } from 'monaco-editor/esm/vs/platform/actions/common/actions';
 
 // (2) Desired languages:
 // import 'monaco-editor/esm/vs/language/typescript/monaco.contribution';
@@ -44,6 +45,56 @@ import 'monaco-editor/esm/vs/editor/edcore.main';
 // import 'monaco-editor/esm/vs/basic-languages/vb/vb.contribution.js';
 import 'monaco-editor/esm/vs/basic-languages/xml/xml.contribution.js';
 // import 'monaco-editor/esm/vs/basic-languages/yaml/yaml.contribution.js';
+
+import { remote } from 'electron';
+
+const nls_zh = {
+	ChangeAllOccurrences: '修改所有出现的单词',
+	Cut: '剪切',
+	Copy: '复制',
+	Paste: '粘贴'
+};
+const iszh = remote.app.getLocale().startsWith('zh');
+
+MenuRegistry.getMenuItems = function (id) {
+	var result = (this._menuItems.get(id) || []).slice(0);
+	if (id === 0 /* CommandPalette */ ) {
+		// CommandPalette is special because it shows
+		// all commands by default
+		this._appendImplicitItems(result);
+	}
+	for (let i = 0; i < result.length; i++) {
+		const item = result[i];
+		// 从右键菜单中移除 Command Palette
+		// https://github.com/Microsoft/monaco-editor/issues/1237
+		if (item.command.id === 'editor.action.quickCommand') {
+			result.splice(i, 1);
+			i--;
+			if (!iszh) {
+				break;
+			}
+		}
+		if (iszh) {
+			switch (item.command.id) {
+				case 'editor.action.clipboardCutAction':
+					item.command.title = nls_zh.Cut;
+					break;
+				case 'editor.action.clipboardCopyAction':
+					item.command.title = nls_zh.Copy;
+					break;
+				case 'editor.action.clipboardPasteAction':
+					item.command.title = nls_zh.Paste;
+					break;
+				case 'editor.action.changeAll':
+					item.command.title = nls_zh.ChangeAllOccurrences;
+					break;
+				default:
+					break;
+			}
+		}
+	}
+	return result;
+};
 
 self.MonacoEnvironment = {
 	getWorkerUrl: function (moduleId, label) {

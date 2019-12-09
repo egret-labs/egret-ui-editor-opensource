@@ -11,6 +11,7 @@ export class CodeEditor extends EventDispatcher implements IDisposable {
 
 	private container: HTMLElement;
 	private _isActive: boolean;
+	private monacoDisposables: monaco.IDisposable[] = [];
 	private exmlFileModel: IExmlFileEditorModel;
 	private editor: monaco.editor.IStandaloneCodeEditor;
 	private _isDirty: boolean = false;
@@ -29,16 +30,23 @@ export class CodeEditor extends EventDispatcher implements IDisposable {
 			minimap: { enabled: false },
 			theme: 'vs-dark'
 		});
-		this.editor.onContextMenu((e) => {
-			console.log('context menu');
+		// 禁用Command Palette快捷键
+		// https://github.com/Microsoft/monaco-editor/issues/419
+		this.editor.addCommand(monaco.KeyCode.F1, ()=> {
+			// do nothing.
 		});
-		this.editor.onDidChangeModelContent((e) => {
-			if (e.isFlush) {
-				this.resetDirtyState();
-			} else {
-				this.upateDirtyState();
-			}
-		});
+		// this.editor.onContextMenu((e) => {
+		// 	console.log('context menu');
+		// });
+		this.monacoDisposables.push(this.editor.onDidChangeModelContent((e) => this.didChangeModelContent_handler(e)));
+	}
+
+	private didChangeModelContent_handler(e: monaco.editor.IModelContentChangedEvent): void {
+		if (e.isFlush) {
+			this.resetDirtyState();
+		} else {
+			this.upateDirtyState();
+		}
 	}
 
 	public setup(exmlModel: IExmlFileEditorModel): void {
@@ -280,6 +288,8 @@ export class CodeEditor extends EventDispatcher implements IDisposable {
 	 * 释放
 	 */
 	public dispose(): void {
+		this.detachEventListener();
+		dispose(this.monacoDisposables);
 		this.editor.dispose();
 	}
 }

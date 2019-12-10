@@ -159,6 +159,9 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 		this.codeView.syncModelData();
 		if (this._model) {
 			this._model.updateDirty();
+			if(this._model.isDirty){
+				this.refreshExml();
+			}
 		}
 	}
 
@@ -199,7 +202,7 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 	}
 
 	private _isCodeDirty: boolean;
-	private _previousMode: EditMode = EditMode.DESIGN;
+	private _currentMode: EditMode = EditMode.DESIGN;
 	private _model: IExmlFileEditorModel;
 
 	private resolveModelPromise: Promise<IExmlFileEditorModel>;
@@ -336,20 +339,20 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 			}
 		} else {
 			let shouldRefresh: boolean = false;
-			if (this._previousMode === EditMode.CODE) {
+			if (this._currentMode === EditMode.CODE) {
 				shouldRefresh = this._isCodeDirty;
 			}
 			if (this.codeView) {
 				this.codeView.setActive(false);
 			}
-			if(shouldRefresh){
+			if (shouldRefresh) {
 				this.refreshExml();
 			}
 			this.codeViewContainer.style.display = 'none';
 			this.exmlRootContainer.style.display = 'flex';
 			this.exmlView.setEditMode(mode, this.navigation.previewConfig);
 		}
-		this._previousMode = mode;
+		this._currentMode = mode;
 	}
 	private updatePreviewConfig(): void {
 		this.exmlView.updatePreviewConfig(this.navigation.previewConfig);
@@ -409,10 +412,14 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 	}
 
 	private keydown_handler(e: KeyboardEvent): void {
-		this.notifyKeyboardEvent(e);
+		if (this._currentMode !== EditMode.CODE) {
+			this.notifyKeyboardEvent(e);
+		}
 	}
 	private keyup_handler(e: KeyboardEvent): void {
-		this.notifyKeyboardEvent(e);
+		if (this._currentMode !== EditMode.CODE) {
+			this.notifyKeyboardEvent(e);
+		}
 	}
 
 	/**

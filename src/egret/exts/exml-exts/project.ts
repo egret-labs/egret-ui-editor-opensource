@@ -146,7 +146,10 @@ class EgretProjectService implements IEgretProjectService {
 			}
 		}
 		if (refreshProj) {
-			this.initProject().then(() => {
+			this.loaded = false;
+			this.loadPromise = this.initProject().then(() => {
+				this.loaded = null;
+				this.loaded = true;
 				const editors = this.workbenchEditorService.getOpenEditors();
 				editors.forEach(editor => {
 					if ('refreshInput' in editor) {

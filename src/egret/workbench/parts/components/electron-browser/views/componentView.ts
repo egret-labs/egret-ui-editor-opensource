@@ -67,7 +67,18 @@ export class ComponentView extends PanelContentDom implements IModelRequirePart 
 			if (this.egretProjectService.exmlConfig) {
 				this._disposes.push(this.egretProjectService.exmlConfig.onCustomClassChanged(e => this.onCustomClassChanged_handler()));
 			}
+			this._disposes.push(this.egretProjectService.onProjectConfigChanged(e=> this.onProjectConfigChanged_handler()));
 		});
+	}
+
+	private unregisterListener(): void {	
+		this._disposes.map(v => v.dispose());
+		this._disposes = [];
+	}
+
+	private onProjectConfigChanged_handler(): void {
+		this.unregisterListener();
+		this.registerListener();
 	}
 
 	private onCustomClassChanged_handler(): void {

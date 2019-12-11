@@ -41,3 +41,7 @@
 	font-style: italic;
 }
 
+.monaco-tree .monaco-tree-rows > .monaco-tree-row.has-children.loading > .content:before {
+	display: none !important;
+}
+

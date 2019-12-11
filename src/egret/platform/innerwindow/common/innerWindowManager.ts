@@ -276,7 +276,7 @@ class InnerWindowManager {
 			window.doClose();
 
 			//更新父级模态撞他
-			let canRemoveOwnerModal: boolean = true;
+			let canRemoveOwnerModal: boolean = window.modal;
 			for (let i = 0; i < owner.subWindowsList.length; i++) {
 				const subWindow = <any>(owner.subWindowsList[i]) as _IInnerWindow;
 				if (subWindow.modal) {
@@ -350,14 +350,16 @@ class InnerWindowManager {
 		if (window) {
 			var owner: _IInnerWindow = <any>window.ownerWindow as _IInnerWindow;
 			const index = owner.subWindowsList.indexOf(window);
+			// 如果window不再subWindowsList中，则忽略
 			if (index != -1) {
 				owner.subWindowsList.splice(index, 1);
+				owner.subWindowsList.push(window);
+
+				for (let i = 0; i < owner.subWindowsList.length; i++) {
+					const subWindow = <any>owner.subWindowsList[i] as _IInnerWindow;
+					subWindow.windowElement.style.zIndex = i + '';
+				}
 			}
-			owner.subWindowsList.push(window);
-		}
-		for (let i = 0; i < owner.subWindowsList.length; i++) {
-			const subWindow = <any>owner.subWindowsList[i] as _IInnerWindow;
-			subWindow.windowElement.style.zIndex = i + '';
 		}
 	}
 

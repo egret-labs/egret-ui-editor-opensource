@@ -975,7 +975,7 @@ export class EObject extends EValue implements IObject {
 					// 	this.setInstanceValue(key, finalValue.value);
 					// }
 					// else {
-						this.setInstanceValue(key, formatValue);
+					this.setInstanceValue(key, formatValue);
 					// }
 				}
 				// else if (typeof formatValue === 'string') {
@@ -1005,7 +1005,7 @@ export class EObject extends EValue implements IObject {
 		if (this.sizeKeyMap[key] && typeof value === 'string' && value.indexOf('%') !== -1) {
 			key = this.sizeKeyMap[key];
 			value = Number(value.substr(0, value.length - 1));
-		}else if(typeof value === 'string'){
+		} else if (typeof value === 'string') {
 			value = unescape(value);
 		}
 		this._instance[key] = value;
@@ -1148,7 +1148,11 @@ export class ESize extends EValue implements ISize {
 	 */
 	constructor(instance: any = null) {
 		if (typeof instance === 'string' && (<string>instance).indexOf('%') === -1) {
-			instance = Number(instance);
+			if (instance.trim() === '') {
+				instance = Number.NaN;
+			} else {
+				instance = Number(instance);
+			}
 		}
 		super('number', EUI, instance);
 		registerInstanceType(this.getType(), 'eui.ISize');
@@ -2435,7 +2439,7 @@ export class ELink extends EValue implements ILink {
 			if (value.getId() in this.idMap) {
 				continue;
 			}
-			this.instanceChangeDisposables.addDisposable(value,value.onInstanceChanged(e=>this.updateInstance(e)));
+			this.instanceChangeDisposables.addDisposable(value, value.onInstanceChanged(e => this.updateInstance(e)));
 			this.idMap[value.getId()] = value;
 		}
 		this.updateInstance();
@@ -2454,7 +2458,7 @@ export class ELink extends EValue implements ILink {
 	 */
 	private updateInstance(event: InstanceChangedEvent = null): void {
 		super.setInstance(this.parseExp(this.expression));
-		this._onInstanceChanged.fire({target:this});
+		this._onInstanceChanged.fire({ target: this });
 	}
 
 	/**
@@ -2536,7 +2540,7 @@ export class ELink extends EValue implements ILink {
 	/**
 	 * 销毁
 	 */
-	public destroy():void{
+	public destroy(): void {
 		this.instanceChangeDisposables.disposeAll();
 		super.destroy();
 	}

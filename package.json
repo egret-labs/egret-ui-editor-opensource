@@ -7,8 +7,8 @@
     "license": "ISC",
     "scripts": {
         "start": "electron .",
-        "setup-mac": "export ELECTRON_MIRROR=http://npm.taobao.org/mirrors/electron/ && npm install && npm run unzip-mac",
-        "setup-win": "set ELECTRON_MIRROR=https://npm.taobao.org/mirrors/electron/ && npm install && npm run unzip-win",
+        "setup-mac": "export ELECTRON_MIRROR=http://npm.taobao.org/mirrors/electron/&& npm install && npm run unzip-mac",
+        "setup-win": "set ELECTRON_MIRROR=https://npm.taobao.org/mirrors/electron/&& npm install && npm run unzip-win",
         "build": "webpack --progress --config webpack.debug.config.js",
         "watch": "webpack --watch --progress --config  webpack.debug.config.js",
         "unzip-win": "build\\win\\unzip.exe -o build\\win\\node_modules.zip -d node_modules",

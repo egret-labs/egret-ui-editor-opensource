@@ -17,7 +17,7 @@ export class CodeView implements ICodeView {
 		@IEgretProjectService protected egretProjectService: IEgretProjectService,
 	) {
 		this._onDirtyStateChanged = new Emitter<boolean>();
-		this.codeEditor = new CodeEditor();
+		this.codeEditor = this.instantiationService.createInstance(CodeEditor);
 		this.initView();
 	}
 

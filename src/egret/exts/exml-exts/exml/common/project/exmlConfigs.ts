@@ -205,6 +205,10 @@ export abstract class AbstractExmlConfig {
 		return this.coreParser.getBaseClassName(text);
 	}
 
+	public getClassNodeMap(): { [fullName: string]: ClassNode } {
+		return this._classMap;
+	}
+
 	private getCustomStamp: number = -1;
 	private customClasses: ClassNode[] = [];
 	/**
@@ -254,6 +258,7 @@ export abstract class AbstractExmlConfig {
 		}
 		return false;
 	}
+
 	/**
 	 * 得到一个类的继承连
 	 * @param className 

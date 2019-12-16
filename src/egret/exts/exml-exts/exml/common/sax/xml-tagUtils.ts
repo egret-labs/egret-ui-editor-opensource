@@ -81,22 +81,20 @@ function addParent(target: any, parent: any): void {
  * @param throwError 是否抛出异常
  * @param messageWithPos 错误是否包含位置信息
  */
-export function parse(xmlString: string, throwError = true, messageWithPos = true): sax.Tag {
-	if (throwError && messageWithPos) {
-		const cacheTag = getCache(xmlString);
-		if (cacheTag) {
-			return cacheTag;
-		}
-	}
-	const strict = true, // set to false for html-mode
-		saxparser = sax.parser(strict, { position: true, messagePos: messageWithPos });
+export function parse(xmlString, throwError = true, messageWithPos = true): sax.Tag {
+	let strict = true; // set to false for html-mode
+	let saxparser = sax.parser(strict, { position: true, messagePos: messageWithPos });
 	let object: sax.Tag = null;
-	const namespaces = {};
-	const errors: sax.Error[] = [];
-	const attribNodes: sax.Attribute[] = [];
+	let namespaces = {};
+	let errors: sax.Error[] = [];
+	let attribNodes: sax.Attribute[] = [];
+	let comments: sax.Comment[] = [];
+	let processingInstructions: sax.ProcessingInstruction[] = [];
+	let roots: sax.Tag[] = [];
+
 	saxparser.resume();
 	saxparser.onerror = function (err) {
-		const error: sax.Error = {
+		let error: sax.Error = {
 			start: saxparser.startAttribPosition || saxparser.startTagPosition,
 			end: saxparser.position,
 			line: saxparser.line,
@@ -107,7 +105,7 @@ export function parse(xmlString: string, throwError = true, messageWithPos = tru
 		errors.push(error);
 	};
 	saxparser.onopentag = function (node: sax.Tag) {
-		const attribs = node.attributes;
+		let attribs = node.attributes;
 		node.nodeType = sax.Type.Tag;
 		node.attributeNodes = attribNodes.filter(a => a.start > saxparser.startTagPosition);
 		node.attributeNodes.forEach(a => a.parent = node);
@@ -115,23 +113,25 @@ export function parse(xmlString: string, throwError = true, messageWithPos = tru
 		node.line = saxparser.line;
 		node.column = saxparser.column;
 		node.children = [];
-		for (const key in attribs) {
-			index = key.indexOf('xmlns:');
-			if (index === 0) {
-				var prefix: string = key.substring(6);
-				const uri = attribs[key];
+		node.startTagEnd = saxparser.position + 1;
+
+		for (let key in attribs) {
+			let idx = key.indexOf('xmlns:');
+			if (idx === 0) {
+				let prefix: string = key.substring(6);
+				let uri = attribs[key];
 				namespaces[prefix] = uri;
 			}
 		}
-		node.toString = toString;
-		const name = node.name;
-		var index = name.indexOf(':');
+		node.toString = function () { return this.text; };
+		let name = node.name;
+		let index = name.indexOf(':');
 		if (index === -1) {
 			node.namespace = '';
 			node.prefix = '';
 			node.localName = name;
 		} else {
-			var prefix: string = name.substring(0, index);
+			let prefix: string = name.substring(0, index);
 			node.prefix = prefix;
 			node.namespace = namespaces[prefix];
 			node.localName = name.substring(index + 1);
@@ -148,50 +148,117 @@ export function parse(xmlString: string, throwError = true, messageWithPos = tru
 			node.parent = object;
 			object = node;
 		} else {
+			roots.push(node);
 			object = node;
 		}
 	};
 
 	saxparser.onattribute = function (attr) {
-		const attrNode: sax.Attribute = {
+		let attrNode: sax.Attribute = {
 			start: saxparser.startAttribPosition - 1,
 			end: saxparser.position,
 			name: attr.name,
 			value: attr.value,
 			nodeType: sax.Type.Attribute
 		};
+
+		if (!attr.closed) { attrNode.end--; }
 		attribNodes.push(attrNode);
 	};
 
+	saxparser.oncomment = function (comment) {
+		let CommentNode: sax.Comment = {
+			start: saxparser.startCommentPosition - 1,
+			end: saxparser.position + 1,
+			name: comment,
+			nodeType: sax.Type.Comment
+		};
+		comments.push(CommentNode);
+	};
+
+	saxparser.onprocessinginstruction = function (procInst) {
+		let processingInstruction: sax.ProcessingInstruction = {
+			start: saxparser.startProcInstPosition - 1,
+			end: saxparser.position + 1,
+			name: procInst.name,
+			body: procInst.body,
+			nodeType: sax.Type.ProcessingInstruction
+		};
+		processingInstructions.push(processingInstruction);
+	};
+
 	saxparser.onclosetag = function (node) {
-		object.end = saxparser.position;
-		if (object.parent) {
-			object = object.parent;
+		if (object.isSelfClosing) {
+			object.endTagStart = object.startTagEnd;
+		} else {
+			object.endTagStart = saxparser.endTagStart;
 		}
+		object = object.parent;
 	};
 
 	saxparser.oncdata = function (cdata) {
-		if (object && (!object.children || object.children.length === 0)) {
-			object.nodeType = sax.Type.Cdata;
-			object.text = cdata;
-		}
+		if (!object) { return; }
+		object.text = (object.text || '') + cdata;
+
+		const textNode = {
+			start: saxparser.startCDataPosition,
+			end: saxparser.startCDataPosition + cdata.length + 12,
+			name: cdata,
+			nodeType: sax.Type.CData,
+		};
+
+		object.textNodes = object.textNodes || [];
+		object.textNodes.push(textNode);
 	};
 
 	saxparser.ontext = function (text) {
-		const currentText: string = trim(text);
-		if (object && !object.text && currentText) {
-			object.nodeType = sax.Type.Text;
-			object.text = currentText;
-		}
+		if (!object || !text) { return; }
+		object.text = (object.text || '') + text;
+
+		const textNode = {
+			start: saxparser.startTextPosition,
+			end: saxparser.startTextPosition + text.length,
+			name: text,
+			nodeType: sax.Type.Text,
+		};
+		object.textNodes = object.textNodes || [];
+		object.textNodes.push(textNode);
 	};
 	if (throwError) {
 		saxparser.write(xmlString).close();
 	} else {
-		saxparser.write(xmlString).end();
+		try {
+			saxparser.write(xmlString).end();
+		} catch (e) {
+			console.log(e);
+		} // 如果解析中异常了, 尽可能保留已解析的结果
 	}
 
+	if (!object) {
+		object = {
+			attributes: {},
+			name: '',
+			start: -1,
+			end: -1,
+			startTagEnd: -1,
+			endTagStart: -1,
+			isSelfClosing: false,
+			attributeNodes: [],
+			text: '',
+			namespace: '',
+			localName: '',
+			error: null,
+			errors: []
+		};
+	}
+	// 避免 xml 有节点没正常闭合导致 object 无法在 onclosetag 事件中回到根节点
+	if (roots.length < 1) { return; }
+	object = roots[0];
+
+	object.comments = comments;
 	object.errors = errors;
-	setCache(xmlString, object);
+	object.processingInstructions = processingInstructions;
+	object.roots = roots;
 	return object;
 }
 

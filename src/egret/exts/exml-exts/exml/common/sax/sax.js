@@ -1,6 +1,4 @@
-var sax = {};
-
-;(function (sax) { // wrapper for non-node envs
+; (function (sax) { // wrapper for non-node envs
   sax.parser = function (strict, opt) { return new SAXParser(strict, opt) }
   sax.SAXParser = SAXParser
   sax.SAXStream = SAXStream
@@ -43,7 +41,7 @@ var sax = {};
     'closenamespace'
   ]
 
-  function SAXParser (strict, opt) {
+  function SAXParser(strict, opt) {
     if (!(this instanceof SAXParser)) {
       return new SAXParser(strict, opt)
     }
@@ -83,7 +81,7 @@ var sax = {};
 
   if (!Object.create) {
     Object.create = function (o) {
-      function F () {}
+      function F() { }
       F.prototype = o
       var newf = new F()
       return newf
@@ -98,7 +96,7 @@ var sax = {};
     }
   }
 
-  function checkBufferLength (parser) {
+  function checkBufferLength(parser) {
     var maxAllowed = Math.max(sax.MAX_BUFFER_LENGTH, 10)
     var maxActual = 0
     for (var i = 0, l = buffers.length; i < l; i++) {
@@ -134,13 +132,13 @@ var sax = {};
     parser.bufferCheckPosition = m + parser.position
   }
 
-  function clearBuffers (parser) {
+  function clearBuffers(parser) {
     for (var i = 0, l = buffers.length; i < l; i++) {
       parser[buffers[i]] = ''
     }
   }
 
-  function flushBuffers (parser) {
+  function flushBuffers(parser) {
     closeText(parser)
     if (parser.cdata !== '') {
       emitNode(parser, 'oncdata', parser.cdata)
@@ -163,20 +161,19 @@ var sax = {};
   var Stream
   try {
     Stream = require('stream').Stream
-	Stream.prototype;
   } catch (ex) {
-    Stream = function () {}
+    Stream = function () { }
   }
 
   var streamWraps = sax.EVENTS.filter(function (ev) {
     return ev !== 'error' && ev !== 'end'
   })
 
-  function createStream (strict, opt) {
+  function createStream(strict, opt) {
     return new SAXStream(strict, opt)
   }
 
-  function SAXStream (strict, opt) {
+  function SAXStream(strict, opt) {
     if (!(this instanceof SAXStream)) {
       return new SAXStream(strict, opt)
     }
@@ -303,22 +300,22 @@ var sax = {};
   quote = charClass(quote)
   attribEnd = charClass(attribEnd)
 
-  function charClass (str) {
+  function charClass(str) {
     return str.split('').reduce(function (s, c) {
       s[c] = true
       return s
     }, {})
   }
 
-  function isRegExp (c) {
+  function isRegExp(c) {
     return Object.prototype.toString.call(c) === '[object RegExp]'
   }
 
-  function is (charclass, c) {
+  function is(charclass, c) {
     return isRegExp(charclass) ? !!c.match(charclass) : charclass[c]
   }
 
-  function not (charclass, c) {
+  function not(charclass, c) {
     return !is(charclass, c)
   }
 
@@ -639,28 +636,28 @@ var sax = {};
   // shorthand
   S = sax.STATE
 
-  function emit (parser, event, data) {
+  function emit(parser, event, data) {
     parser[event] && parser[event](data)
   }
 
-  function emitNode (parser, nodeType, data) {
+  function emitNode(parser, nodeType, data) {
     if (parser.textNode) closeText(parser)
     emit(parser, nodeType, data)
   }
 
-  function closeText (parser) {
+  function closeText(parser) {
     parser.textNode = textopts(parser.opt, parser.textNode)
     if (parser.textNode) emit(parser, 'ontext', parser.textNode)
     parser.textNode = ''
   }
 
-  function textopts (opt, text) {
+  function textopts(opt, text) {
     if (opt.trim) text = text.trim()
     if (opt.normalize) text = text.replace(/\s+/g, ' ')
     return text
   }
 
-  function error (parser, er) {
+  function error(parser, er) {
     closeText(parser)
     if (parser.trackPosition && parser.messagePos) {
       er += '\nLine: ' + parser.line +
@@ -673,7 +670,7 @@ var sax = {};
     return parser
   }
 
-  function end (parser) {
+  function end(parser) {
     if (parser.sawRoot && !parser.closedRoot) strictFail(parser, 'Unclosed root tag')
     if ((parser.state !== S.BEGIN) &&
       (parser.state !== S.BEGIN_WHITESPACE) &&
@@ -688,7 +685,7 @@ var sax = {};
     return parser
   }
 
-  function strictFail (parser, message) {
+  function strictFail(parser, message) {
     if (typeof parser !== 'object' || !(parser instanceof SAXParser)) {
       throw new Error('bad call to strictFail')
     }
@@ -697,7 +694,7 @@ var sax = {};
     }
   }
 
-  function newTag (parser) {
+  function newTag(parser) {
     if (!parser.strict) parser.tagName = parser.tagName[parser.looseCase]()
     var parent = parser.tags[parser.tags.length - 1] || parser
     var tag = parser.tag = { name: parser.tagName, attributes: {} }
@@ -709,9 +706,9 @@ var sax = {};
     parser.attribList.length = 0
   }
 
-  function qname (name, attribute) {
+  function qname(name, attribute) {
     var i = name.indexOf(':')
-    var qualName = i < 0 ? [ '', name ] : name.split(':')
+    var qualName = i < 0 ? ['', name] : name.split(':')
     var prefix = qualName[0]
     var local = qualName[1]
 
@@ -724,15 +721,17 @@ var sax = {};
     return { prefix: prefix, local: local }
   }
 
-  function attrib (parser) {
+  function attrib(parser, closed) {
     if (!parser.strict) {
       parser.attribName = parser.attribName[parser.looseCase]()
     }
 
     if (parser.attribList.indexOf(parser.attribName) !== -1 ||
       parser.tag.attributes.hasOwnProperty(parser.attribName)) {
-      parser.attribName = parser.attribValue = ''
-      return
+      // T: 重复的属性, 信息依然需要传递出去, 否则会出现问题
+      // parser.attribName = parser.attribValue = ''
+      // return
+      strictFail(parser, `tag ${parser.tagName} has duplicated attribute ${parser.attribName}`)
     }
 
     if (parser.opt.xmlns) {
@@ -769,14 +768,15 @@ var sax = {};
       parser.tag.attributes[parser.attribName] = parser.attribValue
       emitNode(parser, 'onattribute', {
         name: parser.attribName,
-        value: parser.attribValue
+        value: parser.attribValue,
+        closed: closed,
       })
     }
 
     parser.attribName = parser.attribValue = ''
   }
 
-  function openTag (parser, selfClosing) {
+  function openTag(parser, selfClosing) {
     if (parser.opt.xmlns) {
       // emit namespace binding events
       var tag = parser.tag
@@ -835,9 +835,17 @@ var sax = {};
       parser.attribList.length = 0
     }
 
-    parser.tag.isSelfClosing = !!selfClosing
+    if (!parser.tag) {
+      newTag(parser)
+      parser.tag.isSelfClosing = true
+    } else {
+      parser.tag.isSelfClosing = !!selfClosing
+    }
 
     // process the tag
+    if (parser.closedRoot && (!parser.tags || parser.tags.length < 1)) {
+      strictFail(parser, 'another root tag found: ' + parser.tagName);
+    }
     parser.sawRoot = true
     parser.tags.push(parser.tag)
     emitNode(parser, 'onopentag', parser.tag)
@@ -848,6 +856,7 @@ var sax = {};
       } else {
         parser.state = S.TEXT
       }
+      parser.startTextPosition = parser.position;
       parser.tag = null
       parser.tagName = ''
     }
@@ -855,13 +864,27 @@ var sax = {};
     parser.attribList.length = 0
   }
 
-  function closeTag (parser) {
-    if (!parser.tagName) {
-      strictFail(parser, 'Weird empty close tag.')
-      parser.textNode += '</>'
-      parser.state = S.TEXT
-      return
-    }
+  function tempTag(parser, closed) {
+    strictFail(parser, 'Tag not closed propertly')
+    newTag(parser)
+    parser.tag.isSelfClosing = true
+    emitNode(parser, 'onopentag', parser.tag)
+    parser.tag.end = closed ? parser.position : parser.position - 1;
+    emitNode(parser, 'onclosetag', parser.tagName)
+    parser.attribName = parser.attribValue = ''
+    parser.attribList.length = 0
+
+    parser.state = S.OPEN_WAKA
+    parser.startTagPosition = parser.position
+  }
+
+  function closeTag(parser) {
+    // if (!parser.tagName) {
+    //   strictFail(parser, 'Weird empty close tag.')
+    //   parser.textNode += '</>'
+    //   parser.state = S.TEXT
+    //   return
+    // }
 
     if (parser.script) {
       if (parser.tagName !== 'script') {
@@ -895,15 +918,29 @@ var sax = {};
     // didn't find it.  we already failed for strict, so just abort.
     if (t < 0) {
       strictFail(parser, 'Unmatched closing tag: ' + parser.tagName)
-      parser.textNode += '</' + parser.tagName + '>'
-      parser.state = S.TEXT
-      return
+      if (parser.tags.length < 1) {
+        parser.textNode += '</' + parser.tagName + '>'
+        parser.state = S.TEXT
+        return
+      }
+      // T:
+      tagName = parser.tags[parser.tags.length - 1].name;
+      t = parser.tags.length - 1;
     }
     parser.tagName = tagName
     var s = parser.tags.length
     while (s-- > t) {
       var tag = parser.tag = parser.tags.pop()
       parser.tagName = parser.tag.name
+
+      // T: 关闭匹配到的节点
+      if (s === t && tagName) {
+        tag.closed = true;
+        tag.end = parser.position;
+      } else {
+        tag.end = parser.startTagPosition - 1;
+      }
+
       emitNode(parser, 'onclosetag', parser.tagName)
 
       var x = {}
@@ -924,9 +961,10 @@ var sax = {};
     parser.tagName = parser.attribValue = parser.attribName = ''
     parser.attribList.length = 0
     parser.state = S.TEXT
+    parser.startTextPosition = parser.position;
   }
 
-  function parseEntity (parser) {
+  function parseEntity(parser) {
     var entity = parser.entity
     var entityLC = entity.toLowerCase()
     var num
@@ -951,7 +989,7 @@ var sax = {};
       }
     }
     entity = entity.replace(/^0+/, '')
-    if (numStr.toLowerCase() !== entity) {
+    if (isNaN(num) || numStr.toLowerCase() !== entity) {
       strictFail(parser, 'Invalid character entity')
       return '&' + parser.entity + ';'
     }
@@ -959,7 +997,7 @@ var sax = {};
     return String.fromCodePoint(num)
   }
 
-  function beginWhiteSpace (parser, c) {
+  function beginWhiteSpace(parser, c) {
     if (c === '<') {
       parser.state = S.OPEN_WAKA
       parser.startTagPosition = parser.position
@@ -972,7 +1010,7 @@ var sax = {};
     }
   }
 
-  function write (chunk) {
+  function write(chunk) {
     var parser = this
     if (this.error) {
       throw this.error
@@ -1058,6 +1096,7 @@ var sax = {};
         case S.SCRIPT_ENDING:
           if (c === '/') {
             parser.state = S.CLOSE_TAG
+            parser.endTagStart = chunk.lastIndexOf('<', i);
           } else {
             parser.script += '<' + c
             parser.state = S.SCRIPT
@@ -1076,19 +1115,30 @@ var sax = {};
             parser.tagName = c
           } else if (c === '/') {
             parser.state = S.CLOSE_TAG
+            parser.endTagStart = chunk.lastIndexOf('<', i);
             parser.tagName = ''
           } else if (c === '?') {
             parser.state = S.PROC_INST
             parser.procInstName = parser.procInstBody = ''
+            parser.startProcInstPosition = parser.position - 1;
           } else {
-            strictFail(parser, 'Unencoded <')
-            // if there was some whitespace, then add that in.
-            if (parser.startTagPosition + 1 < parser.position) {
-              var pad = parser.position - parser.startTagPosition
-              c = new Array(pad).join(' ') + c
+            // T: 连续的 <
+            if (c === '<') {
+              tempTag(parser, false)
+            } else if (c === '>') {
+              tempTag(parser, true)
+              parser.state = S.TEXT
+              parser.startTextPosition = parser.position;
+            } else {
+              strictFail(parser, 'Unencoded <')
+              // if there was some whitespace, then add that in.
+              if (parser.startTagPosition + 1 < parser.position) {
+                var pad = parser.position - parser.startTagPosition
+                c = new Array(pad).join(' ') + c
+              }
+              parser.textNode += '<' + c
+              parser.state = S.TEXT
             }
-            parser.textNode += '<' + c
-            parser.state = S.TEXT
           }
           continue
 
@@ -1098,10 +1148,12 @@ var sax = {};
             parser.state = S.CDATA
             parser.sgmlDecl = ''
             parser.cdata = ''
+            parser.startCDataPosition = parser.position - 9;
           } else if (parser.sgmlDecl + c === '--') {
             parser.state = S.COMMENT
             parser.comment = ''
             parser.sgmlDecl = ''
+            parser.startCommentPosition = parser.position - 3;
           } else if ((parser.sgmlDecl + c).toUpperCase() === DOCTYPE) {
             parser.state = S.DOCTYPE
             if (parser.doctype || parser.sawRoot) {
@@ -1114,6 +1166,7 @@ var sax = {};
             emitNode(parser, 'onsgmldeclaration', parser.sgmlDecl)
             parser.sgmlDecl = ''
             parser.state = S.TEXT
+            parser.startTextPosition = parser.position;
           } else if (is(quote, c)) {
             parser.state = S.SGML_DECL_QUOTED
             parser.sgmlDecl += c
@@ -1133,6 +1186,7 @@ var sax = {};
         case S.DOCTYPE:
           if (c === '>') {
             parser.state = S.TEXT
+            parser.startTextPosition = parser.position;
             emitNode(parser, 'ondoctype', parser.doctype)
             parser.doctype = true // just remember that we saw it.
           } else {
@@ -1203,6 +1257,7 @@ var sax = {};
             parser.state = S.COMMENT
           } else {
             parser.state = S.TEXT
+            parser.startTextPosition = parser.position;
           }
           continue
 
@@ -1231,6 +1286,7 @@ var sax = {};
             emitNode(parser, 'onclosecdata')
             parser.cdata = ''
             parser.state = S.TEXT
+            parser.startTextPosition = parser.position;
           } else if (c === ']') {
             parser.cdata += ']'
           } else {
@@ -1267,6 +1323,7 @@ var sax = {};
             })
             parser.procInstName = parser.procInstBody = ''
             parser.state = S.TEXT
+            parser.startTextPosition = parser.position;
           } else {
             parser.procInstBody += '?' + c
             parser.state = S.PROC_INST_BODY
@@ -1285,6 +1342,13 @@ var sax = {};
             } else {
               if (not(whitespace, c)) {
                 strictFail(parser, 'Invalid character in tag name')
+                if (c === '<') {
+                  parser.textNode = chunk.slice(parser.startTagPosition, i);
+                  closeText(parser);
+                  parser.state = S.OPEN_WAKA
+                  parser.startTagPosition = parser.position
+                  continue;
+                }
               }
               parser.state = S.ATTRIB
             }
@@ -1295,6 +1359,8 @@ var sax = {};
           if (c === '>') {
             openTag(parser, true)
             closeTag(parser)
+          } else if (c === '<') {
+            tempTag(parser)
           } else {
             strictFail(parser, 'Forward-slash in opening tag not followed by >')
             parser.state = S.ATTRIB
@@ -1314,6 +1380,8 @@ var sax = {};
             parser.attribValue = ''
             parser.state = S.ATTRIB_NAME
             parser.startAttribPosition = parser.position
+          } else if (c === '<') {
+            tempTag(parser)
           } else {
             strictFail(parser, 'Invalid attribute name')
           }
@@ -1328,18 +1396,26 @@ var sax = {};
             attrib(parser)
             openTag(parser)
           } else if (is(whitespace, c)) {
+            parser.sawWhitespacesAttributeValue = '';
             parser.state = S.ATTRIB_NAME_SAW_WHITE
           } else if (is(nameBody, c)) {
             parser.attribName += c
           } else {
-            strictFail(parser, 'Invalid attribute name')
+            if (c === '/') {
+              attrib(parser)
+              parser.state = S.OPEN_TAG_SLASH
+            } else {
+              strictFail(parser, 'Invalid attribute name')
+            }
           }
           continue
 
         case S.ATTRIB_NAME_SAW_WHITE:
+          parser.sawWhitespacesAttributeValue += c;
           if (c === '=') {
             parser.state = S.ATTRIB_VALUE
           } else if (is(whitespace, c)) {
+            parser.whitespacesSawInAttribute++;
             continue
           } else {
             strictFail(parser, 'Attribute without value')
@@ -1347,7 +1423,7 @@ var sax = {};
             parser.attribValue = ''
             emitNode(parser, 'onattribute', {
               name: parser.attribName,
-              value: ''
+              value: '',
             })
             parser.attribName = ''
             if (c === '>') {
@@ -1357,8 +1433,13 @@ var sax = {};
               parser.state = S.ATTRIB_NAME
               parser.startAttribPosition = parser.position
             } else {
-              strictFail(parser, 'Invalid attribute name')
-              parser.state = S.ATTRIB
+              if (c === '/') {
+                attrib(parser)
+                parser.state = S.OPEN_TAG_SLASH
+              } else {
+                strictFail(parser, 'Invalid attribute name')
+                parser.state = S.ATTRIB
+              }
             }
           }
           continue
@@ -1385,7 +1466,7 @@ var sax = {};
             }
             continue
           }
-          attrib(parser)
+          attrib(parser, true)
           parser.q = ''
           parser.state = S.ATTRIB_VALUE_CLOSED
           continue
@@ -1417,7 +1498,7 @@ var sax = {};
             }
             continue
           }
-          attrib(parser)
+          attrib(parser, true)
           if (c === '>') {
             openTag(parser)
           } else {
@@ -1434,7 +1515,11 @@ var sax = {};
                 parser.script += '</' + c
                 parser.state = S.SCRIPT
               } else {
-                strictFail(parser, 'Invalid tagname in closing tag.')
+                if (c === '>') {
+                  closeTag(parser);
+                } else {
+                  strictFail(parser, 'Invalid tagname in closing tag.')
+                }
               }
             } else {
               parser.tagName = c
@@ -1567,10 +1652,4 @@ var sax = {};
       }
     }())
   }
-})(sax)
-
-
-define(["require", "exports"], function (require, exports) {
-    'use strict';
-    return sax;
-});
+})(typeof exports === 'undefined' ? this.sax = {} : exports)

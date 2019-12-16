@@ -3,107 +3,133 @@
 // Definitions by: Asana <https://asana.com>
 // Definitions: https://github.com/borisyankov/DefinitelyTyped
 
-export var EVENTS: string[];
+    export var EVENTS: string[];
 
-interface SAXOptions {
-	trim?: boolean;
-	normalize?: boolean;
-	lowercase?: boolean;
-	xmlns?: boolean;
-	noscript?: boolean;
-	position?: boolean;
-	messagePos?: boolean;
-}
+    interface SAXOptions {
+        trim?: boolean;
+        normalize?: boolean;
+        lowercase?: boolean;
+        xmlns?: boolean;
+        noscript?: boolean;
+        position?: boolean;
+        messagePos?:boolean;
+    }
 
-export const enum Type {
-	Tag,
-	Cdata,
-	Text,
-	Attribute
-}
+    export const enum Type {
+        Tag,
+        CData,
+        Text,
+        Attribute,
+        Comment,
+        ProcessingInstruction,
+    }
 
-export interface Node {
-	name: string;
-	line?: number;
-	column?: number;
-	start: number;
-	end: number;
-	nodeType?: Type;
-}
+    export interface Node {
+        name: string;
+        line?: number;
+        column?: number;
+        start: number;
+        end:number;
+        nodeType?:Type;
+    }
 
-export interface Attribute extends Node {
-	value: string;
-	parent?: Tag;
-}
-export interface Error extends Node {
-	message: string;
-}
+    export interface Attribute extends Node {
+        value:string;
+        parent?:Tag;
+    }
+    export interface Comment extends Node {
+    }
 
-export interface Tag extends Node {
-	attributes: { [key: string]: string };
-	attributeNodes: Attribute[];
-	text: string;
-	namespace: string;
-	localName: string;
-	children?: Tag[];
-	parent?: Tag;
-	error: Error;
-	errors: Error[];
+    export interface TextNode extends Node {
+    }
 
-	// Available if opt.xmlns
-	ns?: { [key: string]: string };
-	prefix?: string;
-	local?: string;
-	uri?: string;
-}
+    export interface Error extends Node {
+        message:string;
+    }
 
-export function parser(strict: boolean, opt?: SAXOptions): SAXParser;
-export class SAXParser {
-	constructor(strict: boolean, opt: SAXOptions);
+    export interface ProcessingInstruction extends Node {
+        body: string;
+    }
 
-	// Methods
-	end(): void;
-	write(s: string): SAXParser;
-	resume(): SAXParser;
-	close(): SAXParser;
-	flush(): void;
+    export interface Tag extends Node {
+        attributes: { [key: string]: string };
+        attributeNodes:Attribute[];
+        text:string;
+        namespace:string;
+        localName:string;
+        children?:Tag[];
+        parent?:Tag;
+        closed?:boolean;
+        error: Error;
+        errors: Error[];
+        comments?: Comment[];
+        processingInstructions?: ProcessingInstruction[];
+        textNodes?: TextNode[];
+        roots?: Tag[];
+        isSelfClosing: boolean;
+        startTagEnd: number;
+        endTagStart: number;
 
-	// Members
-	line: number;
-	column: number;
-	error: Error;
-	position: number;
-	startTagPosition: number;
-	startAttribPosition: number;
-	closed: boolean;
-	strict: boolean;
-	opt: SAXOptions;
-	tag: string;
+        // Available if opt.xmlns
+        ns?: { [key: string]: string };
+        prefix?: string;
+        local?: string;
+        uri?: string;
+    }
 
-	// Events
-	onerror(e: Error): void;
-	ontext(t: string): void;
-	ondoctype(doctype: string): void;
-	onprocessinginstruction(node: { name: string; body: string }): void;
-	onopentag(tag: Tag): void;
-	onclosetag(tagName: string): void;
-	onattribute(attr: { name: string; value: string }): void;
-	oncomment(comment: string): void;
-	onopencdata(): void;
-	oncdata(cdata: string): void;
-	onclosecdata(): void;
-	onopennamespace(ns: { prefix: string; uri: string }): void;
-	onclosenamespace(ns: { prefix: string; uri: string }): void;
-	onend(): void;
-	onready(): void;
-	onscript(script: string): void;
-}
+    export function parser(strict: boolean, opt?: SAXOptions): SAXParser;
+    export class SAXParser {
+        constructor(strict: boolean, opt: SAXOptions);
 
-import * as stream from "stream";
-export function createStream(strict: boolean, opt: SAXOptions): SAXStream;
-export class SAXStream extends stream.Duplex {
-	constructor(strict: boolean, opt: SAXOptions);
-	private _parser: SAXParser;
-}
+        // Methods
+        end(): void;
+        write(s: string): SAXParser;
+        resume(): SAXParser;
+        close(): SAXParser;
+        flush(): void;
+
+        // Members
+        line: number;
+        column: number;
+        error: Error;
+        position: number;
+        startTagPosition: number;
+        startAttribPosition: number;
+        startCommentPosition: number;
+        startProcInstPosition: number;
+        startTextPosition: number;
+        startCDataPosition: number;
+        whitespacesSawInAttribute: number;
+        endTagStart: number;
+        closed: boolean;
+        strict: boolean;
+        opt: SAXOptions;
+        tag: string;
+
+        // Events
+        onerror(e: Error): void;
+        ontext(t: string): void;
+        ondoctype(doctype: string): void;
+        onprocessinginstruction(node: { name: string; body: string }): void;
+        onopentag(tag: Tag): void;
+        onclosetag(tagName: string): void;
+        onattribute(attr: { name: string; value: string; closed?:boolean }): void;
+        oncomment(comment: string): void;
+        onopencdata(): void;
+        oncdata(cdata: string): void;
+        onclosecdata(): void;
+        onopennamespace(ns: { prefix: string; uri: string }): void;
+        onclosenamespace(ns: { prefix: string; uri: string }): void;
+        onend(): void;
+        onready(): void;
+        onscript(script: string): void;
+    }
+
+    import * as stream from "stream";
+    export function createStream(strict: boolean, opt: SAXOptions): SAXStream;
+    export class SAXStream extends stream.Duplex {
+        constructor(strict: boolean, opt: SAXOptions);
+        private _parser: SAXParser;
+    }
 
 

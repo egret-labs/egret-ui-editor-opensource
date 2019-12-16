@@ -154,13 +154,18 @@ var registerTSClass = function (className, classData, propertyData) {
 		for (var prop in classData) {
 			if (prop != "super" && prop != "implements") {
 				var defaultValue = propertyData[prop];
+				var isnull = (defaultValue === 'null');
 				var type = classData[prop];
 				if (type == 'string' || type == 'number' || type == 'boolean') {
 					defaultValue = defaultValue ? defaultValue : "\"\"";
 				} else {
 					defaultValue = "\"\"";
 				}
-				classString += "this." + prop + " = " + defaultValue + ";\n";
+				if(isnull){
+					classString += 'Object.defineProperty(' + classShortName + ',"' + prop + '")';
+				} else {
+					classString += "this." + prop + " = " + defaultValue + ";\n";
+				}
 			}
 		}
 	}

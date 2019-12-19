@@ -61,11 +61,15 @@ export class CodeService implements ICodeService {
 	private registerCommand(editor: monaco.editor.IStandaloneCodeEditor): void {
 		// see https://github.com/microsoft/monaco-editor/issues/900
 		(editor as any)._commandService.addCommand({
-			id: 'editor.action.moveCarretLeftAndTriggerSuggest',
-			handler: (_:any, ...args: any[]) => {
+			id: 'editor.action.moveCursorLeftAndTriggerSuggest',
+			handler: (_: any, ...args: any[]) => {
 				// 把光标前移一格
-				editor.trigger('', 'editor.action.moveCarretLeftAction', null);
-				// 连续调用两次triiger会无效，需要添加延迟
+				const newSelection: monaco.Selection[] = [];
+				for (const sel of editor.getSelections()) {
+					newSelection.push(new monaco.Selection(sel.selectionStartLineNumber, sel.selectionStartColumn - 1, sel.positionLineNumber, sel.positionColumn - 1));
+				}
+				editor.setSelections(newSelection);
+				// 连续操作两次editor会无效，需要添加延迟
 				setTimeout(() => {
 					editor.trigger('', 'editor.action.triggerSuggest', null);
 				}, 0);
@@ -78,7 +82,7 @@ export class CodeService implements ICodeService {
 				console.log('-----------', args);
 				if (!args || !args[0]) { return; }
 				const instance = this.instanceMap[editor.getId()];
-				if(instance){
+				if (instance) {
 					const start = instance.doc.positionAt(args[0].offset);
 					editor.executeEdits('InsertNamespace', [{
 						range: monaco.Range.fromPositions(start, start),

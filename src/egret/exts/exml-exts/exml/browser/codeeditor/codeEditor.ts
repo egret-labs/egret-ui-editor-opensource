@@ -7,6 +7,7 @@ import { StateChange } from 'egret/editor/core/models';
 import { XMLDocument } from '../../common/core/XMLDocument';
 import { EXMLContentAssistProcessor } from '../../common/contentassist/EXMLContentAssistProcessor';
 import { IEgretProjectService } from 'egret/exts/exml-exts/project';
+import { ICodeService } from '../../common/server/ICodeService';
 
 /**
  */
@@ -19,14 +20,13 @@ export class CodeEditor extends EventDispatcher implements IDisposable {
 	private editor: monaco.editor.IStandaloneCodeEditor;
 	private _isDirty: boolean = false;
 	private _alternativeVersionId: number = -1;
-	private _xmlDocument: XMLDocument = null;
-	private contentAssistProcessor: EXMLContentAssistProcessor = new EXMLContentAssistProcessor();
 
 	/**
 	 *
 	 */
 	constructor(
-		@IEgretProjectService protected egretProjectService: IEgretProjectService
+		@IEgretProjectService protected egretProjectService: IEgretProjectService,
+		@ICodeService protected codeService: ICodeService
 	) {
 		super();
 	}
@@ -43,6 +43,12 @@ export class CodeEditor extends EventDispatcher implements IDisposable {
 			minimap: { enabled: false },
 			theme: 'vs-dark'
 		});
+		// DEBUG
+		// const actions = (this.editor as any).getActions();
+		// actions.forEach(element => {
+		// 	console.log(element.id);
+		// });
+		this.codeService.attachEditor(this.editor);
 		// 禁用Command Palette快捷键
 		// https://github.com/Microsoft/monaco-editor/issues/419
 		this.editor.addCommand(monaco.KeyCode.F1, () => {
@@ -57,40 +63,15 @@ export class CodeEditor extends EventDispatcher implements IDisposable {
 		} else {
 			this.upateDirtyState();
 		}
-		if(this._xmlDocument){
-			this._xmlDocument.update(e);
-		}
 	}
 
 	public setup(exmlModel: IExmlFileEditorModel): void {
 		this.exmlFileModel = exmlModel;
-		this.contentAssistProcessor.init(this.egretProjectService.projectModel, this.egretProjectService.exmlConfig)
-		// TODO 更改位置，保证只调用一次
-		this.registerCompletionItemProvider();
 		this.detachEventListener();
 		this.attachEventListener();
 		if (!exmlModel) {
 			this.clear();
 		}
-	}
-
-	private registerCompletionItemProvider(): void {
-		monaco.languages.registerCompletionItemProvider("xml", {
-			provideCompletionItems: (model, position, context, token) => {	
-				try {
-					let text: string = this._xmlDocument.getText();
-					let offset: number = this._xmlDocument.offsetAt(position);
-					const result = this.contentAssistProcessor.computeCompletion(text, offset, this._xmlDocument);
-					return {
-						suggestions: result
-					}
-				} catch (e) {
-					return {
-						suggestions: []
-					};
-				}
-			}
-		});
 	}
 
 	/**
@@ -115,7 +96,6 @@ export class CodeEditor extends EventDispatcher implements IDisposable {
 	 */
 	private setText(text: string): void {
 		this.editor.setValue(text);
-		this._xmlDocument = new XMLDocument('', text);
 		this.resetState();
 	}
 
@@ -326,6 +306,7 @@ export class CodeEditor extends EventDispatcher implements IDisposable {
 	public dispose(): void {
 		this.detachEventListener();
 		dispose(this.monacoDisposables);
+		this.codeService.detachEditor(this.editor);
 		this.editor.dispose();
 	}
 }

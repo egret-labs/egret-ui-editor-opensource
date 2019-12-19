@@ -10,6 +10,7 @@ export class BaseSchemaStrategy implements ISchemaStrategy {
 
 	private exmlConfig: AbstractExmlConfig;
 	public init(exmlConfig: AbstractExmlConfig): void {
+		this.currentStamp = process.uptime();
 		this.exmlConfig = exmlConfig;
 		if (this.exmlConfig) {
 			this.exmlConfig.onCustomClassChanged(this.customChangedHandler, this);
@@ -45,6 +46,7 @@ export class BaseSchemaStrategy implements ISchemaStrategy {
      * @param event
      */
 	private customChangedHandler(): void {
+		this.currentStamp = process.uptime();
 		for (var i = 0; i < this.customChangedHandlers.length; i++) {
 			var func: Function = this.customChangedHandlers[i]['func'];
 			var thisArg: any = this.customChangedHandlers[i]['thisArg'];
@@ -120,7 +122,11 @@ export class BaseSchemaStrategy implements ISchemaStrategy {
      * @return 属性字典，key:属性名,value:属性类型。
      */
 	public getSuperClassName(className: string): string {
-		return this.exmlConfig.getProps(className)['super'];
+		const classNode = this.exmlConfig.getClassNode(className);
+		if (classNode && classNode.baseClass) {
+			return classNode.baseClass.fullName;
+		}
+		return '';
 	}
     /**
      * 工作的命名空间，具体子类重写

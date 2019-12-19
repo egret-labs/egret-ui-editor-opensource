@@ -2295,7 +2295,7 @@ export class ExmlModel implements IExmlModel {
 			}
 		}
 
-		const newText: string = xmlStrUtil.addNamespace(this._text, value.getNs());
+		const newText: string = xmlStrUtil.addNamespace(this._text, value.getNs()).newXml;
 		if (this._text !== newText) {
 			this.pushTextChange(newText, 0, this._text.length);
 		}

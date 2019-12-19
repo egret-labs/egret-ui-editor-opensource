@@ -49,6 +49,7 @@ import { checkUpdateFromLauncher } from 'egret/platform/launcher/common/launcher
 import { IEditor } from 'egret/editor/core/editors';
 import { PropertyView } from '../parts/properties/electron-browser/views/propertyView';
 import { addClass, removeClass } from 'egret/base/common/dom';
+import { initCodeService } from 'egret/exts/exml-exts/exml/common/server/codeService';
 
 class EditorCreater {
 	constructor(
@@ -467,6 +468,7 @@ export class Workbench implements IFocusablePart {
 		checkUpdateFromLauncher();
 
 		initExtensions(this.instantiationService);
+		initCodeService(this.instantiationService);
 		this.initParts();
 		this.restoreLayout();
 		this.registerListeners();

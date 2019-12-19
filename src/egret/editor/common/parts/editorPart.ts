@@ -16,6 +16,7 @@ import { IOperationBrowserService } from '../../../platform/operations/common/op
 import { SystemCommands } from '../../../platform/operations/commands/systemCommands';
 import { localize } from '../../../base/localization/nls';
 import { resolve } from 'dns';
+import { ExmlFileEditor } from 'egret/exts/exml-exts/exml/browser/exmlFileEditor';
 
 const OPEN_EDITORS_STORAGE = 'openEditorsStorageKey';
 
@@ -385,6 +386,9 @@ export class EditorPart implements IEditorPart, IFocusablePart {
 	}
 
 	private doHandleDirty(editor: IEditor): Promise<boolean> {
+		if(editor instanceof ExmlFileEditor){
+			(editor as ExmlFileEditor).syncModelData();
+		}
 		if (!editor || !editor.input || !editor.input.isDirty()) {
 			return Promise.resolve(false);
 		}

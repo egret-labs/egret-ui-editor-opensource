@@ -84,8 +84,8 @@ export class TextDocumentBase {
 				low = mid + 1;
 			}
 		}
-		let line = low - 1;
-		return new monaco.Position(line, offset - lineOffsets[line]);
+		let line = low;
+		return new monaco.Position(line, offset - lineOffsets[line - 1] + 1);
 	}
     /**
      * 在指定的位置得到索引位置

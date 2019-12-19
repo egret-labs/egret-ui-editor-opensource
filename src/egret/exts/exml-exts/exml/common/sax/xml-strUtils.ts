@@ -26,7 +26,10 @@ export function removeHead(xmlStr: string): string {
  * @param ns
  *
  */
-export function addNamespace(xmlStr: string, ns: Namespace): string {
+export function addNamespace(xmlStr: string, ns: Namespace): {
+	newXml: string,
+	addedNS: { offset: number; content: string; }
+} {
 	let has: boolean = false;
 	const path = findRangeByPath(xmlStr, [0], null, []);
 	if (path && path.length > 2 && path[0] !== -1 && path[1] !== -1) {
@@ -44,6 +47,7 @@ export function addNamespace(xmlStr: string, ns: Namespace): string {
 			}
 		}
 	}
+	let addedNS: { offset: number; content: string; } = undefined;
 	if (has === false && arr) {
 		let index: number;
 		if (arr.length === 0) {
@@ -61,8 +65,15 @@ export function addNamespace(xmlStr: string, ns: Namespace): string {
 		const str2: string = xmlStr.slice(index);
 		const xmlnsInsertStr: string = ' xmlns:' + ns.prefix + '=\"' + ns.uri + '\"';
 		xmlStr = str1 + xmlnsInsertStr + str2;
+		addedNS = {
+			offset: index,
+			content: xmlnsInsertStr
+		};
 	}
-	return xmlStr;
+	return {
+		newXml: xmlStr,
+		addedNS: addedNS
+	};
 }
 
 /**
@@ -407,7 +418,7 @@ export function findPathAtPos(xmlStr: string, pos: number, currentState: string,
 	if (err) {
 		return [];
 	}
-	
+
 
 	const nodeList: string[] = [];
 	let index: number;

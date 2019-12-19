@@ -272,10 +272,11 @@ export class AbstractSchemaModel {
 			// 将自身的属性所谓element添加到choice里
 			let properties: any = this.getPropertyAfterBase(currentClassName, parentClassName);
 			for (let key in properties) {
-				let attributeElement: Element = SchemaNodeCreater.createElement(new QName(elementQName.uri, key), null);
+				const item = properties[key];
+				let attributeElement: Element = SchemaNodeCreater.createElement(new QName(elementQName.uri, item.name), null);
 
 				// 把类型也放进去
-				let type: string = properties[key] as string;
+				let type: string = item.type as string;
 				let typeQName: QName;
 				if (classNames.indexOf(type) === -1) {
 					typeQName = new QName(this.getGuiNS().uri, type);
@@ -330,8 +331,9 @@ export class AbstractSchemaModel {
 			}
 			// 把刚刚创建的Element的属性分别加到这个刚刚创建的属性组里。
 			for (let key in properties) {
+				const item = properties[key];
 				// todo type 类型
-				let attribute: Attribute = SchemaNodeCreater.createAttribute(new QName(elementQName.uri, key), null);
+				let attribute: Attribute = SchemaNodeCreater.createAttribute(new QName(elementQName.uri, item.name), null);
 				attributeGroup.addNode(attribute);
 				this.customComponentNodes.push(attribute);
 			}

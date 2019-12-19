@@ -34,6 +34,7 @@ export abstract class AbstractExmlConfig {
 		@IFileService protected fileService: IFileService
 	) {
 		this._onCustomClassChanged = new Emitter<void>();
+		this.currentStamp = process.uptime();
 		this.initConfig();
 	}
 	/**

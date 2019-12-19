@@ -22,7 +22,7 @@ import * as XmlUtil from '../sax/xml-strUtils';
 import { EgretProjectModel } from '../project/egretProject';
 
 /**
- * 图片的source提示解析器
+ * exml代码提示解析器
  */
 export class EXMLContentAssistProcessor {
 
@@ -234,6 +234,10 @@ export class EXMLContentAssistProcessor {
 			};
 			if (needNs) {
 				const xmlnsObj = XmlUtil.addNamespace(fullText, ns);
+				if (xmlnsObj && xmlnsObj.addedNS) {
+					const arg = { offset: xmlnsObj.addedNS.offset, value: xmlnsObj.addedNS.content };
+					completion.command = { id: 'editor.action.egretEXmlInsertNamespace', title: 'add namespace...', arguments: [arg] };
+				}
 			}
 			completions.push(completion);
 		}
@@ -292,6 +296,7 @@ export class EXMLContentAssistProcessor {
 				kind: monaco.languages.CompletionItemKind.Property,
 				range: range,
 				insertText: `${attr['attribute']}="${value}"`,
+				command: { id: 'editor.action.moveCarretLeftAndTriggerSuggest', title: 'move cursor back...' },
 			};
 			completions.push(completion);
 		}

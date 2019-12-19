@@ -155,7 +155,8 @@ export class SchemaContentAssistUtil {
 		if (!curTag.name) {
 			ret.tag = curTag;
 			ret.pos = EXMLPos.NodeStart;
-			ret.editRange = { start: wholeXmlText.indexOf('<', curTag.start) + 1, end: curTag.end };
+			const start = wholeXmlText.indexOf('<', curTag.start) + 1;
+			ret.editRange = { start: start, end: start };
 			return ret;
 		}
 

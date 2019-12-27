@@ -427,6 +427,10 @@
 		"s": "Design",
 		"t": "Design"
 	},
+	"exml.editor.animation": {
+		"s": "Animation",
+		"t": "Animation"
+	},
 	"exml.editor.noDevice": {
 		"s": "No Device",
 		"t": "No Device"
@@ -1846,5 +1850,81 @@
 	"workbench.initCommands.deleteSys": {
 		"s": "System delete command",
 		"t": "System delete command"
+	},
+	"animationView.title": {
+		"s": "Animation",
+		"t": "Animation"
+	},
+	"animationView.group": {
+		"s": "Group",
+		"t": "Group"
+	},
+	"animationView.handleOperation.removeGroup": {
+		"s": "Delete Group",
+		"t": "Delete Group"
+	},
+	"animationView.handleOperation.addGroup": {
+		"s": "Add Group",
+		"t": "Add Group"
+	},
+	"animationView.idHasExisting": {
+		"s": "ID has been existing as: {0} node",
+		"t": "ID has been existing as: {0} node"
+	},
+	"animationView.tweenGroupId": {
+		"s": "Tween Group ID",
+		"t": "Tween Group ID"
+	},
+	"animationView.animation": {
+		"s": "Animation",
+		"t": "Animation"
+	},
+	"animationView.handleOperation.addTweenItem": {
+		"s": "Add Tween Item",
+		"t": "Add Tween Item"
+	},
+	"animationView.handleOperation.removeTweenItem": {
+		"s": "Remove Tween Item",
+		"t": "删除动画"
+	},
+	"animationView.handleOperation.copyTweenItem": {
+		"s": "Copy Tween Item",
+		"t": "Copy Tween Item"
+	},
+	"animationView.handleOperation.pasteTweenItem": {
+		"s": "Paste Tween Item",
+		"t": "Paste Tween Item"
+	},
+	"animationView.targetObjectInvalid": {
+		"s": "Animation corresponding to the target object \"{0}\" does not exist, please re set the target node",
+		"t": "Animation corresponding to the target object \"{0}\" does not exist, please re set the target node"
+	},
+	"animationView.invalidAnimationTarget": {
+		"s": "Invalid animation target",
+		"t": "Invalid animation target"
+	},
+	"tweenController.initContextMenuGeneral.createTweenAnimation": {
+		"s": "Create Tween Animation",
+		"t": "Create Tween Animation"
+	},
+	"tweenController.initContextMenuGeneral.deleteTween": {
+		"s": "Delete Tween",
+		"t": "Delete Tween"
+	},
+	"tweenController.initContextMenuGeneral.createKeyFrame": {
+		"s": "Add Key Frame",
+		"t": "Add Key Frame"
+	},
+	"tweenController.initContextMenuGeneral.removeKeyFrame": {
+		"s": "Remove Key Frame",
+		"t": "Remove Key Frame"
+	},
+	"tweenController.play": {
+		"s": "Play",
+		"t": "Play"
+	},
+	"tweenController.stop": {
+		"s": "Stop",
+		"t": "Stop"
 	}
 }

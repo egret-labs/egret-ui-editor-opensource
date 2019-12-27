@@ -135,6 +135,11 @@ export class ExmlFileEditorNavigation {
 			id: EditMode.DESIGN
 		});
 		this.modeDataSources.push({
+			label: localize('exml.editor.animation', 'Animation'),
+			iconClass: 'animation-icon',
+			id: EditMode.ANIMATION
+		});
+		this.modeDataSources.push({
 			label: localize('exml.editor.preview', 'Preview'),
 			iconClass: 'preview-icon',
 			id: EditMode.PREVIEW

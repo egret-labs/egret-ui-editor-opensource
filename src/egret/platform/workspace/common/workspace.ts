@@ -13,6 +13,15 @@ export interface IWorkspaceService {
 	 * 获取当前workspace
 	 */
 	getWorkspace(): IWorkspace;
+	/**
+	 * 获取当前盒式布局的根
+	 */
+	readonly boxlayout: boxlayout.BoxLayout;
+	/**
+	 * 注册盒式布局的根
+	 * @param box 
+	 */
+	registerBoxlayout(box: boxlayout.BoxLayout): void;
 }
 /**
  * 工作空间接口

@@ -1788,7 +1788,14 @@ export class FocusRectExt extends FocusRect implements IP9TTarget {
 	}
 
 	private canOperate(isAnchor: boolean = false): boolean {
-		return true;
+		const exmlModel = this.targetNode.getExmlModel();
+		const animationModel = exmlModel.getAnimationModel();
+
+		if (animationModel.getEnabled() && (!animationModel.inKeyFrame() || isAnchor)) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 	private regist: boolean = false;
 	protected update(): void {
@@ -1836,19 +1843,19 @@ export class FocusRectExt extends FocusRect implements IP9TTarget {
 		}
 	}
 	private setTargetPropertyValue(property: string): void {
-		// const animationModel = this.targetNode.getExmlModel().getAnimationModel();
+		const animationModel = this.targetNode.getExmlModel().getAnimationModel();
 		let value = this.willUpdateValueDic[property];
 		if (value !== undefined && value !== null && value !== NaN) {
-			// if (animationModel.inKeyFrame()) {
-			// 	const editingPath = animationModel.getSelectedItem().findEditingPath(animationModel.getTime(), false);
-			// 	editingPath.path.setProperty(property, this.rn(value));
+			if (animationModel.inKeyFrame()) {
+				const editingPath = animationModel.getSelectedItem().findEditingPath(animationModel.getTime(), false);
+				editingPath.path.setProperty(property, this.rn(value));
 
-			// 	const item = animationModel.getSelectedItem();
-			// 	if (item) {
-			// 		item.refreshPaths();
-			// 	}
-			// 	return;
-			// }
+				const item = animationModel.getSelectedItem();
+				if (item) {
+					item.refreshPaths();
+				}
+				return;
+			}
 			/**预处理（规整数值和处理排斥项） */
 			if (property === 'anchorOffsetX') {
 				let w: number = this.willUpdateValueDic['width'];

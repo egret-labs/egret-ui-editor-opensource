@@ -427,6 +427,10 @@
 		"s": "Design",
 		"t": "设计"
 	},
+	"exml.editor.animation": {
+		"s": "Animation",
+		"t": "动画"
+	},
 	"exml.editor.noDevice": {
 		"s": "No Device",
 		"t": "无设备"
@@ -1846,5 +1850,81 @@
 	"workbench.initCommands.deleteSys": {
 		"s": "System delete command",
 		"t": "系统删除命令"
+	},
+	"animationView.title": {
+		"s": "Animation",
+		"t": "动画"
+	},
+	"animationView.group": {
+		"s": "Group",
+		"t": "组"
+	},
+	"animationView.handleOperation.removeGroup": {
+		"s": "Delete Group",
+		"t": "删除动画组"
+	},
+	"animationView.handleOperation.addGroup": {
+		"s": "Add Group",
+		"t": "添加动画组"
+	},
+	"animationView.idHasExisting": {
+		"s": "ID has been existing as: {0} node",
+		"t": "已存在id为: {0}的节点"
+	},
+	"animationView.tweenGroupId": {
+		"s": "Tween Group ID",
+		"t": "动画组id"
+	},
+	"animationView.animation": {
+		"s": "Animation",
+		"t": "动画"
+	},
+	"animationView.handleOperation.addTweenItem": {
+		"s": "Add Tween Item",
+		"t": "添加动画"
+	},
+	"animationView.handleOperation.removeTweenItem": {
+		"s": "Remove Tween Item",
+		"t": "删除动画"
+	},
+	"animationView.handleOperation.copyTweenItem": {
+		"s": "Copy Tween Item",
+		"t": "复制动画"
+	},
+	"animationView.handleOperation.pasteTweenItem": {
+		"s": "Paste Tween Item",
+		"t": "粘贴动画"
+	},
+	"animationView.targetObjectInvalid": {
+		"s": "Animation corresponding to the target object \"{0}\" does not exist, please re set the target node",
+		"t": "动画对应的目标对象{0}不存在,请重新设置目标节点"
+	},
+	"animationView.invalidAnimationTarget": {
+		"s": "Invalid animation target",
+		"t": "无效的动画目标"
+	},
+	"tweenController.initContextMenuGeneral.createTweenAnimation": {
+		"s": "Create Tween Animation",
+		"t": "创建补间动画"
+	},
+	"tweenController.initContextMenuGeneral.deleteTween": {
+		"s": "Delete Tween",
+		"t": "删除补间"
+	},
+	"tweenController.initContextMenuGeneral.createKeyFrame": {
+		"s": "Add Key Frame",
+		"t": "添加关键帧"
+	},
+	"tweenController.initContextMenuGeneral.removeKeyFrame": {
+		"s": "Remove Key Frame",
+		"t": "删除关键帧"
+	},
+	"tweenController.play": {
+		"s": "Play",
+		"t": "播放"
+	},
+	"tweenController.stop": {
+		"s": "Stop",
+		"t": "停止"
 	}
 }

@@ -6,6 +6,7 @@ import * as sax from '../sax/sax';
 import { Namespace } from '../sax/Namespace';
 import { Event } from 'egret/base/common/event';
 import { HistoryInfo } from './exmlModel';
+import { IAnimationModel } from '../plugin/IAnimationModel';
 
 interface ExmlModelEvent {
 	target: IExmlModel;
@@ -505,6 +506,7 @@ export interface IExmlModel extends IInnerModel {
 	 * @param id 
 	 */
 	getValueByID(id): IValue;
+	getAnimationModel(): IAnimationModel;
 }
 
 /**

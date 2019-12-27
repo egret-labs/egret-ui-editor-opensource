@@ -1,7 +1,4 @@
 {
-	"rulesDirectory": [
-		"build/lib/tslint"
-	],
 	"linterOptions": {
 		"exclude": [
 			"src/vs/**/*",

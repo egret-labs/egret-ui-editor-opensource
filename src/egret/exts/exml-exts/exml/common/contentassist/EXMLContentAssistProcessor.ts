@@ -44,7 +44,7 @@ export class EXMLContentAssistProcessor {
 
 	public initedFunc: () => void;
 	public inited: boolean = false;
-    /**
+	/**
      * 初始化内容提示器
      * @param rootPath 项目根路径
      */
@@ -59,7 +59,7 @@ export class EXMLContentAssistProcessor {
 	}
 
 	private schema: SchemaModel = null;
-    /**
+	/**
      * 启动代码提示助手，该方法可以重复调用，重复调用会彻底初始化内部配置
      */
 	private start(): void {
@@ -120,7 +120,7 @@ export class EXMLContentAssistProcessor {
 
 	private text: string = '';
 	private document: TextDocumentBase = null;
-    /**
+	/**
      * 计算提示列表
      * @param text 全部文本
      * @param offset 位置
@@ -179,7 +179,7 @@ export class EXMLContentAssistProcessor {
 		return completions;
 	}
 
-    /**
+	/**
      * 起始节点的自动补全
      * @param parentNodeName 父级的节点名
      * @param typeInNodeName 当前正在输入的节点名
@@ -255,7 +255,7 @@ export class EXMLContentAssistProcessor {
 		return null;
 	}
 
-    /**
+	/**
      * 结束节点的自动补全
      * @param value
      * @param onComplete
@@ -275,7 +275,7 @@ export class EXMLContentAssistProcessor {
 		return completions;
 	}
 
-    /**
+	/**
      * 显示节点属性的自动补全
      * @param currentNodeName 当前所在的节点名
      * @param typeInAttName 正在输入的属性名
@@ -303,7 +303,7 @@ export class EXMLContentAssistProcessor {
 		return completions;
 	}
 
-    /**
+	/**
      * 得到所有的皮肤名
      */
 	private createSkinNameCompletions(range: monaco.Range): monaco.languages.CompletionItem[] {
@@ -321,7 +321,7 @@ export class EXMLContentAssistProcessor {
 		return completions;
 	}
 
-    /**
+	/**
      * 得到属性的值
      * @param qNameStr
      * @param attribute
@@ -351,7 +351,7 @@ export class EXMLContentAssistProcessor {
 		return completions;
 	}
 
-    /**
+	/**
      * 得到属性的状态
      * @param child
      * @return
@@ -371,7 +371,7 @@ export class EXMLContentAssistProcessor {
 		return completions;
 	}
 
-    /**
+	/**
      * 通过节点的字符串得到qName
      * @param nodeStr
      * @return
@@ -399,7 +399,7 @@ export class EXMLContentAssistProcessor {
 		return null;
 	}
 
-    /**
+	/**
      * 以字符串的方式读取一个xml中的命名空间数组。
      * @param xmlStr
      * @return
@@ -449,7 +449,7 @@ export class EXMLContentAssistProcessor {
 		}
 		return result;
 	}
-    /**
+	/**
      * 得到当前Exml文档的States
      * @return
      */
@@ -462,7 +462,7 @@ export class EXMLContentAssistProcessor {
 		return arr;
 	}
 
-    /**
+	/**
      * 从节点中读取states
      * @return
      */
@@ -509,7 +509,7 @@ export class EXMLContentAssistProcessor {
 		return arr;
 	}
 
-    /**
+	/**
      * 从属性中读取states
      * @return
      */

@@ -1,0 +1,414 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+/* Panel */
+.monaco-workbench .panel .monaco-action-bar .action-label.animation {
+	background-image: url('animation.svg');
+}
+
+.animation-panel {
+	display: flex;
+	overflow: hidden;
+}
+
+.animation-panel .support-tips {
+	width: 100%;
+	align-self: center;
+	text-align: center;
+	font-size: 14px;
+}
+
+.animation-panel .titleDescription {
+	height: 25px;
+	line-height: 25px;
+	padding-left: 5px;
+	border-bottom: 1px solid #DADADA;
+}
+
+.animation-panel .titleDescription {
+	border-bottom: 1px solid #303038;
+}
+
+.animation-panel .action-bar {
+	height: 18px;
+	background-color: #EAEAEA;
+}
+
+.animation-panel .action-bar {
+	background-color: #2b2b2b;
+}
+
+.animation-panel .action-bar .monaco-action-bar {
+	position: relative;
+	margin-left: 3px;
+	flex-shrink: 0;
+}
+
+.animation-panel .monaco-tree .monaco-tree-rows > .monaco-tree-row > .content {
+	display: flex;
+	line-height: 22px;
+}
+
+.animation-panel .inputBoxContainer {
+	position: absolute;
+}
+
+.animation-panel .inputBoxContainer .monaco-inputbox > .wrapper {
+	height: 18px;
+	line-height: 18px;
+}
+
+.animation-panel .inputBoxContainer .monaco-inputbox > .wrapper > .input {
+	padding: 0px;
+}
+
+.animation-panel .group {
+	width: 100px;
+	flex-shrink: 0;
+	border-right: 1px solid #DADADA;
+}
+
+.animation-panel .group {
+	border-right: 1px solid #303038;
+}
+
+.animation-panel .group .group-label {
+	margin-left: 2px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+.animation-panel .monaco-tree-row .content > .monaco-action-bar {
+	display: none;
+}
+
+.animation-panel .monaco-tree-row:hover .content > .monaco-action-bar {
+	display: initial;
+	opacity: 0.6;
+}
+
+.animation-panel .monaco-tree-row .content.loop > .monaco-action-bar {
+	display: initial;
+	opacity: initial;
+}
+
+.animation-panel .monaco-tree-row .monaco-action-bar .action-label {
+	display: block;
+	margin-left: 1px;
+	width: 15px;
+	height: 18px;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.animation-panel .monaco-tree-row .monaco-action-bar .action-label.action-toggle-loop {
+	background-image: url('loop.svg');
+}
+
+.animation-panel .action-bar .monaco-action-bar .action-label {
+	display: block;
+	margin-left: 1px;
+	width: 15px;
+	height: 18px;
+}
+
+.animation-panel .action-bar .monaco-action-bar .action-item.active {
+	opacity: 0.8;
+}
+
+.animation-panel .action-bar .monaco-action-bar .actions-container {
+	justify-content: flex-start;
+}
+
+.panel.animation-panel .action-add-tween-group,
+.panel.animation-panel .action-add-tween-item {
+	background: url('add.svg') center center no-repeat;
+}
+
+.panel.animation-panel .action-remove-tween-group,
+.panel.animation-panel .action-remove-tween-item {
+	background: url('remove.svg') center center no-repeat;
+}
+
+.panel.animation-panel .action-copy-tween-item {
+	background: url('copy.svg') center center no-repeat;
+}
+
+.panel.animation-panel .action-paste-tween-item {
+	background: url('paste.svg') center center no-repeat;
+}
+
+.panel.animation-panel .action-play {
+	background: url('play.svg') center center no-repeat;
+}
+
+.panel.animation-panel .action-pause {
+	background: url('pause.svg') center center no-repeat;
+}
+
+.animation-panel .items {
+	width: 150px;
+	flex-shrink: 0;
+	border-right: 1px solid #DADADA;
+}
+
+.animation-panel .items {
+	border-right: 1px solid #303038;
+}
+
+.animation-panel .items .item-label {
+	margin-left: 2px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	flex: 1;
+}
+
+.animation-panel .items .item-label.error {
+	color: #FF0000;
+}
+
+.animation-panel .timeLine {
+	overflow: hidden;
+	outline: 0;
+	position: relative;
+	cursor: default;
+}
+
+.animation-panel .timeLine .action-bar {
+	display: flex;
+	flex-direction: row;
+}
+
+.animation-panel .timeLine .hContainer {
+	position: relative;
+}
+
+.animation-panel .timeLine .header {
+	position: relative;
+	width: 100%;
+	height: 25px;
+	border-bottom: 1px solid #565656;
+	background-image: url('./timeLine.svg');
+	background-repeat: repeat-x;
+	background-size: 50px;
+	background-position-y: 22px;
+}
+
+.animation-panel .timeLine .header span {
+	position: absolute;
+	width: 30px;
+	text-align: center;
+	font-size: 10px;
+	bottom: 4px;
+	cursor: default;
+}
+
+.animation-panel .timeLine .body {
+	overflow-y: hidden;
+	overflow-x: hidden;
+}
+
+.animation-panel .timeLine .body .tile {
+	background-size: 50px;
+	background-image: url('./tile-inverse.svg');
+	background-repeat: repeat;
+}
+
+.animation-panel .timeLine .body .track {
+	position: absolute;
+	top: 0px;
+}
+
+.animation-panel .timeLine .body .track .trackItem {
+	position: relative;
+}
+
+.animation-panel .timeLine .body .track .trackItem .content {
+	position: relative;
+	z-index: 0;
+	display: flex;
+	height: 22px;
+}
+
+.animation-panel .timeLine .body .track .trackItem .content div {
+	position: relative;
+	height: 22px;
+	margin-left: -10px;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.animation-panel .timeLine .body .track .trackItem .content div:first-child {
+	margin-left: 0px;
+}
+
+.animation-panel .timeLine .body .track .trackItem .content .wait {
+	box-sizing: content-box;
+	z-index: 0;
+	background-color: #62658A;
+}
+
+.animation-panel .timeLine .body .track .trackItem .content .to {
+	box-sizing: content-box;
+	z-index: 1;
+	background-color: #62658A;
+}
+
+.animation-panel .timeLine .body .track .trackItem.loop .content .to,
+.animation-panel .timeLine .body .track .trackItem.loop .content .wait {
+	background-color: #DCDCDC;
+}
+
+.animation-panel .timeLine .body .track .trackItem .content .to > .frame {
+	border-radius: 2px;
+	position: absolute;
+	top: 7px;
+	width: 5px;
+	height: 5px;
+	background-color: white;
+}
+
+.animation-panel .timeLine .body .track .trackItem .content .to > .first.frame {
+	left: 2px;
+}
+
+.animation-panel .timeLine .body .track .trackItem .content .to > .last.frame {
+	right: 3px;
+}
+
+.animation-panel .timeLine .body .track .trackItem .content .to > .arrowLine {
+	position: absolute;
+	top: 9px;
+	left: 15px;
+	right: 15px;
+	height: 1px;
+	background-color: white;
+}
+
+.animation-panel .timeLine .body .track .trackItem .content .to > .arrowLine > .last.arrow {
+	position: absolute;
+	right: 0px;
+}
+
+.animation-panel .timeLine .body .track .trackItem .content .to > .arrowLine > .arrow:before,
+.animation-panel .timeLine .body .track .trackItem .content .to > .arrowLine > .arrow:after {
+	content: ' ';
+	position: absolute;
+	pointer-events: none;
+	width: 4px;
+	height: 1px;
+	background-color: white;
+}
+
+.animation-panel .timeLine .body .track .trackItem .to > .arrowLine > .arrow:before {
+	left: -2px;
+	top: 1px;
+	transform: rotate(-45deg);
+}
+
+.animation-panel .timeLine .body .track .trackItem .content .to > .arrowLine > .arrow:after {
+	left: -2px;
+	top: -1px;
+	transform: rotate(45deg);
+}
+
+.animation-panel .timeLine .body .track .trackItem .content .set > span {
+	position: absolute;
+	z-index: 2;
+	top: 7px;
+	left: 2px;
+	width: 5px;
+	height: 5px;
+	background-color: white;
+}
+
+.animation-panel .timeLine .body .selector {
+	position: absolute;
+	width: 10px;
+	height: 22px;
+	background-color: rgba(160, 138, 61, 0.8);
+}
+
+.animation-panel .timeLine .body .dragFlag.selector {
+	border: #bbb911 2px solid;
+	box-sizing: border-box;
+}
+
+.animation-panel .timeLine .stamp {
+	position: absolute;
+	top: 0px;
+	height: 100%;
+	width: 10px;
+	pointer-events: none;
+}
+
+.animation-panel .timeLine .stamp .drag-header {
+	height: 18px;
+	box-sizing: border-box;
+	border: 1px solid #CC0000;
+	margin-top: 2px;
+}
+
+.animation-panel .timeLine .stamp .drag-header {
+	border: 1px solid #B20000;
+}
+
+.animation-panel .timeLine .stamp .drag-body {
+	height: calc(100% - 22px);
+	width: 1px;
+	box-sizing: border-box;
+	margin-left: 4px;
+	border-left: 1px solid #CC0000;
+}
+
+.animation-panel .timeLine .stamp .drag-body {
+	border-left: 1px solid #B20000;
+}
+
+.animation-panel .timeLine .action-bar .time-label {
+	margin-left: 200px;
+}
+
+.animation-panel .timeLine .action-bar .monaco-scrollable-element {
+	margin-left: 5px;
+	min-width: 100px;
+	width: 100%;
+}
+
+.animation-panel .add-state{
+	height: 15px;
+	width:15px;
+	background-image: url("add.svg");
+	background-repeat: no-repeat;
+}
+
+
+.animation-panel .copyAction{
+	height: 15px;
+	width:15px;
+	background-image: url("copy.svg");
+	background-repeat: no-repeat;
+}
+
+.animation-panel .pasteAction{
+	height: 15px;
+	width:15px;
+	background-image: url("paste.svg");
+	background-repeat: no-repeat;
+}
+
+.animation-panel .playAction{
+	height: 15px;
+	width:15px;
+	background-image: url("play.svg");
+	background-repeat: no-repeat;
+}
+
+.animation-panel .pauseAction{
+	height: 15px;
+	width:15px;
+	background-image: url("pause.svg");
+	background-repeat: no-repeat;
+}

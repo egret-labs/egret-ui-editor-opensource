@@ -3,8 +3,35 @@ import { addClass } from 'egret/base/common/dom';
 import { Emitter, Event } from 'egret/base/common/event';
 import { IUIBase, getTargetElement } from './common';
 import { trim } from '../../common/strings';
+import { ContextView, AnchorAlignment } from './contextview';
+import * as dom from 'vs/base/browser/dom';
+import { IHTMLContentElement } from 'vs/base/common/htmlContent';
+import { renderHtml } from 'vs/base/browser/htmlContentRenderer';
 
 import './media/inputs.css';
+const $ = dom.$;
+
+
+export interface IInputValidator {
+	(value: string): IMessage;
+}
+
+export interface IMessage {
+	content: string;
+	formatContent?: boolean; // defaults to false
+	type?: MessageType;
+}
+
+export interface IInputValidationOptions {
+	validation: IInputValidator;
+	showMessage?: boolean;
+}
+
+export enum MessageType {
+	INFO = 1,
+	WARNING = 2,
+	ERROR = 3
+}
 
 /**
  * 按钮基类
@@ -26,26 +53,36 @@ export class TextInput implements IUIBase, IDisposable {
 	 * 只读
 	 */
 	public set readonly(_readonly: boolean) {
-		this.el.readOnly = _readonly;
+		this.inputElement.readOnly = _readonly;
 	}
 
 	/**
 	 * 只读
 	 */
 	public get readonly(): boolean {
-		return this.el.readOnly;
+		return this.inputElement.readOnly;
 	}
 
 	private container: HTMLElement;
-	protected el: HTMLInputElement;
-	constructor(container: HTMLElement | IUIBase = null) {
+	protected inputElement: HTMLInputElement;
+	private message: IMessage;
+	private validation: IInputValidator;
+	private state = 'idle';
+
+	constructor(container: HTMLElement | IUIBase = null, validationOptions?: IInputValidationOptions) {
 		this.textChanged_handler = this.textChanged_handler.bind(this);
 		this.textChanging_handler = this.textChanging_handler.bind(this);
 		this.keydown_handler = this.keydown_handler.bind(this);
-		this.el = document.createElement('input');
+		this.focus_handler = this.focus_handler.bind(this);
+		this.blur_handler = this.blur_handler.bind(this);
+		this.inputElement = document.createElement('input');
 
 		this._onValueChanging = new Emitter<string>();
 		this._onValueChanged = new Emitter<string>();
+
+		if (validationOptions) {
+			this.validation = validationOptions.validation;
+		}
 
 		this.height = 24;
 		this.paddingHorizontal = 4;
@@ -61,7 +98,7 @@ export class TextInput implements IUIBase, IDisposable {
 	 * 样式
 	 */
 	public get style(): CSSStyleDeclaration {
-		return this.el.style;
+		return this.inputElement.style;
 	}
 	
 
@@ -70,8 +107,8 @@ export class TextInput implements IUIBase, IDisposable {
 	 * @param container 
 	 */
 	public create(container: HTMLElement | IUIBase): void {
-		this.container = getTargetElement(container);
-		this.container.appendChild(this.el);
+		this.container = dom.append(getTargetElement(container), $('.monaco-inputbox.idle'));
+		this.container.appendChild(this.inputElement);
 		this.initView();
 		this.registerListeners();
 	}
@@ -79,7 +116,7 @@ export class TextInput implements IUIBase, IDisposable {
 	 * 核心dom对象
 	 */
 	public getElement(): HTMLElement {
-		return this.el;
+		return this.inputElement;
 	}
 
 	/**
@@ -104,35 +141,42 @@ export class TextInput implements IUIBase, IDisposable {
 	}
 	public set prompt(value: string) {
 		this._prompt = value;
-		this.el.placeholder = value;
+		this.inputElement.placeholder = value;
 	}
 
 
 	public set title(_t: string) {
-		this.el.title = _t;
+		this.inputElement.title = _t;
 	}
 
 	public get title(): string {
-		return this.el.title;
+		return this.inputElement.title;
 	}
 	/**
 	 * 初始化内容
 	 * @param element 
 	 */
 	protected initView(): void {
-		this.el.type == 'text';
-		addClass(this.el, 'egret-text-input');
+		this.inputElement.type == 'text';
+		addClass(this.inputElement, 'egret-text-input');
 	}
 
 	protected registerListeners(): void {
-		this.el.addEventListener('input', this.textChanging_handler);
-		this.el.addEventListener('change', this.textChanged_handler);
-		this.el.addEventListener('keydown', this.keydown_handler);
+		this.inputElement.addEventListener('input', this.textChanging_handler);
+		this.inputElement.addEventListener('change', this.textChanged_handler);
+		this.inputElement.addEventListener('keydown', this.keydown_handler);
+		this.inputElement.addEventListener('focus', this.focus_handler);
+		this.inputElement.addEventListener('blur', this.blur_handler);
 	}
 
 	private textChanging_handler(): void {
 		if (this.onChangingFilter) {
 			this.text = this.onChangingFilter(this.text);
+		}		
+		this.validate();
+
+		if (this.state === 'open') {
+			ContextView.layout();
 		}
 		this._onValueChanging.fire(this.text);
 	}
@@ -144,8 +188,27 @@ export class TextInput implements IUIBase, IDisposable {
 	}
 	private keydown_handler(e: KeyboardEvent): void {
 		if (e.keyCode == 13) {
-			this.el.blur();
+			this.inputElement.blur();
 		}
+	}
+
+	private focus_handler(): void {
+		dom.addClass(this.container, 'synthetic-focus');
+		this._showMessage();
+		this.onFocus();
+	}
+
+	private blur_handler(): void {	
+		dom.removeClass(this.container, 'synthetic-focus');
+		this._hideMessage();
+		this.onBlur();
+	}
+
+	protected onFocus(): void {
+	}
+
+	protected onBlur(): void {
+
 	}
 
 	private _height: number = 20;
@@ -157,8 +220,8 @@ export class TextInput implements IUIBase, IDisposable {
 	}
 	public set height(value: number) {
 		this._height = value;
-		this.el.style.height = value + 'px';
-		this.el.style.lineHeight = value + 'px';
+		this.inputElement.style.height = value + 'px';
+		this.inputElement.style.lineHeight = value + 'px';
 	}
 
 	private _width: number | string;
@@ -171,9 +234,9 @@ export class TextInput implements IUIBase, IDisposable {
 	public set width(value: number | string) {
 		this._width = value;
 		if (typeof value == 'string') {
-			this.el.style.width = value;
+			this.inputElement.style.width = value;
 		} else {
-			this.el.style.width = value + 'px';
+			this.inputElement.style.width = value + 'px';
 		}
 	}
 
@@ -186,8 +249,8 @@ export class TextInput implements IUIBase, IDisposable {
 	}
 	public set paddingHorizontal(value: number) {
 		this._paddingHorizontal = value;
-		this.el.style.paddingLeft = value + 'px';
-		this.el.style.paddingRight = value + 'px';
+		this.inputElement.style.paddingLeft = value + 'px';
+		this.inputElement.style.paddingRight = value + 'px';
 	}
 
 	private _paddingVertical: number = 0;
@@ -199,8 +262,8 @@ export class TextInput implements IUIBase, IDisposable {
 	}
 	public set paddingVertical(value: number) {
 		this._paddingVertical = value;
-		this.el.style.paddingTop = value + 'px';
-		this.el.style.paddingBottom = value + 'px';
+		this.inputElement.style.paddingTop = value + 'px';
+		this.inputElement.style.paddingBottom = value + 'px';
 	}
 
 	private _fontSize: number = 13;
@@ -212,27 +275,144 @@ export class TextInput implements IUIBase, IDisposable {
 	}
 	public set fontSize(value: number) {
 		this._fontSize = value;
-		this.el.style.fontSize = value + 'px';
+		this.inputElement.style.fontSize = value + 'px';
 	}
 
 	/**
 	 * 输入框文本内容
 	 */
 	public get text(): string {
-		return this.el.value;
+		return this.inputElement.value;
 	}
 	public set text(value: string) {
-		this.el.value = value;
+		this.inputElement.value = value;
+	}
+
+	public focus(): void {
+		this.inputElement.focus();
+	}
+
+	public blur(): void {
+		this.inputElement.blur();
+	}
+
+
+	public hasFocus(): boolean {
+		return document.activeElement === this.inputElement;
+	}
+	
+	public showMessage(message: IMessage, force?: boolean): void {
+		this.message = message;
+
+		dom.removeClass(this.container, 'idle');
+		dom.removeClass(this.container, 'info');
+		dom.removeClass(this.container, 'warning');
+		dom.removeClass(this.container, 'error');
+		dom.addClass(this.container, this.classForType(message.type));
+
+		if (this.hasFocus() || force) {
+			this._showMessage();
+		}
+	}
+
+	public hideMessage(): void {
+		this.message = null;
+
+		dom.removeClass(this.container, 'info');
+		dom.removeClass(this.container, 'warning');
+		dom.removeClass(this.container, 'error');
+		dom.addClass(this.container, 'idle');
+
+		this._hideMessage();
+	}
+
+	public isInputValid(): boolean {
+		return !!this.validation && !this.validation(this.text);
+	}
+
+	public validate(): boolean {
+		let result: IMessage = null;
+
+		if (this.validation) {
+			result = this.validation(this.text);
+
+			if (!result) {
+				this.inputElement.removeAttribute('aria-invalid');
+				this.hideMessage();
+			} else {
+				this.inputElement.setAttribute('aria-invalid', 'true');
+				this.showMessage(result);
+			}
+		}
+
+		return !result;
+	}
+
+	private classForType(type: MessageType): string {
+		switch (type) {
+			case MessageType.INFO: return 'info';
+			case MessageType.WARNING: return 'warning';
+			default: return 'error';
+		}
+	}
+
+	private _showMessage(): void {
+		if (!this.message) {
+			return;
+		}
+
+		let div: HTMLElement;
+		let layout = () => div.style.width = dom.getTotalWidth(this.container) + 'px';
+
+		this.state = 'open';
+
+		ContextView.show({
+			getAnchor: () => this.container,
+			anchorAlignment: AnchorAlignment.RIGHT,
+			render: (container: HTMLElement) => {
+				div = dom.append(container, $('.monaco-inputbox-container'));
+				layout();
+
+				let renderOptions: IHTMLContentElement = {
+					tagName: 'span',
+					className: 'monaco-inputbox-message',
+				};
+
+				if (this.message.formatContent) {
+					renderOptions.formattedText = this.message.content;
+				} else {
+					renderOptions.text = this.message.content;
+				}
+
+				let spanElement: HTMLElement = <any>renderHtml(renderOptions);
+				dom.addClass(spanElement, this.classForType(this.message.type));
+				dom.append(div, spanElement);
+				return null;
+			},
+			layout: layout
+		});
+	}
+
+	private _hideMessage(): void {
+		if (this.state !== 'open') {
+			return;
+		}
+
+		this.state = 'idle';
+
+		ContextView.hide();
 	}
 
 	/**
 	 * 释放
 	 */
 	public dispose(): void {
-		this.el.remove();
-		this.el.removeEventListener('input', this.textChanging_handler);
-		this.el.removeEventListener('change', this.textChanged_handler);
-		this.el.removeEventListener('keydown', this.keydown_handler);
+		this.inputElement.remove();
+		this.inputElement.removeEventListener('input', this.textChanging_handler);
+		this.inputElement.removeEventListener('change', this.textChanged_handler);
+		this.inputElement.removeEventListener('keydown', this.keydown_handler);
+		this.inputElement.removeEventListener('focus', this.focus_handler);
+		this.inputElement.removeEventListener('blur', this.blur_handler);
 		this.container = null;
 	}
 }
@@ -260,9 +440,9 @@ export class NumberInput extends TextInput {
 	public set supportRegulate(value: boolean) {
 		this._supportRegulate = value;
 		if (this._supportRegulate) {
-			this.el.style.cursor = 'col-resize';
+			this.inputElement.style.cursor = 'col-resize';
 		} else {
-			this.el.style.cursor = '';
+			this.inputElement.style.cursor = '';
 		}
 	}
 	/**
@@ -422,23 +602,21 @@ export class NumberInput extends TextInput {
 		this.mouseDown_handler = this.mouseDown_handler.bind(this);
 		this.mouseMove_handler = this.mouseMove_handler.bind(this);
 		this.mouseUp_handler = this.mouseUp_handler.bind(this);
-		this.focus_handler = this.focus_handler.bind(this);
-		this.blur_handler = this.blur_handler.bind(this);
-
-		this.el.addEventListener('focus', this.focus_handler);
-		this.el.addEventListener('blur', this.blur_handler);
-		this.el.addEventListener('mousedown', this.mouseDown_handler);
+		this.inputElement.addEventListener('mousedown', this.mouseDown_handler);
 	}
 
 	private focused = false;
-	private focus_handler(): void {
-		this.el.style.cursor = '';
+
+	protected onFocus(): void {
+		super.onFocus();
+		this.inputElement.style.cursor = '';
 		this.focused = true;
 	}
 
-	private blur_handler(): void {
+	protected onBlur(): void {
+		super.onBlur();
 		if (this._supportRegulate) {
-			this.el.style.cursor = 'col-resize';
+			this.inputElement.style.cursor = 'col-resize';
 		}
 		this.focused = false;
 	}
@@ -511,7 +689,7 @@ export class NumberInput extends TextInput {
 		if (this.supportRegulate) {
 			document.body.style.cursor = '';
 			if (Math.abs(e.pageX - this.startX) < this.regulateInteractiveOffset && Math.abs(e.pageY - this.startY) < this.regulateInteractiveOffset) {
-				this.el.focus();
+				this.inputElement.focus();
 			} else {
 				this._onValueChanged.fire(this.text);
 			}
@@ -523,9 +701,7 @@ export class NumberInput extends TextInput {
 	 */
 	public dispose(): void {
 		super.dispose();
-		this.el.removeEventListener('mousedown', this.mouseDown_handler);
-		this.el.removeEventListener('focus', this.focus_handler);
-		this.el.removeEventListener('blur', this.blur_handler);
+		this.inputElement.removeEventListener('mousedown', this.mouseDown_handler);
 		document.removeEventListener('mousemove', this.mouseMove_handler);
 		document.removeEventListener('mouseup', this.mouseUp_handler);
 

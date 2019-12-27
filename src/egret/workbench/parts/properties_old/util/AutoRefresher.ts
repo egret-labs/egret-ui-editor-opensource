@@ -88,7 +88,7 @@ export class AutoRefresher {
 		this.needRefreshFlag = true;
 		this.commitProperties();
 	}
-	
+
 
 	// 刷新
 	private commitProperties = (): void => {
@@ -97,11 +97,11 @@ export class AutoRefresher {
 			if (this.callBack !== null) {
 				if (this._model) {
 					// don't refresh in animation mode
-					// if (this.refreshInAnimationMode) {//|| !this._model.getAnimationModel().getEnabled()
-					let list: INode[];
-					list = this._model.getSelectedNodes();
-					this.callBack(list);
-					// }
+					if (this.refreshInAnimationMode || !this._model.getAnimationModel().getEnabled()) {
+						let list: INode[];
+						list = this._model.getSelectedNodes();
+						this.callBack(list);
+					}
 				} else {
 					this.callBack([]);
 				}

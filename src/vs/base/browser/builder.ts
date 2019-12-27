@@ -560,7 +560,7 @@ export class Builder implements IDisposable {
 	 *  Registers listener on event types on the current element.
 	 */
 	public on(type: string, fn: (e: Event, builder: Builder, unbind: IDisposable) => void, listenerToUnbindContainer?: IDisposable[], useCapture?: boolean): Builder;
-	// public on(typeArray: string[], fn: (e: Event, builder: Builder, unbind: IDisposable) => void, listenerToUnbindContainer?: IDisposable[], useCapture?: boolean): Builder;
+	public on(typeArray: string[], fn: (e: Event, builder: Builder, unbind: IDisposable) => void, listenerToUnbindContainer?: IDisposable[], useCapture?: boolean): Builder;
 	public on(arg1: any, fn: (e: Event, builder: Builder, unbind: IDisposable) => void, listenerToUnbindContainer?: IDisposable[], useCapture?: boolean): Builder {
 
 		// Event Type Array

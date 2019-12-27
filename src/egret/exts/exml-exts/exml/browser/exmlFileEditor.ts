@@ -9,6 +9,7 @@ import { ExmlFileEditorNavigation } from './exmlFileEditorNavigation';
 import { EditMode } from './commons';
 import { StateBar } from 'egret/workbench/parts/state/stateBar';
 import { IWorkbenchEditorService } from 'egret/workbench/services/editor/common/ediors';
+import { IWorkspaceService } from 'egret/platform/workspace/common/workspace';
 import { Keyboard } from './exmleditor/data/Keyboard';
 import { EuiCommands } from '../commands/euiCommands';
 import { IOperationBrowserService } from 'egret/platform/operations/common/operations-browser';
@@ -16,6 +17,9 @@ import { IFocusablePart, KeybindingType } from 'egret/platform/operations/common
 import { localize } from 'egret/base/localization/nls';
 import { SystemCommands } from 'egret/platform/operations/commands/systemCommands';
 import { CodeView } from './codeView';
+import { OutputView } from 'egret/workbench/parts/output/browser/outputView';
+import { PanelDom } from 'egret/parts/browser/panelDom';
+import { AnimationView } from 'egret/workbench/parts/animation/electron-browser/views/animationView';
 
 //TODO 销毁方法
 /**
@@ -26,6 +30,7 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 	constructor(
 		@IInstantiationService protected instantiationService: IInstantiationService,
 		@IWorkbenchEditorService protected editorService: IWorkbenchEditorService,
+		@IWorkspaceService private workspaceService: IWorkspaceService,
 		@IOperationBrowserService protected operationService: IOperationBrowserService
 	) {
 		super(instantiationService, editorService);
@@ -121,6 +126,7 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 		if (this.exmlView) {
 			this.exmlView.doFosusIn();
 		}
+		this.toogleAnmationView(this._currentMode === EditMode.ANIMATION);
 	}
 	/**
 	 * 焦点移出
@@ -136,6 +142,7 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 	 */
 	public doClose(): void {
 		super.doClose();
+		this.toogleAnmationView(false);
 		dispose(this);
 	}
 
@@ -159,7 +166,7 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 		this.codeView.syncModelData();
 		if (this._model) {
 			this._model.updateDirty();
-			if(this._model.isDirty){
+			if (this._model.isDirty) {
 				this.refreshExml();
 			}
 		}
@@ -199,6 +206,8 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 		this.exmlView.setModel(model.getModel());
 		this.codeView.setModel(model);
 		this.stateBar.setModel(model.getModel());
+		this.toogleAnmationView(this._currentMode === EditMode.ANIMATION);
+		model.getModel().getAnimationModel().setEnabled(this._currentMode === EditMode.ANIMATION);
 	}
 
 	private _isCodeDirty: boolean;
@@ -351,9 +360,29 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 			this.codeViewContainer.style.display = 'none';
 			this.exmlRootContainer.style.display = 'flex';
 			this.exmlView.setEditMode(mode, this.navigation.previewConfig);
+			this.toogleAnmationView(mode === EditMode.ANIMATION);
+			this.getModel().then((model) => {
+				model.getModel().getAnimationModel().setEnabled(mode === EditMode.ANIMATION);
+			});
 		}
 		this._currentMode = mode;
 	}
+
+	private toogleAnmationView(open: boolean): void {
+		if (open) {
+			const groups = this.workspaceService.boxlayout.getAllOpenPanels();
+			for (let i = 0; i < groups.length; i++) {
+				const element = groups[i];
+				if (element.getId() === OutputView.ID) {
+					element.focus();
+				}
+			}
+			this.workspaceService.boxlayout.openPanelById(AnimationView.ID, true);
+		} else {
+			this.workspaceService.boxlayout.closePanelById(AnimationView.ID);
+		}
+	}
+
 	private updatePreviewConfig(): void {
 		this.exmlView.updatePreviewConfig(this.navigation.previewConfig);
 	}

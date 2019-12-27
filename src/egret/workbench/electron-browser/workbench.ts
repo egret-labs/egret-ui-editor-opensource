@@ -50,6 +50,7 @@ import { IEditor } from 'egret/editor/core/editors';
 import { PropertyView } from '../parts/properties/electron-browser/views/propertyView';
 import { addClass, removeClass } from 'egret/base/common/dom';
 import { initCodeService } from 'egret/exts/exml-exts/exml/common/server/codeService';
+import { AnimationView } from '../parts/animation/electron-browser/views/animationView';
 
 class EditorCreater {
 	constructor(
@@ -358,6 +359,7 @@ export class Workbench implements IFocusablePart {
 		this.boxContainer.addEventListener(boxlayout.BoxLayoutEvent.PANEL_REMOVED, this.panelRemoved_handler, this);
 		this.boxContainer.addEventListener(boxlayout.BoxLayoutEvent.PANEL_ADDED, this.panelAdded_handler, this);
 
+		this.workspaceService.registerBoxlayout(this.boxContainer);
 		this.focusablePartCommandHelper = this.instantiationService.createInstance(FocusablePartCommandHelper);
 		this.restoreWindowState();
 		this.initCommands();
@@ -490,6 +492,7 @@ export class Workbench implements IFocusablePart {
 		this.boxContainer.registPanel(this.instantiationService.createInstance(PanelDom, LayerView.ID, LayerView.TITLE, LayerView, './resources/icons/layer.png'));
 		this.boxContainer.registPanel(this.instantiationService.createInstance(PanelDom, OutputView.ID, OutputView.TITLE, OutputView, './resources/icons/console.png'));
 		this.boxContainer.registPanel(this.instantiationService.createInstance(PanelDom, AlignView.ID, AlignView.TITLE, AlignView, './resources/icons/alignment.svg'));
+		this.boxContainer.registPanel(this.instantiationService.createInstance(PanelDom, AnimationView.ID, AnimationView.TITLE, AnimationView, './resources/icons/animation.svg'));
 		this.boxContainer.applyLayoutConfig(DefaultBoxLayoutTemplate);
 		this.editorPart.initDocument(this.boxContainer.getDocumentElement().render as boxlayout.DocumentGroup);
 	}

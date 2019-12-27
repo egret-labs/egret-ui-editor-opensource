@@ -850,7 +850,7 @@ export class ExmlView implements IExmlView {
 		}
 		this.setContextMenuEnable(false);
 		const selectedNodes = this.getModel().getSelectedNodes();
-		if (selectedNodes.length > 0 /*&& !this._model.getAnimationModel().getEnabled()*/) {
+		if (selectedNodes.length > 0 && !this._model.getAnimationModel().getEnabled()) {
 			if (selectedNodes.length >= 2 && selectedNodes.indexOf(this.helper.rootNode) === -1) {
 				this.setContextMenuEnable(true, EuiCommands.GROUP);
 			}
@@ -873,7 +873,7 @@ export class ExmlView implements IExmlView {
 			}
 			this.setContextMenuEnable(true, SystemCommands.PASTE);
 		}
-		if (selectedNodes.length === 1/* && !this._model.getAnimationModel().getEnabled()*/) {
+		if (selectedNodes.length === 1 && !this._model.getAnimationModel().getEnabled()) {
 			if (selectedNodes[0] !== this.helper.rootNode) {
 				this.setContextMenuEnable(true, EuiCommands.COPY_PROPERTY);
 			}

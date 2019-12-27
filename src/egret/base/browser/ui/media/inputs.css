@@ -40,3 +40,60 @@
 .egret-text-input::-webkit-input-placeholder {
 	color:#757575;
 }
+
+/* Context view */
+
+.monaco-inputbox-container {
+	text-align: right;
+}
+
+.monaco-inputbox-container .monaco-inputbox-message {
+	display: inline-block;
+	overflow: hidden;
+	text-align: left;
+	width: 100%;
+	-webkit-box-sizing:	border-box;
+	-o-box-sizing:		border-box;
+	-moz-box-sizing:	border-box;
+	-ms-box-sizing:		border-box;
+	box-sizing:			border-box;
+	padding: 0.4em;
+	font-size: 12px;
+	line-height: 17px;
+	min-height: 34px;
+	margin-top: -1px;
+}
+.monaco-inputbox {
+	width: 100%;
+}
+
+.monaco-inputbox.idle {
+	border: 1px solid transparent;
+}
+
+.monaco-inputbox.info {
+	border: 1px solid #009CCC;
+}
+
+.monaco-inputbox-container .monaco-inputbox-message.info {
+	background-color: #063B49;
+	border: 1px solid #009CCC;
+}
+
+.monaco-inputbox.warning {
+	border: 1px solid #F2CB1D;
+}
+
+.monaco-inputbox-container .monaco-inputbox-message.warning {
+	background-color: #352A05;
+	border: 1px solid #F2CB1D;
+}
+
+.monaco-inputbox.error {
+	border: 1px solid #BE1100;
+}
+
+.monaco-inputbox-container .monaco-inputbox-message.error {
+	background-color: #5A1D1D;
+	border: 1px solid #BE1100;
+}

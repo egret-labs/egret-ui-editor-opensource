@@ -126,21 +126,25 @@
     border-radius: 2px;
 	cursor: pointer;
 }
-.egret-button.icon:hover {
+.egret-button.disable {
+	opacity: 0.5;
+	cursor: default;
+}
+.egret-button.icon:hover:not(.disable) {
     background-color: rgba(255, 255, 255, 0.1);
 }
-.egret-button.icon:active {
+.egret-button.icon:active:not(.disable) {
     background-color: rgba(0, 0, 0, 0.2);
 }
 
-.egret-button.icon.selected {
+.egret-button.icon.selected:not(.disable) {
 	background-color: rgba(0, 0, 0, 0.4);
 	border: solid 1px rgba(255,255,255,0.4);
 }
-.egret-button.icon.selected:hover {
+.egret-button.icon.selected:hover:not(.disable) {
     background-color: rgba(255, 255, 255, 0.1);
 }
-.egret-button.icon.selected:active {
+.egret-button.icon.selected:active:not(.disable) {
     background-color: rgba(0, 0, 0, 0.2);
 }
 

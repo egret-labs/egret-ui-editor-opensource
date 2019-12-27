@@ -13,7 +13,7 @@ export class WorkspaceService implements IWorkspaceService {
 	private readonly workspace: IWorkspace;
 	constructor(private environmentService: IEnvironmentService,
 		folderPath: string) {
-		if(folderPath){
+		if (folderPath) {
 			this.workspace = new Workspace(path.basename(folderPath), URI.file(folderPath));
 		}
 	}
@@ -22,5 +22,20 @@ export class WorkspaceService implements IWorkspaceService {
 	 */
 	public getWorkspace(): IWorkspace {
 		return this.workspace;
+	}
+
+	private _box: boxlayout.BoxLayout;
+	/**
+	 * 获取当前盒式布局的根
+	 */
+	public get boxlayout(): boxlayout.BoxLayout {
+		return this._box;
+	}
+	/**
+	 * 注册盒式布局的根
+	 * @param box 
+	 */
+	registerBoxlayout(box: boxlayout.BoxLayout): void {
+		this._box = box;
 	}
 }

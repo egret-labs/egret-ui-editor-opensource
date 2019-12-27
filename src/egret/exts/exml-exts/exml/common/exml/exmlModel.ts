@@ -16,6 +16,8 @@ import { IDisposable } from 'egret/base/common/lifecycle';
 import { clipboard } from 'electron';
 import { setTags, getTags } from './nodeClipboard';
 import { ExmlModelCreaterEui } from '../factory/exmlCreaterEui';
+import { IAnimationModel } from '../plugin/IAnimationModel';
+import { AnimationModel } from '../plugin/animationModelImpl';
 
 
 /**
@@ -793,6 +795,7 @@ export class ExmlModel implements IExmlModel {
 
 	private _onCompileWarning: Emitter<string>;
 	private _onCompileError: Emitter<string>;
+	private _animationModel: AnimationModel;
 
 
 	constructor(
@@ -815,6 +818,8 @@ export class ExmlModel implements IExmlModel {
 		this._onViewStackIndexChanged = new Emitter<ViewStackIndexChangedEvent>();
 
 		this._temporaryData = new TemporaryData();
+		this._animationModel = new AnimationModel();
+		this._animationModel.init(this);
 
 		this._exmlConfig = this.instantiationService.createInstance(ExmlModelConfig,
 			this.egretProjectService.exmlConfig, this._onCompileWarning, this._onCompileError);
@@ -1677,10 +1682,10 @@ export class ExmlModel implements IExmlModel {
 		if (list.indexOf(this._rootNode) !== -1) {
 			return;
 		}
-		// var animationEnabled = this.getAnimationModel().getEnabled();
-		// if (animationEnabled) {
-		// 	return [];
-		// }
+		var animationEnabled = this.getAnimationModel().getEnabled();
+		if (animationEnabled) {
+			return [];
+		}
 		for (let i = 0; i < list.length; i++) {
 			const node: INode = list[i];
 			const parentNode: IContainer = node.getParent();
@@ -2829,10 +2834,10 @@ export class ExmlModel implements IExmlModel {
 	 */
 	public copyNodesToClipboard(): void {
 		const xmlList: sax.Tag[] = this.getCopyNodes();
-		// var animationEnabled = this.getAnimationModel().getEnabled();
-		// if (animationEnabled) {
-		// 	return;
-		// }
+		var animationEnabled = this.getAnimationModel().getEnabled();
+		if (animationEnabled) {
+			return;
+		}
 		if (xmlList.length === 0) {
 			return;
 		}
@@ -2873,10 +2878,10 @@ export class ExmlModel implements IExmlModel {
 		if (!this._rootNode) {
 			return;
 		}
-		// var animationEnabled = this.getAnimationModel().getEnabled();
-		// if (animationEnabled) {
-		// 	return;
-		// }
+		var animationEnabled = this.getAnimationModel().getEnabled();
+		if (animationEnabled) {
+			return;
+		}
 		// var clipboard: egret.Clipboard = egret.Clipboard.generalClipboard;
 		// var xmlList: sax.Tag[] = clipboard.getData(ExmlDataFormat.NODE_LIST) as sax.Tag[];
 		const xmlList: sax.Tag[] = getTags();
@@ -3101,10 +3106,10 @@ export class ExmlModel implements IExmlModel {
 		if (nodeList.indexOf(this._rootNode) !== -1) {
 			return;
 		}
-		// var animationEnabled = this.getAnimationModel().getEnabled();
-		// if (animationEnabled) {
-		// 	return;
-		// }
+		var animationEnabled = this.getAnimationModel().getEnabled();
+		if (animationEnabled) {
+			return;
+		}
 		for (let i = 0; i < nodeList.length; i++) {
 			let node: INode = nodeList[i];
 			if (node.getParent() instanceof EScroller) {
@@ -3322,6 +3327,10 @@ export class ExmlModel implements IExmlModel {
 		};
 
 		return _generateID(name, -1);
+	}
+
+	public getAnimationModel(): IAnimationModel {
+		return this._animationModel;
 	}
 }
 

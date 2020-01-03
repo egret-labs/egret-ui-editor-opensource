@@ -106,8 +106,8 @@ export class AnimationModel implements IAnimationModel {
 	}
 
 	private onSelectedNodeChange(): void {
-		this._onNodeSelectChanged.fire({ target: this });
 		this.changeSelectedItem();
+		this._onNodeSelectChanged.fire({ target: this });
 	}
 
 	public getSelectedNode(): INode {
@@ -194,10 +194,10 @@ export class AnimationModel implements IAnimationModel {
 	public setSelectedGroup(value: TweenGroupNode): void {
 		this.selectedGroup = value;
 		this.updateTweenTargets();
-		this._onTweenGroupSelectChanged.fire({ target: this });
 		if (this.selectedGroup) {
 			this.selectedGroup.selectTarget(this.getSelectedItem());
 		}
+		this._onTweenGroupSelectChanged.fire({ target: this });
 	}
 
 	public getSelectedGroup(): TweenGroupNode {

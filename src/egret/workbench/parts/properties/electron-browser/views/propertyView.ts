@@ -19,6 +19,9 @@ import { AutoRefreshHelper } from '../../common/autoRefreshers';
 import { IDisposable, dispose } from 'egret/base/common/lifecycle';
 import { INode } from 'egret/exts/exml-exts/exml/common/exml/treeNodes';
 import { PropertyAllPart } from './property-all/propertyAllPart';
+import { PropertyNormalPart } from './property-animation/propertyNormalPart';
+import { PropertyFramePart } from './property-animation/propertyFramePart';
+import { IAnimationService } from 'egret/workbench/parts/animation/common/animation';
 
 import './media/propertyView.css';
 
@@ -37,7 +40,8 @@ export class PropertyView extends PanelContentDom implements IModelRequirePart, 
 	 */
 	constructor(
 		@IInstantiationService private instantiationService: IInstantiationService,
-		@IExmlModelServices private exmlModeService: IExmlModelServices
+		@IExmlModelServices private exmlModeService: IExmlModelServices,
+		@IAnimationService private animationService: IAnimationService
 	) {
 		super();
 		this.refreshHelper = new AutoRefreshHelper(['class']);
@@ -49,6 +53,7 @@ export class PropertyView extends PanelContentDom implements IModelRequirePart, 
 
 	private initListeners(): void {
 		this.toDisposes.push(this.refreshHelper.onChanged(e => this.refreshChanged_handler(e)));
+		this.toDisposes.push(this.animationService.onDidEnableChange(e => this.animationEnableChanged_handler(e)));
 	}
 
 	private inited: boolean = false;
@@ -56,7 +61,27 @@ export class PropertyView extends PanelContentDom implements IModelRequirePart, 
 		this.selectionDisplay.selectedNodes = nodes;
 		if (!this.inited && nodes.length > 0) {
 			this.commonAccordionGroup.open();
+			this.animationAccordionGroup.open();
 			this.inited = true;
+		}
+	}
+
+	private animationEnableChanged_handler(value: boolean): void {
+		this.updateMode();
+	}
+
+	private updateMode(): void {	
+		const animationMode = this.animationService.animation && this.animationService.animation.getEnabled();
+		if (animationMode) {
+			this.tabbar.setItemVisible(0, false);
+			this.tabbar.setItemVisible(1, false);
+			this.tabbar.setItemVisible(2, true);
+			this.tabbar.selectedIndex = 2;
+		} else {
+			this.tabbar.setItemVisible(0, true);
+			this.tabbar.setItemVisible(1, true);
+			this.tabbar.setItemVisible(2, false);
+			this.tabbar.selectedIndex = 0;
 		}
 	}
 
@@ -108,6 +133,9 @@ export class PropertyView extends PanelContentDom implements IModelRequirePart, 
 	private allScroller: DomScrollableElement;
 	private allContainer: HTMLElement;
 
+	private animationScroller: DomScrollableElement;
+	private animationContainer: HTMLElement;
+
 	/**
 	 * 渲染
 	 * @param container 
@@ -121,6 +149,7 @@ export class PropertyView extends PanelContentDom implements IModelRequirePart, 
 		this.tabbar.dataProvider = [
 			{ iconClass: '', label: localize('propertyView.initTab.classify', 'Common'), id: 'common', style: 'tab-item', size: 25 },
 			{ iconClass: '', label: localize('propertyView.initTab.all', 'All'), id: 'all', style: 'tab-item', size: 25 },
+			{ iconClass: '', label: localize('propertyView.initTab.animation', 'Animation'), id: 'animation', style: 'tab-item', size: 25 }
 		];
 		addClass(this.tabbar.getElement(), 'property-tabbar');
 		this.tabbar.onSelectedChanged(() => this.tabbarChanged_handler());
@@ -135,6 +164,8 @@ export class PropertyView extends PanelContentDom implements IModelRequirePart, 
 		addClass(this.commonContainer, 'propertie-kind-container common');
 		this.allContainer = document.createElement('div');
 		addClass(this.allContainer, 'propertie-kind-container all');
+		this.animationContainer = document.createElement('div');
+		addClass(this.animationContainer, 'propertie-kind-container animation');
 
 		this.commonScroller = this.instantiationService.createInstance(DomScrollableElement, this.commonContainer, {
 			canUseTranslate3d: false,
@@ -154,16 +185,29 @@ export class PropertyView extends PanelContentDom implements IModelRequirePart, 
 			verticalScrollbarSize: 6
 		});
 
+		this.animationScroller = this.instantiationService.createInstance(DomScrollableElement, this.animationContainer, {
+			canUseTranslate3d: false,
+			alwaysConsumeMouseWheel: true,
+			horizontal: ScrollbarVisibility.Hidden,
+			vertical: ScrollbarVisibility.Auto,
+			verticalSliderSize: 6,
+			verticalScrollbarSize: 6
+		});
+
 		contentGroup.appendChild(this.commonScroller.getDomNode());
 		this.commonScroller.getDomNode().style.flexGrow = '1';
 		contentGroup.appendChild(this.allScroller.getDomNode());
 		this.allScroller.getDomNode().style.flexGrow = '1';
+		contentGroup.appendChild(this.animationScroller.getDomNode());
+		this.animationScroller.getDomNode().style.flexGrow = '1';
 
 		this.initCommonProperties(this.commonContainer);
 		this.initAllProperties(this.allContainer);
+		this.initAnimationProperties(this.animationContainer);
 
 		this.tabbarChanged_handler();
 		this.refreshScroller();
+		this.updateMode();
 	}
 	/**
 	 * 布局刷新
@@ -172,6 +216,7 @@ export class PropertyView extends PanelContentDom implements IModelRequirePart, 
 	 */
 	public doResize(width: number, height: any): void {
 		this.commonAccordionGroup.layout();
+		this.animationAccordionGroup.layout();
 		this.refreshScroller();
 	}
 	/**
@@ -181,11 +226,18 @@ export class PropertyView extends PanelContentDom implements IModelRequirePart, 
 		if (this.tabbar.selection.id == 'common') {
 			this.commonScroller.getDomNode().style.display = '';
 			this.allScroller.getDomNode().style.display = 'none';
-		} else {
+			this.animationScroller.getDomNode().style.display = 'none';
+		} else if(this.tabbar.selection.id === 'all') {
 			this.commonScroller.getDomNode().style.display = 'none';
+			this.animationScroller.getDomNode().style.display = 'none';
 			this.allScroller.getDomNode().style.display = '';
+		} else if(this.tabbar.selection.id === 'animation') {
+			this.animationScroller.getDomNode().style.display = '';
+			this.allScroller.getDomNode().style.display = 'none';
+			this.commonScroller.getDomNode().style.display = 'none';
 		}
 		this.commonAccordionGroup.layout();
+		this.animationAccordionGroup.layout();
 		this.refreshScroller();
 	}
 
@@ -196,6 +248,9 @@ export class PropertyView extends PanelContentDom implements IModelRequirePart, 
 			}
 			if (this.commonScroller) {
 				this.commonScroller.scanDomNode();
+			}
+			if (this.animationScroller) {
+				this.animationScroller.scanDomNode();
 			}
 		}, 1);
 	}
@@ -230,6 +285,22 @@ export class PropertyView extends PanelContentDom implements IModelRequirePart, 
 		this.propertyAllPart.onChanged(() => this.refreshScroller());
 	}
 
+	private animationAccordionGroup: AccordionGroup;
+	private propertyNormalPart: PropertyNormalPart;
+	private propertyFramePart: PropertyFramePart;
+	private initAnimationProperties(container: HTMLElement): void {
+		this.animationAccordionGroup = new AccordionGroup(container);
+
+		this.propertyNormalPart = this.instantiationService.createInstance(PropertyNormalPart, this.animationAccordionGroup);
+		this.propertyFramePart = this.instantiationService.createInstance(PropertyFramePart, this.animationAccordionGroup);
+		const dataProvider: DataSource[] = [
+			this.propertyNormalPart,
+			this.propertyFramePart
+		];
+		this.animationAccordionGroup.dataProvider = dataProvider;
+		this.animationAccordionGroup.onResize(() => this.refreshScroller());
+	}
+
 	/**
 	 * 设置一个ExmlModel
 	 * @param exmlModel 
@@ -241,6 +312,8 @@ export class PropertyView extends PanelContentDom implements IModelRequirePart, 
 		this.propertySizeposPart.model = exmlModel;
 		this.propertyLayoutPart.model = exmlModel;
 		this.propertyAllPart.model = exmlModel;
+		this.propertyFramePart.model = exmlModel;
+		this.propertyNormalPart.model = exmlModel;
 	}
 
 	/**

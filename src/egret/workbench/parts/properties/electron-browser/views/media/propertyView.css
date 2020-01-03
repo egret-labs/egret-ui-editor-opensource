@@ -13,6 +13,9 @@
 	flex-grow: 1;
 	justify-content: space-around;
 }
+.eui-black .property-tabbar.egret-tabbar .egret-button.hide {
+	display: none;
+}
 .eui-black .property-tabbar.egret-tabbar .egret-button.end {
 	margin-left: -1px !important;
 }
@@ -47,4 +50,8 @@
 }
 .property-container .property-attribute-item.invisible{
 	display: none;
+}
+
+.property-container .egret-attribute-item-group .contentGroup.property-animation-ease {
+	display: flex;
 }

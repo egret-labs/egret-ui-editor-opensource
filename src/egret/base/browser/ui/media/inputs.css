@@ -37,6 +37,9 @@
 .egret-text-input{
 	color:#cbcbcb;
 }
+.egret-text-input:read-only {
+	color: #929292;
+}
 .egret-text-input::-webkit-input-placeholder {
 	color:#757575;
 }

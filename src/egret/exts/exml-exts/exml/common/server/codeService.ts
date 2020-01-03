@@ -31,7 +31,7 @@ export class CodeService implements ICodeService {
 	}
 	public init(): void {
 		this.egretProjectService.ensureLoaded().then(() => {
-			this.contentAssistProcessor.init(this.egretProjectService.projectModel, this.egretProjectService.exmlConfig)
+			this.contentAssistProcessor.init(this.egretProjectService.projectModel, this.egretProjectService.exmlConfig);
 			this.registerCompletionItemProvider();
 		});
 	}

@@ -181,7 +181,15 @@ export class ComponentView extends PanelContentDom implements IModelRequirePart 
 	public create(): Promise<void> {
 		if (this.storageService.get(ComponentView.COMPONENT_STORAGE_ELEMENTS, StorageScope.WORKSPACE) == undefined) {
 			return this.componentSourceData.getRoot().then(input => {
-				return this.componentViewer.setInput(input);
+				const selected: ComponentStat[] = this.componentViewer.getSelection();
+				const expanded: ComponentStat[] = this.componentViewer.getExpandedElements();
+				const scrollPos = this.componentViewer.getScrollPosition();
+				return this.componentViewer.setInput(input).then(()=> {
+					return this.componentViewer.expandAll(expanded).then(()=> {
+						this.componentViewer.selectAll(selected);
+						this.componentViewer.setScrollPosition(scrollPos);
+					});
+				});
 			});
 		} else {
 			const targetsToExpand = JSON.parse(this.storageService.get(ComponentView.COMPONENT_STORAGE_ELEMENTS, StorageScope.WORKSPACE));

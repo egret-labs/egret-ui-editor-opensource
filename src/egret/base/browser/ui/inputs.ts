@@ -50,14 +50,17 @@ export class TextInput implements IUIBase, IDisposable {
 	public onChangedFilter: (value: string) => string;
 
 	/**
-	 * 只读
+	 * 可写
 	 */
 	public set readonly(_readonly: boolean) {
 		this.inputElement.readOnly = _readonly;
+		if(_readonly){	
+			this.inputElement.style.cursor = '';
+		}
 	}
 
 	/**
-	 * 只读
+	 * 可读
 	 */
 	public get readonly(): boolean {
 		return this.inputElement.readOnly;
@@ -422,6 +425,7 @@ export class TextInput implements IUIBase, IDisposable {
  */
 export class NumberInput extends TextInput {
 
+	protected _onRegulateValue: Emitter<string>;
 	/**
 	 * 是否支持百分号，默认支持
 	 */
@@ -439,7 +443,7 @@ export class NumberInput extends TextInput {
 	}
 	public set supportRegulate(value: boolean) {
 		this._supportRegulate = value;
-		if (this._supportRegulate) {
+		if (this._supportRegulate && !this.readonly) {
 			this.inputElement.style.cursor = 'col-resize';
 		} else {
 			this.inputElement.style.cursor = '';
@@ -468,6 +472,14 @@ export class NumberInput extends TextInput {
 	constructor(container: HTMLElement | IUIBase = null) {
 		super(container);
 		this.supportRegulate = this.supportRegulate;
+		this._onRegulateValue = new Emitter<string>();
+	}
+	
+	/**
+	 * 鼠标拖拽下的值改变
+	 */
+	public get onRegulateValue(): Event<string> {
+		return this._onRegulateValue.event;
 	}
 
 
@@ -571,6 +583,9 @@ export class NumberInput extends TextInput {
 		} else {
 			numValue = parseFloat(value);
 		}
+		if(Number.isNaN(numValue)){
+			return '';
+		}
 		numValue = this.validateRange(numValue);
 
 		let result = '';
@@ -615,7 +630,7 @@ export class NumberInput extends TextInput {
 
 	protected onBlur(): void {
 		super.onBlur();
-		if (this._supportRegulate) {
+		if (this._supportRegulate && !this.readonly) {
 			this.inputElement.style.cursor = 'col-resize';
 		}
 		this.focused = false;
@@ -627,6 +642,9 @@ export class NumberInput extends TextInput {
 	private startIsPercent: boolean = false;
 	private startRegulated: boolean = false;
 	private mouseDown_handler(e: MouseEvent): void {
+		if(this.readonly){
+			return;
+		}
 		this.startX = e.pageX;
 		this.startY = e.pageY;
 		if (this.supportRegulate) {
@@ -652,6 +670,9 @@ export class NumberInput extends TextInput {
 	}
 
 	private mouseMove_handler(e: MouseEvent): void {
+		if(this.readonly){
+			return;
+		}
 		if (Math.abs(e.pageX - this.startX) >= this.regulateInteractiveOffset || Math.abs(e.pageY - this.startY) >= this.regulateInteractiveOffset) {
 			this.startRegulated = true;
 		}
@@ -681,6 +702,7 @@ export class NumberInput extends TextInput {
 		}
 		this.text = result;
 		this._onValueChanging.fire(this.text);
+		this._onRegulateValue.fire(this.text);
 	}
 
 	private mouseUp_handler(e: MouseEvent): void {

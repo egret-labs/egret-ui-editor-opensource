@@ -199,7 +199,7 @@ export class CodeEditor extends EventDispatcher implements IDisposable {
 			this._isDirty = dirty;
 			this.dispatchEvent(new Event('onDirtyStateChanged', dirty))
 		}
-		console.log('CodeEditor, isDirty: ', this._isDirty);
+		// console.log('CodeEditor, isDirty: ', this._isDirty);
 	}
 
 	private updateSelectionBySelectedNode(): void {

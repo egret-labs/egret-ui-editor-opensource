@@ -98,7 +98,7 @@ MenuRegistry.getMenuItems = function (id) {
 
 self.MonacoEnvironment = {
 	getWorkerUrl: function (moduleId, label) {
-        console.log('getWorkerUrl', moduleId, label);
+        // console.log('getWorkerUrl', moduleId, label);
 		return './monaco-editor/editor.worker.js';
 	}
 }

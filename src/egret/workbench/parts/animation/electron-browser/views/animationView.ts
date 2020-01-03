@@ -24,25 +24,20 @@ import './media/animation.css';
 
 export class AnimationView extends PanelContentDom implements IFocusablePart {
 
-	private instantiationService: IInstantiationService;
-
 	private groupContainer: GroupContainer;
 	private itemsContainer: ItemsContainer;
 	private timeLineContainer: TimeLineContainer;
 	private parentBuilder: Builder;
-	private animationService: AnimationService;
 
 	private editorInputChangeListener: IDisposable;
 	private owner: IPanel;
 	constructor(
-		@IInstantiationService instantiationService: IInstantiationService,
+		@IInstantiationService private instantiationService: IInstantiationService,
 		@IOperationBrowserService private operationService: IOperationBrowserService,
-		@IWorkbenchEditorService private editorService: IWorkbenchEditorService
+		@IWorkbenchEditorService private editorService: IWorkbenchEditorService,
+		@IAnimationService private animationService: IAnimationService
 	) {
 		super(instantiationService);
-		this.animationService = instantiationService.createInstance(AnimationService);
-		this.instantiationService = instantiationService.createChild(new ServiceCollection([IAnimationService, this.animationService]));
-
 		this.editorInputChangeListener = this.editorService.onActiveEditorChanged(() => this.onEditorsChanged());
 
 		this.groupContainer = this.instantiationService.createInstance(GroupContainer);
@@ -149,6 +144,7 @@ export class AnimationView extends PanelContentDom implements IFocusablePart {
 	public dispose(): void {
 		this.groupContainer.dispose();
 		this.itemsContainer.dispose();
+		this.editorInputChangeListener.dispose();
 	}
 }
 

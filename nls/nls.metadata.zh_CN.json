@@ -87,6 +87,58 @@
 		"s": "< Edit in code >",
 		"t": "在代码中编辑"
 	},
+	"animationView.title": {
+		"s": "Animation",
+		"t": "动画"
+	},
+	"animationView.group": {
+		"s": "Group",
+		"t": "组"
+	},
+	"animationView.handleOperation.removeGroup": {
+		"s": "Delete Group",
+		"t": "删除动画组"
+	},
+	"animationView.handleOperation.addGroup": {
+		"s": "Add Group",
+		"t": "添加动画组"
+	},
+	"animationView.idHasExisting": {
+		"s": "ID has been existing as: {0} node",
+		"t": "已存在id为: {0}的节点"
+	},
+	"animationView.tweenGroupId": {
+		"s": "Tween Group ID",
+		"t": "动画组id"
+	},
+	"animationView.animation": {
+		"s": "Animation",
+		"t": "动画"
+	},
+	"animationView.handleOperation.addTweenItem": {
+		"s": "Add Tween Item",
+		"t": "添加动画"
+	},
+	"animationView.handleOperation.removeTweenItem": {
+		"s": "Remove Tween Item",
+		"t": "删除动画"
+	},
+	"animationView.handleOperation.copyTweenItem": {
+		"s": "Copy Tween Item",
+		"t": "复制动画"
+	},
+	"animationView.handleOperation.pasteTweenItem": {
+		"s": "Paste Tween Item",
+		"t": "粘贴动画"
+	},
+	"animationView.targetObjectInvalid": {
+		"s": "Animation corresponding to the target object \"{0}\" does not exist, please re set the target node",
+		"t": "动画对应的目标对象{0}不存在,请重新设置目标节点"
+	},
+	"animationView.invalidAnimationTarget": {
+		"s": "Invalid animation target",
+		"t": "无效的动画目标"
+	},
 	"aouomarkLayer.initView.desc": {
 		"s": "Move between containers - Alt",
 		"t": "容器间移动 - Alt"
@@ -1239,6 +1291,14 @@
 		"s": "Value",
 		"t": "属性值"
 	},
+	"property.frame.title.interpolation": {
+		"s": "Interpolation",
+		"t": "补间"
+	},
+	"property.frame.tweenFunction": {
+		"s": "Ease",
+		"t": "缓动函数:"
+	},
 	"property.general.alpha": {
 		"s": "Alpha:",
 		"t": "不透明度:"
@@ -1451,6 +1511,14 @@
 		"s": "Y:",
 		"t": "Y:"
 	},
+	"property.sizepos.alpha": {
+		"s": "Alpha:",
+		"t": "透明度:"
+	},
+	"property.sizepos.rotation": {
+		"s": "Rotation:",
+		"t": "角度:"
+	},
 	"property.style.bitmapLabel.font": {
 		"s": "Bitmap Font:",
 		"t": "位图字体:"
@@ -1555,6 +1623,10 @@
 		"s": "Common",
 		"t": "常用属性"
 	},
+	"propertyView.initTab.animation": {
+		"s": "Animation",
+		"t": "动画属性"
+	},
 	"propertyView.numSelected": {
 		"s": "{0} items is Selected",
 		"t": "{0} 项被选中"
@@ -1563,9 +1635,17 @@
 		"s": "Common",
 		"t": "通常"
 	},
+	"propertyView.render.frame": {
+		"s": "Frame",
+		"t": "帧"
+	},
 	"propertyView.render.layout": {
 		"s": "Layout",
 		"t": "布局"
+	},
+	"propertyView.render.normal": {
+		"s": "Base",
+		"t": "基本"
 	},
 	"propertyView.render.sizeAndLocation": {
 		"s": "Size & Position",
@@ -1791,6 +1871,30 @@
 		"s": "ToggleButton",
 		"t": "ToggleButton"
 	},
+	"tweenController.initContextMenuGeneral.createTweenAnimation": {
+		"s": "Create Tween Animation",
+		"t": "创建补间动画"
+	},
+	"tweenController.initContextMenuGeneral.deleteTween": {
+		"s": "Delete Tween",
+		"t": "删除补间"
+	},
+	"tweenController.initContextMenuGeneral.createKeyFrame": {
+		"s": "Add Key Frame",
+		"t": "添加关键帧"
+	},
+	"tweenController.initContextMenuGeneral.removeKeyFrame": {
+		"s": "Remove Key Frame",
+		"t": "删除关键帧"
+	},
+	"tweenController.play": {
+		"s": "Play",
+		"t": "播放"
+	},
+	"tweenController.stop": {
+		"s": "Stop",
+		"t": "停止"
+	},
 	"windowsMainService.doPickAndOpen.open": {
 		"s": "Open",
 		"t": "打开"
@@ -1850,81 +1954,5 @@
 	"workbench.initCommands.deleteSys": {
 		"s": "System delete command",
 		"t": "系统删除命令"
-	},
-	"animationView.title": {
-		"s": "Animation",
-		"t": "动画"
-	},
-	"animationView.group": {
-		"s": "Group",
-		"t": "组"
-	},
-	"animationView.handleOperation.removeGroup": {
-		"s": "Delete Group",
-		"t": "删除动画组"
-	},
-	"animationView.handleOperation.addGroup": {
-		"s": "Add Group",
-		"t": "添加动画组"
-	},
-	"animationView.idHasExisting": {
-		"s": "ID has been existing as: {0} node",
-		"t": "已存在id为: {0}的节点"
-	},
-	"animationView.tweenGroupId": {
-		"s": "Tween Group ID",
-		"t": "动画组id"
-	},
-	"animationView.animation": {
-		"s": "Animation",
-		"t": "动画"
-	},
-	"animationView.handleOperation.addTweenItem": {
-		"s": "Add Tween Item",
-		"t": "添加动画"
-	},
-	"animationView.handleOperation.removeTweenItem": {
-		"s": "Remove Tween Item",
-		"t": "删除动画"
-	},
-	"animationView.handleOperation.copyTweenItem": {
-		"s": "Copy Tween Item",
-		"t": "复制动画"
-	},
-	"animationView.handleOperation.pasteTweenItem": {
-		"s": "Paste Tween Item",
-		"t": "粘贴动画"
-	},
-	"animationView.targetObjectInvalid": {
-		"s": "Animation corresponding to the target object \"{0}\" does not exist, please re set the target node",
-		"t": "动画对应的目标对象{0}不存在,请重新设置目标节点"
-	},
-	"animationView.invalidAnimationTarget": {
-		"s": "Invalid animation target",
-		"t": "无效的动画目标"
-	},
-	"tweenController.initContextMenuGeneral.createTweenAnimation": {
-		"s": "Create Tween Animation",
-		"t": "创建补间动画"
-	},
-	"tweenController.initContextMenuGeneral.deleteTween": {
-		"s": "Delete Tween",
-		"t": "删除补间"
-	},
-	"tweenController.initContextMenuGeneral.createKeyFrame": {
-		"s": "Add Key Frame",
-		"t": "添加关键帧"
-	},
-	"tweenController.initContextMenuGeneral.removeKeyFrame": {
-		"s": "Remove Key Frame",
-		"t": "删除关键帧"
-	},
-	"tweenController.play": {
-		"s": "Play",
-		"t": "播放"
-	},
-	"tweenController.stop": {
-		"s": "Stop",
-		"t": "停止"
 	}
 }

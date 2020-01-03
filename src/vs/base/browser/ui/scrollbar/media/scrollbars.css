@@ -66,7 +66,7 @@
   left: 3px;
   height: 0px;
   width: 100%;
-  box-shadow: #DDD 0 6px 6px -6px inset;
+  box-shadow: #191919 0 6px 6px -6px inset;
 }
 .monaco-scrollable-element > .shadow.left {
   display: block;
@@ -74,7 +74,7 @@
   left: 0;
   height: 100%;
   width: 3px;
-  box-shadow: #DDD 6px 0 6px -6px inset;
+  box-shadow: #191919 6px 0 6px -6px inset;
 }
 .monaco-scrollable-element > .shadow.top-left-corner {
   display: block;
@@ -84,7 +84,7 @@
   width: 3px;
 }
 .monaco-scrollable-element > .shadow.top.left {
-  box-shadow: #DDD 6px 6px 6px -6px inset;
+  box-shadow: #191919 6px 6px 6px -6px inset;
 }
 /* ---------- Default Style ---------- */
 .vs .monaco-scrollable-element > .scrollbar > .slider {

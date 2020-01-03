@@ -1,4 +1,4 @@
-import { addClass } from '../../common/dom';
+import { addClass, removeClass } from '../../common/dom';
 import { ToggleButton, ButtonBase } from './buttons';
 import { IDisposable, dispose } from '../../common/lifecycle';
 import { Emitter, Event } from '../../common/event';
@@ -36,6 +36,12 @@ export interface DataSource {
 
 
 }
+
+type TabbarItem = {
+	button: ToggleButton;
+	source: DataSource;
+	visible: boolean;
+};
 
 /**
  * 切换选项
@@ -100,31 +106,74 @@ export class Tabbar implements IUIBase, IDisposable {
 		this.doSetDataProvider(this._dataProvider);
 	}
 	private toDisposes: IDisposable[] = [];
-	private items: ToggleButton[] = [];
+	private items: TabbarItem[] = [];
 	private doSetDataProvider(value: DataSource[]): void {
-		this.clearItemds();
+		this.clearItems();
 		for (let i = 0; i < value.length; i++) {
 			const dataSource = value[i];
 			const result = this.addItem(dataSource);
-			this.items.push(result.target);
+			this.items.push({
+				button: result.target,
+				source: dataSource,
+				visible: true
+			});
 			this.toDisposes.push(result.dispose);
 		}
-		if (this.items.length > 1) {
-			for (let i = 0; i < this.items.length; i++) {
-				const item = this.items[i];
+		this._selectedIndex = -1;
+		this.layout();
+	}
+
+	private layout(): void {
+		const temp: TabbarItem[] = [];
+		for (let i = 0; i < this.items.length; i++) {
+			const element = this.items[i];
+			if (element.visible) {
+				removeClass(element.button.getElement(), 'begin');
+				removeClass(element.button.getElement(), 'end');
+				removeClass(element.button.getElement(), 'middle');
+				removeClass(element.button.getElement(), 'hide');
+				temp.push(element);
+			} else {
+				addClass(element.button.getElement(), 'hide');
+			}
+		}
+		if (temp.length > 0) {
+			for (let i = 0; i < temp.length; i++) {
+				const item = temp[i];
 				if (i == 0) {
-					addClass(item.getElement(), 'begin');
-				} else if (i == this.items.length - 1) {
-					addClass(item.getElement(), 'end');
+					addClass(item.button.getElement(), 'begin');
+				} else if (i == temp.length - 1) {
+					addClass(item.button.getElement(), 'end');
 				} else {
-					addClass(item.getElement(), 'middle');
+					addClass(item.button.getElement(), 'middle');
 				}
 			}
-			this.updateItemSelectedByItem(this.items[0]);
+		}
+		this.doDefaultSelect();
+	}
+
+	private doDefaultSelect(): void {
+		let chooseFirst: boolean = false;
+		if (this._selectedIndex >= 0 && this.items.length > this._selectedIndex) {
+			const item = this.items[this._selectedIndex];
+			if (!item.visible) {
+				chooseFirst = true;
+			}
+		} else {
+			chooseFirst = true;
+		}
+		if (chooseFirst) {
+			for (let i = 0; i < this.items.length; i++) {
+				const element = this.items[i];
+				if (element.visible) {
+					this.updateItemSelectedByItem(element.button, true);
+					break;
+				}
+			}
 		}
 	}
 
-	private clearItemds(): void {
+	private clearItems(): void {
 		this.items = [];
 		this.toDisposes = dispose(this.toDisposes);
 	}
@@ -191,22 +240,54 @@ export class Tabbar implements IUIBase, IDisposable {
 	 * @type {ButtonBase}
 	 * @memberof Tabbar
 	 */
-	public get selectedButton():ButtonBase{
-		return this.items[this.selectedIndex];
+	public get selectedButton(): ButtonBase {
+		return this.items[this.selectedIndex].button;
 	}
-	private updateItemSelectedByItem(target: ButtonBase, fire: boolean = false): void {
+
+	private getButtonIndex(target: ButtonBase): number {
 		for (let i = 0; i < this.items.length; i++) {
-			if (this.items[i] != target) {
-				this.items[i].selected = false;
-			} else {
-				this.items[i].selected = true;
+			const item = this.items[i];
+			if (item.button === target) {
+				return i;
 			}
 		}
-		const index = this.items.indexOf(target as ToggleButton);
+		return -1;
+	}
+
+	public setItemVisible(index: number, visible: boolean): void;
+	public setItemVisible(value: DataSource, visible: boolean): void;
+	public setItemVisible(target: any, visible: boolean): void {
+		if (typeof target === 'number') {
+			const index = target as number;
+			if(this.items.length > index){
+				this.items[index].visible = visible;
+			}
+		} else {
+			const value = target as DataSource;
+			for (let i = 0; i < this.items.length; i++) {
+				const element = this.items[i];
+				if(element.source === value){
+					element.visible = visible;
+					break;
+				}
+			}
+		}
+		this.layout();
+	}
+
+	private updateItemSelectedByItem(target: ButtonBase, fire: boolean = false): void {
+		for (let i = 0; i < this.items.length; i++) {
+			if (this.items[i].button != target) {
+				this.items[i].button.selected = false;
+			} else {
+				this.items[i].button.selected = true;
+			}
+		}
+		const index = this.getButtonIndex(target as ToggleButton);
 		this._selectedIndex = index;
-		const selection = this.dataProvider[index];
-		if (this._selection != selection) {
-			this._selection = selection;
+		const item = this.items[index];
+		if (this._selection != item.source) {
+			this._selection = item.source;
 			if (fire) {
 				this._onSelectedChanged.fire(this._selection);
 			}
@@ -220,9 +301,9 @@ export class Tabbar implements IUIBase, IDisposable {
 		}
 		for (let i = 0; i < this.items.length; i++) {
 			if (i != index) {
-				this.items[i].selected = false;
+				this.items[i].button.selected = false;
 			} else {
-				this.items[i].selected = true;
+				this.items[i].button.selected = true;
 			}
 		}
 		this._selectedIndex = index;
@@ -244,9 +325,9 @@ export class Tabbar implements IUIBase, IDisposable {
 		}
 		for (let i = 0; i < this.items.length; i++) {
 			if (i != index) {
-				this.items[i].selected = false;
+				this.items[i].button.selected = false;
 			} else {
-				this.items[i].selected = true;
+				this.items[i].button.selected = true;
 			}
 		}
 		const selection = this.dataProvider[target];

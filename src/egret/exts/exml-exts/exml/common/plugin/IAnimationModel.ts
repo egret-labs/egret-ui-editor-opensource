@@ -5,35 +5,8 @@
 'use strict';
 
 import { Event } from 'egret/base/common/event';
-
 import { INode, IObject } from 'egret/exts/exml-exts/exml/common/exml/treeNodes';
-
-import { localize } from 'egret/base/localization/nls';
 import * as sax from 'egret/exts/exml-exts/exml/common/sax/sax';
-
-export const effectProps: NodeProperty[][] = [
-	[
-		{ name: 'x', label: 'X:' },
-		{ name: 'y', label: 'Y:' }
-	],
-	[
-		{ name: 'width', label: localize('width', 'Width') + ':' },
-		{ name: 'height', label: localize('height', 'Height') + ':' }
-	],
-	[
-		{ name: 'scaleX', label: localize('scaleX', 'ScaleX') + ':' },
-		{ name: 'scaleY', label: localize('scaleY', 'ScaleY') + ':' }
-	],
-	[
-		{ name: 'alpha', label: localize('alpha', 'Alpha') + ':' },
-		{ name: 'rotation', label: localize('rotation', 'Rotation') + ':' }
-	]
-];
-
-export interface NodeProperty {
-	name: string;
-	label: string;
-}
 
 export interface ITweenNode {
 	instance: IObject;

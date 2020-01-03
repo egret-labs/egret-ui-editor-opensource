@@ -51,6 +51,8 @@ import { PropertyView } from '../parts/properties/electron-browser/views/propert
 import { addClass, removeClass } from 'egret/base/common/dom';
 import { initCodeService } from 'egret/exts/exml-exts/exml/common/server/codeService';
 import { AnimationView } from '../parts/animation/electron-browser/views/animationView';
+import { IAnimationService } from 'egret/workbench/parts/animation/common/animation';
+import { AnimationService } from 'egret/workbench/parts/animation/common/animationService';
 
 class EditorCreater {
 	constructor(
@@ -328,6 +330,7 @@ export class Workbench implements IFocusablePart {
 	private fileService: IFileService;
 	private serviceCollection: ServiceCollection;
 	private editorService: WorkbenchEditorService;
+	private animationService: AnimationService;
 
 	private toDispose: IDisposable[];
 
@@ -511,6 +514,9 @@ export class Workbench implements IFocusablePart {
 		this.editorPart = this.instantiationService.createInstance(EditorPart);
 		this.editorService = this.instantiationService.createInstance(WorkbenchEditorService, this.editorPart);
 		this.serviceCollection.set(IWorkbenchEditorService, this.editorService);
+		//动画
+		this.animationService = this.instantiationService.createInstance(AnimationService);
+		this.serviceCollection.set(IAnimationService, this.animationService);
 	}
 
 	private registerListeners(): void {

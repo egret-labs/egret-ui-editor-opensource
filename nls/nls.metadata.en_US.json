@@ -121,7 +121,7 @@
 	},
 	"animationView.handleOperation.removeTweenItem": {
 		"s": "Remove Tween Item",
-		"t": "删除动画"
+		"t": "Remove Tween Item"
 	},
 	"animationView.handleOperation.copyTweenItem": {
 		"s": "Copy Tween Item",

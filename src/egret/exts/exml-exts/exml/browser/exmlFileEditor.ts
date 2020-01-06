@@ -360,11 +360,11 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 			this.codeViewContainer.style.display = 'none';
 			this.exmlRootContainer.style.display = 'flex';
 			this.exmlView.setEditMode(mode, this.navigation.previewConfig);
-			this.toogleAnmationView(mode === EditMode.ANIMATION);
-			this.getModel().then((model) => {
-				model.getModel().getAnimationModel().setEnabled(mode === EditMode.ANIMATION);
-			});
 		}
+		this.toogleAnmationView(mode === EditMode.ANIMATION);
+		this.getModel().then((model) => {
+			model.getModel().getAnimationModel().setEnabled(mode === EditMode.ANIMATION);
+		});
 		this._currentMode = mode;
 	}
 

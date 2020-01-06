@@ -125,6 +125,7 @@
     background-position: center;
     border-radius: 2px;
 	cursor: pointer;
+	white-space: nowrap
 }
 .egret-button.disable {
 	opacity: 0.5;

@@ -4,8 +4,6 @@ import { IExmlFileEditorModel, RootChangedEvent, TextChangedEvent } from "../../
 import * as xmlStrUtil from '../../common/sax/xml-strUtils';
 import { isInstanceof, INode } from '../../common/exml/treeNodes';
 import { StateChange } from 'egret/editor/core/models';
-import { XMLDocument } from '../../common/core/XMLDocument';
-import { EXMLContentAssistProcessor } from '../../common/contentassist/EXMLContentAssistProcessor';
 import { IEgretProjectService } from 'egret/exts/exml-exts/project';
 import { ICodeService } from '../../common/server/ICodeService';
 
@@ -103,7 +101,7 @@ export class CodeEditor extends EventDispatcher implements IDisposable {
 		if (this.isDirty && this.exmlFileModel) {
 			const model = this.exmlFileModel.getModel();
 			if (model) {
-				model.insertText(this.getText(), 0, 2147483647, true, false);
+				model.insertText(this.getText(), 0, 2147483647, true, true);
 				this.resetState();
 			}
 		}

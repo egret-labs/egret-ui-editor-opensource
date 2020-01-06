@@ -166,9 +166,6 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 		this.codeView.syncModelData();
 		if (this._model) {
 			this._model.updateDirty();
-			if (this._model.isDirty) {
-				this.refreshExml();
-			}
 		}
 	}
 

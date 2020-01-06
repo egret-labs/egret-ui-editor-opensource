@@ -58,15 +58,19 @@ export class AnimationService implements IAnimationService {
 
 	private init(): void {
 		const editor = this.editorService.getActiveEditor();
-		if(editor && editor instanceof ExmlFileEditor){
+		if (editor && editor instanceof ExmlFileEditor) {
 			this.updateModel(editor as ExmlFileEditor);
 		}
 	}
 
 	private registerListener(): void {
 		this.editorService.onActiveEditorChanged((e) => {
-			if (e instanceof ExmlFileEditor) {
-				this.updateModel(e as ExmlFileEditor);
+			if (!e) {
+				this.setModel(null);
+			} else {
+				if (e instanceof ExmlFileEditor) {
+					this.updateModel(e as ExmlFileEditor);
+				}
 			}
 		});
 	}
@@ -79,7 +83,7 @@ export class AnimationService implements IAnimationService {
 
 	private eventDisabledList: lifecycle.IDisposable[] = [];
 	private setModel(model: IExmlModel): void {
-		if(this.exmlModel === model){
+		if (this.exmlModel === model) {
 			return;
 		}
 		while (this.eventDisabledList.length > 0) {
@@ -103,6 +107,8 @@ export class AnimationService implements IAnimationService {
 			this.eventDisabledList.push(
 				this.animation.onNodeSelectChanged((e) => this.onNodeSelectChanged())
 			);
+		} else {
+			this.onEnableChanged();
 		}
 		this._onDidAnimationChange.fire(this.animation);
 		this.onGroupChanged();
@@ -133,11 +139,11 @@ export class AnimationService implements IAnimationService {
 	}
 
 	private onTimeChanged(): void {
-		this._onDidTimeChange.fire(this.animation.getTime());
+		this._onDidTimeChange.fire(this.animation ? this.animation.getTime() : 0);
 	}
 
 	private onEnableChanged(): void {
-		this._onDidEnableChange.fire(this.animation.getEnabled());
+		this._onDidEnableChange.fire(this.animation ? this.animation.getEnabled() : false);
 	}
 
 	private onNodeSelectChanged(): void {

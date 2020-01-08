@@ -63,7 +63,7 @@ export class ResLibData {
 		}
 	}
 	/** 已经加载过的资源缓存 */
-	public static caches: any = {};
+	public static caches: { [url: string]: Array<ResInfoVO> } = {};
 	/** 底层数据发生变化后，向上层抛出事件 */
 	public eventDispater: events.EventEmitter = new events.EventEmitter();
 
@@ -270,7 +270,7 @@ export class ResLibData {
 		resdir = this.resRoot;
 		const promise: Promise<any> = new Promise<any>((resolve, reject) => {
 			const contentHandler = json => {
-				const obj: any = ResFileHelper.importJson(json);
+				const obj: { resList: Array<ResInfoVO>, groupList: Array<GroupInfoVO>, groupDuplicate: boolean } = ResFileHelper.importJson(json);
 				if (!obj) {
 					this.resList = [];
 					this.groupList = [];
@@ -630,7 +630,7 @@ export class ResLibData {
 	 */
 	public static getBitmapFonts(): string[] {
 		const fonts: string[] = [];//ResLibData.caches;
-		const resInfos: Array<ResInfoVO> = ResLibData.caches;
+		const resInfos = ResLibData.caches;
 		let obj: any;
 		for (obj in resInfos) {
 			const foss: Array<any> = <any>resInfos[obj];

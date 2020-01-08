@@ -77,7 +77,7 @@ export class ResFileHelper {
 	 * 导入
 	 * @param json 
 	 */
-	public static importJson(json: string): any {
+	public static importJson(json: string): { resList: Array<ResInfoVO>, groupList: Array<GroupInfoVO>, groupDuplicate: boolean } {
 		try {
 			const jsonObj: any = JSON.parse(json);
 			return ResFileHelper.importJsonData(jsonObj);
@@ -92,8 +92,8 @@ export class ResFileHelper {
 	 * @return
 	 *
 	 */
-	public static importJsonData(jsonObj: any): any {
-		let obj: any;
+	public static importJsonData(jsonObj: any): { resList: Array<ResInfoVO>, groupList: Array<GroupInfoVO>, groupDuplicate: boolean } {
+		let obj: { resList: Array<ResInfoVO>, groupList: Array<GroupInfoVO>, groupDuplicate: boolean };
 		let resArr: Array<any> = jsonObj.resources;
 		let groupArr: Array<any> = jsonObj.groups;
 		if (!resArr || !resArr.length) {

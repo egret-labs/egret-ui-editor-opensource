@@ -48,10 +48,10 @@ export class EXMLContentAssistProcessor {
      * 初始化内容提示器
      * @param rootPath 项目根路径
      */
-	public init(projectModel: EgretProjectModel, exmlConfig: AbstractExmlConfig): void {
+	public async init(projectModel: EgretProjectModel, exmlConfig: AbstractExmlConfig): Promise<void> {
 		this._projectModel = projectModel;
 		this._exmlConfig = exmlConfig;
-		this.start();
+		await this.start();
 		if (this.initedFunc) {
 			this.initedFunc();
 		}
@@ -62,7 +62,7 @@ export class EXMLContentAssistProcessor {
 	/**
      * 启动代码提示助手，该方法可以重复调用，重复调用会彻底初始化内部配置
      */
-	private start(): void {
+	private async start(): Promise<void> {
 		let isEUI: boolean = false;
 		let schemaStrategy: BaseSchemaStrategy = null;
 		if (this._projectModel.UILibrary === 'eui') {
@@ -73,13 +73,16 @@ export class EXMLContentAssistProcessor {
 		}
 		if (schemaStrategy) {
 			this.schema = new SchemaModel();
-			this._projectModel.getEngineInfo().then((engine) => {
-				this.imageCompetion.init(this._projectModel.root.fsPath);
-				this.labelStyle.init(this.getthemePath(this._projectModel.wingPropertie.fsPath));
-				schemaStrategy.init(this._exmlConfig);
-				const xsd = isEUI ? this.initXsd(engine.euiExmlXsdPath) : this.initXsd(engine.guiExmlXsdPath);
-				this.schema.install(schemaStrategy, xsd);
-			});
+			const engine = await this._projectModel.getEngineInfo();
+			this.labelStyle.init(this.getthemePath(this._projectModel.wingPropertie.fsPath));
+			schemaStrategy.init(this._exmlConfig);
+			let xsd: sax.Tag = null;
+			if (isEUI) {
+				xsd = await this.initXsd(engine.euiExmlXsdPath);
+			} else {
+				xsd = await this.initXsd(engine.guiExmlXsdPath);
+			}
+			this.schema.install(schemaStrategy, xsd);
 		}
 	}
 
@@ -99,19 +102,25 @@ export class EXMLContentAssistProcessor {
 		return '';
 	}
 
-	private initXsd(xsdPath: string): sax.Tag {
-		var xsdStr: string = '';
-		try {
-			xsdStr = fs.readFileSync(xsdPath, 'utf-8');
-		} catch (error) { }
-		if (!xsdStr) {
-			return null;
-		}
-		var xsdXML: sax.Tag = null;
-		try {
-			var xsdXML = xml.parse(xsdStr);
-		} catch (error) { }
-		return xsdXML;
+	private initXsd(xsdPath: string): Promise<sax.Tag> {
+		return new Promise<sax.Tag>((c, e) => {
+			fs.readFile(xsdPath, 'utf-8', (err, xsdStr) => {
+				if (err) {
+					console.log(err);
+					c(null);
+				} else {
+					if (!xsdStr) {
+						c(null);
+					} else {
+						let xsdXML: sax.Tag = null;
+						try {
+							xsdXML = xml.parse(xsdStr);
+						} catch (error) { }
+						c(xsdXML);
+					}
+				}
+			});
+		});
 	}
 
 	public getSchemaModel() {

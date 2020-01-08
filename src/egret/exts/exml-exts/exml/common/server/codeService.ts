@@ -23,11 +23,11 @@ export class CodeService implements ICodeService {
 	_serviceBrand: any;
 
 	private instanceMap: { [editorId: string]: CodeEditorInstance } = {};
-	private contentAssistProcessor: EXMLContentAssistProcessor = new EXMLContentAssistProcessor();
+	private contentAssistProcessor: EXMLContentAssistProcessor;
 	constructor(
+		@IInstantiationService private instantiationService: IInstantiationService,
 		@IEgretProjectService protected egretProjectService: IEgretProjectService) {
-
-
+		this.contentAssistProcessor = this.instantiationService.createInstance(EXMLContentAssistProcessor);
 	}
 	public init(): void {
 		this.egretProjectService.ensureLoaded().then(() => {
@@ -40,6 +40,11 @@ export class CodeService implements ICodeService {
 		monaco.languages.registerCompletionItemProvider('xml', {
 			triggerCharacters: [':', '<', '\'', '\'', ' ', '.', '/'],
 			provideCompletionItems: (model, position, context, token) => {
+				if (!this.contentAssistProcessor.inited) {
+					return {
+						suggestions: []
+					};
+				}
 				try {
 					const xmlDoc = this.getInstance(model.uri).doc;
 					let text: string = xmlDoc.getText();
@@ -50,8 +55,7 @@ export class CodeService implements ICodeService {
 					};
 				} catch (e) {
 					return {
-						suggestions: [],
-						incomplete: false
+						suggestions: []
 					};
 				}
 			}

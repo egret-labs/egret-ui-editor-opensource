@@ -269,7 +269,7 @@ export class AppMenu {
 		const alignment = this.createMenuItem(mnemonicMenuLabel(localize('menus.viewMenu.align', 'Align(&&A)')), '', RootCommands.ALIGNMENT_PANEL, '', '');
 		const property = this.createMenuItem(mnemonicMenuLabel(localize('menus.viewMenu.property', 'Property(&&P)')), '', RootCommands.PROPERTY_PANEL, '', '');
 
-		const quickOpen = this.createMenuItem(mnemonicMenuLabel(localize('menus.viewMenu.quickOpen', 'Quick Open(&&Q)')), 'CmdOrCtrl+Shift+R', RootCommands.PROMPT_QUICK_OPEN, localize('menus.viewMenu.quickOpenLabel', 'Quick Open'), localize('menus.viewMenu.quickOpenDes', 'Quick Open EXML file operation'));
+		const quickOpen = this.createMenuItem(mnemonicMenuLabel(localize('menus.viewMenu.quickOpen', 'Quick Open(&&Q)')), 'CmdOrCtrl+P', RootCommands.PROMPT_QUICK_OPEN, localize('menus.viewMenu.quickOpenLabel', 'Quick Open'), localize('menus.viewMenu.quickOpenDes', 'Quick Open EXML file operation'));
 
 
 		const memus = [explorer, layer, output, assets, component, alignment, property,__separator__(),quickOpen];

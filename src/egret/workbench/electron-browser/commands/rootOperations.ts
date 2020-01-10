@@ -15,6 +15,7 @@ import { AppId } from 'egret/platform/launcher/common/launcherDefines';
 import { SearchFilePanel } from 'egret/workbench/parts/searchFile/view/searchFilePanel';
 import { IWorkbenchEditorService } from 'egret/workbench/services/editor/common/ediors';
 import { BaseEditor } from 'egret/editor/browser/baseEditor';
+import { innerWindowManager } from 'egret/platform/innerwindow/common/innerWindowManager';
 
 /**
  * 打开文件夹的操作
@@ -46,6 +47,9 @@ export class PromptAboutOperation implements IOperation {
 	 * 运行
 	 */
 	public run(): Promise<any> {
+		if (innerWindowManager.tryActive(AboutPanel)) {
+			return Promise.resolve(void 0);
+		}
 		const about = new AboutPanel();
 		about.open(null, true);
 		return Promise.resolve(void 0);
@@ -62,13 +66,16 @@ export class PromptAboutOperation implements IOperation {
  */
 export class PrompQuickOpenOperation implements IOperation {
 	constructor(
-		@IInstantiationService private instantiationService:IInstantiationService
-		){
+		@IInstantiationService private instantiationService: IInstantiationService
+	) {
 	}
 	/**
 	 * 运行
 	 */
 	public run(): Promise<any> {
+		if (innerWindowManager.tryActive(SearchFilePanel)) {
+			return Promise.resolve(void 0);
+		}
 		const panel = this.instantiationService.createInstance(SearchFilePanel);
 		panel.open(null, true);
 		return Promise.resolve(void 0);
@@ -132,6 +139,9 @@ export class WingPropertyOperation implements IOperation {
 	 * 运行
 	 */
 	public run(): Promise<any> {
+		if (innerWindowManager.tryActive(WingPropertyPanel)) {
+			return Promise.resolve(void 0);
+		}
 		const projectProperties = this.egretProjectService.projectModel.getWingProperties();
 
 		// new WingPropertyPanel
@@ -169,7 +179,7 @@ export class CloseCurrentOperation implements IOperation {
 		if (editor instanceof BaseEditor) {
 			return this.editorService.closeEditor(editor);
 		}
-		return Promise.resolve(void 0); 
+		return Promise.resolve(void 0);
 	}
 	/**
 	 * 释放
@@ -193,6 +203,9 @@ export class KeybindingSettingOperation implements IOperation {
 	 */
 	public run(): Promise<any> {
 		return new Promise((resolve, reject) => {
+			if (innerWindowManager.tryActive(KeybindingPanel)) {
+				return Promise.resolve(void 0);
+			}
 			const toDispose: IDisposable[] = [];
 			const panel = this.instantiationService.createInstance(KeybindingPanel);
 			panel.open(null, true);

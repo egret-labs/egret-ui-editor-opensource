@@ -2,6 +2,10 @@ import { _IInnerWindow, _IInnerWindowRoot, IInnerWindow, IInnerWindowRoot, _IInn
 import { isInDOM, watchResizeChange } from '../../../base/common/dom';
 import { remote } from 'electron';
 
+export interface IInnerWindowConstructor {
+	new(...params: any[]): IInnerWindow;
+}
+
 /**
  * 内置窗体的跟节点层
  */
@@ -43,9 +47,9 @@ class RootLayer implements _IInnerWindowRoot {
 	/**
 	 * 自己尺寸改变
 	 */
-	public doSelfResize():void{
-		for(let i = 0;i<this.subWindowsList.length;i++){
-			const window:_IInnerWindowCore = <any>this.subWindowsList[i] as _IInnerWindowCore;
+	public doSelfResize(): void {
+		for (let i = 0; i < this.subWindowsList.length; i++) {
+			const window: _IInnerWindowCore = <any>this.subWindowsList[i] as _IInnerWindowCore;
 			window.doSelfResize();
 		}
 	}
@@ -184,7 +188,7 @@ class InnerWindowManager {
 		this.keydown_handler = this.keydown_handler.bind(this);
 
 		this._rootLayer = new RootLayer();
-		
+
 		document.addEventListener('keydown', this.keydown_handler);
 	}
 
@@ -195,11 +199,11 @@ class InnerWindowManager {
 				(activateWindow as _IInnerWindow).doEsc();
 			} else if (e.keyCode == 13) {//enter
 				let canDoEnter = true;
-				if(e.target instanceof HTMLInputElement){
+				if (e.target instanceof HTMLInputElement) {
 					e.target.type == 'text';
 					canDoEnter = false;
 				}
-				if(canDoEnter){
+				if (canDoEnter) {
 					(activateWindow as _IInnerWindow).doEnter();
 				}
 			}
@@ -270,7 +274,7 @@ class InnerWindowManager {
 			if (index != -1) {
 				owner.subWindowsList.splice(index, 1);
 			}
-			if(window.windowElement){
+			if (window.windowElement) {
 				window.windowElement.remove();
 			}
 			window.doClose();
@@ -309,15 +313,15 @@ class InnerWindowManager {
 		}
 		return this._rootLayer;
 	}
-	private activateFlag:boolean = false;
-	private activateLaters:(_IInnerWindow | _IInnerWindowRoot)[] = [];
+	private activateFlag: boolean = false;
+	private activateLaters: (_IInnerWindow | _IInnerWindowRoot)[] = [];
 	/**
 	 * 激活一个窗体
 	 * @param window 
 	 */
 	public activate(window: _IInnerWindow | _IInnerWindowRoot): void {
 		this.activateLaters.push(window);
-		if(this.activateFlag){
+		if (this.activateFlag) {
 			return;
 		}
 		this.activateFlag = true;
@@ -327,6 +331,33 @@ class InnerWindowManager {
 			this.activateLaters.length = 0;
 			this._currentActivateWindow = this.doActivate(firstWindow);
 		}, 1);
+	}
+
+	public tryActive(windowType: IInnerWindowConstructor): boolean {
+		const window = this.getOpenedWindow(windowType, this._rootLayer);
+		if (!window) {
+			return false;
+		} else {
+			this.activate(window as _IInnerWindow);
+			return true;
+		}
+	}
+
+	private getOpenedWindow(windowType: IInnerWindowConstructor, root: _IInnerWindowCore): IInnerWindow {
+		if (!root) {
+			return null;
+		}
+		if (root instanceof windowType) {
+			return root;
+		}
+		for (let i = 0; i < root.subWindowsList.length; i++) {
+			const subWindow = <any>(root.subWindowsList[i]) as _IInnerWindow;
+			const find = this.getOpenedWindow(windowType, subWindow);
+			if (find) {
+				return find;
+			}
+		}
+		return null;
 	}
 
 	private doActivate(window: _IInnerWindow | _IInnerWindowRoot): IInnerWindow | _IInnerWindowRoot {

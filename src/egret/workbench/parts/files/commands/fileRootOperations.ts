@@ -21,6 +21,7 @@ import { localize } from 'egret/base/localization/nls';
 import { EUIExmlConfig } from 'egret/exts/exml-exts/exml/common/project/exmlConfigs';
 import { IClipboardService } from 'egret/platform/clipboard/common/clipboardService';
 import { ExmlFileEditor } from 'egret/exts/exml-exts/exml/browser/exmlFileEditor';
+import { innerWindowManager } from 'egret/platform/innerwindow/common/innerWindowManager';
 
 
 //TODO 这个新建exml的和框架层无关，未来不应该放在这里
@@ -42,6 +43,9 @@ export class NewExmlOperation implements IOperation {
 		return new Promise((resolve, reject) => {
 			if (!this.workspaceService.getWorkspace()) {
 				reject(localize('newExmlOperation.run.notProject', 'No items are currently open, and Exml skin cannot be created'));
+			}
+			if (innerWindowManager.tryActive(NewExmlPanel)) {
+				return Promise.resolve(void 0);
 			}
 			this.projectService.ensureLoaded().then(() => {
 				const euiExmlConfig: EUIExmlConfig = this.projectService.exmlConfig as EUIExmlConfig;
@@ -268,6 +272,9 @@ export class NewFolderOperation implements IOperation {
 		return new Promise((resolve, reject) => {
 			if (!this.workspaceService.getWorkspace()) {
 				reject(localize('newFolderOperation.run.notOpenProject', 'No project are currently open, can\'t create folder'));
+			}
+			if (innerWindowManager.tryActive(NewFolderPanel)) {
+				return Promise.resolve(void 0);
 			}
 			const defaultFolder = this.explorerService ? this.explorerService.getFirstSelectedFolder() : null;
 			if (defaultFolder) {

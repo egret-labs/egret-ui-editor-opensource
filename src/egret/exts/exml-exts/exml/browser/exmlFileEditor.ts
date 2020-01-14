@@ -126,7 +126,7 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 		if (this.exmlView) {
 			this.exmlView.doFosusIn();
 		}
-		this.toogleAnmationView(this._currentMode === EditMode.ANIMATION);
+		this.refreshAnimationState(this._currentMode === EditMode.ANIMATION);
 	}
 	/**
 	 * 焦点移出
@@ -142,7 +142,7 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 	 */
 	public doClose(): void {
 		super.doClose();
-		this.toogleAnmationView(false);
+		this.refreshAnimationState(false);
 		dispose(this);
 	}
 
@@ -203,8 +203,7 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 		this.exmlView.setModel(model.getModel());
 		this.codeView.setModel(model);
 		this.stateBar.setModel(model.getModel());
-		this.toogleAnmationView(this._currentMode === EditMode.ANIMATION);
-		model.getModel().getAnimationModel().setEnabled(this._currentMode === EditMode.ANIMATION);
+		this.refreshAnimationState(this._currentMode === EditMode.ANIMATION);
 	}
 
 	private _isCodeDirty: boolean;
@@ -358,11 +357,23 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 			this.exmlRootContainer.style.display = 'flex';
 			this.exmlView.setEditMode(mode, this.navigation.previewConfig);
 		}
-		this.toogleAnmationView(mode === EditMode.ANIMATION);
-		this.getModel().then((model) => {
-			model.getModel().getAnimationModel().setEnabled(mode === EditMode.ANIMATION);
-		});
+		this.refreshAnimationState(mode === EditMode.ANIMATION);
 		this._currentMode = mode;
+	}
+
+	private refreshAnimationState(enable: boolean): void {
+		this.toogleAnmationView(enable);
+		this.toogleAnimationEnable(enable);
+	}
+
+	private toogleAnimationEnable(enable: boolean): void {
+		if(!this._model){
+			this.getModel().then((model) => {
+				model.getModel().getAnimationModel().setEnabled(enable);
+			});
+		} else {
+			this._model.getModel().getAnimationModel().setEnabled(enable);
+		}
 	}
 
 	private toogleAnmationView(open: boolean): void {

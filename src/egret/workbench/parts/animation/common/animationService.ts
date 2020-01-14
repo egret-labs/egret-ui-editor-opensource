@@ -107,10 +107,9 @@ export class AnimationService implements IAnimationService {
 			this.eventDisabledList.push(
 				this.animation.onNodeSelectChanged((e) => this.onNodeSelectChanged())
 			);
-		} else {
-			this.onEnableChanged();
 		}
 		this._onDidAnimationChange.fire(this.animation);
+		this.onEnableChanged();
 		this.onGroupChanged();
 		this.onGroupSelectedChanged();
 	}
@@ -159,7 +158,7 @@ export class AnimationService implements IAnimationService {
 	}
 
 	public get enable(): boolean {
-		return !!this.exmlModel;
+		return this.animation ? this.animation.getEnabled() : false;
 	}
 }
 

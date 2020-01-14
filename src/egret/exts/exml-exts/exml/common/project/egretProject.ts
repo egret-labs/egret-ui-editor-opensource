@@ -204,7 +204,7 @@ export class EgretProjectModel {
 					const exmlRoot: string[] = euiData['exmlRoot'];
 					if (exmlRoot && Array.isArray(exmlRoot) && exmlRoot.length > 0) {
 						for (let i = 0; i < exmlRoot.length; i++) {
-							const fsPath = exmlRoot[0];
+							const fsPath = exmlRoot[i];
 							this._exmlRoots.push(URI.file(fsPath));
 						}
 					}

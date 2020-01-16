@@ -1,11 +1,11 @@
-import { IDataSource, ITree, IRenderer, IController, IDragAndDropData, IDragOverReaction, ContextMenuEvent, IFilter, DRAG_OVER_REJECT, DRAG_OVER_ACCEPT_BUBBLE_DOWN, DRAG_OVER_ACCEPT_BUBBLE_DOWN_COPY, DRAG_OVER_ACCEPT_BUBBLE_UP_COPY, DRAG_OVER_ACCEPT_BUBBLE_UP, ISorter } from 'vs/base/parts/tree/browser/tree';
-import { TPromise } from 'vs/base/common/winjs.base';
+import { IDataSource, ITree, IRenderer, IController, IDragOverReaction, ContextMenuEvent, IFilter, ISorter, DragOverBubble, DragOverEffect } from 'vs/base/parts/tree/browser/tree';
+import * as DOM from 'vs/base/browser/dom';
 import { IFileService, isParent } from 'egret/platform/files/common/files';
 import { FileStat, Model } from '../../common/explorerModel';
 import { IInstantiationService } from 'egret/platform/instantiation/common/instantiation';
 import { IDisposable } from 'vs/base/common/lifecycle';
 import { DefaultController, DefaultDragAndDrop } from 'vs/base/parts/tree/browser/treeDefaults';
-import { IMouseEvent } from 'vs/base/browser/mouseEvent';
+import { IMouseEvent, DragMouseEvent } from 'vs/base/browser/mouseEvent';
 import { Tree } from 'vs/base/parts/tree/browser/treeImpl';
 import * as paths from 'path';
 import { MenuItemConstructorOptions, MenuItem, remote, Menu } from 'electron';
@@ -22,7 +22,6 @@ import { addClass } from 'egret/base/common/dom';
 import { FileRootCommands } from '../../commands/fileRootCommands';
 import { FileExplorerCommands } from '../../commands/fileExplorerCommands';
 import { DuplicateFileOperation } from '../../commands/fileExplorerOperations';
-import { $ } from 'vs/base/browser/builder';
 import { INotificationService } from 'egret/platform/notification/common/notifications';
 import { IOperationBrowserService } from 'egret/platform/operations/common/operations-browser';
 import { localize } from 'egret/base/localization/nls';
@@ -32,6 +31,7 @@ import { dispose } from 'egret/base/common/lifecycle';
 import './media/explorer.css';
 import { IWorkbenchEditorService } from 'egret/workbench/services/editor/common/ediors';
 import { IFileModelService } from 'egret/workbench/services/editor/common/models';
+import { IDragAndDropData } from 'vs/base/browser/dnd';
 
 /**
  * 文件数据源
@@ -70,14 +70,14 @@ export class FileDataSource implements IDataSource {
 	 * @param tree 
 	 * @param element 
 	 */
-	public getChildren(tree: ITree, stat: FileStat | Model): TPromise<FileStat[]> {
+	public getChildren(tree: ITree, stat: FileStat | Model): Promise<FileStat[]> {
 		if (stat instanceof Model) {
-			return TPromise.as([stat.root]);
+			return Promise.resolve([stat.root]);
 		}
 		if (stat.isDirectoryResolved) {
-			return TPromise.as(stat.children);
+			return Promise.resolve(stat.children);
 		} else {
-			return new TPromise<FileStat[]>((resolve, reject) => {
+			return new Promise<FileStat[]>((resolve, reject) => {
 				this.fileService.resolveFile(stat.resource).then(
 					dirStat => {
 						const modelDirStat = FileStat.create(dirStat, stat.root);
@@ -99,17 +99,17 @@ export class FileDataSource implements IDataSource {
 	 * @param tree 
 	 * @param element 
 	 */
-	public getParent(tree: ITree, stat: FileStat | Model): TPromise<FileStat> {
+	public getParent(tree: ITree, stat: FileStat | Model): Promise<FileStat> {
 		if (!stat) {
-			return TPromise.as(null);
+			return Promise.resolve(null);
 		}
 		if (tree.getInput() === stat) {
-			return TPromise.as(null);
+			return Promise.resolve(null);
 		}
 		if (stat instanceof FileStat && stat.parent) {
-			return TPromise.as(stat.parent);
+			return Promise.resolve(stat.parent);
 		}
-		return TPromise.as(null);
+		return Promise.resolve(null);
 	}
 }
 
@@ -168,7 +168,7 @@ export class FileRenderer implements IRenderer {
 	public renderTemplate(tree: ITree, templateId: string, container: HTMLElement): IFileTemplateData {
 		const iconDisplay: HTMLElement = document.createElement('div');
 
-		const iconSpan= $(container).span().getHTMLElement();
+		const iconSpan= DOM.append(container, DOM.$('span'));
 		addClass(iconSpan,'iconSpan');
 		addClass(iconDisplay,'file-icon');
 		const labelDisplay: HTMLSpanElement = document.createElement('span');
@@ -233,7 +233,6 @@ enum ContextMenuId {
  */
 export class FileController extends DefaultController implements IController, IDisposable {
 	private previousSelectionRangeStop: FileStat;
-	private openOnSingleClick: boolean = true;
 
 	constructor(
 		@IWorkbenchEditorService private editorService: IWorkbenchEditorService,
@@ -392,7 +391,7 @@ export class FileController extends DefaultController implements IController, ID
 		event.stopPropagation();
 
 		// Set DOM focus
-		tree.DOMFocus();
+		tree.domFocus();
 
 		// Allow to multiselect
 		if ((event.altKey) || (event.ctrlKey || event.metaKey)) {
@@ -682,7 +681,7 @@ export class FileDragAndDrop2 extends DefaultDragAndDrop {
 	 * @param data 
 	 * @param originalEvent 
 	 */
-	public onDragStart(tree: ITree, data: IDragAndDropData, originalEvent: DragEvent): void {
+	public onDragStart(tree: ITree, data: IDragAndDropData, originalEvent: DragMouseEvent): void {
 		const sources: FileStat[] = data.getData();
 		if (sources && sources.length) {
 			sources.forEach(s => {
@@ -704,13 +703,13 @@ export class FileDragAndDrop2 extends DefaultDragAndDrop {
 	 * @param targetElement 
 	 * @param originalEvent 
 	 */
-	public onDragOver(tree: ITree, data: IDragAndDropData, target: FileStat | Model, originalEvent: DragEvent): IDragOverReaction {
+	public onDragOver(tree: ITree, data: IDragAndDropData, target: FileStat | Model, originalEvent: DragMouseEvent): IDragOverReaction {
 		const isCopy = originalEvent && ((originalEvent.ctrlKey && !isMacintosh) || (originalEvent.altKey && isMacintosh));
 		const fromDesktop = data instanceof DesktopDragAndDropData;
 
 		// Desktop DND
 		if (fromDesktop) {
-			return DRAG_OVER_REJECT;
+			return { accept: false };
 			// const types: string[] = originalEvent.dataTransfer.types;
 			// const typesArray: string[] = [];
 			// for (let i = 0; i < types.length; i++) {
@@ -722,7 +721,7 @@ export class FileDragAndDrop2 extends DefaultDragAndDrop {
 		}
 		// Other-Tree DND
 		else if (data instanceof ExternalElementsDragAndDropData) {
-			return DRAG_OVER_REJECT;
+			return { accept: false };
 		}
 
 		// In-Explorer DND
@@ -730,13 +729,13 @@ export class FileDragAndDrop2 extends DefaultDragAndDrop {
 			const sources: FileStat[] = data.getData();
 			if (target instanceof Model) {
 				if (sources[0].isRoot) {
-					return DRAG_OVER_ACCEPT_BUBBLE_DOWN(false);
+					return { accept: true, bubble: DragOverBubble.BUBBLE_DOWN, autoExpand: false };
 				}
-				return DRAG_OVER_REJECT;
+				return { accept: false };
 			}
 
 			if (!Array.isArray(sources)) {
-				return DRAG_OVER_REJECT;
+				return { accept: false };
 			}
 
 			if (sources.some((source) => {
@@ -756,18 +755,18 @@ export class FileDragAndDrop2 extends DefaultDragAndDrop {
 				}
 				return false;
 			})) {
-				return DRAG_OVER_REJECT;
+				return { accept: false };
 			}
 		}
 
 		// All (target = model)
 		if (!(target instanceof Model)) {
 			if (target.isDirectory) {
-				return fromDesktop || isCopy ? DRAG_OVER_ACCEPT_BUBBLE_DOWN_COPY(true) : DRAG_OVER_ACCEPT_BUBBLE_DOWN(true);
+				return fromDesktop || isCopy ? { accept: true, bubble: DragOverBubble.BUBBLE_DOWN, effect: DragOverEffect.COPY } : { accept: true, bubble: DragOverBubble.BUBBLE_DOWN, autoExpand: true };
 			}
-			return fromDesktop || isCopy ? DRAG_OVER_ACCEPT_BUBBLE_UP_COPY : DRAG_OVER_ACCEPT_BUBBLE_UP;
+			return fromDesktop || isCopy ? { accept: true, bubble: DragOverBubble.BUBBLE_UP, effect: DragOverEffect.COPY } : { accept: true, bubble: DragOverBubble.BUBBLE_UP };
 		}
-		return DRAG_OVER_REJECT;
+		return { accept: false };
 	}
 	/**
 	 * 当将目标拖入到一个位置的时候。
@@ -776,7 +775,7 @@ export class FileDragAndDrop2 extends DefaultDragAndDrop {
 	 * @param targetElement 
 	 * @param originalEvent 
 	 */
-	public drop(tree: ITree, data: IDragAndDropData, target: FileStat | Model, originalEvent: DragEvent): void {
+	public drop(tree: ITree, data: IDragAndDropData, target: FileStat | Model, originalEvent: DragMouseEvent): void {
 		let promise: Promise<void> = Promise.resolve(null);
 		// Desktop DND (Import file)
 		if (data instanceof DesktopDragAndDropData) {
@@ -792,11 +791,11 @@ export class FileDragAndDrop2 extends DefaultDragAndDrop {
 		});
 	}
 
-	private handleExternalDrop(tree: ITree, data: DesktopDragAndDropData, target: FileStat | Model, originalEvent: DragEvent): Promise<void> {
+	private handleExternalDrop(tree: ITree, data: DesktopDragAndDropData, target: FileStat | Model, originalEvent: DragMouseEvent): Promise<void> {
 		return null;
 	}
 
-	private handleExplorerDrop(tree: ITree, data: IDragAndDropData, target: FileStat | Model, originalEvent: DragEvent): Promise<void> {
+	private handleExplorerDrop(tree: ITree, data: IDragAndDropData, target: FileStat | Model, originalEvent: DragMouseEvent): Promise<void> {
 		const sources: FileStat[] = distinctParents(data.getData(), s => s.resource);
 		const isCopy = (originalEvent.ctrlKey && !isMacintosh) || (originalEvent.altKey && isMacintosh);
 		let confirmPromise: Promise<boolean>;
@@ -904,7 +903,7 @@ export class FileDragAndDrop2 extends DefaultDragAndDrop {
 				}
 
 				if (!(target instanceof FileStat)) {
-					return TPromise.as(void 0);
+					return Promise.resolve(void 0);
 				}
 
 				return this.fileModelService.disposeModel(source.resource).then(() => {
@@ -966,7 +965,7 @@ export class FileDragAndDrop extends DefaultDragAndDrop {
 	 * @param data 
 	 * @param originalEvent 
 	 */
-	public onDragStart(tree: ITree, data: IDragAndDropData, originalEvent: DragEvent): void {
+	public onDragStart(tree: ITree, data: IDragAndDropData, originalEvent: DragMouseEvent): void {
 
 		console.log(data);
 	}
@@ -977,7 +976,7 @@ export class FileDragAndDrop extends DefaultDragAndDrop {
 	 * @param targetElement 
 	 * @param originalEvent 
 	 */
-	public onDragOver(tree: ITree, data: IDragAndDropData, targetElement: any, originalEvent: DragEvent): IDragOverReaction {
+	public onDragOver(tree: ITree, data: IDragAndDropData, targetElement: any, originalEvent: DragMouseEvent): IDragOverReaction {
 		return null;
 	}
 	/**
@@ -987,7 +986,7 @@ export class FileDragAndDrop extends DefaultDragAndDrop {
 	 * @param targetElement 
 	 * @param originalEvent 
 	 */
-	public drop(tree: ITree, data: IDragAndDropData, targetElement: any, originalEvent: DragEvent): void {
+	public drop(tree: ITree, data: IDragAndDropData, targetElement: any, originalEvent: DragMouseEvent): void {
 	}
 }
 

@@ -4,11 +4,9 @@
  *--------------------------------------------------------------------------------------------*/
 'use strict';
 import { IDisposable } from 'vs/base/common/lifecycle';
-import { $, Builder, Dimension } from 'vs/base/browser/builder';
+import * as DOM from 'vs/base/browser/dom';
 import { IInstantiationService } from 'egret/platform/instantiation/common/instantiation';
-import { ServiceCollection } from 'egret/platform/instantiation/common/serviceCollection';
 import { IAnimationService } from '../../common/animation';
-import { AnimationService } from '../../common/animationService';
 import { TimeLineContainer } from './timeLine';
 import { GroupContainer } from './groupContainer';
 import { ItemsContainer } from './itemsContainer';
@@ -27,7 +25,6 @@ export class AnimationView extends PanelContentDom implements IFocusablePart {
 	private groupContainer: GroupContainer;
 	private itemsContainer: ItemsContainer;
 	private timeLineContainer: TimeLineContainer;
-	private parentBuilder: Builder;
 
 	private editorInputChangeListener: IDisposable;
 	private owner: IPanel;
@@ -103,14 +100,12 @@ export class AnimationView extends PanelContentDom implements IFocusablePart {
 
 	private doRender(container: HTMLDivElement) {
 		const root = document.createElement('div');
-		const parent = $(root);
-		parent.addClass('animation-panel');
+		DOM.addClass(root, 'animation-panel');
 		container.appendChild(root);
 
-		this.groupContainer.create(parent);
-		this.itemsContainer.create(parent);
-		this.timeLineContainer.create(parent);
-		this.parentBuilder = parent;
+		this.groupContainer.create(root);
+		this.itemsContainer.create(root);
+		this.timeLineContainer.create(root);
 	}
 
 	/**
@@ -119,11 +114,11 @@ export class AnimationView extends PanelContentDom implements IFocusablePart {
 	* @param height
 	*/
 	public doResize(width: number, height: any): void {
-		this.layout(new Dimension(width, height));
+		this.layout(new DOM.Dimension(width, height));
 	}
 
 
-	public layout(dimension?: Dimension): void {
+	public layout(dimension?: DOM.Dimension): void {
 		if (!dimension) {
 			return;
 		}
@@ -131,11 +126,11 @@ export class AnimationView extends PanelContentDom implements IFocusablePart {
 		this.groupContainer.layout(dimension.height);
 		this.itemsContainer.layout(dimension.height);
 
-		const groupWidth = this.groupContainer.domNode.getHTMLElement().offsetWidth;
-		const itemWidth = this.itemsContainer.domNode.getHTMLElement().offsetWidth;
+		const groupWidth = this.groupContainer.domNode.offsetWidth;
+		const itemWidth = this.itemsContainer.domNode.offsetWidth;
 
-		dimension.width = dimension.width - groupWidth - itemWidth;
-		this.timeLineContainer.layout(dimension);
+		const newWidth = dimension.width - groupWidth - itemWidth;
+		this.timeLineContainer.layout(new DOM.Dimension(newWidth, dimension.height));
 	}
 
 	/**

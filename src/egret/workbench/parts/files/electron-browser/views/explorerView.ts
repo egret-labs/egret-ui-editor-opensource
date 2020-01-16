@@ -234,6 +234,7 @@ export class ExplorerView extends PanelContentDom implements IModelRequirePart, 
 				filter: this.filter
 			}, {
 				autoExpandSingleChildren: true,
+				keyboardSupport: true,
 				ariaLabel: localize('explorerView.createViewer.fileResourceManager','File Explorer')
 			});
 	}
@@ -319,13 +320,13 @@ export class ExplorerView extends PanelContentDom implements IModelRequirePart, 
 					const oldParent = modelElement.parent;
 					modelElement.move(newParent, (callback: () => void) => {
 						// Update old parent
-						this.explorerViewer.refresh(oldParent).done(callback, error => {
+						this.explorerViewer.refresh(oldParent).then(callback, error => {
 							this.notificationService.error({ content: error, duration: 3 });
 							console.log(error);
 						});
 					}, () => {
 						// Update new parent
-						this.explorerViewer.refresh(newParent, true).done(() => this.explorerViewer.expand(newParent), error => {
+						this.explorerViewer.refresh(newParent, true).then(() => this.explorerViewer.expand(newParent), error => {
 							this.notificationService.error({ content: error, duration: 3 });
 							console.log(error);
 						});
@@ -341,11 +342,11 @@ export class ExplorerView extends PanelContentDom implements IModelRequirePart, 
 
 				// Refresh Parent (View)
 				const restoreFocus = this.explorerViewer.isDOMFocused();
-				this.explorerViewer.refresh(parent).done(() => {
+				this.explorerViewer.refresh(parent).then(() => {
 
 					// Ensure viewer has keyboard focus if event originates from viewer
 					if (restoreFocus) {
-						this.explorerViewer.DOMFocus();
+						this.explorerViewer.domFocus();
 					}
 				}, error => {
 					this.notificationService.error({ content: error, duration: 3 });
@@ -454,7 +455,7 @@ export class ExplorerView extends PanelContentDom implements IModelRequirePart, 
 			return Promise.resolve(null);
 		}
 		//赋予焦点
-		this.explorerViewer.DOMFocus();
+		this.explorerViewer.domFocus();
 		//TODO 选择激活的编辑器
 		return this.doRefresh().then(() => {
 			//TODO 选中激活的编辑器

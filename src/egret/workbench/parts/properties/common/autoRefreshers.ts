@@ -1,6 +1,6 @@
 import { IExmlModel, SelectedListChangedEvent } from 'egret/exts/exml-exts/exml/common/exml/models';
 import { INode, TreeChangedEvent, TreeChangedKind } from 'egret/exts/exml-exts/exml/common/exml/treeNodes';
-import { IDisposable } from 'vs/base/commo/lifecycle';
+import { IDisposable } from 'vs/base/common/lifecycle';
 import { Emitter, Event } from 'egret/base/common/event';
 import { dispose } from 'egret/base/common/lifecycle';
 

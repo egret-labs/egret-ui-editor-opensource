@@ -3,9 +3,9 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 import { ITree, IRenderer } from 'vs/base/parts/tree/browser/tree';
-import { Builder, $ } from 'vs/base/browser/builder';
+import * as DOM from 'vs/base/browser/dom';
 import { INode } from 'egret/exts/exml-exts/exml/common/exml/treeNodes';
-import { IDisposable } from 'vs/base/commo/lifecycle';
+import { IDisposable } from 'vs/base/common/lifecycle';
 import { IconButton } from 'egret/base/browser/ui/buttons';
 import { removeClass, hasClass, addClass } from 'egret/base/common/dom';
 
@@ -17,10 +17,10 @@ import 'egret/workbench/parts/layers/media/euiComponent.css';
 export interface DomLayerTreeTemplateData {
 
 	//容器
-	container: Builder;
+	container: HTMLElement;
 
 	//根
-	root: Builder;
+	root: HTMLElement;
 
 	//action 条
 	optionItem: OptionItem;
@@ -37,7 +37,7 @@ export interface LayerOptionContext {
 	optionItem: OptionItem;
 
 	//根
-	root: Builder;
+	root: HTMLElement;
 }
 
 /**
@@ -73,17 +73,16 @@ export class LayerTreeRenderer implements IRenderer {
 	 * @param container 
 	 */
 	public renderTemplate(tree: ITree, templateId: string, container: HTMLElement): DomLayerTreeTemplateData {
-		const containerBuilder = $(container);
-		containerBuilder.addClass('layerItemContainer');
-		const span = $(container).span();
-		span.id('mask');
-		span.addClass('layerItemMask');
-		span.addClass('iconSpan');
+		DOM.addClass(container, 'layerItemContainer');
+		const span = DOM.append(container, DOM.$('span'));
+		span.id = 'mask';
+		DOM.addClass(span, 'layerItemMask');
+		DOM.addClass(span, 'iconSpan');
 
-		const rootBuilder = containerBuilder.div();
-		const optionItem = this.initOptionItem(rootBuilder.getContainer(), tree);
+		const rootBuilder = DOM.append(container, DOM.$('div'));
+		const optionItem = this.initOptionItem(rootBuilder, tree);
 		return {
-			container: containerBuilder,
+			container: container,
 			root: rootBuilder,
 			optionItem
 		};
@@ -98,7 +97,7 @@ export class LayerTreeRenderer implements IRenderer {
 	 */
 	public renderElement(tree: ITree, element: INode, templateId: string, templateData: DomLayerTreeTemplateData): void {
 		//clean
-		templateData.root.setClass('');
+		templateData.root.className = '';
 		//render
 		const elementName = element.getName();
 		let text = elementName;
@@ -106,12 +105,12 @@ export class LayerTreeRenderer implements IRenderer {
 			text += ' - ' + element.getId();
 		}
 
-		templateData.root.addClass('layerPanelSpanItem');
-		templateData.root.addClass('componentPanelSpanItem');
-		templateData.root.addClass('iconFallBack');
-		templateData.root.addClass(elementName);
-		templateData.root.text(text);
-		templateData.root.title(text);
+		DOM.addClass(templateData.root, 'layerPanelSpanItem');
+		DOM.addClass(templateData.root, 'componentPanelSpanItem');
+		DOM.addClass(templateData.root, 'iconFallBack');
+		DOM.addClass(templateData.root, elementName);
+		templateData.root.textContent = text;
+		templateData.root.title = text;
 
 		//
 		let visible = false;
@@ -129,8 +128,6 @@ export class LayerTreeRenderer implements IRenderer {
 	}
 
 	disposeTemplate(tree: ITree, templateId: string, templateData: DomLayerTreeTemplateData): void {
-		templateData.root.dispose();
-		templateData.container.dispose();
 		templateData.optionItem.dispose();
 	}
 
@@ -179,13 +176,13 @@ export class LayerTreeRenderer implements IRenderer {
 			});
 			tree.setSelection(newSelections);
 
-			if (!rootContainer.hasClass('locked')) {
-				rootContainer.addClass('locked');
+			if (!DOM.hasClass(rootContainer, 'locked')) {
+				DOM.addClass(rootContainer, 'locked');
 			}
 		}
 		else {
-			if (rootContainer.hasClass('locked')) {
-				rootContainer.removeClass('locked');
+			if (DOM.hasClass(rootContainer, 'locked')) {
+				DOM.removeClass(rootContainer, 'locked');
 			}
 		}
 
@@ -225,22 +222,22 @@ export class LayerTreeRenderer implements IRenderer {
 			node.setBoolean('visible', visible);
 		}
 
-		this.refreshShouldShow(locked, context.root.getContainer());
+		this.refreshShouldShow(locked, context.root);
 		const rootContainer = context.root;
 		this.refreshInvisible(visible, rootContainer);
 
 		return Promise.resolve(null);
 	}
 
-	private refreshInvisible(visible: boolean, rootContainer: Builder): void {
+	private refreshInvisible(visible: boolean, rootContainer: HTMLElement): void {
 		if (!visible) {
-			if (!rootContainer.hasClass('invisible')) {
-				rootContainer.addClass('invisible');
+			if (!DOM.hasClass(rootContainer, 'invisible')) {
+				DOM.addClass(rootContainer, 'invisible');
 			}
 		}
 		else {
-			if (rootContainer.hasClass('invisible')) {
-				rootContainer.removeClass('invisible');
+			if (DOM.hasClass(rootContainer, 'invisible')) {
+				DOM.removeClass(rootContainer, 'invisible');
 			}
 		}
 	}
@@ -295,7 +292,7 @@ export class LayerTreeRenderer implements IRenderer {
 		mouseOut();
 		optionItem.disposeEvent();
 		optionItem.addEvent([{ key: 'mouseover', fun: mouseOver }, { key: 'mouseout', fun: mouseOut }]);
-		this.refreshShouldShow(locked, optionItem.context.root.getContainer());
+		this.refreshShouldShow(locked, optionItem.context.root);
 	}
 
 
@@ -366,7 +363,7 @@ class OptionItem {
 		this._events = _events || [];
 		if (this._context) {
 			this._events.forEach(v => {
-				this.context.root.getContainer().addEventListener(v.key, v.fun);
+				this.context.root.addEventListener(v.key, v.fun);
 			});
 		}
 	}
@@ -391,9 +388,9 @@ class OptionItem {
 	 * 清理事件
 	 */
 	public disposeEvent() {
-		if (this._events && this.context.root.getContainer()) {
+		if (this._events && this.context.root) {
 			this._events.forEach(v => {
-				this.context.root.getContainer().removeEventListener(v.key, v.fun);
+				this.context.root.removeEventListener(v.key, v.fun);
 			});
 		}
 	}

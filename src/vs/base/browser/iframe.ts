@@ -2,7 +2,6 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-'use strict';
 
 /**
  * Represents a window in a possible chain of iframes
@@ -15,21 +14,21 @@ export interface IWindowChainElement {
 	/**
 	 * The iframe element inside the window.parent corresponding to window
 	 */
-	iframeElement: HTMLIFrameElement;
+	iframeElement: HTMLIFrameElement | null;
 }
 
 let hasDifferentOriginAncestorFlag: boolean = false;
-let sameOriginWindowChainCache: IWindowChainElement[] = null;
+let sameOriginWindowChainCache: IWindowChainElement[] | null = null;
 
-function getParentWindowIfSameOrigin(w: Window): Window {
+function getParentWindowIfSameOrigin(w: Window): Window | null {
 	if (!w.parent || w.parent === w) {
 		return null;
 	}
 
 	// Cannot really tell if we have access to the parent window unless we try to access something in it
 	try {
-		const location = w.location;
-		const parentLocation = w.parent.location;
+		let location = w.location;
+		let parentLocation = w.parent.location;
 		if (location.protocol !== parentLocation.protocol || location.hostname !== parentLocation.hostname || location.port !== parentLocation.port) {
 			hasDifferentOriginAncestorFlag = true;
 			return null;
@@ -42,8 +41,8 @@ function getParentWindowIfSameOrigin(w: Window): Window {
 	return w.parent;
 }
 
-function findIframeElementInParentWindow(parentWindow: Window, childWindow: Window): HTMLIFrameElement {
-	const parentWindowIframes = parentWindow.document.getElementsByTagName('iframe');
+function findIframeElementInParentWindow(parentWindow: Window, childWindow: Window): HTMLIFrameElement | null {
+	let parentWindowIframes = parentWindow.document.getElementsByTagName('iframe');
 	let iframe: HTMLIFrameElement;
 	for (let i = 0, len = parentWindowIframes.length; i < len; i++) {
 		iframe = parentWindowIframes[i];
@@ -64,7 +63,8 @@ export class IframeUtils {
 	public static getSameOriginWindowChain(): IWindowChainElement[] {
 		if (!sameOriginWindowChainCache) {
 			sameOriginWindowChainCache = [];
-			let w = window, parent: Window;
+			let w: Window | null = window;
+			let parent: Window | null;
 			do {
 				parent = getParentWindowIfSameOrigin(w);
 				if (parent) {
@@ -109,10 +109,9 @@ export class IframeUtils {
 
 		let top = 0, left = 0;
 
-		const windowChain = this.getSameOriginWindowChain();
+		let windowChain = this.getSameOriginWindowChain();
 
-		for (let i = 0; i < windowChain.length; i++) {
-			const windowChainEl = windowChain[i];
+		for (const windowChainEl of windowChain) {
 
 			if (windowChainEl.window === ancestorWindow) {
 				break;
@@ -122,7 +121,7 @@ export class IframeUtils {
 				break;
 			}
 
-			const boundingRect = windowChainEl.iframeElement.getBoundingClientRect();
+			let boundingRect = windowChainEl.iframeElement.getBoundingClientRect();
 			top += boundingRect.top;
 			left += boundingRect.left;
 		}

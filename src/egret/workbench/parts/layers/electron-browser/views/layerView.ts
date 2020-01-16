@@ -554,6 +554,8 @@ export class LayerView extends PanelContentDom implements IModelRequirePart, IFo
 		this.iconContainer.style.width = '100%';
 		this.iconContainer.style.pointerEvents = 'none';
 		this.iconContainer.style.visibility = 'hidden';
+		this.iconContainer.style.marginTop = '2px';
+		this.iconContainer.style.paddingRight = '2px';
 		closeBtn.iconClass = 'layerview closesearch';
 
 		closeBtn.getElement().style.cssFloat = 'right';

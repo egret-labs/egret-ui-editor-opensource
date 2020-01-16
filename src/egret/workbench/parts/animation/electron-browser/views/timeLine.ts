@@ -5,14 +5,12 @@
 'use strict';
 
 import * as lifecycle from 'vs/base/common/lifecycle';
-import * as dom from 'vs/base/browser/dom';
-import { $, Builder, Dimension } from 'vs/base/browser/builder';
+import * as DOM from 'vs/base/browser/dom';
 import { GlobalMouseMoveMonitor } from 'vs/base/browser/globalMouseMoveMonitor';
-import { StandardMouseEvent, StandardMouseWheelEvent } from 'vs/base/browser/mouseEvent';
+import { StandardMouseEvent, StandardWheelEvent } from 'vs/base/browser/mouseEvent';
 import { KeyCode } from 'vs/base/common/keyCodes';
 import { ScrollableElement } from 'vs/base/browser/ui/scrollbar/scrollableElement';
 import { ScrollbarVisibility } from 'vs/base/common/scrollable';
-import { TPromise } from 'vs/base/common/winjs.base';
 import { IInstantiationService } from 'egret/platform/instantiation/common/instantiation';
 import { IAnimationService } from '../../common/animation';
 import { ITweenItem, ITweenPath } from 'egret/exts/exml-exts/exml/common/plugin/IAnimationModel';
@@ -269,12 +267,12 @@ class ItemsOperationProvider {
 
 export class TimeLineContainer {
 
-	public domNode: Builder;
-	private hContainer: Builder;
+	public domNode: HTMLElement;
+	private hContainer: HTMLElement;
 
 	private header: TimeLineHeader;
-	private body: Builder;
-	private bodyContent: Builder;
+	private body: HTMLElement;
+	private bodyContent: HTMLElement;
 	private stamp: TimeLineStamp;
 
 	private tile: TimeLineTile;
@@ -314,16 +312,17 @@ export class TimeLineContainer {
 	}
 
 	private screenPositionToTime(position: number): number {
-		let nativePosition = $(document.body).getPositionRelativeTo(this.hContainer).left + position;
+		let nativePosition = DOM.getPositionRelativeTo(document.body, this.hContainer).left + position;
 		nativePosition = Math.floor(Math.max(nativePosition, 0) / TILE_WIDTH) * TILE_WIDTH;
 		return lengthToTime(nativePosition);
 	}
 
 	private screenPositionToRow(position: number): number {
-		const headerHeight = this.header.domNode.getHTMLElement().offsetHeight;
-		let nativePosition = $(document.body).getPositionRelativeTo(this.hContainer).top + position - headerHeight;
+		const headerHeight = this.header.domNode.offsetHeight;
+
+		let nativePosition = DOM.getPositionRelativeTo(document.body,this.hContainer).top + position - headerHeight;
 		if (nativePosition > 0) {
-			nativePosition += this.body.getPositionRelativeTo(this.bodyContent).top;
+			nativePosition += DOM.getPositionRelativeTo(this.body, this.bodyContent).top;
 		}
 		const row = Math.floor(nativePosition / TILE_HEIGHT);
 		const items = this.track.getItems();
@@ -334,9 +333,12 @@ export class TimeLineContainer {
 		}
 	}
 
-	public create(parent: Builder): void {
-		this.domNode = $('.timeLine').tabindex(-1).appendTo(parent);
-		this.hContainer = $('.hContainer').appendTo(this.domNode);
+	public create(parent: HTMLElement): void {
+		this.domNode = DOM.$('.timeLine');
+		this.domNode.tabIndex = -1;
+		parent.appendChild(this.domNode);
+		this.hContainer = DOM.$('.hContainer');
+		this.domNode.appendChild(this.hContainer);
 
 		this.actionProvider = this.instantiationService.createInstance(ItemsOperationProvider);
 		this.actionProvider.onEnableChanged((obj) => {
@@ -355,9 +357,12 @@ export class TimeLineContainer {
 
 		this.header = new TimeLineHeader(this.hContainer);
 
-		this.body = $('.body').appendTo(this.hContainer);
-		const bodyContent = $('div').style('position', 'relative').appendTo(this.body);
-		bodyContent.on('mousewheel', (browserEvent: MouseWheelEvent) => {
+		this.body = DOM.$('.body');
+		this.hContainer.appendChild(this.body);
+		const bodyContent = DOM.$('div');
+		bodyContent.style.position = 'relative';
+		this.body.appendChild(bodyContent);
+		bodyContent.addEventListener('mousewheel', (browserEvent: MouseWheelEvent) => {
 			this.onBodyContentWheel(browserEvent);
 		});
 		this.bodyContent = bodyContent;
@@ -375,9 +380,9 @@ export class TimeLineContainer {
 	}
 
 	private onBodyContentWheel(browserEvent: MouseWheelEvent): void {
-		let e = new StandardMouseWheelEvent(browserEvent);
+		let e = new StandardWheelEvent(browserEvent as any);
 		let verticalPosition = this.animationService.getViewModel().getVerticalPosition();
-		const maxPosition = this.bodyContent.getHTMLElement().offsetHeight - this.body.getHTMLElement().offsetHeight;
+		const maxPosition = this.bodyContent.offsetHeight - this.body.offsetHeight;
 		verticalPosition = Math.min(maxPosition, verticalPosition - e.deltaY * 50); // SCROLL_WHEEL_SENSITIVITY = 50
 		verticalPosition = Math.max(0, verticalPosition);
 		this.animationService.getViewModel().setVerticalPosition(verticalPosition);
@@ -388,13 +393,13 @@ export class TimeLineContainer {
 	}
 
 	private attachEventListeners(): void {
-		dom.addStandardDisposableListener(this.domNode.getHTMLElement(), 'keyup', e => {
+		DOM.addStandardDisposableListener(this.domNode, 'keyup', e => {
 			if (e.keyCode === KeyCode.Space) {
 				this.actionBar.playAndPauseOperation.run();
 			}
 		});
 
-		this.hContainer.on('mousedown', (e: MouseEvent) => {
+		this.hContainer.addEventListener('mousedown', (e: MouseEvent) => {
 			this.actionBar.playAndPauseOperation.pause();
 			if (!this.animationService.animation) {
 				return;
@@ -558,7 +563,7 @@ export class TimeLineContainer {
 				return;
 			}
 
-			this.domNode.style('cursor', 'pointer');
+			this.domNode.style.cursor = 'pointer';
 
 			const group = this.animationService.animation.getSelectedGroup();
 			const itemIndex = group.items.indexOf(tweenItem);
@@ -568,7 +573,7 @@ export class TimeLineContainer {
 				newTime = this.screenPositionToTime(mouseMoveData.clientX);
 				this.selector.updateDragSelector(newTime, itemIndex);
 			}, () => {
-				this.domNode.style('cursor', 'default');
+				this.domNode.style.cursor = 'default';
 				this.selector.hideDragSelector();
 				if (newTime === undefined) {
 					return;
@@ -600,13 +605,13 @@ export class TimeLineContainer {
 
 	public setPosition(position: number): void {
 		this.position = position;
-		this.hContainer.style('left', `${-position}px`);
+		this.hContainer.style.left = `${-position}px`;
 		this.updateScollerWidth();
 		this.header.setPosition(position);
 	}
 
 	public setVerticalPosition(position: number): void {
-		this.bodyContent.style('top', `${-position}px`);
+		this.bodyContent.style.top = `${-position}px`;
 	}
 
 	private updateItems(): void {
@@ -658,7 +663,7 @@ export class TimeLineContainer {
 		}
 
 		const position = timeToLength(time);
-		const offsetWidth = this.domNode.getHTMLElement().offsetWidth - TILE_WIDTH;
+		const offsetWidth = this.domNode.offsetWidth - TILE_WIDTH;
 		if (offsetWidth > 0) {
 			if (position <= this.position) {
 				this.setPosition(position);
@@ -668,15 +673,15 @@ export class TimeLineContainer {
 		}
 	}
 
-	public layout(dimension: Dimension): void {
-		this.hContainer.style('height', (dimension.height - 22) + 'px');
+	public layout(dimension: DOM.Dimension): void {
+		this.hContainer.style.height = (dimension.height - 22) + 'px';
 		this.updateScollerWidth();
 
 		const length = Math.ceil(dimension.width / TILE_WIDTH / TILE_SIZE);
 		this.header.updateElements(length);
 
-		const headerHeight = this.header.domNode.getHTMLElement().offsetHeight;
-		this.body.style('height', this.hContainer.getHTMLElement().offsetHeight - headerHeight + 'px');
+		const headerHeight = this.header.domNode.offsetHeight;
+		this.body.style.height = this.hContainer.offsetHeight - headerHeight + 'px';
 		this.track.layout(dimension.height);
 	}
 
@@ -692,15 +697,17 @@ export class TimeLineContainer {
 
 		let width = 2500 * (1 + Math.ceil(this.position / 2500));
 		width = Math.max(scrollWidth, width);
-		if (this.hContainer.style('width') !== (width + 'px')) {
-			this.hContainer.style('width', width + 'px');
+		if (this.hContainer.style.width !== (width + 'px')) {
+			this.hContainer.style.width = width + 'px';
 		}
 
 		const scrollbar = this.actionBar.scrollbar;
-		scrollbar.updateState({
-			scrollLeft: this.position,
+		scrollbar.setScrollDimensions({
 			width: scrollbar.getDomNode().offsetWidth,
 			scrollWidth: scrollWidth
+		});
+		scrollbar.setScrollPosition({
+			scrollLeft: this.position
 		});
 	}
 
@@ -708,13 +715,14 @@ export class TimeLineContainer {
 
 export class TimeLineHeader {
 
-	public domNode: Builder;
+	public domNode: HTMLElement;
 	private elements: HTMLElement[];
 
 	private position = 0;
 
-	constructor(parent: Builder) {
-		this.domNode = $('.header').appendTo(parent);
+	constructor(parent: HTMLElement) {
+		this.domNode = DOM.$('.header');
+		parent.appendChild(this.domNode);
 		this.elements = [];
 	}
 
@@ -724,7 +732,7 @@ export class TimeLineHeader {
 	}
 
 	private createOneElement(index: number): HTMLElement {
-		const element = $('span').getHTMLElement();
+		const element = DOM.$('span');
 		this.domNode.append(element);
 
 		// element.offsetWidth = 30
@@ -767,36 +775,40 @@ export class TimeLineHeader {
 }
 
 export class TimeLineTile {
-	public domNode: Builder;
+	public domNode: HTMLElement;
 
-	constructor(parent: Builder) {
-		this.domNode = $('.tile').appendTo(parent);
+	constructor(parent: HTMLElement) {
+		this.domNode = DOM.$('.tile');
+		parent.appendChild(this.domNode);
 	}
 
 	public update(length: number): void {
-		this.domNode.style('height', length * TILE_HEIGHT + 'px');
+		this.domNode.style.height = length * TILE_HEIGHT + 'px';
 	}
 }
 
 export class TimeLineTrackItem {
 
-	private domNode: Builder;
-	private content: Builder;
-	private selector: Builder;
+	private domNode: HTMLElement;
+	private content: HTMLElement;
+	private selector: HTMLElement;
 
 	private toDispose: lifecycle.IDisposable[];
 
 	constructor(
-		parent: Builder,
+		parent: HTMLElement,
 		private item: ITweenItem,
 		@IAnimationService private animationService: IAnimationService
 	) {
 		this.toDispose = [];
-		this.domNode = $('.trackItem').appendTo(parent);
-		this.content = $('.content').appendTo(this.domNode);
-		this.selector = $('.selector').appendTo(this.domNode);
-		this.selector.style('top', '0px');
-		this.selector.hide();
+		this.domNode = DOM.$('.trackItem');
+		parent.appendChild(this.domNode);
+		this.content = DOM.$('.content');
+		this.domNode.appendChild(this.content);
+		this.selector = DOM.$('.selector');
+		this.domNode.appendChild(this.selector);
+		this.selector.style.top = '0px';
+		DOM.hide(this.selector);
 
 		this.toDispose.push(this.animationService.onDidTimeChange(time => {
 			this.updateTime(time);
@@ -806,20 +818,20 @@ export class TimeLineTrackItem {
 	private updateTime(time: number): void {
 		const isPlaying = this.animationService.getViewModel().getPlaying();
 		if (isPlaying) {
-			this.selector.show();
+			DOM.show(this.selector);
 			const left = timeToLength(this.item.calculateTime(time));
-			this.selector.style('left', left + 'px');
+			this.selector.style.left = left + 'px';
 		} else {
-			this.selector.hide();
+			DOM.hide(this.selector);
 		}
 	}
 
 	public fill(): void {
-		this.content.clearChildren();
+		DOM.clearNode(this.content);
 		if (this.item.loop) {
-			this.domNode.addClass('loop');
+			DOM.addClass(this.domNode, 'loop');
 		} else {
-			this.domNode.removeClass('loop');
+			DOM.removeClass(this.domNode, 'loop');
 		}
 		this.item.paths.forEach(path => {
 			const name = path.instance.getName();
@@ -833,35 +845,36 @@ export class TimeLineTrackItem {
 		});
 	}
 
-	private createToPath(path: ITweenPath): Builder {
-		const element = $('.to');
+	private createToPath(path: ITweenPath): HTMLElement {
+		const element = DOM.$('.to');
 		const to: egret.tween.To = path.instance.getInstance();
 		const width = timeToLength(to.duration);
-		element.style('width', width + 'px');
+		element.style.width = width + 'px';
 
-		element.append($('span.first.frame'));
+		element.append(DOM.$('span.first.frame'));
 
-		const arrowLine = $('span.arrowLine').appendTo(element);
-		arrowLine.append($('span.first.arrow'));
-		arrowLine.append($('span.last.arrow'));
+		const arrowLine = DOM.$('span.arrowLine');
+		element.appendChild(arrowLine);
+		arrowLine.append(DOM.$('span.first.arrow'));
+		arrowLine.append(DOM.$('span.last.arrow'));
 
-		element.append($('span.last.frame'));
+		element.append(DOM.$('span.last.frame'));
 
 		return element;
 	}
 
-	private createWaitPath(path: ITweenPath): Builder {
-		const element = $('.wait');
+	private createWaitPath(path: ITweenPath): HTMLElement {
+		const element = DOM.$('.wait');
 		const wait: egret.tween.Wait = path.instance.getInstance();
 		const width = timeToLength(wait.duration);
-		element.style('width', width + 'px');
+		element.style.width = width + 'px';
 		return element;
 	}
 
-	private createSetPath(path: ITweenPath): Builder {
-		const element = $('.set');
-		element.style('width', '0px');
-		element.append($('span'));
+	private createSetPath(path: ITweenPath): HTMLElement {
+		const element = DOM.$('.set');
+		element.style.width = '0px';
+		element.append(DOM.$('span'));
 		return element;
 	}
 
@@ -871,17 +884,18 @@ export class TimeLineTrackItem {
 }
 
 export class TimeLineTrack {
-	private domNode: Builder;
+	private domNode: HTMLElement;
 	private items: ITweenItem[];
 
 	private toDispose: lifecycle.IDisposable[];
 
 	constructor(
-		parent: Builder,
+		parent: HTMLElement,
 		@IInstantiationService private instantiationService: IInstantiationService
 	) {
 		this.toDispose = [];
-		this.domNode = $('.track').appendTo(parent);
+		this.domNode = DOM.$('.track');
+		parent.appendChild(this.domNode);
 	}
 
 	public getItems(): ITweenItem[] {
@@ -893,7 +907,7 @@ export class TimeLineTrack {
 	}
 
 	public setItems(items: ITweenItem[]): void {
-		this.domNode.clearChildren();
+		DOM.clearNode(this.domNode);
 		lifecycle.dispose(this.toDispose);
 		this.items = items;
 		if (items) {
@@ -913,104 +927,105 @@ export class TimeLineTrack {
 	}
 
 	public layout(height: number): void {
-		this.domNode.style('height', height + 'px');
+		this.domNode.style.height = height + 'px';
 	}
 }
 
 export class TimeLineSelector {
-	private domNode: Builder;
+	private domNode: HTMLElement;
 
-	private frameSelector: Builder;
-	private dragSelector: Builder;
+	private frameSelector: HTMLElement;
+	private dragSelector: HTMLElement;
 
-	constructor(parent: Builder) {
-		this.domNode = $('div').appendTo(parent);
-		this.frameSelector = $('.frameFlag.selector').appendTo(this.domNode);
-		this.dragSelector = $('.dragFlag.selector').appendTo(this.domNode);
+	constructor(parent: HTMLElement) {
+		this.domNode = DOM.$('div');
+		parent.appendChild(this.domNode);
+		this.frameSelector = DOM.$('.frameFlag.selector');
+		this.domNode.appendChild(this.frameSelector);
+		this.dragSelector = DOM.$('.dragFlag.selector');
+		this.domNode.appendChild(this.dragSelector);
 
 		this.updateFrameSelector(0, 0);
 		this.updateDragSelector(0, 0);
 
-		this.frameSelector.hide();
-		this.dragSelector.hide();
+		DOM.hide(this.frameSelector);
+		DOM.hide(this.dragSelector);
 	}
 
 	public updateFrameSelector(time: number, row: number): void {
-		this.frameSelector.show();
+		DOM.show(this.frameSelector);
 		if (typeof time === 'number') {
 			const left = timeToLength(time);
-			this.frameSelector.style('left', left + 'px');
+			this.frameSelector.style.left = left + 'px';
 		}
 		if (typeof row === 'number') {
 			const top = row * TILE_HEIGHT;
-			this.frameSelector.style('top', top + 'px');
+			this.frameSelector.style.top = top + 'px';
 
 			if (row < 0) {
-				this.frameSelector.hide();
+				DOM.hide(this.frameSelector);
 			}
 		}
 	}
 
 	public hideFrameSelector(): void {
-		this.frameSelector.hide();
+		DOM.hide(this.frameSelector);
 	}
 
 	public updateDragSelector(time: number, row: number): void {
-		this.dragSelector.show();
+		DOM.show(this.dragSelector);
 		if (typeof time === 'number') {
 			const left = timeToLength(time);
-			this.dragSelector.style('left', left + 'px');
+			this.dragSelector.style.left = left + 'px';
 		}
 		if (typeof row === 'number') {
 			const top = row * TILE_HEIGHT;
-			this.dragSelector.style('top', top + 'px');
+			this.dragSelector.style.top = top + 'px';
 		}
 	}
 
 	public hideDragSelector(): void {
-		this.dragSelector.hide();
+		DOM.hide(this.dragSelector);
 	}
 }
 
 export class TimeLineStamp {
 
-	private domNode: Builder;
-	private dragHeader: Builder;
+	private domNode: HTMLElement;
+	private dragHeader: HTMLElement;
 
 	private time: number = 0;
 
 	constructor(
-		parent: Builder,
+		parent: HTMLElement,
 		@IAnimationService private animationService: IAnimationService
 	) {
-		this.domNode = $('.stamp').appendTo(parent);
-		this.dragHeader = $('.drag-header').appendTo(this.domNode);
-		$('.drag-body').appendTo(this.domNode);
+		this.domNode = DOM.$('.stamp');
+		parent.appendChild(this.domNode);
+		this.dragHeader = DOM.$('.drag-header');
+		this.domNode.appendChild(this.dragHeader);
+		this.domNode.appendChild(DOM.$('.drag-body'));
 	}
 
 	public setTime(time: number): void {
 		this.time = time;
 		const offset = timeToLength(time);
-		this.domNode.style('left', offset + 'px');
+		this.domNode.style.left = offset + 'px';
 	}
 
 	public show(): void {
-		if (this.domNode.isHidden()) {
-			this.domNode.show();
-		}
+		DOM.show(this.domNode);
 	}
 
 	public hide(): void {
-		if (!this.domNode.isHidden()) {
-			this.domNode.hide();
-		}
+		DOM.hide(this.domNode);
 	}
 }
 
 export class TimeLineActionBar {
 
-	private domNode: Builder;
-	private timeLabel: Builder;
+	private domNode: HTMLElement;
+	private timeLabel: HTMLElement;
 
 	public scrollbar: ScrollableElement;
 	private scrollableElement: HTMLElement;
@@ -1019,16 +1034,18 @@ export class TimeLineActionBar {
 	private playAndPauseIcon: IconButton;
 
 	constructor(
-		parent: Builder,
+		parent: HTMLElement,
 		@IInstantiationService private instantiationService: IInstantiationService
 	) {
-		this.domNode = $('.action-bar').appendTo(parent);
-		this.initOperationButton(this.domNode.getHTMLElement());
+		this.domNode = DOM.$('.action-bar');
+		parent.appendChild(this.domNode);
+		this.initOperationButton(this.domNode);
 
 		this.playAndPauseOperation = this.instantiationService.createInstance(PlayAndPauseOperation);
 		this.playAndPauseOperation.onCheckedChanged((value) => this.toogleButtonState(value));
 
-		this.timeLabel = $('.time-label').appendTo(this.domNode);
+		this.timeLabel = DOM.$('.time-label');
+		this.domNode.appendChild(this.timeLabel);
 
 		const scrollableElement = document.createElement('div');
 		scrollableElement.style.width = '100%';
@@ -1043,8 +1060,7 @@ export class TimeLineActionBar {
 			horizontalSliderSize: 10,
 			arrowSize: 18,
 			vertical: ScrollbarVisibility.Hidden,
-			useShadows: false,
-			canUseTranslate3d: false
+			useShadows: false
 		});
 		this.domNode.append(this.scrollbar.getDomNode());
 	}
@@ -1069,6 +1085,6 @@ export class TimeLineActionBar {
 	}
 
 	public updateLabel(time: number): void {
-		this.timeLabel.text((time / 1000).toFixed(2) + 's');
+		this.timeLabel.textContent = (time / 1000).toFixed(2) + 's';
 	}
 }

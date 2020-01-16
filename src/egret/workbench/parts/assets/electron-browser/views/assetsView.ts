@@ -213,7 +213,7 @@ export class AssetsView extends PanelContentDom implements IModelRequirePart, IF
 			return Promise.resolve(null);
 		}
 		//赋予焦点
-		this.assetsViewer.DOMFocus();
+		this.assetsViewer.domFocus();
 		//TODO 选择激活的编辑器
 		return this.doRefresh().then(() => {
 			//TODO 选中激活的编辑器
@@ -449,6 +449,8 @@ export class AssetsView extends PanelContentDom implements IModelRequirePart, IF
 		this.iconContainer.style.width = '100%';
 		this.iconContainer.style.pointerEvents = 'none';
 		this.iconContainer.style.visibility = 'hidden';
+		this.iconContainer.style.marginTop = '2px';
+		this.iconContainer.style.paddingRight = '2px';
 		closeBtn.iconClass = 'layerview closesearch';
 
 		closeBtn.getElement().style.cssFloat = 'right';

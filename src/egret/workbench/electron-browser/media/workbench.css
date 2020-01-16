@@ -44,4 +44,8 @@
 .monaco-tree .monaco-tree-rows > .monaco-tree-row.has-children.loading > .content:before {
 	display: none !important;
 }
+.monaco-tree .monaco-tree-rows.show-twisties > .monaco-tree-row > .content:before {
+	content: none !important;
+	display: none !important;
+}
 

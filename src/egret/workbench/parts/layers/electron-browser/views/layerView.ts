@@ -1,5 +1,4 @@
 import './../../media/euiLayer.css';
-import '!style-loader!css-loader!antd/dist/antd.css';
 import { Tree } from 'vs/base/parts/tree/browser/treeImpl';
 import { IInstantiationService } from 'egret/platform/instantiation/common/instantiation';
 import { DomLayerTreeDataSource } from '../../components/LayerTreeDataSource';

@@ -16,7 +16,6 @@
         "setup-cnpm": "npm install cnpm@6.0.0 -g"
     },
     "dependencies": {
-        "antd": "3.3.3",
         "fs-extra": "5.0.0",
         "gsap": "2.0.1",
         "minimist": "1.2.0",

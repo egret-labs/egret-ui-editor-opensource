@@ -12,7 +12,6 @@ import { ColorPicker } from 'egret/base/browser/ui/colorPicker';
 import { toHexString, setPropertyNum, setPropertyNumPro, toHexNumber, setPropertyStr } from '../../../common/properties';
 import { IDropDownTextDataSource } from 'egret/base/browser/ui/dropdowns';
 import { HSVaColor } from 'egret/base/browser/ui/pickr/pickr';
-import { IconProps } from 'antd/lib/icon';
 
 /**
  * 所有属性部分

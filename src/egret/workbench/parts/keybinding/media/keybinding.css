@@ -1,38 +1,40 @@
-
-.keybinding-setting-container{
+.keybinding-setting-container {
 	height: 400px;
-    overflow-x: hidden;
-    overflow-y: scroll;
+	overflow-x: hidden;
+	overflow-y: scroll;
 	width: 400px;
 }
-.keybinding-setting-container .keybinding-setting-item{
+
+.keybinding-setting-container .keybinding-setting-item {
 	padding: 6px 15px 10px;
 }
-.keybinding-setting-container .keybinding-setting-item.even{
-	background-color:rgba(255,255,255,0.05);
+
+.keybinding-setting-container .keybinding-setting-item.even {
+	background-color: rgba(255, 255, 255, 0.05);
 }
 
-.keybinding-setting-container .keybinding-setting-item .description-display{
+.keybinding-setting-container .keybinding-setting-item .description-display {
 	margin-left: 10px;
 	opacity: 0.6;
 	flex-grow: 1;
 	flex-shrink: 1;
 }
 
-.keybinding-setting-container .keybinding-setting-item .key-input{
+.keybinding-setting-container .monaco-inputbox {
 	margin-right: 5px;
 }
 
-.keybinding-setting-container .keybinding-setting-item .type-select{
+.keybinding-setting-container .keybinding-setting-item .type-select {
 	margin-right: 5px;
 	height: 24px;
 	line-height: 24px;
 }
 
-.keybinding-setting-container .keybinding-setting-item .error-display{
-	color:  rgba(238, 36, 9, 1);
+.keybinding-setting-container .keybinding-setting-item .error-display {
+	color: rgba(238, 36, 9, 1);
 }
-.keybinding-setting-container .keybinding-setting-item .error-display.invisible{
+
+.keybinding-setting-container .keybinding-setting-item .error-display.invisible {
 	display: none;
 }
 

@@ -54,9 +54,9 @@ const defaultStyles: _.ITreeStyles = {
 	listActiveSelectionForeground: Color.fromHex('#ffffff'),
 	listFocusAndSelectionBackground: Color.fromHex('#3595ff'),
 	listFocusAndSelectionForeground: Color.fromHex('#ffffff'),
-	listInactiveSelectionBackground: Color.fromHex('#3595ff'),
-	listHoverBackground: new Color(new RGBA(53, 149, 255, 0.54)),
-	listDropBackground: new Color(new RGBA(53, 149, 255, 0.54))
+	listInactiveSelectionBackground: new Color(new RGBA(53, 149, 255, 0.54)),
+	listHoverBackground: new Color(new RGBA(53, 149, 255, 0.24)),
+	listDropBackground: new Color(new RGBA(53, 149, 255, 0.14))
 };
 
 export class Tree implements _.ITree {

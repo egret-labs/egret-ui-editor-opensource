@@ -5,8 +5,7 @@ import { IUIBase, getTargetElement } from './common';
 import { trim } from '../../common/strings';
 import { ContextView, AnchorAlignment } from './contextview';
 import * as dom from 'vs/base/browser/dom';
-import { IHTMLContentElement } from 'vs/base/common/htmlContent';
-import { renderHtml } from 'vs/base/browser/htmlContentRenderer';
+import { renderFormattedText, renderText, FormattedTextRenderOptions } from 'vs/base/browser/formattedTextRenderer';
 
 import './media/inputs.css';
 const $ = dom.$;
@@ -360,7 +359,7 @@ export class TextInput implements IUIBase, IDisposable {
 			default: return 'error';
 		}
 	}
-
+	
 	private _showMessage(): void {
 		if (!this.message) {
 			return;
@@ -369,33 +368,38 @@ export class TextInput implements IUIBase, IDisposable {
 		let div: HTMLElement;
 		let layout = () => div.style.width = dom.getTotalWidth(this.container) + 'px';
 
-		this.state = 'open';
-
 		ContextView.show({
 			getAnchor: () => this.container,
 			anchorAlignment: AnchorAlignment.RIGHT,
 			render: (container: HTMLElement) => {
+				if (!this.message) {
+					return null;
+				}
+
 				div = dom.append(container, $('.monaco-inputbox-container'));
 				layout();
 
-				let renderOptions: IHTMLContentElement = {
-					tagName: 'span',
-					className: 'monaco-inputbox-message',
+				const renderOptions: FormattedTextRenderOptions = {
+					inline: true,
+					className: 'monaco-inputbox-message'
 				};
 
-				if (this.message.formatContent) {
-					renderOptions.formattedText = this.message.content;
-				} else {
-					renderOptions.text = this.message.content;
-				}
-
-				let spanElement: HTMLElement = <any>renderHtml(renderOptions);
+				const spanElement = (this.message.formatContent
+					? renderFormattedText(this.message.content, renderOptions)
+					: renderText(this.message.content, renderOptions));
 				dom.addClass(spanElement, this.classForType(this.message.type));
+
 				dom.append(div, spanElement);
+
 				return null;
+			},
+			onHide: () => {
+				this.state = 'closed';
 			},
 			layout: layout
 		});
+
+		this.state = 'open';
 	}
 
 	private _hideMessage(): void {

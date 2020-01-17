@@ -2,13 +2,17 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-'use strict';
 
-import { TPromise } from 'vs/base/common/winjs.base';
+import * as _ from 'vs/base/parts/tree/browser/tree';
 
-export interface ITelemetryData {
-	from?: string;
-	target?: string;
-	[key: string]: any;
+export function isEqualOrParent(tree: _.ITree, element: any, candidateParent: any): boolean {
+	const nav = tree.getNavigator(element);
+
+	do {
+		if (element === candidateParent) {
+			return true;
+		}
+	} while (element = nav.parent());
+
+	return false;
 }
-

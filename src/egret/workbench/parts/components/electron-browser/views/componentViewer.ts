@@ -1,9 +1,8 @@
-import { IDataSource, ITree, IRenderer, IController, IDragAndDrop, IDragAndDropData, IDragOverReaction, ContextMenuEvent, IFilter } from 'vs/base/parts/tree/browser/tree';
-import { TPromise } from 'vs/base/common/winjs.base';
+import { IDataSource, ITree, IRenderer, IController, IDragAndDrop, IDragOverReaction, ContextMenuEvent, IFilter } from 'vs/base/parts/tree/browser/tree';
 import { ComponentStat } from '../../common/componentModel';
-import { $ } from 'vs/base/browser/builder';
+import * as DOM from 'vs/base/browser/dom';
 import { DefaultController } from 'vs/base/parts/tree/browser/treeDefaults';
-import { IMouseEvent } from 'vs/base/browser/mouseEvent';
+import { IMouseEvent, DragMouseEvent } from 'vs/base/browser/mouseEvent';
 import { Tree } from 'vs/base/parts/tree/browser/treeImpl';
 import { addClass } from 'vs/base/browser/dom';
 import { matchesFuzzy } from 'egret/base/common/filters';
@@ -11,6 +10,7 @@ import { IClipboardService } from 'egret/platform/clipboard/common/clipboardServ
 
 import './media/euiComponent.css';
 import 'egret/workbench/parts/base/media/eui-components/icons.css';
+import { IDragAndDropData } from 'vs/base/browser/dnd';
 
 /**
  * 组件数据源
@@ -43,8 +43,8 @@ export class ComponentDataSource implements IDataSource {
 	 * @param tree 
 	 * @param element 
 	 */
-	public getChildren(tree: ITree, stat: ComponentStat): TPromise<ComponentStat[]> {
-		return new TPromise<ComponentStat[]>((resolve, reject) => {
+	public getChildren(tree: ITree, stat: ComponentStat): Promise<ComponentStat[]> {
+		return new Promise<ComponentStat[]>((resolve, reject) => {
 			resolve(stat.children);
 		});
 
@@ -54,11 +54,11 @@ export class ComponentDataSource implements IDataSource {
 	 * @param tree 
 	 * @param element 
 	 */
-	public getParent(tree: ITree, stat: ComponentStat): TPromise<ComponentStat> {
+	public getParent(tree: ITree, stat: ComponentStat): Promise<ComponentStat> {
 		if (stat instanceof ComponentStat && stat.parent) {
-			return TPromise.as(stat.parent);
+			return Promise.resolve(stat.parent);
 		}
-		return TPromise.as(null);
+		return Promise.resolve(null);
 	}
 }
 
@@ -119,9 +119,9 @@ export class ComponentRenderer implements IRenderer {
 	public renderTemplate(tree: ITree, templateId: string, container: HTMLElement): IComponentTemplateData {
 		const template: IComponentTemplateData = {
 			container: container,
-			iconSpan: $(container).div().getHTMLElement(),
-			image: $(container).div().getHTMLElement(),
-			textSpan: $(container).span().getHTMLElement()
+			iconSpan: DOM.append(container, DOM.$('div')),
+			image: DOM.append(container, DOM.$('div')),
+			textSpan: DOM.append(container, DOM.$('span'))
 		};
 		addClass(template.iconSpan,'iconSpan');
 		addClass(template.image,'component-icon');
@@ -173,8 +173,6 @@ export class ComponentRenderer implements IRenderer {
  * 处理用户交互
  */
 export class ComponentController extends DefaultController implements IController {
-	private openOnSingleClick: boolean = true;
-
 	constructor() {
 		super();
 	}
@@ -253,7 +251,7 @@ export class ComponentDragAndDrop implements IDragAndDrop {
 	 * @param data 
 	 * @param originalEvent 
 	 */
-	public onDragStart(tree: ITree, data: IDragAndDropData, originalEvent: DragEvent): void {
+	public onDragStart(tree: ITree, data: IDragAndDropData, originalEvent: DragMouseEvent): void {
 
 		const nodeData = this.createNodeDataS(data.getData());
 		if (nodeData) {
@@ -302,7 +300,7 @@ export class ComponentDragAndDrop implements IDragAndDrop {
 	 * @param targetElement 
 	 * @param originalEvent 
 	 */
-	public onDragOver(tree: ITree, data: IDragAndDropData, targetElement: any, originalEvent: DragEvent): IDragOverReaction {
+	public onDragOver(tree: ITree, data: IDragAndDropData, targetElement: any, originalEvent: DragMouseEvent): IDragOverReaction {
 		return targetElement;
 	}
 	/**
@@ -312,7 +310,7 @@ export class ComponentDragAndDrop implements IDragAndDrop {
 	 * @param targetElement 
 	 * @param originalEvent 
 	 */
-	public drop(tree: ITree, data: IDragAndDropData, targetElement: any, originalEvent: DragEvent): void {
+	public drop(tree: ITree, data: IDragAndDropData, targetElement: any, originalEvent: DragMouseEvent): void {
 	}
 }
 

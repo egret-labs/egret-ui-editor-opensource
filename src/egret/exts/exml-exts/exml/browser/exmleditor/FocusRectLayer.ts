@@ -818,8 +818,8 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 		if (targetScale < 0.02) {
 			targetScale = 0.02;
 		}
-		var offsetX = event.layerX - this.egretContentHost.getTarget().x;
-		var offsetY = event.layerY - this.egretContentHost.getTarget().y;
+		var offsetX = (event as any).layerX - this.egretContentHost.getTarget().x;
+		var offsetY = (event as any).layerY - this.egretContentHost.getTarget().y;
 
 		var newOffsetX = offsetX * targetScale / curScale;
 		var newOffsetY = offsetY * targetScale / curScale;
@@ -847,8 +847,8 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 			targetScale = 0.02;
 		}
 
-		var offsetX = event.layerX - this.egretContentHost.getTarget().x;
-		var offsetY = event.layerY - this.egretContentHost.getTarget().y;
+		var offsetX = (event as any).layerX - this.egretContentHost.getTarget().x;
+		var offsetY = (event as any).layerY - this.egretContentHost.getTarget().y;
 
 		var newOffsetX = offsetX * targetScale / curScale;
 		var newOffsetY = offsetY * targetScale / curScale;

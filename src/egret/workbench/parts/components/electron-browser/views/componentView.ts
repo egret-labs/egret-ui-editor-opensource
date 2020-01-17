@@ -133,6 +133,8 @@ export class ComponentView extends PanelContentDom implements IModelRequirePart 
 		this.iconContainer.style.width = '100%';
 		this.iconContainer.style.pointerEvents = 'none';
 		this.iconContainer.style.visibility = 'hidden';
+		this.iconContainer.style.marginTop = '2px';
+		this.iconContainer.style.paddingRight = '2px';
 		closeBtn.iconClass = 'layerview closesearch';
 
 		closeBtn.getElement().style.cssFloat = 'right';
@@ -186,7 +188,7 @@ export class ComponentView extends PanelContentDom implements IModelRequirePart 
 				const scrollPos = this.componentViewer.getScrollPosition();
 				return this.componentViewer.setInput(input).then(()=> {
 					return this.componentViewer.expandAll(expanded).then(()=> {
-						this.componentViewer.selectAll(selected);
+						this.componentViewer.setSelection(selected);
 						this.componentViewer.setScrollPosition(scrollPos);
 					});
 				});

@@ -1,11 +1,11 @@
-import Mouse = require('vs/base/browser/mouseEvent');
-import { ITree, IDragAndDrop, IDragAndDropData, IDragOverReaction } from 'vs/base/parts/tree/browser/tree';
+import { ITree, IDragAndDrop, IDragOverReaction } from 'vs/base/parts/tree/browser/tree';
 import { ExternalElementsDragAndDropData, DesktopDragAndDropData } from 'vs/base/parts/tree/browser/treeDnd';
-import { $ } from 'vs/base/browser/builder';
+import * as DOM from 'vs/base/browser/dom';
 import { INode } from 'egret/exts/exml-exts/exml/common/exml/treeNodes';
 import { IExmlModel } from 'egret/exts/exml-exts/exml/common/exml/models';
 import { LayerPanelUtil } from 'egret/workbench/parts/layers/components/LayerPanelUtil';
 import { IClipboardService } from 'egret/platform/clipboard/common/clipboardService';
+import { IDragAndDropData } from 'vs/base/browser/dnd';
 
 /**
  * 层拖拽
@@ -22,7 +22,7 @@ export class LayerDragAndDropData implements IDragAndDropData {
 	 * 更新
 	 * @param event 
 	 */
-	public update(event: Mouse.DragMouseEvent): void {
+	public update(dataTransfer: DataTransfer): void {
 		// no-op
 	}
 
@@ -106,7 +106,7 @@ export class DomLayerTreeDragAndDrop implements IDragAndDrop {
 		}
 		//console.log(originalEvent);
 		let aimHTMLElement = originalEvent.target;
-		if ($(originalEvent.target).hasClass('layerPanelSpanItem')) {
+		if (DOM.hasClass(originalEvent.target, 'layerPanelSpanItem')) {
 			aimHTMLElement = originalEvent.target.parentElement.parentElement;
 		}
 
@@ -115,7 +115,7 @@ export class DomLayerTreeDragAndDrop implements IDragAndDrop {
 		}
 
 		//aimHTMLElement.style.border = '1px solid red';
-		if (!$(aimHTMLElement).hasClass('monaco-tree-row')) {
+		if (!DOM.hasClass(aimHTMLElement, 'monaco-tree-row')) {
 			this.borderedElements.forEach((item) => { this.clearElementBorder(item); });
 			return { accept: true };
 		}

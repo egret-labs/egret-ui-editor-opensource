@@ -168,7 +168,6 @@ export class PropertyView extends PanelContentDom implements IModelRequirePart, 
 		addClass(this.animationContainer, 'propertie-kind-container animation');
 
 		this.commonScroller = this.instantiationService.createInstance(DomScrollableElement, this.commonContainer, {
-			canUseTranslate3d: false,
 			alwaysConsumeMouseWheel: true,
 			horizontal: ScrollbarVisibility.Hidden,
 			vertical: ScrollbarVisibility.Auto,
@@ -177,7 +176,6 @@ export class PropertyView extends PanelContentDom implements IModelRequirePart, 
 		});
 
 		this.allScroller = this.instantiationService.createInstance(DomScrollableElement, this.allContainer, {
-			canUseTranslate3d: false,
 			alwaysConsumeMouseWheel: true,
 			horizontal: ScrollbarVisibility.Hidden,
 			vertical: ScrollbarVisibility.Auto,
@@ -186,7 +184,6 @@ export class PropertyView extends PanelContentDom implements IModelRequirePart, 
 		});
 
 		this.animationScroller = this.instantiationService.createInstance(DomScrollableElement, this.animationContainer, {
-			canUseTranslate3d: false,
 			alwaysConsumeMouseWheel: true,
 			horizontal: ScrollbarVisibility.Hidden,
 			vertical: ScrollbarVisibility.Auto,

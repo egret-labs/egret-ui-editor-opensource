@@ -1,6 +1,6 @@
 import { IExmlModel } from 'egret/exts/exml-exts/exml/common/exml/models';
 import { INode, TreeChangedEvent, TreeChangedKind } from 'egret/exts/exml-exts/exml/common/exml/treeNodes';
-import { IDisposable } from 'vs/base/commo/lifecycle';
+import { IDisposable } from 'vs/base/common/lifecycle';
 // extends InvalidteEventDispatcher
 /**
  * IExmlModel的监听包装器。当相关联的属性发生改变或者选择项改变时自动回调指定的函数。

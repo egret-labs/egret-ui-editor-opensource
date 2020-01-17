@@ -16,7 +16,6 @@
         "setup-cnpm": "npm install cnpm@6.0.0 -g"
     },
     "dependencies": {
-        "antd": "3.3.3",
         "fs-extra": "5.0.0",
         "gsap": "2.0.1",
         "minimist": "1.2.0",
@@ -66,7 +65,7 @@
         "ts-import-plugin": "^1.4.4",
         "ts-loader": "^4.3.0",
         "tslint": "^5.9.1",
-        "typescript": "2.9.2",
+        "typescript": "^3.7.4",
         "typescript-formatter": "7.1.0",
         "uglifyjs-webpack-plugin": "1.2.7",
         "vinyl-fs": "^2.4.3",

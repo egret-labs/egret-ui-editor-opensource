@@ -9,11 +9,9 @@ import { KeyMod, KeyCode } from 'vs/base/common/keyCodes';
 import { IKeyboardEvent } from 'vs/base/browser/keyboardEvent';
 import { IMouseEvent } from 'vs/base/browser/mouseEvent';
 import * as lifecycle from 'vs/base/common/lifecycle';
-import { $, Builder } from 'vs/base/browser/builder';
-import * as dom from 'vs/base/browser/dom';
+import * as DOM from 'vs/base/browser/dom';
 import { once } from 'vs/base/common/functional';
 import { TextInput } from 'egret/base/browser/ui/inputs';
-import { TPromise } from 'vs/base/common/winjs.base';
 import * as tree from 'vs/base/parts/tree/browser/tree';
 import * as treeImpl from 'vs/base/parts/tree/browser/treeImpl';
 import * as treeDefaults from 'vs/base/parts/tree/browser/treeDefaults';
@@ -27,10 +25,10 @@ import { IDisposable } from 'egret/base/common/lifecycle';
 
 export class GroupContainer implements IDisposable {
 
-	public domNode: Builder;
+	public domNode: HTMLElement;
 
-	private title: Builder;
-	private treeContainer: Builder;
+	private title: HTMLElement;
+	private treeContainer: HTMLElement;
 
 	private tree: treeImpl.Tree;
 
@@ -57,12 +55,16 @@ export class GroupContainer implements IDisposable {
 		});
 	}
 
-	public create(parent: Builder): void {
-		this.domNode = $('.group').appendTo(parent);
-		this.title = $('.titleDescription').text(localize('animationView.group', 'Group')).appendTo(this.domNode);
+	public create(parent: HTMLElement): void {
+		this.domNode = DOM.$('.group');
+		parent.appendChild(this.domNode);
+		this.title = DOM.$('.titleDescription');
+		this.title.textContent = localize('animationView.group', 'Group');
+		this.domNode.appendChild(this.title);
 
-		this.treeContainer = $('.tree').appendTo(this.domNode);
-		this.tree = new treeImpl.Tree(this.treeContainer.getHTMLElement(), {
+		this.treeContainer = DOM.$('.tree');
+		this.domNode.appendChild(this.treeContainer);
+		this.tree = new treeImpl.Tree(this.treeContainer, {
 			dataSource: this.instantiationService.createInstance(TweenGroupDataSource),
 			renderer: this.instantiationService.createInstance(TweenGroupRenderer),
 			controller: this.instantiationService.createInstance(TweenGroupController)
@@ -78,8 +80,9 @@ export class GroupContainer implements IDisposable {
 			this.updateButtonState();
 		}));
 
-		var actionContainer = $('.action-bar').appendTo(this.domNode);
-		this.handleOperation(actionContainer.getHTMLElement());
+		var actionContainer = DOM.$('.action-bar');
+		this.domNode.appendChild(actionContainer);
+		this.handleOperation(actionContainer);
 		this.updateGroups();
 	}
 
@@ -90,8 +93,9 @@ export class GroupContainer implements IDisposable {
 		} else {
 			input.groups = [];
 		}
-		this.tree.setInput(input);
-		this.updateSelect();
+		this.tree.setInput(input).then(() => {
+			this.updateSelect();
+		});
 	}
 
 	private updateSelect(): void {
@@ -142,8 +146,8 @@ export class GroupContainer implements IDisposable {
 	}
 
 	public layout(height: number): void {
-		const treeHeight = height - this.title.getHTMLElement().offsetHeight - 22;
-		this.treeContainer.style('height', treeHeight + 'px');
+		const treeHeight = height - this.title.offsetHeight - 22;
+		this.treeContainer.style.height = treeHeight + 'px';
 		this.tree.layout(treeHeight);
 	}
 
@@ -186,12 +190,12 @@ class TweenGroupDataSource implements tree.IDataSource {
 		}
 	}
 
-	public getChildren(tree: tree.ITree, element: any): TPromise<any> {
-		return TPromise.as(element.groups);
+	public getChildren(tree: tree.ITree, element: any): Promise<any> {
+		return Promise.resolve(element.groups);
 	}
 
-	public getParent(tree: tree.ITree, element: any): TPromise<any> {
-		return TPromise.as(null);
+	public getParent(tree: tree.ITree, element: any): Promise<any> {
+		return Promise.resolve(null);
 	}
 }
 
@@ -213,7 +217,8 @@ class TweenGroupRenderer implements tree.IRenderer {
 	public renderTemplate(tree: tree.ITree, templateId: string, container: HTMLElement): any {
 		const data = <IGroupItemTemplateData>Object.create(null);
 		data.root = container;
-		data.label = $('.group-label').appendTo(container).getHTMLElement();
+		data.label = DOM.$('.group-label');
+		container.appendChild(data.label);
 		return data;
 	}
 
@@ -230,8 +235,16 @@ class TweenGroupRenderer implements tree.IRenderer {
 	}
 
 	private renderRenameBox(tree: tree.ITree, element: ITweenGroup, templateId: string, container: HTMLElement): void {
-		const inputBoxContainer = $('.inputBoxContainer').appendTo(container);
-		const inputBox = new TextInput(inputBoxContainer.getHTMLElement(), {
+		if(container.children.length === 2){
+			if(container.children[1].className.indexOf('inputBoxContainer') >= 0){
+				tree.clearHighlight();
+				tree.setHighlight(element);
+				return;
+			}
+		}
+		const inputBoxContainer = DOM.$('.inputBoxContainer');
+		container.appendChild(inputBoxContainer);
+		const inputBox = new TextInput(inputBoxContainer, {
 			validation: (value: string) => {
 				if (value && element.instance.getId() !== value) {
 					const node = element.instance.getExmlModel().getValueByID(value);
@@ -262,18 +275,18 @@ class TweenGroupRenderer implements tree.IRenderer {
 				}
 
 				tree.clearHighlight();
-				tree.DOMFocus();
+				tree.domFocus();
 				tree.setFocus(element);
 
 				// need to remove the input box since this template will be reused.
-				container.removeChild(inputBoxContainer.getHTMLElement());
+				container.removeChild(inputBoxContainer);
 				lifecycle.dispose(toDispose);
 
 				this.animationService.getViewModel().setEditingTweenGroup(null);
 			}
 		});
 
-		toDispose.push(dom.addStandardDisposableListener(inputBox.getElement(), 'keydown', (e: IKeyboardEvent) => {
+		toDispose.push(DOM.addStandardDisposableListener(inputBox.getElement(), 'keydown', (e: IKeyboardEvent) => {
 			if (e.equals(KeyCode.Enter)) {
 				if (inputBox.validate()) {
 					wrapUp(true);
@@ -282,13 +295,13 @@ class TweenGroupRenderer implements tree.IRenderer {
 				wrapUp(false);
 			}
 		}));
-		toDispose.push(dom.addDisposableListener(inputBox.getElement(), 'blur', () => {
+		toDispose.push(DOM.addDisposableListener(inputBox.getElement(), 'blur', () => {
 			wrapUp(inputBox.isInputValid());
 		}));
 	}
 
 	public disposeTemplate(tree: tree.ITree, templateId: string, templateData: any): void {
-
+		
 	}
 }
 

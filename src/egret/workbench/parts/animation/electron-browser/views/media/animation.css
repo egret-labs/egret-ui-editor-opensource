@@ -48,7 +48,7 @@
 
 .animation-panel .monaco-tree .monaco-tree-rows > .monaco-tree-row > .content {
 	display: flex;
-	line-height: 22px;
+	line-height: 20px;
 }
 
 .animation-panel .inputBoxContainer {

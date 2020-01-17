@@ -62,7 +62,7 @@ export class DomLayerTreeController implements IController {
 		tree.getSelection().forEach((each: INode) => {
 			each.setSelected(false);
 		});
-		tree.deselectAll(tree.getSelection());
+		tree.setSelection(tree.getSelection());
 		tree.selectRange(focusElement, element);
 		tree.getSelection().forEach((each: INode) => {
 			each.setSelected(true);

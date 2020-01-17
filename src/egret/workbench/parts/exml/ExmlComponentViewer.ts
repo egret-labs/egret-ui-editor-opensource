@@ -3,11 +3,10 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 import { ITree, IRenderer, IDataSource, IFilter, IController, IDragAndDrop, IDragOverReaction } from 'vs/base/parts/tree/browser/tree';
-import { Builder, $ } from 'vs/base/browser/builder';
+import * as DOM from 'vs/base/browser/dom';
 import { INode } from '../../../exts/exml-exts/exml/common/exml/treeNodes';
 import 'egret/workbench/parts/layers/media/euiComponent.css';
 import { IHost } from '../../../exts/exml-exts/exml/common/project/exmlConfigs';
-import { TPromise } from 'vs/base/commo/winjs.base';
 import { DefaultController } from 'vs/base/parts/tree/browser/treeDefaults';
 import { Tree } from 'vs/base/parts/tree/browser/treeImpl';
 import { IMouseEvent } from 'vs/base/browser/mouseEvent';
@@ -44,10 +43,10 @@ export class ExmlStat {
 export interface DomLayerTreeTemplateData {
 
 	//容器
-	container: Builder;
+	container: HTMLElement;
 
 	//根
-	root: Builder;
+	root: HTMLElement;
 }
 
 /**
@@ -58,7 +57,7 @@ export interface LayerActionContext {
 	element: INode;
 
 	//根
-	root: Builder;
+	root: HTMLElement;
 }
 
 /**
@@ -100,15 +99,14 @@ export class ExmlComponentRenderer implements IRenderer {
 	 * @param container 
 	 */
 	public renderTemplate(tree: ITree, templateId: string, container: HTMLElement): DomLayerTreeTemplateData {
-		const containerBuilder = $(container);
-		const span = $(container).span();
-		span.addClass('iconSpan');
+		const span = DOM.append(container, DOM.$('span'));
+		DOM.addClass(span, 'iconSpan');
 
-		const rootBuilder = containerBuilder.div();
-		rootBuilder.getHTMLElement().style.marginLeft = '-15px';
+		const rootBuilder = DOM.append(container, DOM.$('div'));
+		rootBuilder.style.marginLeft = '-15px';
 
 		return {
-			container: containerBuilder,
+			container: container,
 			root: rootBuilder,
 		};
 	}
@@ -128,11 +126,11 @@ export class ExmlComponentRenderer implements IRenderer {
 			text += ' - ' + element.module;
 		}
 
-		templateData.root.addClass('layerPanelSpanItem');
-		templateData.root.addClass('componentPanelSpanItem');
-		templateData.root.addClass('classIcon');
-		templateData.root.text(text);
-		templateData.root.title(text);
+		DOM.addClass(templateData.root, 'layerPanelSpanItem');
+		DOM.addClass(templateData.root, 'componentPanelSpanItem');
+		DOM.addClass(templateData.root, 'classIcon');
+		templateData.root.textContent = text;
+		templateData.root.title = text;
 	}
 }
 
@@ -166,17 +164,17 @@ export class ExmlComponentDataSource implements IDataSource {
 	 * @param tree 
 	 * @param element 
 	 */
-	public getChildren(tree: ITree, stat: ExmlStat): TPromise<any[]> {
-		return TPromise.as(stat.children.length !== 0 ? stat.children : []);
+	public getChildren(tree: ITree, stat: ExmlStat): Promise<any[]> {
+		return Promise.resolve(stat.children.length !== 0 ? stat.children : []);
 	}
 	/**
 	 * 异步返回一个元素的父级
 	 * @param tree 
 	 * @param element 
 	 */
-	public getParent(tree: ITree, stat: ExmlStat): TPromise<any> {
+	public getParent(tree: ITree, stat: ExmlStat): Promise<any> {
 
-		return TPromise.as(stat.parent);
+		return Promise.resolve(stat.parent);
 	}
 }
 

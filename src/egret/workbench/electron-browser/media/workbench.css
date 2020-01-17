@@ -1,3 +1,12 @@
+*, *::before, *::after {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+[hidden] {
+    display: none !important;
+}
+
 .eui-default .close-btn{	  
 	background: url(close_dark.svg) center center no-repeat;
 	width: 16px;
@@ -15,6 +24,13 @@
 	transform: scale(0.9);
 }
 
+input, button, select, optgroup, textarea {
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    color: inherit;
+}
 
 .eui-black .close-btn{	  
 	background: url(close_dark.svg) center center no-repeat;
@@ -42,6 +58,10 @@
 }
 
 .monaco-tree .monaco-tree-rows > .monaco-tree-row.has-children.loading > .content:before {
+	display: none !important;
+}
+.monaco-tree .monaco-tree-rows.show-twisties > .monaco-tree-row > .content:before {
+	content: none !important;
 	display: none !important;
 }
 

@@ -1,5 +1,4 @@
 import './../../media/euiLayer.css';
-import '!style-loader!css-loader!antd/dist/antd.css';
 import { Tree } from 'vs/base/parts/tree/browser/treeImpl';
 import { IInstantiationService } from 'egret/platform/instantiation/common/instantiation';
 import { DomLayerTreeDataSource } from '../../components/LayerTreeDataSource';
@@ -554,6 +553,8 @@ export class LayerView extends PanelContentDom implements IModelRequirePart, IFo
 		this.iconContainer.style.width = '100%';
 		this.iconContainer.style.pointerEvents = 'none';
 		this.iconContainer.style.visibility = 'hidden';
+		this.iconContainer.style.marginTop = '2px';
+		this.iconContainer.style.paddingRight = '2px';
 		closeBtn.iconClass = 'layerview closesearch';
 
 		closeBtn.getElement().style.cssFloat = 'right';

@@ -5,12 +5,8 @@
 'use strict';
 
 import * as lifecycle from 'vs/base/common/lifecycle';
-import { IKeyboardEvent } from 'vs/base/browser/keyboardEvent';
 import { IMouseEvent } from 'vs/base/browser/mouseEvent';
-import { isMacintosh } from 'vs/base/common/platform';
-import { KeyMod, KeyCode } from 'vs/base/common/keyCodes';
-import { $, Builder } from 'vs/base/browser/builder';
-import { TPromise } from 'vs/base/common/winjs.base';
+import * as DOM from 'vs/base/browser/dom';
 import { Emitter, Event } from 'egret/base/common/event';
 import * as tree from 'vs/base/parts/tree/browser/tree';
 import * as treeImpl from 'vs/base/parts/tree/browser/treeImpl';
@@ -28,10 +24,10 @@ import { SystemCommands } from 'egret/platform/operations/commands/systemCommand
 
 export class ItemsContainer implements IDisposable {
 
-	public domNode: Builder;
+	public domNode: HTMLElement;
 
-	private title: Builder;
-	private treeContainer: Builder;
+	private title: HTMLElement;
+	private treeContainer: HTMLElement;
 
 	private tree: treeImpl.Tree;
 
@@ -95,9 +91,12 @@ export class ItemsContainer implements IDisposable {
 		}
 	}
 
-	public create(parent: Builder): void {
-		this.domNode = $('.items').appendTo(parent);
-		this.title = $('.titleDescription').text(localize('animationView.animation', 'Animation')).appendTo(this.domNode);
+	public create(parent: HTMLElement): void {
+		this.domNode = DOM.$('.items');
+		parent.appendChild(this.domNode);
+		this.title = DOM.$('.titleDescription');
+		this.title.textContent = localize('animationView.animation', 'Animation');
+		this.domNode.appendChild(this.title);
 
 		this.actionProvider = this.instantiationService.createInstance(ItemsOperationProvider);
 		this.actionProvider.onEnableChanged((obj) => {
@@ -105,15 +104,17 @@ export class ItemsContainer implements IDisposable {
 		});
 
 
-		this.treeContainer = $('.tree').appendTo(this.domNode);
-		this.tree = new treeImpl.Tree(this.treeContainer.getHTMLElement(), {
+		this.treeContainer = DOM.$('.tree');
+		this.domNode.appendChild(this.treeContainer);
+		this.tree = new treeImpl.Tree(this.treeContainer, {
 			dataSource: this.instantiationService.createInstance(TweenItemDataSource),
 			renderer: this.instantiationService.createInstance(TweenItemRenderer),
 			controller: this.instantiationService.createInstance(TweenItemController, this.actionProvider)
 		}, { alwaysFocused: true, twistiePixels: 0 });
 
-		var actionContainer = $('.action-bar').appendTo(this.domNode);
-		this.handleOperation(actionContainer.getHTMLElement());
+		var actionContainer = DOM.$('.action-bar');
+		this.domNode.appendChild(actionContainer);
+		this.handleOperation(actionContainer);
 
 		this.updateItems();
 	}
@@ -225,8 +226,8 @@ export class ItemsContainer implements IDisposable {
 	}
 
 	public layout(height: number): void {
-		const treeHeight = height - this.title.getHTMLElement().offsetHeight - 22;
-		this.treeContainer.style('height', treeHeight + 'px');
+		const treeHeight = height - this.title.offsetHeight - 22;
+		this.treeContainer.style.height = treeHeight + 'px';
 		this.tree.layout(treeHeight);
 	}
 
@@ -321,12 +322,12 @@ class TweenItemDataSource implements tree.IDataSource {
 		}
 	}
 
-	public getChildren(tree: tree.ITree, element: any): TPromise<any> {
-		return TPromise.as(element.items);
+	public getChildren(tree: tree.ITree, element: any): Promise<any> {
+		return Promise.resolve(element.items);
 	}
 
-	public getParent(tree: tree.ITree, element: any): TPromise<any> {
-		return TPromise.as(null);
+	public getParent(tree: tree.ITree, element: any): Promise<any> {
+		return Promise.resolve(null);
 	}
 }
 
@@ -349,25 +350,27 @@ class TweenItemRenderer implements tree.IRenderer {
 	public renderTemplate(tree: tree.ITree, templateId: string, container: HTMLElement): IItemTemplateData {
 		const data = <IItemTemplateData>Object.create(null);
 		data.root = container;
-		data.label = $('.item-label').appendTo(container).getHTMLElement();
+		const label = DOM.$('.item-label');
+		container.appendChild(label);
+		data.label = label;
 		return data;
 	}
 
 	public renderElement(tree: tree.ITree, element: ITweenItem, templateId: string, templateData: IItemTemplateData): void {
 		const index = (<ITweenItemInput>tree.getInput()).items.indexOf(element);
-		$(templateData.label).removeClass('error');
+		DOM.removeClass(templateData.label, 'error');
 		if (element.target) {
 			const id = element.target.getId();
 			templateData.root.title = id;
 			templateData.label.textContent = id ? `${index} - ${id}` : index + '';
 
 			if (element.loop) {
-				$(templateData.root).addClass('loop');
+				DOM.addClass(templateData.root, 'loop');
 			} else {
-				$(templateData.root).removeClass('loop');
+				DOM.removeClass(templateData.root, 'loop');
 			}
 		} else {
-			$(templateData.label).addClass('error');
+			DOM.addClass(templateData.label, 'error');
 
 			const target = element.instance.getProperty('target');
 			let id: string = '';

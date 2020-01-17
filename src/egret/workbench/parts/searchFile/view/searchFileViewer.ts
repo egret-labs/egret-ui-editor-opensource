@@ -1,8 +1,6 @@
 import { IDataSource, ITree, IRenderer, IController, ContextMenuEvent } from 'vs/base/parts/tree/browser/tree';
 import { ExmlFileStat } from '../common/searchFileModel';
-import { TPromise } from 'vs/base/common/winjs.base';
 import { addClass } from 'egret/base/common/dom';
-import { IWorkspaceService } from 'egret/platform/workspace/common/workspace';
 import { DefaultController } from 'vs/base/parts/tree/browser/treeDefaults';
 import { Tree } from 'vs/base/parts/tree/browser/treeImpl';
 import { IMouseEvent } from 'vs/base/browser/mouseEvent';
@@ -38,8 +36,8 @@ export class SearchFileDataSource implements IDataSource{
 	 * @param tree 
 	 * @param element 
 	 */
-	public getChildren(tree: ITree, stat: ExmlFileStat): TPromise<ExmlFileStat[]> {
-		return new TPromise<ExmlFileStat[]>((resolve, reject) => {
+	public getChildren(tree: ITree, stat: ExmlFileStat): Promise<ExmlFileStat[]> {
+		return new Promise<ExmlFileStat[]>((resolve, reject) => {
 			resolve(stat.children);
 		});
 
@@ -49,11 +47,11 @@ export class SearchFileDataSource implements IDataSource{
 	 * @param tree 
 	 * @param element 
 	 */
-	public getParent(tree: ITree, stat: ExmlFileStat): TPromise<ExmlFileStat> {
+	public getParent(tree: ITree, stat: ExmlFileStat): Promise<ExmlFileStat> {
 		if (stat instanceof ExmlFileStat && stat.parent) {
-			return TPromise.as(stat.parent);
+			return Promise.resolve(stat.parent);
 		}
-		return TPromise.as(null);
+		return Promise.resolve(null);
 	}
 }
 
@@ -206,8 +204,6 @@ export class SearchFileItemRenderer implements IRenderer {
  * 处理用户交互
  */
 export class SearchFileController extends DefaultController implements IController {
-	private openOnSingleClick: boolean = true;
-
 	constructor() {
 		super({keyboardSupport:true});
 	}
@@ -219,7 +215,7 @@ export class SearchFileController extends DefaultController implements IControll
 	 * @param event 
 	 * @param origin 
 	 */
-	public onLeftClick(tree: Tree, stat: ExmlFileStat, event: IMouseEvent, origin: string = 'mouse'): boolean {
+	protected onLeftClick(tree: Tree, stat: ExmlFileStat, event: IMouseEvent, origin: string = 'mouse'): boolean {
 		const payload = { origin: origin };
 		const isDoubleClick = (origin === 'mouse' && event.detail === 2);
 		if (isDoubleClick || this.openOnSingleClick) {

@@ -2,9 +2,6 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-'use strict';
-
-import { TPromise } from 'vs/base/common/winjs.base';
 
 const _typeof = {
 	number: 'number',
@@ -52,7 +49,7 @@ export function isStringArray(value: any): value is string[] {
  * @returns whether the provided parameter is of type `object` but **not**
  *	`null`, an `array`, a `regexp`, nor a `date`.
  */
-export function isObject(obj: any): boolean {
+export function isObject(obj: any): obj is Object {
 	// The method can't do a type cast since there are type (like strings) which
 	// are subclasses of any put not positvely matched by the function. Hence type
 	// narrowing results in wrong results.
@@ -85,17 +82,56 @@ export function isBoolean(obj: any): obj is boolean {
 /**
  * @returns whether the provided parameter is undefined.
  */
-export function isUndefined(obj: any): boolean {
+export function isUndefined(obj: any): obj is undefined {
 	return typeof (obj) === _typeof.undefined;
 }
 
 /**
  * @returns whether the provided parameter is undefined or null.
  */
-export function isUndefinedOrNull(obj: any): boolean {
+export function isUndefinedOrNull(obj: any): obj is undefined | null {
 	return isUndefined(obj) || obj === null;
 }
 
+
+export function assertType(condition: any, type?: string): asserts condition {
+	if (!condition) {
+		throw new Error(type ? `Unexpected type, expected '${type}'` : 'Unexpected type');
+	}
+}
+
+/**
+ * Asserts that the argument passed in is neither undefined nor null.
+ */
+export function assertIsDefined<T>(arg: T | null | undefined): T {
+	if (isUndefinedOrNull(arg)) {
+		throw new Error('Assertion Failed: argument is undefined or null');
+	}
+
+	return arg;
+}
+
+/**
+ * Asserts that each argument passed in is neither undefined nor null.
+ */
+export function assertAllDefined<T1, T2>(t1: T1 | null | undefined, t2: T2 | null | undefined): [T1, T2];
+export function assertAllDefined<T1, T2, T3>(t1: T1 | null | undefined, t2: T2 | null | undefined, t3: T3 | null | undefined): [T1, T2, T3];
+export function assertAllDefined<T1, T2, T3, T4>(t1: T1 | null | undefined, t2: T2 | null | undefined, t3: T3 | null | undefined, t4: T4 | null | undefined): [T1, T2, T3, T4];
+export function assertAllDefined(...args: (unknown | null | undefined)[]): unknown[] {
+	const result = [];
+
+	for (let i = 0; i < args.length; i++) {
+		const arg = args[i];
+
+		if (isUndefinedOrNull(arg)) {
+			throw new Error(`Assertion Failed: argument at index ${i} is undefined or null`);
+		}
+
+		result.push(arg);
+	}
+
+	return result;
+}
 
 const hasOwnProperty = Object.prototype.hasOwnProperty;
 
@@ -107,7 +143,7 @@ export function isEmptyObject(obj: any): obj is any {
 		return false;
 	}
 
-	for (const key in obj) {
+	for (let key in obj) {
 		if (hasOwnProperty.call(obj, key)) {
 			return false;
 		}
@@ -127,29 +163,33 @@ export function isFunction(obj: any): obj is Function {
  * @returns whether the provided parameters is are JavaScript Function or not.
  */
 export function areFunctions(...objects: any[]): boolean {
-	return objects && objects.length > 0 && objects.every(isFunction);
+	return objects.length > 0 && objects.every(isFunction);
 }
 
 export type TypeConstraint = string | Function;
 
-export function validateConstraints(args: any[], constraints: TypeConstraint[]): void {
+export function validateConstraints(args: any[], constraints: Array<TypeConstraint | undefined>): void {
 	const len = Math.min(args.length, constraints.length);
 	for (let i = 0; i < len; i++) {
 		validateConstraint(args[i], constraints[i]);
 	}
 }
 
-export function validateConstraint(arg: any, constraint: TypeConstraint): void {
+export function validateConstraint(arg: any, constraint: TypeConstraint | undefined): void {
 
 	if (isString(constraint)) {
 		if (typeof arg !== constraint) {
 			throw new Error(`argument does not match constraint: typeof ${constraint}`);
 		}
 	} else if (isFunction(constraint)) {
-		if (arg instanceof constraint) {
-			return;
+		try {
+			if (arg instanceof constraint) {
+				return;
+			}
+		} catch{
+			// ignore
 		}
-		if (arg && arg.constructor === constraint) {
+		if (!isUndefinedOrNull(arg) && arg.constructor === constraint) {
 			return;
 		}
 		if (constraint.length === 1 && constraint.call(undefined, arg) === true) {
@@ -159,62 +199,66 @@ export function validateConstraint(arg: any, constraint: TypeConstraint): void {
 	}
 }
 
+export function getAllPropertyNames(obj: object): string[] {
+	let res: string[] = [];
+	let proto = Object.getPrototypeOf(obj);
+	while (Object.prototype !== proto) {
+		res = res.concat(Object.getOwnPropertyNames(proto));
+		proto = Object.getPrototypeOf(proto);
+	}
+	return res;
+}
+
+export function getAllMethodNames(obj: object): string[] {
+	const methods: string[] = [];
+	for (const prop of getAllPropertyNames(obj)) {
+		if (typeof (obj as any)[prop] === 'function') {
+			methods.push(prop);
+		}
+	}
+	return methods;
+}
+
+export function createProxyObject<T extends object>(methodNames: string[], invoke: (method: string, args: any[]) => any): T {
+	const createProxyMethod = (method: string): () => any => {
+		return function () {
+			const args = Array.prototype.slice.call(arguments, 0);
+			return invoke(method, args);
+		};
+	};
+
+	let result = {} as T;
+	for (const methodName of methodNames) {
+		(<any>result)[methodName] = createProxyMethod(methodName);
+	}
+	return result;
+}
+
 /**
- * Creates a new object of the provided class and will call the constructor with
- * any additional argument supplied.
+ * Converts null to undefined, passes all other values through.
  */
-export function create(ctor: Function, ...args: any[]): any {
-	const obj = Object.create(ctor.prototype);
-	ctor.apply(obj, args);
-
-	return obj;
+export function withNullAsUndefined<T>(x: T | null): T | undefined {
+	return x === null ? undefined : x;
 }
 
-export interface IFunction0<T> {
-	(): T;
-}
-export interface IFunction1<A1, T> {
-	(a1: A1): T;
-}
-export interface IFunction2<A1, A2, T> {
-	(a1: A1, a2: A2): T;
-}
-export interface IFunction3<A1, A2, A3, T> {
-	(a1: A1, a2: A2, a3: A3): T;
-}
-export interface IFunction4<A1, A2, A3, A4, T> {
-	(a1: A1, a2: A2, a3: A3, a4: A4): T;
-}
-export interface IFunction5<A1, A2, A3, A4, A5, T> {
-	(a1: A1, a2: A2, a3: A3, a4: A4, a5: A5): T;
-}
-export interface IFunction6<A1, A2, A3, A4, A5, A6, T> {
-	(a1: A1, a2: A2, a3: A3, a4: A4, a5: A5, a6: A6): T;
-}
-export interface IFunction7<A1, A2, A3, A4, A5, A6, A7, T> {
-	(a1: A1, a2: A2, a3: A3, a4: A4, a5: A5, a6: A6, a7: A7): T;
-}
-export interface IFunction8<A1, A2, A3, A4, A5, A6, A7, A8, T> {
-	(a1: A1, a2: A2, a3: A3, a4: A4, a5: A5, a6: A6, a7: A7, a8: A8): T;
+/**
+ * Converts undefined to null, passes all other values through.
+ */
+export function withUndefinedAsNull<T>(x: T | undefined): T | null {
+	return typeof x === 'undefined' ? null : x;
 }
 
-export interface IAction0 extends IFunction0<void> { }
-export interface IAction1<A1> extends IFunction1<A1, void> { }
-export interface IAction2<A1, A2> extends IFunction2<A1, A2, void> { }
-export interface IAction3<A1, A2, A3> extends IFunction3<A1, A2, A3, void> { }
-export interface IAction4<A1, A2, A3, A4> extends IFunction4<A1, A2, A3, A4, void> { }
-export interface IAction5<A1, A2, A3, A4, A5> extends IFunction5<A1, A2, A3, A4, A5, void> { }
-export interface IAction6<A1, A2, A3, A4, A5, A6> extends IFunction6<A1, A2, A3, A4, A5, A6, void> { }
-export interface IAction7<A1, A2, A3, A4, A5, A6, A7> extends IFunction7<A1, A2, A3, A4, A5, A6, A7, void> { }
-export interface IAction8<A1, A2, A3, A4, A5, A6, A7, A8> extends IFunction8<A1, A2, A3, A4, A5, A6, A7, A8, void> { }
+/**
+ * Allows to add a first parameter to functions of a type.
+ */
+export type AddFirstParameterToFunctions<Target, TargetFunctionsReturnType, FirstParameter> = {
 
-export interface IAsyncFunction0<T> extends IFunction0<TPromise<T>> { }
-export interface IAsyncFunction1<A1, T> extends IFunction1<A1, TPromise<T>> { }
-export interface IAsyncFunction2<A1, A2, T> extends IFunction2<A1, A2, TPromise<T>> { }
-export interface IAsyncFunction3<A1, A2, A3, T> extends IFunction3<A1, A2, A3, TPromise<T>> { }
-export interface IAsyncFunction4<A1, A2, A3, A4, T> extends IFunction4<A1, A2, A3, A4, TPromise<T>> { }
-export interface IAsyncFunction5<A1, A2, A3, A4, A5, T> extends IFunction5<A1, A2, A3, A4, A5, TPromise<T>> { }
-export interface IAsyncFunction6<A1, A2, A3, A4, A5, A6, T> extends IFunction6<A1, A2, A3, A4, A5, A6, TPromise<T>> { }
-export interface IAsyncFunction7<A1, A2, A3, A4, A5, A6, A7, T> extends IFunction7<A1, A2, A3, A4, A5, A6, A7, TPromise<T>> { }
-export interface IAsyncFunction8<A1, A2, A3, A4, A5, A6, A7, A8, T> extends IFunction8<A1, A2, A3, A4, A5, A6, A7, A8, TPromise<T>> { }
+	//  For every property
+	[K in keyof Target]:
 
+	// Function: add param to function
+	Target[K] extends (...args: any) => TargetFunctionsReturnType ? (firstArg: FirstParameter, ...args: Parameters<Target[K]>) => ReturnType<Target[K]> :
+
+	// Else: just leave as is
+	Target[K]
+};

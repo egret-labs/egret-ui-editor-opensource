@@ -1,9 +1,8 @@
-import { IDataSource, ITree, IRenderer, IController, IDragAndDrop, IDragAndDropData, IDragOverReaction, ContextMenuEvent, IFilter, ISorter } from 'vs/base/parts/tree/browser/tree';
-import { TPromise } from 'vs/base/common/winjs.base';
-
-import { $ } from 'vs/base/browser/builder';
+import { IDataSource, ITree, IRenderer, IController, IDragAndDrop, IDragOverReaction, ContextMenuEvent, IFilter, ISorter } from 'vs/base/parts/tree/browser/tree';
+import { IDragAndDropData } from 'vs/base/browser/dnd';
+import * as DOM from 'vs/base/browser/dom';
 import { DefaultController } from 'vs/base/parts/tree/browser/treeDefaults';
-import { IMouseEvent } from 'vs/base/browser/mouseEvent';
+import { IMouseEvent, DragMouseEvent } from 'vs/base/browser/mouseEvent';
 import { Tree } from 'vs/base/parts/tree/browser/treeImpl';
 import { IFileService } from 'egret/platform/files/common/files';
 import { FileStat, Model } from 'egret/workbench/parts/files/common/explorerModel';
@@ -18,9 +17,7 @@ import { EUI } from 'egret/exts/exml-exts/exml/common/project/parsers/core/commo
 import { IClipboardService } from 'egret/platform/clipboard/common/clipboardService';
 import { IDisposable } from 'vs/base/common/lifecycle';
 import { dispose } from 'egret/base/common/lifecycle';
-import { stat } from 'fs-extra';
 import { matchesFuzzy } from 'egret/base/common/filters';
-import { StateBar } from '../../state/stateBar';
 
 /**
  * 资源面板数据源
@@ -60,9 +57,9 @@ export class MaterialDataSource implements IDataSource {
 	 * @param tree 
 	 * @param element 
 	 */
-	public getChildren(tree: ITree, stat: TreeNodeBase): TPromise<TreeNodeBase[]> {
+	public getChildren(tree: ITree, stat: TreeNodeBase): Promise<TreeNodeBase[]> {
 		if (stat instanceof TreeParentNode) {
-			return TPromise.as(stat.children);
+			return Promise.resolve(stat.children);
 		}
 	}
 	/**
@@ -70,17 +67,17 @@ export class MaterialDataSource implements IDataSource {
 	 * @param tree 
 	 * @param element 
 	 */
-	public getParent(tree: ITree, stat: TreeNodeBase): TPromise<FileStat> {
+	public getParent(tree: ITree, stat: TreeNodeBase): Promise<FileStat> {
 		if (!stat) {
-			return TPromise.as(null);
+			return Promise.resolve(null);
 		}
 		if (tree.getInput() === stat) {
-			return TPromise.as(null);
+			return Promise.resolve(null);
 		}
 		if (stat instanceof FileStat && stat.parent) {
-			return TPromise.as(stat.parent);
+			return Promise.resolve(stat.parent);
 		}
-		return TPromise.as(null);
+		return Promise.resolve(null);
 	}
 }
 
@@ -237,10 +234,10 @@ export class MaterialRenderer implements IRenderer {
 	public renderTemplate(tree: ITree, templateId: string, container: HTMLElement): IFileTemplateData {
 		const template: IFileTemplateData = {
 			container: container,
-			iconSpan: $(container).span().getHTMLElement(),
-			imageDiv: $(container).div().getHTMLElement(),
-			image: $(container).div().getHTMLElement(),
-			textSpan: $(container).span().getHTMLElement()
+			iconSpan: DOM.append(container, DOM.$('span')),
+			imageDiv: DOM.append(container, DOM.$('div')),
+			image: DOM.append(container, DOM.$('div')),
+			textSpan: DOM.append(container, DOM.$('span'))
 		};
 
 		// (new Builder(container)).draggable(true);
@@ -349,7 +346,6 @@ export class MaterialRenderer implements IRenderer {
  */
 export class MaterialController extends DefaultController implements IController {
 	private previousSelectionRangeStop: FileStat;
-	private openOnSingleClick: boolean = true;
 
 	/**
 	 * 单击预览
@@ -368,7 +364,7 @@ export class MaterialController extends DefaultController implements IController
 	 * @param event 
 	 * @param origin 
 	 */
-	public onLeftClick(tree: Tree, stat: FileStat | Model, event: IMouseEvent, origin: string = 'mouse'): boolean {
+	protected onLeftClick(tree: Tree, stat: FileStat | Model, event: IMouseEvent, origin: string = 'mouse'): boolean {
 		const payload = { origin: origin };
 		const isDoubleClick = (origin === 'mouse' && event.detail === 2);
 		// Handle Highlight Mode
@@ -394,7 +390,7 @@ export class MaterialController extends DefaultController implements IController
 		event.stopPropagation();
 
 		// Set DOM focus
-		tree.DOMFocus();
+		tree.domFocus();
 
 		// Allow to multiselect
 		if ((event.altKey) || (event.ctrlKey || event.metaKey)) {
@@ -547,7 +543,7 @@ export class MaterialDragAndDrop implements IDragAndDrop {
 	 * @param data 
 	 * @param originalEvent 
 	 */
-	public onDragStart(tree: ITree, data: IDragAndDropData, originalEvent: DragEvent): void {
+	public onDragStart(tree: ITree, data: IDragAndDropData, originalEvent: DragMouseEvent): void {
 
 		const nodeData = this.createNodeDataS(data.getData());
 		if (nodeData) {
@@ -615,7 +611,7 @@ export class MaterialDragAndDrop implements IDragAndDrop {
 	 * @param targetElement 
 	 * @param originalEvent 
 	 */
-	public onDragOver(tree: ITree, data: IDragAndDropData, targetElement: any, originalEvent: DragEvent): IDragOverReaction {
+	public onDragOver(tree: ITree, data: IDragAndDropData, targetElement: any, originalEvent: DragMouseEvent): IDragOverReaction {
 
 		return null;
 	}
@@ -626,7 +622,7 @@ export class MaterialDragAndDrop implements IDragAndDrop {
 	 * @param targetElement 
 	 * @param originalEvent 
 	 */
-	public drop(tree: ITree, data: IDragAndDropData, targetElement: any, originalEvent: DragEvent): void {
+	public drop(tree: ITree, data: IDragAndDropData, targetElement: any, originalEvent: DragMouseEvent): void {
 	}
 
 }

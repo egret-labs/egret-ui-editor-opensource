@@ -166,7 +166,7 @@ export class ExmlComponentPanel extends InnerBtnWindow {
 		}
 		e.stopImmediatePropagation();
 		e.stopPropagation();
-		e.preventDefault();
+		e.preventDefault();	
 		if(this.tree.getSelection().length == 0){
 			this.tree.selectNext();
 		}

@@ -1,4 +1,3 @@
-import WinJS = require('vs/base/common/winjs.base');
 import { IDataSource, ITree, /*IDragAndDropData,*/ } from 'vs/base/parts/tree/browser/tree';
 import { INode, isInstanceof, IContainer } from 'egret/exts/exml-exts/exml/common/exml/treeNodes';
 import { LayerPanelUtil } from 'egret/workbench/parts/layers/components/LayerPanelUtil';
@@ -23,21 +22,21 @@ export class DomLayerTreeDataSource implements IDataSource {
 		}
 	}
 
-	getChildren(tree: ITree, element: INode): WinJS.Promise {
+	getChildren(tree: ITree, element: INode): Promise<any> {
 		if (LayerPanelUtil.isContainer(element)) {
 			const childrenLength = (element as IContainer).getNumChildren();
 			const children = [];
 			for (let index = 0; index < childrenLength; index++) {
 				children.push((element as IContainer).getNodeAt(index));
 			}
-			return WinJS.TPromise.as(children);
+			return Promise.resolve(children);
 		}
 		else{
-			return WinJS.TPromise.as(null);
+			return Promise.resolve(null);
 		}
 	}
 
-	getParent(tree: ITree, element: INode): WinJS.Promise {
-		return WinJS.TPromise.as(element.getParent());
+	getParent(tree: ITree, element: INode): Promise<any> {
+		return Promise.resolve(element.getParent());
 	}
 }

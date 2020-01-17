@@ -124,7 +124,6 @@ export class AlignView extends PanelContentDom implements IModelRequirePart, IFo
 
 	private handleTree(): void {
 		this.scrollElement = new DomScrollableElement(this.subDiv, {
-			canUseTranslate3d: false,
 			alwaysConsumeMouseWheel: true,
 			horizontal: ScrollbarVisibility.Hidden,
 			vertical: ScrollbarVisibility.Auto,

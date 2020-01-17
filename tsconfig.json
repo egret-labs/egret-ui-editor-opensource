@@ -20,6 +20,7 @@
 			"es6",
 			"es2015",
 			"es2015.proxy",
+			"ES2018.Promise",
 			"webworker",
 			"scripthost"
 		]

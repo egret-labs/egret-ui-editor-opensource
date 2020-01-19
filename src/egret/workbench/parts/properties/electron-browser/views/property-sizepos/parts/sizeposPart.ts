@@ -6,6 +6,7 @@ import { localize } from 'egret/base/localization/nls';
 import { addClass } from 'egret/base/common/dom';
 import { UserValue, DefaultValue, getSameKeyValue, getProperty, setPropertyNum, setPropertyNumPro } from 'egret/workbench/parts/properties/common/properties';
 import { IUIBase } from 'egret/base/browser/ui/common';
+import { judgePercent } from 'egret/workbench/parts/properties/common/formats';
 
 import '../../media/propertyView.css';
 import '../../media/propertyViewStyle.css';
@@ -234,10 +235,10 @@ export class SizePosPart extends BasePart {
 			return;
 		}
 		if(supportPercent){
-			let prop = '';
-			if(type == PropertyTypes.WIDTH){
+			let prop: PropertyTypes | string = type;
+			if(type == PropertyTypes.WIDTH && judgePercent(value)){
 				prop = 'percentWidth';
-			}else if(type == PropertyTypes.HEIGHT){
+			}else if(type == PropertyTypes.HEIGHT && judgePercent(value)){
 				prop = 'percentHeight';
 			}
 			value = Number.parseFloat(value as string);

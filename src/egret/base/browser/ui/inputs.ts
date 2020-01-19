@@ -359,7 +359,7 @@ export class TextInput implements IUIBase, IDisposable {
 			default: return 'error';
 		}
 	}
-	
+
 	private _showMessage(): void {
 		if (!this.message) {
 			return;

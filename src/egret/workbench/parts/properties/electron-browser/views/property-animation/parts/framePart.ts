@@ -7,6 +7,7 @@ import { addClass } from 'egret/base/common/dom';
 import { IUIBase } from 'egret/base/browser/ui/common';
 import { IAnimationService } from 'egret/workbench/parts/animation/common/animation';
 import { EditingPath } from 'egret/exts/exml-exts/exml/common/plugin/IAnimationModel';
+import { judgePercent } from 'egret/workbench/parts/properties/common/formats';
 
 enum PropertyTypes {
 	X = 'x',
@@ -192,10 +193,10 @@ export class FramePart extends BasePart {
 			return;
 		}
 		if (supportPercent) {
-			let prop = '';
-			if (type == PropertyTypes.WIDTH) {
+			let prop: PropertyTypes | string = type;
+			if (type == PropertyTypes.WIDTH && judgePercent(value)) {
 				prop = 'percentWidth';
-			} else if (type == PropertyTypes.HEIGHT) {
+			} else if (type == PropertyTypes.HEIGHT && judgePercent(value)) {
 				prop = 'percentHeight';
 			}
 			value = Number.parseFloat(value as string);

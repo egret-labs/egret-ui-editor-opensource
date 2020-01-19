@@ -71,8 +71,9 @@ export class ItemsContainer implements IDisposable {
 				this.tree.refresh(item);
 			}));
 		});
-		this.tree.setInput(input);
-		this.updateSelectedItem();
+		this.tree.setInput(input).then(() => {
+			this.updateSelectedItem();
+		});
 	}
 
 	private updateSelectedItem(): void {

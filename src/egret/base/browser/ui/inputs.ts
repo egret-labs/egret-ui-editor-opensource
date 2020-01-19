@@ -53,7 +53,7 @@ export class TextInput implements IUIBase, IDisposable {
 	 */
 	public set readonly(_readonly: boolean) {
 		this.inputElement.readOnly = _readonly;
-		if(_readonly){	
+		if (_readonly) {
 			this.inputElement.style.cursor = '';
 		}
 	}
@@ -102,7 +102,7 @@ export class TextInput implements IUIBase, IDisposable {
 	public get style(): CSSStyleDeclaration {
 		return this.inputElement.style;
 	}
-	
+
 
 	/**
 	 * 创建
@@ -174,7 +174,7 @@ export class TextInput implements IUIBase, IDisposable {
 	private textChanging_handler(): void {
 		if (this.onChangingFilter) {
 			this.text = this.onChangingFilter(this.text);
-		}		
+		}
 		this.validate();
 
 		if (this.state === 'open') {
@@ -200,7 +200,7 @@ export class TextInput implements IUIBase, IDisposable {
 		this.onFocus();
 	}
 
-	private blur_handler(): void {	
+	private blur_handler(): void {
 		dom.removeClass(this.container, 'synthetic-focus');
 		this._hideMessage();
 		this.onBlur();
@@ -287,7 +287,9 @@ export class TextInput implements IUIBase, IDisposable {
 		return this.inputElement.value;
 	}
 	public set text(value: string) {
-		this.inputElement.value = value;
+		if (this.inputElement.value !== value) {
+			this.inputElement.value = value;
+		}
 	}
 
 	public focus(): void {
@@ -302,7 +304,7 @@ export class TextInput implements IUIBase, IDisposable {
 	public hasFocus(): boolean {
 		return document.activeElement === this.inputElement;
 	}
-	
+
 	public showMessage(message: IMessage, force?: boolean): void {
 		this.message = message;
 
@@ -357,7 +359,7 @@ export class TextInput implements IUIBase, IDisposable {
 			default: return 'error';
 		}
 	}
-	
+
 	private _showMessage(): void {
 		if (!this.message) {
 			return;
@@ -478,7 +480,7 @@ export class NumberInput extends TextInput {
 		this.supportRegulate = this.supportRegulate;
 		this._onRegulateValue = new Emitter<string>();
 	}
-	
+
 	/**
 	 * 鼠标拖拽下的值改变
 	 */
@@ -587,7 +589,7 @@ export class NumberInput extends TextInput {
 		} else {
 			numValue = parseFloat(value);
 		}
-		if(Number.isNaN(numValue)){
+		if (Number.isNaN(numValue)) {
 			return '';
 		}
 		numValue = this.validateRange(numValue);
@@ -646,7 +648,7 @@ export class NumberInput extends TextInput {
 	private startIsPercent: boolean = false;
 	private startRegulated: boolean = false;
 	private mouseDown_handler(e: MouseEvent): void {
-		if(this.readonly){
+		if (this.readonly) {
 			return;
 		}
 		this.startX = e.pageX;
@@ -674,7 +676,7 @@ export class NumberInput extends TextInput {
 	}
 
 	private mouseMove_handler(e: MouseEvent): void {
-		if(this.readonly){
+		if (this.readonly) {
 			return;
 		}
 		if (Math.abs(e.pageX - this.startX) >= this.regulateInteractiveOffset || Math.abs(e.pageY - this.startY) >= this.regulateInteractiveOffset) {

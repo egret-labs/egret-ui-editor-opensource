@@ -194,6 +194,10 @@ export class FileRenderer implements IRenderer {
 	 * @param templateData 
 	 */
 	public renderElement(tree: ITree, stat: FileStat, templateId: string, templateData: IFileTemplateData): void {
+		if(!stat.resource){
+			// 空stat，表示当前没有打开任何项目
+			return;
+		}
 		let ext = stat.resource.fsPath;
 		ext = paths.extname(ext);
 		if (ext.charAt(0) == '.') {

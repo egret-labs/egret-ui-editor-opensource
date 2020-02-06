@@ -59,7 +59,7 @@ export class MaterialDataSource implements IDataSource {
 	 */
 	public getChildren(tree: ITree, stat: TreeNodeBase): Promise<TreeNodeBase[]> {
 		if (stat instanceof TreeParentNode) {
-			return Promise.resolve(stat.children);
+			return Promise.resolve(stat.children ?? []);
 		}
 	}
 	/**

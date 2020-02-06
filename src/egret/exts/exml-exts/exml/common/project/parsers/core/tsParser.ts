@@ -1,4 +1,4 @@
-import * as ts from './typescript_inner';
+import * as ts from 'typescript';
 import * as fs from 'fs';
 import { ClassNode, Prop } from '../../syntaxNodes';
 import { TempClassData } from './commons';
@@ -83,6 +83,9 @@ function getImplementedInterfaces(type: ts.Type, checker: ts.TypeChecker) {
 			if (superInterfaces) {
 				superInterfaces.forEach(sp => {
 					interfaceType = checker.getTypeAtLocation(sp);
+					if((<ts.TypeReference>interfaceType).target){
+						interfaceType = (<ts.TypeReference>interfaceType).target;
+					}
 					const flags = (<ts.ObjectType>interfaceType).objectFlags;
 					if (flags && (flags & ts.ObjectFlags.Interface)) {
 						result.push(<ts.ObjectType>interfaceType);
@@ -245,21 +248,22 @@ export class TsParser {
 
 			const implementedNames = this.getIds(implementedTypes, checker);
 			const propList: Prop[] = [];
-			for (const name in props) {
+			props.forEach((value, key)=> {
+				const name = key.toString();
 				if (name.indexOf('$') === 0) {
-					continue;
+					return;
 				}
-				const prop = props[name];
+				const prop = value;
 				if (prop.flags & (ts.SymbolFlags.Property | ts.SymbolFlags.Accessor)) {
 					const modifierFlags = ts.getCombinedModifierFlags(prop.declarations[0]);
 					if (modifierFlags & (ts.ModifierFlags.Protected | ts.ModifierFlags.Private | ts.ModifierFlags.Readonly)) {
-						continue;
+						return;
 					}
 					if ((prop.flags & ts.SymbolFlags.Accessor) && prop.declarations.filter(d => d.kind === ts.SyntaxKind.SetAccessor).length === 0) {
-						continue;
+						return;
 					}
-					if (prop.getDocumentationComment().some(c => c.text.indexOf('@private') >= 0)) {
-						continue;
+					if (prop.getDocumentationComment(checker).some(c => c.text.indexOf('@private') >= 0)) {
+						return;
 					}
 					let type: string = '';
 					if (prop.valueDeclaration && (<ts.VariableDeclaration>prop.valueDeclaration).initializer) {
@@ -307,7 +311,70 @@ export class TsParser {
 					propNode.value = defaultValue;
 					propList.push(propNode);
 				}
-			}
+			});
+			// for (const name in props) {
+			// 	if (name.indexOf('$') === 0) {
+			// 		continue;
+			// 	}
+			// 	const prop = props[name];
+			// 	if (prop.flags & (ts.SymbolFlags.Property | ts.SymbolFlags.Accessor)) {
+			// 		const modifierFlags = ts.getCombinedModifierFlags(prop.declarations[0]);
+			// 		if (modifierFlags & (ts.ModifierFlags.Protected | ts.ModifierFlags.Private | ts.ModifierFlags.Readonly)) {
+			// 			continue;
+			// 		}
+			// 		if ((prop.flags & ts.SymbolFlags.Accessor) && prop.declarations.filter(d => d.kind === ts.SyntaxKind.SetAccessor).length === 0) {
+			// 			continue;
+			// 		}
+			// 		if (prop.getDocumentationComment().some(c => c.text.indexOf('@private') >= 0)) {
+			// 			continue;
+			// 		}
+			// 		let type: string = '';
+			// 		if (prop.valueDeclaration && (<ts.VariableDeclaration>prop.valueDeclaration).initializer) {
+			// 			var initializer = (<ts.VariableDeclaration>prop.valueDeclaration).initializer;
+			// 		}
+			// 		let defaultValue = '';
+			// 		const propType = checker.getTypeAtLocation(prop.declarations[0]);
+			// 		if (propType.getFlags() & ts.TypeFlags.Boolean) {
+			// 			type = 'boolean';
+			// 			if (initializer) {
+			// 				defaultValue = initializer.getText();
+			// 			} else {
+			// 				defaultValue = 'false';
+			// 			}
+			// 		} else if (propType.getFlags() & ts.TypeFlags.String) {
+			// 			type = 'string';
+			// 			if (initializer) {
+			// 				defaultValue = initializer.getText();
+			// 			} else {
+			// 				defaultValue = '\"\"';
+			// 			}
+			// 		} else if (propType.getFlags() & ts.TypeFlags.Number) {
+			// 			type = 'number';
+			// 			if (initializer) {
+			// 				defaultValue = initializer.getText();
+			// 			} else {
+			// 				defaultValue = '0';
+			// 			}
+			// 		} else {
+			// 			var symbol = propType.getSymbol();
+			// 			if (symbol) {
+			// 				type = getFullyQualifiedName(symbol, checker);
+			// 			} else {
+			// 				type = 'any';
+			// 			}
+			// 			if (initializer) {
+			// 				defaultValue = initializer.getText();
+			// 			} else {
+			// 				defaultValue = 'null';
+			// 			}
+			// 		}
+			// 		const propNode = new Prop();
+			// 		propNode.name = name;
+			// 		propNode.type = type;
+			// 		propNode.value = defaultValue;
+			// 		propList.push(propNode);
+			// 	}
+			// }
 			const classNode: ClassNode = new ClassNode();
 			classNode.inEngine = inEngine;
 			classNode.inPrompt = inPrompt;

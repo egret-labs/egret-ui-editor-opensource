@@ -162,7 +162,7 @@ var registerTSClass = function (className, classData, propertyData) {
 					defaultValue = "\"\"";
 				}
 				if(isnull){
-					classString += 'Object.defineProperty(' + classShortName + ',"' + prop + '")';
+					classString += 'Object.defineProperty(' + classShortName + ',"' + prop + '");\n';
 				} else {
 					classString += "this." + prop + " = " + defaultValue + ";\n";
 				}

@@ -903,6 +903,10 @@
 		"s": "Edit(&&E)",
 		"t": "编辑(&&E)"
 	},
+	"menus.install.viewMenu": {
+		"s": "View(&&V)",
+		"t": "查看(&&V)"
+	},
 	"menus.install.fileMenu": {
 		"s": "File(&&F)",
 		"t": "文件(&&F)"

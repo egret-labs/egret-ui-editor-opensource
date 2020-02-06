@@ -903,6 +903,10 @@
 		"s": "Edit(&&E)",
 		"t": "Edit(&&E)"
 	},
+	"menus.install.viewMenu": {
+		"s": "View(&&V)",
+		"t": "View(&&V)"
+	},
 	"menus.install.fileMenu": {
 		"s": "File(&&F)",
 		"t": "File(&&F)"

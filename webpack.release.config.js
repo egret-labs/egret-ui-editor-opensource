@@ -131,6 +131,9 @@ function _externals() {
 	var nameMap = {};
 	var pa = fs.readdirSync(path.join(__dirname,'node_modules'));
 	pa.forEach(function(ele,index){
+		if (ele === "typescript") {
+			return;
+		}
 		nameMap[ele] = true;
 	})
     let manifest = require('./package.json');

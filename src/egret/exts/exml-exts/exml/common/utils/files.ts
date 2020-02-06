@@ -55,8 +55,10 @@ export function select(dir: string, exts: string[], onSelected: Function, target
 	for (var i: number = 0; i < items.length; i++) {
 		const item: string = items[i];
 		var stat: fs.Stats = fs.statSync(dir + '/' + item);
-		if (stat.isDirectory() && item != '.svn' && item != '.git') {
-			dirList.push(dir + '/' + item);
+		if (stat.isDirectory()) {
+			if (['.svg', '.git'].indexOf(item) < 0) {
+				dirList.push(dir + '/' + item);
+			}
 		} else {
 			select(dir + '/' + item, exts, onSelected, target);
 		}

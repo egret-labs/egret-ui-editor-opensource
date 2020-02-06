@@ -26,7 +26,7 @@ export class ComponentDataSource implements IDataSource {
 	 * @param element 
 	 */
 	public getId(tree: ITree, stat: ComponentStat): string {
-		return stat.name;
+		return stat.id;
 	}
 
 	/**

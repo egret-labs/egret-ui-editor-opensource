@@ -78,7 +78,7 @@ export class AppMenu {
 
 		// 查看菜单
 		const viewMenu = new Menu();
-		const viewMenuItem = new MenuItem({ label: mnemonicMenuLabel('查看(&&V)'), submenu: viewMenu });
+		const viewMenuItem = new MenuItem({ label: mnemonicMenuLabel(localize('menus.install.viewMenu', 'View(&&V)')), submenu: viewMenu });
 		this.setViewMenu(viewMenu);
 
 		// 窗口

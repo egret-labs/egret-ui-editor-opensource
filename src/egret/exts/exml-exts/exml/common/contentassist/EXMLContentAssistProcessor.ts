@@ -63,6 +63,9 @@ export class EXMLContentAssistProcessor {
      * 启动代码提示助手，该方法可以重复调用，重复调用会彻底初始化内部配置
      */
 	private async start(): Promise<void> {
+		if(!this._projectModel){
+			return;
+		}
 		let isEUI: boolean = false;
 		let schemaStrategy: BaseSchemaStrategy = null;
 		if (this._projectModel.UILibrary === 'eui') {

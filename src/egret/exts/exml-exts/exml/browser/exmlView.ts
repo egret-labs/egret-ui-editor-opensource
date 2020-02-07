@@ -405,7 +405,9 @@ export class ExmlView implements IExmlView {
 				this.egretProjectService.exmlConfig.ensureLoaded().then(() => {
 					const exmlConfig = this.egretProjectService.exmlConfig as EUIExmlConfig;
 					const runtimeUrl = exmlConfig.getRuntimeUrlDirect();
-					this._runtime.initRuntime(runtimeUrl);
+					if (this._runtime) {
+						this._runtime.initRuntime(runtimeUrl);
+					}
 				});
 			}
 		});

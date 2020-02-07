@@ -166,6 +166,7 @@ export class EgretRuntimeDelegate implements IDisposable {
 			this.iframe.contentWindow.document.body.innerHTML = '';
 		}
 		this.iframe.remove();
+		this.iframe = null;
 	}
 }
 

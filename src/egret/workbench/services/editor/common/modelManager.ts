@@ -213,7 +213,7 @@ export class FileEditorModelManager implements IFileEditorModelManager {
 			model.dispose();
 			// 从正在加载的缓存列表中删除此model
 			this.mapResourceToPendingModelLoaders.delete(input.getResource());
-			return error;
+			return Promise.reject(error);
 		});
 	}
 

@@ -183,6 +183,12 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 				}
 				this.resolveModelPromiseResolve = null;
 				this.resolveModelPromise = null;
+			}, (error)=> {
+				if(error.code === 'ENOENT'){
+					// 文件不存在，关闭当前editor
+					this.editorService.closeEditor(this);
+				}
+				console.log(error);
 			});
 		}
 		return Promise.resolve(void 0);

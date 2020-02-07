@@ -246,8 +246,6 @@ export class FileEditorInput extends EditorInput implements IFileEditorInput {
 	public resolve(refresh?: boolean): Promise<IEditorModel> {
 		return this.fileModelService.models.loadOrCreate(this, { encoding: this.preferredEncoding, reload: refresh }).then(model => {
 			return model;
-		}, error => {
-			return error;
 		});
 	}
 	/**

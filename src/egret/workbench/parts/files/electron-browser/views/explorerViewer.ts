@@ -600,12 +600,19 @@ export class FileFilter implements IFilter {
 			return false;
 		}
 		//有设置皮肤根路径
+		let exmlRoots: URI[] = [];
 		if (this.egretProjectService.projectModel &&
-			this.egretProjectService.projectModel.exmlRoot.length > 0 &&
+			this.egretProjectService.projectModel.exmlRoot.length > 0
+		){
+			exmlRoots = exmlRoots.concat(this.egretProjectService.projectModel.exmlRoot);
+		} else {
+			// 没有设置皮肤路径则添加默认皮肤路径
+			exmlRoots.push(URI.file('resource/eui_skins'));
+		}
+		if (exmlRoots.length > 0 &&
 			this.workspaceService.getWorkspace() &&
 			this.workspaceService.getWorkspace().uri
 		) {
-			const exmlRoots = this.egretProjectService.projectModel.exmlRoot;
 			for (let i = 0; i < exmlRoots.length; i++) {
 				const curExmlRoot = paths.join(this.workspaceService.getWorkspace().uri.fsPath, exmlRoots[i].fsPath);
 				const result1 = isParent(stat.resource.fsPath, curExmlRoot);

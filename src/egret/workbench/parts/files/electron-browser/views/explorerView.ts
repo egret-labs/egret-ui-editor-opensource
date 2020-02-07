@@ -143,7 +143,20 @@ export class ExplorerView extends PanelContentDom implements IModelRequirePart, 
 	 * @param container
 	 */
 	public renderHeaderExt(container: HTMLElement): void {
-		//TODO 添加头部的，是否自动关联文件的按钮
+		//TODO 添加头部的，是否自动关联文件的按钮		
+		const icons = document.createElement('div');
+		icons.style.display = 'flex';
+		icons.style.flexDirection = 'row';
+		container.appendChild(icons);
+
+		const cllapseDiv = document.createElement('div');
+		cllapseDiv.style.marginRight = '10px';
+		cllapseDiv.style.cursor = 'pointer';
+		cllapseDiv.className = 'explorer-action collapse-all';
+		cllapseDiv.addEventListener('click', () => {
+			this.collapseAll();
+		});
+		icons.appendChild(cllapseDiv);
 	}
 
 
@@ -183,6 +196,13 @@ export class ExplorerView extends PanelContentDom implements IModelRequirePart, 
 			}
 			return void 0;
 		});
+	}
+
+	private collapseAll(): Promise<void> {
+		if(!this.isCreated){
+			return Promise.resolve();
+		}
+		return this.explorerViewer.collapseAll();
 	}
 
 	private openFocusedElement(): void {

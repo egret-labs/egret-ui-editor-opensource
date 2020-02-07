@@ -39,3 +39,8 @@
 .explorer-item-container .file-icon.unknown{
 	background-image: url(./unknown.svg);
 }
+.explorer-action.collapse-all {
+	width: 18px;
+	height: 18px;
+	background: url('./collapseAll.svg') center center no-repeat;
+}

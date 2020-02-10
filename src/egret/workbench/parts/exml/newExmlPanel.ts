@@ -307,7 +307,8 @@ export class NewExmlPanel extends InnerBtnWindow {
 	 * 弹出主机组件选择框
 	 */
 	private comHandle = () => {
-		const exmlComponentPanel = this.instantiationService.createInstance(ExmlComponentPanel, this.euiHost);
+		const defaultHostName = this.comContainer.textInput;
+		const exmlComponentPanel = this.instantiationService.createInstance(ExmlComponentPanel, this.euiHost, defaultHostName);
 		exmlComponentPanel.confirm = (v) => {
 			this.stat = v;
 			this.comContainer.textInput = v.data.className || '';

@@ -23,7 +23,7 @@ export class ExmlComponentPanel extends InnerBtnWindow {
 
 	private treeFilter: ExmlComponentTreeFilter;
 
-	constructor(euiHost: Array<any>) {
+	constructor(euiHost: Array<any>, private defaultHostName: string) {
 		super();
 		this.listFocus_handler = this.listFocus_handler.bind(this);
 		this.keyDown_handler = this.keyDown_handler.bind(this);
@@ -142,7 +142,13 @@ export class ExmlComponentPanel extends InnerBtnWindow {
 		const inputData: ExmlStat = this.initData();
 		this.tree.setInput(inputData).then(() => {
 			this.tree.layout();
-			this.tree.selectNext();
+			const defaultItem = this.getDefaultItem(inputData);
+			if (defaultItem) {
+				this.tree.setSelection([defaultItem]);
+				this.tree.reveal(defaultItem);
+			} else {
+				this.tree.selectNext();
+			}
 		});
 
 		this.tree.getHTMLElement().addEventListener('focus',this.listFocus_handler);
@@ -191,6 +197,17 @@ export class ExmlComponentPanel extends InnerBtnWindow {
 		this.refreshList();
 	}
 
+	private getDefaultItem(root: ExmlStat): ExmlStat {
+		if(this.defaultHostName){
+			for (let i = 0; i < root.children.length; i++) {
+				const element = root.children[i];
+				if(element.data.className === this.defaultHostName){
+					return element;
+				}
+			}
+		}
+		return null;
+	}
 
 	initData() {
 		const root: ExmlStat = new ExmlStat();

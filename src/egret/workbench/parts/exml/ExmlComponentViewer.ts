@@ -65,9 +65,9 @@ export interface LayerActionContext {
  */
 export class ExmlComponentRenderer implements IRenderer {
 
-	disposeTemplate(tree: ITree, templateId: string, templateData: any): void {
-		templateData.root.text('');
-		templateData.root.title('');
+	disposeTemplate(tree: ITree, templateId: string, templateData: {container: HTMLElement; root: HTMLElement;}): void {
+		templateData.root.textContent = '';
+		templateData.root.title = '';
 	}
 
 	constructor() {

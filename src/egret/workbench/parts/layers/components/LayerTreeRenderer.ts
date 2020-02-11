@@ -80,7 +80,7 @@ export class LayerTreeRenderer implements IRenderer {
 		DOM.addClass(span, 'iconSpan');
 
 		const rootBuilder = DOM.append(container, DOM.$('div'));
-		const optionItem = this.initOptionItem(rootBuilder, tree);
+		const optionItem = this.initOptionItem(container, tree);
 		return {
 			container: container,
 			root: rootBuilder,
@@ -123,7 +123,7 @@ export class LayerTreeRenderer implements IRenderer {
 		}
 
 		this.refreshInvisible(visible, templateData.root);
-		templateData.optionItem.context = { element: element, optionItem: templateData.optionItem, root: templateData.root };
+		templateData.optionItem.context = { element: element, optionItem: templateData.optionItem, root: templateData.container };
 		this.renderOptions(templateData.optionItem, element);
 	}
 
@@ -131,7 +131,7 @@ export class LayerTreeRenderer implements IRenderer {
 		templateData.optionItem.dispose();
 	}
 
-	private initOptionItem(container: any, tree: ITree): OptionItem {
+	private initOptionItem(container: HTMLElement, tree: ITree): OptionItem {
 		const optionItem: OptionItem = new OptionItem();
 		optionItem.tree = tree;
 

@@ -73,11 +73,6 @@
 	background-repeat: no-repeat;
 }
 
-.layerBlockAction {
-	background-image: url("light/layer_locked.svg");
-	background-repeat: no-repeat;
-}
-
 .layerBlockAction.unblock {
 	background-image: url("light/block.svg");
 	background-repeat: no-repeat;
@@ -97,6 +92,10 @@
 }
 
 .visibleAction.invisible{
+	opacity: 0.4;
+}
+
+.layerItemContainer.invisible .layerPanelSpanItem{
 	opacity: 0.4;
 }
 

@@ -8,6 +8,8 @@ export enum RootCommands {
 	PROMPT_ABOUT = 'promptAbout',
 	/** 检查更新 */
 	CHECK_UPDATE = 'checkUpdate',
+	/** 反馈问题 */
+	REPORT = 'reportIssue',
 	/** 发送反馈 */
 	FEEDBACK = 'feedback',
 	/** 项目属性配置 */

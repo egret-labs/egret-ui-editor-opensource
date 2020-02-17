@@ -4,8 +4,8 @@
 		"t": "Address"
 	},
 	"aboutPanel.render.address.detail": {
-		"s": "Chaoyang District, Beijing Wangjing Road on the 9th Ye Qing Building D Block 12",
-		"t": "Chaoyang District, Beijing Wangjing Road on the 9th Ye Qing Building D Block 12"
+		"s": "Room 303, Floor 3, ThinkCool Space A2, Electronic City Industrial Park, No.9 Jiuxianqiao East Road, Chaoyang District, Beijing",
+		"t": "Room 303, Floor 3, ThinkCool Space A2, Electronic City Industrial Park, No.9 Jiuxianqiao East Road, Chaoyang District, Beijing"
 	},
 	"aboutPanel.render.bbs": {
 		"s": "Community",
@@ -19,17 +19,17 @@
 		"s": "QQ Group",
 		"t": "QQ Group"
 	},
-	"aboutPanel.render.suport": {
-		"s": "Tech-Support",
-		"t": "Tech-Support"
+	"aboutPanel.render.report": {
+		"s": "Report",
+		"t": "Report"
 	},
 	"aboutPanel.render.tel": {
 		"s": "Tel",
 		"t": "Tel"
 	},
 	"aboutPanel.render.websit": {
-		"s": "Official Website",
-		"t": "Official Website"
+		"s": "Website",
+		"t": "Website"
 	},
 	"alert.button.cancel": {
 		"s": "Cancel",
@@ -1850,6 +1850,10 @@
 	"system.feedback": {
 		"s": "Send Feedback...",
 		"t": "Send Feedback..."
+	},
+	"system.report": {
+		"s": "Report Issue",
+		"t": "Report Issue"
 	},
 	"table.render.property": {
 		"s": "Property",

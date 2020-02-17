@@ -34,7 +34,7 @@ import { IStorageService, StorageScope } from '../../platform/storage/common/sto
 import * as  electron from 'electron';
 import { IFocusablePart, FocusablePartCommandHelper, KeybindingType } from '../../platform/operations/common/operations';
 import { RootCommands } from './commands/rootCommands';
-import { OpenFolderOperation, PromptAboutOperation, WingPropertyOperation, KeybindingSettingOperation, CheckUpdateOperation, FeedbackOperation, PrompQuickOpenOperation, CloseCurrentOperation } from './commands/rootOperations';
+import { OpenFolderOperation, PromptAboutOperation, WingPropertyOperation, KeybindingSettingOperation, CheckUpdateOperation, FeedbackOperation, PrompQuickOpenOperation, CloseCurrentOperation, ReportIssueOperation } from './commands/rootOperations';
 
 const WINDOW_STATES = 'windowStates';
 
@@ -372,6 +372,7 @@ export class Workbench implements IFocusablePart {
 		//普通根命令
 		this.focusablePartCommandHelper.registerCommand(RootCommands.OPEN_FOLDER, OpenFolderOperation);
 		this.focusablePartCommandHelper.registerCommand(RootCommands.PROMPT_ABOUT, PromptAboutOperation);
+		this.focusablePartCommandHelper.registerCommand(RootCommands.REPORT, ReportIssueOperation);
 		this.focusablePartCommandHelper.registerCommand(RootCommands.PROMPT_QUICK_OPEN, PrompQuickOpenOperation);
 		this.focusablePartCommandHelper.registerCommand(RootCommands.CHECK_UPDATE, CheckUpdateOperation);
 		this.focusablePartCommandHelper.registerCommand(RootCommands.FEEDBACK, FeedbackOperation);

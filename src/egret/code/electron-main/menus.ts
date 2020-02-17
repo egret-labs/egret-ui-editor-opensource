@@ -299,7 +299,8 @@ export class AppMenu {
 		const about = this.createMenuItem(localize('system.about', 'About {0}', APPLICATION_NAME) , '', RootCommands.PROMPT_ABOUT, '', '');
 		const checkUpdate = this.createMenuItem(localize('system.checkUpdate', 'Check Update...'), '', RootCommands.CHECK_UPDATE, '', '');
 		// const feedback = this.createMenuItem(localize('system.feedback', 'Send Feedback...'), '', RootCommands.FEEDBACK, '', '');
-		const menus = [toggleDevToolsItem/*, feedback*/];
+		const report = this.createMenuItem(localize('system.report', 'Report Issue'), '', RootCommands.REPORT, '', '');
+		const menus = [toggleDevToolsItem , report/*, feedback*/];
 		if (isWindows) {
 			menus.push(about, checkUpdate);
 		}

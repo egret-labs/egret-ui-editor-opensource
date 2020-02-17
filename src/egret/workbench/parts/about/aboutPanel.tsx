@@ -79,7 +79,7 @@ export class AboutPanel extends InnerWindow {
 					<div className='infoItem linkItem'>
 						<div className='infoItemNamePanel'>
 							<div className='vline'></div>
-							<div className='infoItemName'>{localize('aboutPanel.render.websit','Official Website')}</div>
+							<div className='infoItemName'>{localize('aboutPanel.render.websit','Website')}</div>
 							<div className='vline'></div>
 						</div>
 						<div className='infoItemValue'>
@@ -96,18 +96,9 @@ export class AboutPanel extends InnerWindow {
 							<a onClick={() => this.openSite('http://bbs.egret.com')}>http://bbs.egret.com</a>
 						</div>
 					</div>
-					<div className='infoItem'>
-						<div className='infoItemNamePanel'>
-							<div className='vline'>
-							</div>
-							<div className='infoItemName'>{localize('aboutPanel.render.qq','QQ Group')}</div>
-							<div className='vline'></div>
-						</div>
-						<div className='infoItemValue'>559384238    474860229</div>
-					</div>
-					<div className='infoItem no-color'><div className='infoItemNamePanel'><div className='vline'></div><div className='infoItemName'>{localize('aboutPanel.render.suport','Tech-Support')}</div><div className='vline'></div></div><div className='infoItemValue'><a href='mailto:support@egret.com'>support@egret.com</a></div></div>
+					<div className='infoItem linkItem'><div className='infoItemNamePanel'><div className='vline'></div><div className='infoItemName'>{localize('aboutPanel.render.report','Report')}</div><div className='vline'></div></div><div className='infoItemValue'><a onClick={() => this.openSite('https://github.com/egret-labs/egret-ui-editor-opensource/issues')} >https://github.com/egret-labs/egret-ui-editor-opensource/issues</a></div></div>
 					<div className='infoItem no-color'><div className='infoItemNamePanel'><div className='vline'></div><div className='infoItemName'>{localize('aboutPanel.render.bd','Business')}</div><div className='vline'></div></div><div className='infoItemValue'><a href='mailto:bd@egret.com'>bd@egret.com</a></div></div>
-					<div className='infoItem'><div className='infoItemNamePanel'><div className='vline'></div><div className='infoItemName'>{localize('aboutPanel.render.tel','Tel')}</div><div className='vline'></div></div><div className='infoItemValue'>010-65505713</div></div>
+					<div className='infoItem'><div className='infoItemNamePanel'><div className='vline'></div><div className='infoItemName'>{localize('aboutPanel.render.tel','Tel')}</div><div className='vline'></div></div><div className='infoItemValue'>010-57222734</div></div>
 					<div className='infoItem'><div className='infoItemNamePanel'><div className='vline'></div><div className='infoItemName'>{localize('aboutPanel.render.address','Address')}</div><div className='vline'></div></div><div className='infoItemValue'>{localize('aboutPanel.render.address.detail','Chaoyang District, Beijing Wangjing Road on the 9th Ye Qing Building D Block 12')}</div></div>
 					<div className='copyRight'>@2014-2020 Egret Technology,Ltd.All rights reserved.</div>
 				</div>

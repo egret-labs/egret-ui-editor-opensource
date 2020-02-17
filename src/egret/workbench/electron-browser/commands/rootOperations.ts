@@ -16,6 +16,7 @@ import { SearchFilePanel } from 'egret/workbench/parts/searchFile/view/searchFil
 import { IWorkbenchEditorService } from 'egret/workbench/services/editor/common/ediors';
 import { BaseEditor } from 'egret/editor/browser/baseEditor';
 import { innerWindowManager } from 'egret/platform/innerwindow/common/innerWindowManager';
+import { shell } from 'electron';
 
 /**
  * 打开文件夹的操作
@@ -52,6 +53,24 @@ export class PromptAboutOperation implements IOperation {
 		}
 		const about = new AboutPanel();
 		about.open(null, true);
+		return Promise.resolve(void 0);
+	}
+	/**
+	 * 释放
+	 */
+	public dispose(): void {
+	}
+}
+
+/**
+ * 反馈问题
+ */
+export class ReportIssueOperation implements IOperation {
+	/**
+	 * 运行
+	 */
+	public run(): Promise<any> {
+		shell.openExternal('https://github.com/egret-labs/egret-ui-editor-opensource/issues');
 		return Promise.resolve(void 0);
 	}
 	/**

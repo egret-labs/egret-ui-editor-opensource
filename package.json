@@ -24,7 +24,7 @@
         "mousetrap": "1.6.2",
         "react": "16.0.0",
         "react-color": "2.14.1",
-        "react-dom": "16.0.0",
+        "react-dom": "16.0.1",
         "semver": "5.5.0",
         "underscore": "1.8.3"
     },

@@ -7,7 +7,8 @@ import { localize } from 'egret/base/localization/nls';
  * @param url
  */
 export function openExternal(url: string): boolean {
-	return shell.openExternal(url);
+	shell.openExternal(url);
+	return true;
 }
 
 /**
@@ -28,7 +29,7 @@ export function onLauncherTask<T>(promise: Promise<T>, opName?: string) {
 			}
 		}
 		opName = opName || localize('engineInfo.defaultOperation', 'Operation');
-		const ret = remote.dialog.showMessageBox(
+		remote.dialog.showMessageBox(
 			remote.getCurrentWindow(),
 			{
 				type: 'error',
@@ -38,10 +39,11 @@ export function onLauncherTask<T>(promise: Promise<T>, opName?: string) {
 					localize('engineInfo.ToEgretWebsite', 'Go to download at official website：{0}', EgretWebsite),
 				],
 			},
-		);
-		if (ret === 1) {
-			// 去官网
-			openExternal(EgretWebsite);
-		}
+		).then((result) => {
+			if (result.response === 1) {
+				// 去官网
+				openExternal(EgretWebsite);
+			}
+		});
 	});
 }

@@ -121,7 +121,7 @@ export class AppMenu {
 		const services = new MenuItem({ label: localize('menus.setMacApplicationMenu.services', 'Services'), role: 'services', submenu: servicesMenu });
 
 		const hide = new MenuItem({ label: localize('menus.setMacApplicationMenu.hide', 'Hide {0}', APPLICATION_NAME), role: 'hide', accelerator: 'Command+H' });
-		const hideOthers = new MenuItem({ label: localize('menus.setMacApplicationMenu.hideothers', 'Hide Other'), role: 'hideothers', accelerator: 'Command+Alt+H' });
+		const hideOthers = new MenuItem({ label: localize('menus.setMacApplicationMenu.hideothers', 'Hide Other'), role: 'hideOthers', accelerator: 'Command+Alt+H' });
 		const showAll = new MenuItem({ label: localize('menus.setMacApplicationMenu.unhide', 'Show All'), role: 'unhide' });
 		const quit = new MenuItem({
 			label: localize('menus.setMacApplicationMenu.quit', 'Quit {0}', APPLICATION_NAME), accelerator: 'CmdOrCtrl+Q',
@@ -329,7 +329,7 @@ export class AppMenu {
 		return new MenuItem(options);
 	}
 
-	private createRoleMenuItem(label: string, role: string): Electron.MenuItem {
+	private createRoleMenuItem(label: string, role: any): Electron.MenuItem {
 		//TODO 需要先将enable设置为false，等渲染继承加载完成之后再设置为true
 		const options: Electron.MenuItemConstructorOptions = {
 			label: label,

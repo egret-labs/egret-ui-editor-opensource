@@ -884,7 +884,11 @@ export class ExmlView implements IExmlView {
 			}
 		}
 		this.initContextMenuDynamic(displayX, displayY);
-		this.createContextMenu().popup(remote.getCurrentWindow(), { x: displayX, y: displayY });
+		this.createContextMenu().popup({
+			window: remote.getCurrentWindow(),
+			x: displayX,
+			y: displayY
+		});
 	}
 
 	/**

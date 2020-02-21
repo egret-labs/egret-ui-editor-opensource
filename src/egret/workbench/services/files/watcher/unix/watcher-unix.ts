@@ -1,4 +1,4 @@
-import * as chokidar from 'vscode-chokidar';
+import * as chokidar from 'chokidar';
 import { isMacintosh } from 'egret/base/common/platform';
 import { normalizeNFC } from 'egret/base/common/strings';
 import { IRawFileChange, normalize, toFileChangesEvent, IWatcher } from '../common';
@@ -53,7 +53,7 @@ export class Watcher implements IWatcher {
 	 * @param roots 观察请求
 	 */
 	private setRoots(basePath: string, ignored: string[]): Promise<void> {
-		const watcherOpts: chokidar.IOptions = {
+		const watcherOpts: chokidar.WatchOptions = {
 			ignoreInitial: true,
 			ignorePermissionErrors: true,
 			followSymlinks: true, // this is the default of chokidar and supports file events through symlinks

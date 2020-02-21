@@ -16,7 +16,10 @@ export class BrowserWindowEx implements IBrowserWindowEx {
 		const options: BrowserWindowConstructorOptions = {
 			backgroundColor:'#3b3b3b',
 			disableAutoHideCursor: true,
-			title: 'EUI Editor - Prerelease'
+			title: 'EUI Editor - Prerelease',
+			webPreferences: {
+				nodeIntegration: true
+			}
 		};
 		this._win = new BrowserWindow(options);
 		this._id = this._win.id;

@@ -17,20 +17,20 @@ export class ClipboardService implements IClipboardService {
 	 * 写文本
 	 * @param text 
 	 */
-	public writeText(text: string, type?: string): void {
+	public writeText(text: string, type?: 'selection' | 'clipboard'): void {
 		clipboard.writeText(text, type);
 	}
 	/**
 	 * 从剪贴板中读取文本
 	 */
-	public readText(type?: string): string {
+	public readText(type?: 'selection' | 'clipboard'): string {
 		return clipboard.readText(type);
 	}
 
 	/**
 	* 清理剪切板内容
 	*/
-	public clear(type?: string): void {
+	public clear(type?: 'selection' | 'clipboard'): void {
 		clipboard.clear(type);
 	}
 	/**

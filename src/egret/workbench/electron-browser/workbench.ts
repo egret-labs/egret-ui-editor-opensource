@@ -172,7 +172,11 @@ class ClosableTitleRender extends boxlayout.DefaultTitleRender {
 	 */
 	private displayContextMenu(displayX: number, displayY: number): void {
 		setTimeout(() => {
-			this.menu.popup(remote.getCurrentWindow(), { x: displayX, y: displayY });
+			this.menu.popup({
+				window: remote.getCurrentWindow(),
+				x: displayX,
+				y: displayY
+			});
 		}, 20);
 	}
 
@@ -540,7 +544,7 @@ export class Workbench implements IFocusablePart {
 		this.storageService.store(WINDOW_STATES, configStr, StorageScope.WORKSPACE);
 	}
 	private restoreWindowState(): void {
-		const displays = electron.screen.getAllDisplays();
+		const displays = remote.screen.getAllDisplays();
 		const layoutConfigStr = this.storageService.get(WINDOW_STATES, StorageScope.WORKSPACE);
 		let layoutConfig = null;
 		if (layoutConfigStr) {

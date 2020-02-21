@@ -54,19 +54,12 @@ export class FileService implements IFileService {
 		ignores.push(paths.join(this.workspaceUri.fsPath, 'bin-debug'));
 		ignores.push(paths.join(this.workspaceUri.fsPath, 'bin-release'));
 
-
-
-		if (false) {	//目前最好不要用nsfw的watcher，在mac上复制粘贴文件派发的内容有问题
-			// watcher = new WatcherNsfw(this.contextService, [], e => this._onFileChanges.fire(e));
-			// this.activeWorkspaceFileChangeWatcher = toDisposable(watcher.startup());
+		if (isWindows) {
+			watcher = new WatcherWin32(this.workspaceUri, ignores, e => this._onFileChanges.fire(e));
 		} else {
-			if (isWindows) {
-				watcher = new WatcherWin32(this.workspaceUri, ignores, e => this._onFileChanges.fire(e));
-			} else {
-				watcher = new WatcherUnix(this.workspaceUri, ignores, e => this._onFileChanges.fire(e));
-			}
-			this.activeWorkspaceFileChangeWatcher = toDisposable(watcher.startup());
+			watcher = new WatcherUnix(this.workspaceUri, ignores, e => this._onFileChanges.fire(e));
 		}
+		this.activeWorkspaceFileChangeWatcher = toDisposable(watcher.startup());
 	}
 
 	/**
@@ -154,7 +147,7 @@ export class FileService implements IFileService {
 			const onCompelte = () => {
 				resolve(selectedStats);
 			};
-			this.doSelect(resource.fsPath, newExts, onSelected, selectedStats, onCompelte,null,ignores);
+			this.doSelect(resource.fsPath, newExts, onSelected, selectedStats, onCompelte, null, ignores);
 		});
 	}
 
@@ -164,7 +157,7 @@ export class FileService implements IFileService {
 		}
 
 		const baseName = paths.basename(path);
-		if(ignores.indexOf(baseName) != -1){
+		if (ignores.indexOf(baseName) != -1) {
 			onComplete();
 			return;
 		}
@@ -227,7 +220,7 @@ export class FileService implements IFileService {
 					};
 					for (let i = 0; i < files.length; i++) {
 						const file = files[i];
-						this.doSelect(paths.join(path, file), exts, onSelected, fileStats, clb, selectedMap,ignores);
+						this.doSelect(paths.join(path, file), exts, onSelected, fileStats, clb, selectedMap, ignores);
 					}
 					checkComplete();
 				} else {

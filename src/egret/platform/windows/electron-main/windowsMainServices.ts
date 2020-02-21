@@ -280,11 +280,8 @@ class Dialogs {
 		});
 	}
 
-	public showMessageBox(options: Electron.MessageBoxOptions, window: IBrowserWindowEx): Promise<IMessageBoxResult> {
-		return new Promise<IMessageBoxResult>((resolve, reject) => {
-			dialog.showMessageBox(window.win, options, (response: number, checkboxChecked: boolean) => {
-				resolve({ button: response, checkboxChecked });
-			});
-		});
+	public async showMessageBox(options: Electron.MessageBoxOptions, window: IBrowserWindowEx): Promise<IMessageBoxResult> {
+		const result = await dialog.showMessageBox(window.win, options);
+		return {button: result.response, checkboxChecked: result.checkboxChecked};
 	}
 }

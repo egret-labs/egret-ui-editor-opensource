@@ -7,12 +7,10 @@
     "license": "ISC",
     "scripts": {
         "start": "electron .",
-        "setup-mac": "export ELECTRON_MIRROR=http://npm.taobao.org/mirrors/electron/&& npm install && npm run unzip-mac",
-        "setup-win": "set ELECTRON_MIRROR=https://npm.taobao.org/mirrors/electron/&& npm install && npm run unzip-win",
+        "setup-mac": "export ELECTRON_MIRROR=http://npm.taobao.org/mirrors/electron/&& npm install",
+        "setup-win": "set ELECTRON_MIRROR=https://npm.taobao.org/mirrors/electron/&& npm install",
         "build": "webpack --progress --config webpack.debug.config.js",
         "watch": "webpack --watch --progress --config  webpack.debug.config.js",
-        "unzip-win": "build\\win\\unzip.exe -o build\\win\\node_modules.zip -d node_modules",
-        "unzip-mac": "unzip -o build/darwin/node_modules.zip -d node_modules",
         "setup-cnpm": "npm install cnpm@6.0.0 -g"
     },
     "dependencies": {
@@ -26,7 +24,8 @@
         "react-color": "2.14.1",
         "react-dom": "16.0.1",
         "semver": "5.5.0",
-        "underscore": "1.8.3"
+        "underscore": "1.8.3",
+        "chokidar": "^3.3.1"
     },
     "devDependencies": {
         "@types/fs-extra": "^5.0.2",
@@ -44,9 +43,8 @@
         "babel-preset-stage-0": "^6.5.0",
         "copy-webpack-plugin": "^4.5.1",
         "css-loader": "^3.2.0",
-        "electron": "1.8.8",
-        "electron-builder": "^21.2.0",
-        "electron-rebuild": "^1.8.8",
+        "electron": "^6.1.7",
+        "electron-builder": "^22.3.2",
         "eslint": "^6.6.0",
         "file-loader": "^1.1.11",
         "glob": "^5.0.13",

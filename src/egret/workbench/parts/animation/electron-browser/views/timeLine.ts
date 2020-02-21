@@ -429,7 +429,9 @@ export class TimeLineContainer {
 				if (e.which === 3) {
 					// trigger the context menu on right click
 					// this.showContextMenu(e);
-					this.createContextMenu().popup(remote.getCurrentWindow());
+					this.createContextMenu().popup({
+						window: remote.getCurrentWindow()
+					});
 				} else {
 					// Start Drag Track when inside the track
 					this.dragTweenItem();

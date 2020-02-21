@@ -494,7 +494,9 @@ export class FileController extends DefaultController implements IController, ID
 			}
 		}
 		setTimeout(() => {
-			this.createContextMenu().popup(remote.getCurrentWindow());
+			this.createContextMenu().popup({
+				window: remote.getCurrentWindow()
+			});
 		}, 10);
 		return true;
 	}

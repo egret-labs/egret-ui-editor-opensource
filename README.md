@@ -200,7 +200,6 @@ Egret UI Editor的布局直观简单，起包含一下几个主要部分：
 	* `typings` —— 部分 `*.d.ts` 的文件声明。
 	* `vs` —— 目前仅需要用到原vscode代码中的 `list` `tree` 以及 滚动条控件。
 * `gulpfile.js` —— gulp命令，主要是打包和编译多语言相关。
-* `package_backup.json` —— 由于部分原生模块是直接编译好的，拷贝进 `node_modules` 目录中的，所以在 `package.json` 的依赖中没有声明。 而打包过程会检测这些依赖声明，如果不存在则会打包失败。所以我们通过脚本在打包之前将`package.json` 备份为了 `package_backup.json` ，同时修改了 `package.json` 中的依赖声明，使其可以正常打包。打包结束后在将 `package_backup.json` 还原为 `package.json`。
 
 ## Egret UI Editor 服务机制
 

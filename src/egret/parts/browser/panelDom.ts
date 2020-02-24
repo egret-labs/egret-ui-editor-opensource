@@ -43,10 +43,10 @@ export class PanelDom extends boxlayout.TabPanel implements IPanelDom, IDisposab
 	public getRoot(): HTMLElement {
 		return this.root;
 	}
-	_focusIn(): void{
-		super._focusIn();
-		this.resize(this.widthCache,this.heightCache);
-	}
+	// _focusIn(): void{
+	// 	super._focusIn();
+	// 	this.resize(this.widthCache,this.heightCache);
+	// }
 
 	private widthCache:number = 0;
 	private heightCache:number = 0;

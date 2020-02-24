@@ -25,6 +25,7 @@ declare namespace boxlayout {
     type Position = "left" | "right" | "top" | "bottom";
     /**
      * 盒式布局，此容器作为盒式布局的根，可将盒式布局应用在任意指定区域
+     * @author yangning
      */
     class BoxLayout extends boxlayout_event.EventDispatcher {
         private dragAreaElement;
@@ -80,8 +81,8 @@ declare namespace boxlayout {
          * @param element 要删除的元素
          */
         removeBoxElement(element: IBoxLayoutElement): void;
-        private addToArea(element);
-        private removeFromArae(element);
+        private addToArea;
+        private removeFromArae;
         private _maxSizeElement;
         private cacheWidth;
         private cacheHeight;
@@ -90,35 +91,35 @@ declare namespace boxlayout {
          * 设置为null取消最大化
          */
         setMaxSize(v: IBoxLayoutElement): void;
-        private _setMaxSize(v);
+        private _setMaxSize;
         /**
          * 获取文档元素
          */
         getDocumentElement(): DocumentElement;
-        private updateBoxElement();
-        private _updateBoxElement(element);
-        private containerResizeHandle(e);
-        private attachSeparatorOperateEvent(element);
-        private detachSeparatorOperateEvent(element);
+        private updateBoxElement;
+        private _updateBoxElement;
+        private containerResizeHandle;
+        private attachSeparatorOperateEvent;
+        private detachSeparatorOperateEvent;
         private cursorLock;
         private startMouseP;
         private startSize;
         private targetContainer;
-        private separatorHandle(e);
-        private panelHandle(e);
+        private separatorHandle;
+        private panelHandle;
         private closePanelInfoCache;
-        private cachePanelInfo(panel, group);
-        private getOldSpace(panelId);
-        private getDirLink(element, result);
-        private getElementByLink(link);
+        private cachePanelInfo;
+        private getOldSpace;
+        private getDirLink;
+        private getElementByLink;
         private dragInfo;
         private acceptTarget;
-        private dragHandle(e);
-        private attachDragEvent();
-        private detachDragEvent();
-        private dragEventHandle(e);
-        private getOneDragRenderWithMouseEvent(e);
-        private getAllChildElement(element, result);
+        private dragHandle;
+        private attachDragEvent;
+        private detachDragEvent;
+        private dragEventHandle;
+        private getOneDragRenderWithMouseEvent;
+        private getAllChildElement;
         private panelDic;
         /**注册面板
          * 与面板ID相关的api会用到注册信息
@@ -143,9 +144,9 @@ declare namespace boxlayout {
         checkPanelOpenedById(panelId: string): boolean;
         /**获取所有的选项卡组 */
         getAllTabGroup(): TabGroup[];
-        private getFirstElement(element);
-        private getSecondElement(element);
-        private setHoldValue(groups, value);
+        private getFirstElement;
+        private getSecondElement;
+        private setHoldValue;
         /**
          *  获取面板所在的布局元素
          * @param panelId 面板ID
@@ -156,7 +157,7 @@ declare namespace boxlayout {
          * @param config
          */
         applyLayoutConfig(config: any): void;
-        private getAllPanel(element, result);
+        private getAllPanel;
         /**
          * 获取当前布局信息
          */
@@ -190,8 +191,8 @@ declare namespace boxlayout {
         readonly render: IDragRender;
         private _maximized;
         setMaxSize(maxSize: boolean): void;
-        private panelHandler(e);
-        private updateDisplayIndex();
+        private panelHandler;
+        private updateDisplayIndex;
         setLayoutSize(width: number, height: number): void;
         updateRenderDisplay(): void;
     }
@@ -271,7 +272,7 @@ declare namespace boxlayout {
         protected refresh(): void;
         protected renderContent(container: HTMLElement): void;
         protected resize(newWidth: number, newHeight: any): void;
-        private updateClassName(focus?);
+        private updateClassName;
     }
 }
 declare namespace boxlayout {
@@ -424,7 +425,7 @@ declare namespace boxlayout {
         copyFrom(target: Matrix): void;
         identity(): void;
         invert(): void;
-        private $invertInto(target);
+        private $invertInto;
         rotate(angle: number): void;
         scale(sx: number, sy: number): void;
         setTo(a: number, b: number, c: number, d: number, tx: number, ty: number): void;
@@ -536,9 +537,9 @@ declare namespace boxlayout {
         getAllPanels(): ITabPanel[];
         removePanel(panel: ITabPanel): void;
         adjustDragInfo(e: MouseEvent, info: DragInfo): boolean;
-        private adjustDragInfo_tabGroup(e, info);
+        private adjustDragInfo_tabGroup;
         acceptDragInfo(v: DragInfo): void;
-        private setHoldValue(groups, value);
+        private setHoldValue;
         private _hold;
         hold: boolean;
         private container;
@@ -592,14 +593,129 @@ declare namespace boxlayout {
     }
 }
 declare namespace boxlayout {
+    class TabBar extends boxlayout_event.EventDispatcher implements IRender {
+        constructor();
+        minHeight: number;
+        minWidth: number;
+        private _titleRenderFactory;
+        titleRenderFactory: ITitleRenderFactory;
+        private optionEventHandle;
+        private itemContainer;
+        private itemRemainContainer;
+        private appendContainer;
+        private optionContainer;
+        private _root;
+        readonly root: HTMLElement;
+        _panels: ITabPanel[];
+        panels: ITabPanel[];
+        private _selectedIndex;
+        selectedIndex: number;
+        private setSelected;
+        private _showOptionContainer;
+        showOptionContainer: boolean;
+        private container;
+        render(container: HTMLElement): void;
+        removeFromParent(): void;
+        private bx;
+        private by;
+        private bw;
+        private bh;
+        getBounds(): {
+            x: number;
+            y: number;
+            width: number;
+            height: number;
+        };
+        setBounds(x: number, y: number, width: number, height: number): void;
+        currentItems: ITitleRender[];
+        private reDeployItems;
+        private startP;
+        private cancelClick;
+        private targetPanel;
+        private itemEventHandle;
+        private currentHeaderRender;
+        private commitSelected;
+        refresh(): void;
+        private updateItemDisplay;
+    }
+}
+declare namespace boxlayout {
+    class TabGroup extends boxlayout_event.EventDispatcher implements IDragRender {
+        constructor();
+        minWidth: number;
+        minHeight: number;
+        titleRenderFactory: ITitleRenderFactory;
+        private _tabBar;
+        readonly tabBar: TabBar;
+        readonly root: HTMLElement;
+        readonly ownerLayout: BoxLayout;
+        private _ownerElement;
+        ownerElement: IBoxLayoutElement;
+        private _panels;
+        panels: ITabPanel[];
+        private _selectedIndex;
+        selectedIndex: number;
+        selectedPanel: ITabPanel;
+        removePanel(v: ITabPanel): void;
+        /**
+         * @param v
+         */
+        _removePanel(v: ITabPanel): void;
+        addPanel(v: ITabPanel): void;
+        _addPanel(v: ITabPanel): void;
+        addPanelTo(target: ITabPanel, panel: ITabPanel, dir?: string): void;
+        _addPanelTo(target: ITabPanel, panel: ITabPanel, dir?: string): void;
+        private reDeployPanelTag;
+        private currentPanles;
+        private reDeployPanels;
+        private selectedPath;
+        private commitSelected;
+        private panelEventHandler;
+        adjustDragInfo(e: MouseEvent, info: DragInfo): boolean;
+        private adjustDragInfo_tabBox;
+        private adjustDragInfo_tabGroup;
+        acceptDragInfo(v: DragInfo): void;
+        private setHoldValue;
+        private container;
+        render(container: HTMLElement): void;
+        removeFromParent(): void;
+        private configHandle;
+        private tabBarEventHandle;
+        private doForTabbarMenu;
+        private static _tabBarHeight;
+        static tabBarHeight: number;
+        private bx;
+        private by;
+        private bw;
+        private bh;
+        setBounds(x: number, y: number, width: number, height: number): void;
+        private updatePanelDisplay;
+    }
+}
+declare namespace boxlayout {
+    /**
+     * TabPanel焦点管理器
+     */
+    class TabPanelFocusManager {
+        private static panels;
+        static push(panel: ITabPanel): void;
+        private static mouseEventHandle;
+        private static _foucsPanel;
+        static readonly currentFocus: ITabPanel;
+        static focus(panel: ITabPanel): void;
+        private static activeGroups;
+        static getActiveGroup(layout: BoxLayout): TabGroup;
+        private static addActiveGroup;
+        static reSet(): void;
+    }
+}
+declare namespace boxlayout {
     class DefaultTitleRender implements ITitleRender {
         private titleElement;
         private iconElement;
         constructor();
         minHeight: number;
         minWidth: number;
-        private _miniSize;
-        miniSize: number;
         private _root;
         readonly root: HTMLElement;
         private _panel;
@@ -621,10 +737,8 @@ declare namespace boxlayout {
             height: number;
         };
         setBounds(x: number, y: number, width: number, height: number): void;
-        private updateClassName();
-        private itemEventHandle(e);
-        private updateEnterOrLeave(enter);
-        private updateTitleElementClassName();
+        private updateClassName;
+        private updateTitleElementClassName;
     }
     class DefaultTitleRenderFactory implements ITitleRenderFactory {
         createTitleRender(): ITitleRender;
@@ -662,124 +776,6 @@ declare namespace boxlayout {
     }
 }
 declare namespace boxlayout {
-    class TabBar extends boxlayout_event.EventDispatcher implements IRender {
-        constructor();
-        minHeight: number;
-        minWidth: number;
-        private _titleRenderFactory;
-        titleRenderFactory: ITitleRenderFactory;
-        private optionEventHandle(e);
-        private itemContainer;
-        private itemRemainContainer;
-        private iconContainer;
-        private appendContainer;
-        private optionContainer;
-        private _root;
-        readonly root: HTMLElement;
-        _panels: ITabPanel[];
-        panels: ITabPanel[];
-        private _selectedIndex;
-        selectedIndex: number;
-        private setSelected(v);
-        private _showOptionContainer;
-        showOptionContainer: boolean;
-        private container;
-        render(container: HTMLElement): void;
-        removeFromParent(): void;
-        private bx;
-        private by;
-        private bw;
-        private bh;
-        getBounds(): {
-            x: number;
-            y: number;
-            width: number;
-            height: number;
-        };
-        setBounds(x: number, y: number, width: number, height: number): void;
-        currentItems: ITitleRender[];
-        private reDeployItems();
-        private startP;
-        private cancelClick;
-        private targetPanel;
-        private itemEventHandle(e);
-        private currentHeaderRender;
-        private commitSelected();
-        refresh(): void;
-        private updateItemDisplay();
-    }
-}
-declare namespace boxlayout {
-    class TabGroup extends boxlayout_event.EventDispatcher implements IDragRender {
-        constructor();
-        minWidth: number;
-        minHeight: number;
-        titleRenderFactory: ITitleRenderFactory;
-        private _tabBar;
-        readonly tabBar: TabBar;
-        readonly root: HTMLElement;
-        readonly ownerLayout: BoxLayout;
-        private _ownerElement;
-        ownerElement: IBoxLayoutElement;
-        private _panels;
-        panels: ITabPanel[];
-        private _selectedIndex;
-        selectedIndex: number;
-        selectedPanel: ITabPanel;
-        removePanel(v: ITabPanel): void;
-        /**
-         * @param v
-         */
-        _removePanel(v: ITabPanel): void;
-        addPanel(v: ITabPanel): void;
-        _addPanel(v: ITabPanel): void;
-        addPanelTo(target: ITabPanel, panel: ITabPanel, dir?: string): void;
-        _addPanelTo(target: ITabPanel, panel: ITabPanel, dir?: string): void;
-        private reDeployPanelTag;
-        private currentPanles;
-        private reDeployPanels();
-        private selectedPath;
-        private commitSelected();
-        private panelEventHandler(e);
-        adjustDragInfo(e: MouseEvent, info: DragInfo): boolean;
-        private adjustDragInfo_tabBox(e, info);
-        private adjustDragInfo_tabGroup(e, info);
-        acceptDragInfo(v: DragInfo): void;
-        private setHoldValue(groups, value);
-        private container;
-        render(container: HTMLElement): void;
-        removeFromParent(): void;
-        private configHandle(e);
-        private tabBarEventHandle(e);
-        private doForTabbarMenu(id);
-        private static _tabBarHeight;
-        static tabBarHeight: number;
-        private bx;
-        private by;
-        private bw;
-        private bh;
-        setBounds(x: number, y: number, width: number, height: number): void;
-        private updatePanelDisplay();
-    }
-}
-declare namespace boxlayout {
-    /**
-     * TabPanel焦点管理器
-     */
-    class TabPanelFocusManager {
-        private static panels;
-        static push(panel: ITabPanel): void;
-        private static mouseEventHandle(e);
-        private static _foucsPanel;
-        static readonly currentFocus: ITabPanel;
-        static focus(panel: ITabPanel): void;
-        private static activeGroups;
-        static getActiveGroup(layout: BoxLayout): TabGroup;
-        static addActiveGroup(panel: ITabPanel): void;
-        static reSet(): void;
-    }
-}
-declare namespace boxlayout {
     class TestDragPanel extends boxlayout_event.EventDispatcher implements IDragRender {
         constructor();
         minHeight: number;
@@ -792,7 +788,7 @@ declare namespace boxlayout {
         acceptDragInfo(v: DragInfo): void;
         private container;
         render(container: HTMLElement): void;
-        private mouseHandle(e);
+        private mouseHandle;
         removeFromParent(): void;
         private bx;
         private by;
@@ -825,33 +821,17 @@ declare namespace boxlayout {
 }
 declare namespace boxlayout {
     class HtmlElementResizeHelper {
-        private static _instance;
-        private static getInstance();
+        private static _watched;
+        private static _UseNative;
+        /**
+        * 设置是否使用原生方法， 原生方法仅支持 >= chrome 64 或 >= electron 3.0
+        */
+        static UseNative: boolean;
         /**
          * 监视目标标签，如果尺寸发生变化目标标签将会抛出'resize'事件
          */
         static watch(target: HTMLElement): void;
         static unWatch(target: HTMLElement): void;
-        /**
-         * 标记需要检查
-         */
-        static invalidateCheck(): void;
-        constructor();
-        private listenList;
-        /**
-         * 监视目标标签，如果尺寸发生变化目标标签将会抛出'resize'事件
-         */
-        watch(target: HTMLElement): void;
-        unWatch(target: HTMLElement): void;
-        private startListen();
-        private stopListen();
-        private windowResize_handler();
-        private checking;
-        /**
-         * 标记需要检查
-         */
-        invalidateCheck(): void;
-        private checkSize();
     }
 }
 declare namespace boxlayout {
@@ -865,10 +845,10 @@ declare namespace boxlayout {
         private static cssMatrixCache;
         /** 获取一个标签的矩阵信息*/
         static getMatrix(target: HTMLElement): Matrix;
-        private static checkCssTransform(target, callback);
-        private static keyToTag(key);
-        private static transformValues(args);
-        private static makeMatrix(tag, args);
+        private static checkCssTransform;
+        private static keyToTag;
+        private static transformValues;
+        private static makeMatrix;
     }
 }
 declare namespace boxlayout {
@@ -893,8 +873,8 @@ declare namespace boxlayout {
          * @param callback 回调
          */
         popup(target: HTMLElement, menus: any[], callback: (id: string) => void): void;
-        private itemHandle(e);
-        private removePopup();
-        private mouseEventHandle(e);
+        private itemHandle;
+        private removePopup;
+        private mouseEventHandle;
     }
 }

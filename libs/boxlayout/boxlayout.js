@@ -97,6 +97,7 @@ var boxlayout;
 (function (boxlayout) {
     /**
      * 盒式布局，此容器作为盒式布局的根，可将盒式布局应用在任意指定区域
+     * @author yangning
      */
     var BoxLayout = /** @class */ (function (_super) {
         __extends(BoxLayout, _super);
@@ -460,13 +461,11 @@ var boxlayout;
                             this._area.style.cursor = "col-resize";
                         }
                     }
-                    boxlayout.HtmlElementResizeHelper.invalidateCheck();
                     break;
                 case "mouseleave":
                     if (!this.cursorLock) {
                         this._area.style.cursor = "default";
                     }
-                    boxlayout.HtmlElementResizeHelper.invalidateCheck();
                     break;
                 case "mousedown":
                     this.cursorLock = true;
@@ -477,7 +476,6 @@ var boxlayout;
                     this.targetContainer = container;
                     window.addEventListener("mouseup", this.separatorHandle, true);
                     window.addEventListener("mousemove", this.separatorHandle, true);
-                    boxlayout.HtmlElementResizeHelper.invalidateCheck();
                     break;
                 case "mousemove":
                     e.stopPropagation();
@@ -500,8 +498,6 @@ var boxlayout;
                         this._updateBoxElement(this.targetContainer);
                         this.targetContainer.lockElement.width = this.targetContainer.lockElement.width;
                     }
-                    this._updateBoxElement(this.targetContainer);
-                    boxlayout.HtmlElementResizeHelper.invalidateCheck();
                     break;
                 case "mouseup":
                     e.stopPropagation();
@@ -510,7 +506,6 @@ var boxlayout;
                     this._area.style.cursor = "default";
                     window.removeEventListener("mousemove", this.separatorHandle, true);
                     window.removeEventListener("mouseup", this.separatorHandle, true);
-                    boxlayout.HtmlElementResizeHelper.invalidateCheck();
                     break;
             }
         };
@@ -670,7 +665,6 @@ var boxlayout;
                         //如果没有dragRender则可能鼠标超出布局范围
                     }
                     this.dragAreaElement.setBounds(this.dragInfo.dragRange.x, this.dragInfo.dragRange.y, this.dragInfo.dragRange.width, this.dragInfo.dragRange.height);
-                    boxlayout.HtmlElementResizeHelper.invalidateCheck();
                     break;
                 case "mouseup":
                     this.detachDragEvent();
@@ -679,7 +673,6 @@ var boxlayout;
                     if (this.acceptTarget) {
                         this.acceptTarget.acceptDragInfo(this.dragInfo);
                     }
-                    boxlayout.HtmlElementResizeHelper.invalidateCheck();
                     break;
             }
         };
@@ -813,6 +806,9 @@ var boxlayout;
                         }
                     }
                     this.setHoldValue([group], false);
+                    if (group.panels.length === 0) {
+                        group.ownerElement.ownerLayout.removeBoxElement(group.ownerElement);
+                    }
                 }
             }
         };
@@ -2550,189 +2546,6 @@ var boxlayout;
     }());
     boxlayout.Separator = Separator;
 })(boxlayout || (boxlayout = {}));
-var boxlayout;
-(function (boxlayout) {
-    var DefaultTitleRender = /** @class */ (function () {
-        function DefaultTitleRender() {
-            this.minHeight = 0;
-            this.minWidth = 0;
-            this._miniSize = 0;
-            this._selected = false;
-            this._root = document.createElement('div');
-            // 为了显示滚动条
-            // this._root.style.overflow = "hidden";
-            this._root.style.display = "flex";
-            this._root.style.padding = "0px 6px";
-            this.iconElement = document.createElement('img');
-            this.iconElement.className = "tabbar-item-icon";
-            this.iconElement.style.marginRight = "6px";
-            this.iconElement.style.flexGrow = "1";
-            this.iconElement.style.pointerEvents = "none";
-            this.iconElement.style.alignSelf = 'center';
-            this._root.appendChild(this.iconElement);
-            this.titleElement = document.createElement('div');
-            this.titleElement.className = 'tabbar-item-title';
-            this.titleElement.style.whiteSpace = "nowrap";
-            this.titleElement.style.textOverflow = "ellipsis";
-            // this.titleElement.style.marginLeft = '16px';
-            this.titleElement.style.overflow = "hidden";
-            this._root.appendChild(this.titleElement);
-            this.updateClassName();
-            this.updateTitleElementClassName();
-            this._root.addEventListener("mouseleave", this.itemEventHandle.bind(this));
-            this._root.addEventListener("mouseenter", this.itemEventHandle.bind(this));
-        }
-        Object.defineProperty(DefaultTitleRender.prototype, "miniSize", {
-            get: function () {
-                return this._miniSize;
-            },
-            set: function (v) {
-                this._miniSize = v;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(DefaultTitleRender.prototype, "root", {
-            get: function () {
-                return this._root;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(DefaultTitleRender.prototype, "panel", {
-            get: function () {
-                return this._panel;
-            },
-            set: function (v) {
-                this._panel = v;
-                this.updateDisplay();
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(DefaultTitleRender.prototype, "selected", {
-            get: function () {
-                return this._selected;
-            },
-            set: function (v) {
-                this._selected = v;
-                this.updateDisplay();
-            },
-            enumerable: true,
-            configurable: true
-        });
-        DefaultTitleRender.prototype.render = function (container) {
-            this.container = container;
-            this.container.appendChild(this.root);
-        };
-        DefaultTitleRender.prototype.removeFromParent = function () {
-            this.root.remove();
-        };
-        DefaultTitleRender.prototype.updateDisplay = function () {
-            this.titleElement.textContent = this._panel.getTitle();
-            var iconUrl = this._panel.getIcon();
-            if (iconUrl) {
-                this.iconElement.style.display = "block";
-            }
-            else {
-                this.iconElement.style.display = "none";
-            }
-            this.iconElement.src = iconUrl;
-            var retinaIconUrl = '';
-            var lastpointIndex = iconUrl.lastIndexOf('.');
-            if (lastpointIndex != -1) {
-                var ext = iconUrl.slice(lastpointIndex + 1);
-                if (ext.toLocaleLowerCase() == 'png') {
-                    retinaIconUrl = iconUrl.slice(0, lastpointIndex) + '@2x.png 2x';
-                }
-            }
-            if (retinaIconUrl) {
-                this.iconElement.srcset = retinaIconUrl;
-            }
-            if (this._panel.isFocus()) {
-                this.root.className = 'title-item focus';
-                this.titleElement.className = 'title-font focus';
-            }
-            else if (this._selected) {
-                this.root.className = 'title-item selected';
-                this.titleElement.className = 'title-font selected';
-            }
-            else {
-                this.root.className = 'title-item';
-                this.titleElement.className = 'title-font';
-            }
-            this.updateClassName();
-            this.updateTitleElementClassName();
-        };
-        DefaultTitleRender.prototype.getBounds = function () {
-            return { x: this.bx, y: this.by, width: this.root.offsetWidth, height: this.root.offsetHeight };
-        };
-        DefaultTitleRender.prototype.setBounds = function (x, y, width, height) {
-            this.bx = x;
-            this.by = y;
-            this.bw = width;
-            this.bh = height;
-            this.titleElement.style.lineHeight = height + "px";
-        };
-        DefaultTitleRender.prototype.updateClassName = function () {
-            var className = "";
-            if (this._panel && this._panel.getId()) {
-                className = "tabbar-item " + this._panel.getId();
-            }
-            else {
-                className = "tabbar-item";
-            }
-            if (this._selected) {
-                className += " tabbar-item-selected";
-            }
-            if (this.panel && this._panel.isFocus()) {
-                className += " tabbar-item-focus";
-            }
-            this._root.className = className;
-        };
-        DefaultTitleRender.prototype.itemEventHandle = function (e) {
-            if (this.selected) {
-                return;
-            }
-            switch (e.type) {
-                case 'mouseenter':
-                    this.updateEnterOrLeave(true);
-                    break;
-                case 'mouseleave':
-                    this.updateEnterOrLeave(false);
-                    break;
-            }
-        };
-        DefaultTitleRender.prototype.updateEnterOrLeave = function (enter) {
-            var className = "tabbar-item";
-            if (enter) {
-                className += " tabbar-item-mouseenter";
-            }
-            this._root.className = className;
-        };
-        DefaultTitleRender.prototype.updateTitleElementClassName = function () {
-            var className = "tabbar-item-title";
-            if (this._selected) {
-                className += " tabbar-item-title-selected";
-            }
-            if (this.panel && this._panel.isFocus()) {
-                className += " tabbar-item-title-focus";
-            }
-            this.titleElement.className = className;
-        };
-        return DefaultTitleRender;
-    }());
-    boxlayout.DefaultTitleRender = DefaultTitleRender;
-    var DefaultTitleRenderFactory = /** @class */ (function () {
-        function DefaultTitleRenderFactory() {
-        }
-        DefaultTitleRenderFactory.prototype.createTitleRender = function () {
-            return new DefaultTitleRender();
-        };
-        return DefaultTitleRenderFactory;
-    }());
-    boxlayout.DefaultTitleRenderFactory = DefaultTitleRenderFactory;
-})(boxlayout || (boxlayout = {}));
 /// <reference path="../../data/EventDispatcher.ts" />
 var boxlayout;
 (function (boxlayout) {
@@ -2761,12 +2574,7 @@ var boxlayout;
             _this.itemContainer.className = "tabbar-item-container";
             _this.itemContainer.style.display = "flex";
             _this.itemContainer.style.alignContent = "flex-start";
-            _this.itemContainer.style.overflowY = "hidden";
-            _this.itemContainer.style.overflowX = 'auto';
-            _this.itemContainer.addEventListener('mousewheel', function (e) {
-                var delta = e.deltaY;
-                _this.itemContainer.scrollLeft += delta;
-            });
+            _this.itemContainer.style.overflow = "hidden";
             _this._root.appendChild(_this.itemContainer);
             _this.itemRemainContainer = document.createElement('div');
             _this.itemRemainContainer.className = "tabbar-item-remain-container";
@@ -2775,31 +2583,16 @@ var boxlayout;
             _this.appendContainer = document.createElement('div');
             _this.appendContainer.className = "tabbar-append-container";
             _this._root.appendChild(_this.appendContainer);
-            //存放图标等数据
-            _this.iconContainer = document.createElement('div');
-            _this.appendContainer.appendChild(_this.iconContainer);
             _this.optionContainer = document.createElement('img');
             _this.optionContainer.className = "tabbar-option-container";
             _this.optionContainer.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAECAYAAACzzX7wAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAACpJREFUeNpi+P//f8N/3KCBAUgw4FAEEmOAKUBX1AATZ2FAgAZsbIAAAwCRBFexyGAHPAAAAABJRU5ErkJggg==";
             _this.optionContainer.style.cursor = "pointer";
             _this.optionContainer.style.margin = "6px";
             _this.optionContainer.title = "选项卡菜单";
-            _this.appendContainer.appendChild(_this.optionContainer);
+            _this._root.appendChild(_this.optionContainer);
             _this.optionContainer.addEventListener("click", _this.optionEventHandle);
             return _this;
         }
-        TabBar.prototype.reveal = function (item) {
-            var _this = this;
-            setTimeout(function () {
-                var targetElement = item.root;
-                if (targetElement.offsetLeft < _this.itemContainer.scrollLeft) {
-                    _this.itemContainer.scrollLeft = targetElement.offsetLeft;
-                }
-                else if (targetElement.offsetLeft + targetElement.offsetWidth > _this.itemContainer.scrollLeft + _this.itemContainer.offsetWidth) {
-                    _this.itemContainer.scrollLeft = targetElement.offsetLeft + targetElement.offsetWidth - _this.itemContainer.offsetWidth;
-                }
-            }, 50);
-        };
         Object.defineProperty(TabBar.prototype, "titleRenderFactory", {
             get: function () {
                 return this._titleRenderFactory;
@@ -2901,8 +2694,6 @@ var boxlayout;
                 item.root.removeEventListener("mousedown", _this.itemEventHandle);
                 item.root.removeEventListener("click", _this.itemEventHandle);
                 item.root.removeEventListener("dblclick", _this.itemEventHandle);
-                item.root.removeEventListener("mouseenter", _this.itemEventHandle);
-                item.root.removeEventListener("mouseleave", _this.itemEventHandle);
             });
             this.currentItems = [];
             if (this.titleRenderFactory) {
@@ -2913,7 +2704,6 @@ var boxlayout;
                     item.root.addEventListener("mousedown", this.itemEventHandle);
                     item.root.addEventListener("click", this.itemEventHandle);
                     item.root.addEventListener("dblclick", this.itemEventHandle);
-                    item.root.addEventListener("mouseenter", this.itemEventHandle);
                     this.currentItems.push(item);
                 }
                 this.updateItemDisplay();
@@ -2934,7 +2724,6 @@ var boxlayout;
                     }
                     window.addEventListener("mousemove", this.itemEventHandle);
                     window.addEventListener("mouseup", this.itemEventHandle);
-                    boxlayout.HtmlElementResizeHelper.invalidateCheck();
                     break;
                 case "mousemove":
                     if (Math.abs(e.clientX - this.startP.x) > 3 || Math.abs(e.clientY - this.startP.y) > 3) {
@@ -2943,12 +2732,10 @@ var boxlayout;
                         this.cancelClick = true;
                         this.dispatchEvent(new boxlayout.TabBarEvent(boxlayout.TabBarEvent.BEGINDRAG, this.targetPanel));
                     }
-                    boxlayout.HtmlElementResizeHelper.invalidateCheck();
                     break;
                 case "mouseup":
                     window.removeEventListener("mousemove", this.itemEventHandle);
                     window.removeEventListener("mouseup", this.itemEventHandle);
-                    boxlayout.HtmlElementResizeHelper.invalidateCheck();
                     break;
                 case "click":
                     if (!this.cancelClick) {
@@ -2964,13 +2751,11 @@ var boxlayout;
                             }
                         }
                     }
-                    boxlayout.HtmlElementResizeHelper.invalidateCheck();
                     break;
                 case "dblclick":
                     if (!this.cancelClick) {
                         this.dispatchEvent(new boxlayout.TabBarEvent(boxlayout.TabBarEvent.ITEMDOUBLECLICK));
                     }
-                    boxlayout.HtmlElementResizeHelper.invalidateCheck();
                     break;
             }
         };
@@ -2981,7 +2766,6 @@ var boxlayout;
             for (var i = 0; i < this.currentItems.length; i++) {
                 if (i === this._selectedIndex) {
                     this.currentItems[i].selected = true;
-                    this.reveal(this.currentItems[i]);
                     this.currentHeaderRender = this.panels[i].getHeaderRender();
                 }
                 else {
@@ -2989,7 +2773,7 @@ var boxlayout;
                 }
             }
             if (this.currentHeaderRender) {
-                this.currentHeaderRender.render(this.iconContainer);
+                this.currentHeaderRender.render(this.appendContainer);
             }
         };
         TabBar.prototype.refresh = function () {
@@ -3706,7 +3490,7 @@ var boxlayout;
         };
         TabPanelFocusManager.getActiveGroup = function (layout) {
             for (var i = 0; i < this.activeGroups.length; i++) {
-                if (this.activeGroups[i].layout === layout && this.activeGroups[i].group.panels.length != 0) {
+                if (this.activeGroups[i].layout === layout) {
                     return this.activeGroups[i].group;
                 }
             }
@@ -3722,9 +3506,6 @@ var boxlayout;
             this.activeGroups.push({ layout: panel.ownerGroup.ownerElement.ownerLayout, group: panel.ownerGroup });
         };
         TabPanelFocusManager.reSet = function () {
-            if (this._foucsPanel) {
-                this._foucsPanel._focusOut();
-            }
             this._foucsPanel = null;
             this.activeGroups = [];
         };
@@ -3733,6 +3514,131 @@ var boxlayout;
         return TabPanelFocusManager;
     }());
     boxlayout.TabPanelFocusManager = TabPanelFocusManager;
+})(boxlayout || (boxlayout = {}));
+var boxlayout;
+(function (boxlayout) {
+    var DefaultTitleRender = /** @class */ (function () {
+        function DefaultTitleRender() {
+            this.minHeight = 0;
+            this.minWidth = 0;
+            this._selected = false;
+            this._root = document.createElement('div');
+            this._root.style.overflow = "hidden";
+            this._root.style.display = "flex";
+            this._root.style.padding = "0px 6px";
+            this.iconElement = document.createElement('img');
+            this.iconElement.className = "tabbar-item-icon";
+            this.iconElement.style.marginRight = "6px";
+            this.iconElement.style.flexGrow = "1";
+            this.iconElement.style.pointerEvents = "none";
+            this.iconElement.style.alignSelf = 'center';
+            this._root.appendChild(this.iconElement);
+            this.titleElement = document.createElement('div');
+            this.titleElement.className = 'tabbar-item-title';
+            this.titleElement.style.whiteSpace = "nowrap";
+            this.titleElement.style.textOverflow = "ellipsis";
+            this.titleElement.style.overflow = "hidden";
+            this._root.appendChild(this.titleElement);
+            this.updateClassName();
+            this.updateTitleElementClassName();
+        }
+        Object.defineProperty(DefaultTitleRender.prototype, "root", {
+            get: function () {
+                return this._root;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(DefaultTitleRender.prototype, "panel", {
+            get: function () {
+                return this._panel;
+            },
+            set: function (v) {
+                this._panel = v;
+                this.updateDisplay();
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(DefaultTitleRender.prototype, "selected", {
+            get: function () {
+                return this._selected;
+            },
+            set: function (v) {
+                this._selected = v;
+                this.updateDisplay();
+            },
+            enumerable: true,
+            configurable: true
+        });
+        DefaultTitleRender.prototype.render = function (container) {
+            this.container = container;
+            this.container.appendChild(this.root);
+        };
+        DefaultTitleRender.prototype.removeFromParent = function () {
+            this.root.remove();
+        };
+        DefaultTitleRender.prototype.updateDisplay = function () {
+            this.titleElement.textContent = this._panel.getTitle();
+            var iconSrc = this._panel.getIcon();
+            this.iconElement.src = iconSrc;
+            if (iconSrc) {
+                this.iconElement.style.display = "block";
+            }
+            else {
+                this.iconElement.style.display = "none";
+            }
+            this.updateClassName();
+            this.updateTitleElementClassName();
+        };
+        DefaultTitleRender.prototype.getBounds = function () {
+            return { x: this.bx, y: this.by, width: this.root.offsetWidth, height: this.root.offsetHeight };
+        };
+        DefaultTitleRender.prototype.setBounds = function (x, y, width, height) {
+            this.bx = x;
+            this.by = y;
+            this.bw = width;
+            this.bh = height;
+            this.titleElement.style.lineHeight = height + "px";
+        };
+        DefaultTitleRender.prototype.updateClassName = function () {
+            var className = "";
+            if (this._panel && this._panel.getId()) {
+                className = "tabbar-item " + this._panel.getId();
+            }
+            else {
+                className = "tabbar-item";
+            }
+            if (this._selected) {
+                className += " tabbar-item-selected";
+            }
+            if (this.panel && this._panel.isFocus()) {
+                className += " tabbar-item-focus";
+            }
+            this._root.className = className;
+        };
+        DefaultTitleRender.prototype.updateTitleElementClassName = function () {
+            var className = "tabbar-item-title";
+            if (this._selected) {
+                className += " tabbar-item-title-selected";
+            }
+            if (this.panel && this._panel.isFocus()) {
+                className += " tabbar-item-title-focus";
+            }
+            this.titleElement.className = className;
+        };
+        return DefaultTitleRender;
+    }());
+    boxlayout.DefaultTitleRender = DefaultTitleRender;
+    var DefaultTitleRenderFactory = /** @class */ (function () {
+        function DefaultTitleRenderFactory() {
+        }
+        DefaultTitleRenderFactory.prototype.createTitleRender = function () {
+            return new DefaultTitleRender();
+        };
+        return DefaultTitleRenderFactory;
+    }());
+    boxlayout.DefaultTitleRenderFactory = DefaultTitleRenderFactory;
 })(boxlayout || (boxlayout = {}));
 /// <reference path="../../data/DragInfo.ts" />
 /// <reference path="../../data/EventDispatcher.ts" />
@@ -3955,39 +3861,58 @@ var boxlayout;
 (function (boxlayout) {
     var HtmlElementResizeHelper = /** @class */ (function () {
         function HtmlElementResizeHelper() {
-            this.listenList = [];
-            this.checking = false;
-            this.windowResize_handler = this.windowResize_handler.bind(this);
         }
-        HtmlElementResizeHelper.getInstance = function () {
-            if (!this._instance) {
-                this._instance = new HtmlElementResizeHelper();
-            }
-            return this._instance;
-        };
+        Object.defineProperty(HtmlElementResizeHelper, "UseNative", {
+            get: function () {
+                return this._UseNative;
+            },
+            /**
+             * 设置是否使用原生方法， 原生方法仅支持 >= chrome 64 或 >= electron 3.0
+             */
+            set: function (v) {
+                if (HtmlElementResizeHelper._watched) {
+                    throw new Error("已经开始监视，禁止修改 UseNative 值");
+                }
+                this._UseNative = v;
+            },
+            enumerable: true,
+            configurable: true
+        });
         /**
          * 监视目标标签，如果尺寸发生变化目标标签将会抛出'resize'事件
          */
         HtmlElementResizeHelper.watch = function (target) {
-            this.getInstance().watch(target);
+            HtmlElementResizeHelper._watched = true;
+            if (HtmlElementResizeHelper.UseNative) {
+                NativeResizeHelper.watch(target);
+            }
+            else {
+                LegacyResizeHelper.watch(target);
+            }
         };
         HtmlElementResizeHelper.unWatch = function (target) {
-            this.getInstance().unWatch(target);
+            if (HtmlElementResizeHelper.UseNative) {
+                NativeResizeHelper.unWatch(target);
+            }
+            else {
+                LegacyResizeHelper.unWatch(target);
+            }
         };
-        /**
-         * 标记需要检查
-         */
-        HtmlElementResizeHelper.invalidateCheck = function () {
-            this.getInstance().invalidateCheck();
-        };
+        HtmlElementResizeHelper._watched = false;
+        return HtmlElementResizeHelper;
+    }());
+    boxlayout.HtmlElementResizeHelper = HtmlElementResizeHelper;
+    var LegacyResizeHelper = /** @class */ (function () {
+        function LegacyResizeHelper() {
+        }
         /**
          * 监视目标标签，如果尺寸发生变化目标标签将会抛出'resize'事件
          */
-        HtmlElementResizeHelper.prototype.watch = function (target) {
+        LegacyResizeHelper.watch = function (target) {
             this.listenList.push({ w: target.offsetWidth, h: target.offsetHeight, target: target });
             this.startListen();
         };
-        HtmlElementResizeHelper.prototype.unWatch = function (target) {
+        LegacyResizeHelper.unWatch = function (target) {
             for (var i = this.listenList.length - 1; i >= 0; i--) {
                 if (this.listenList[i]['target'] === target) {
                     this.listenList.splice(i, 1);
@@ -3997,31 +3922,15 @@ var boxlayout;
                 this.stopListen();
             }
         };
-        HtmlElementResizeHelper.prototype.startListen = function () {
-            this.stopListen();
-            window.addEventListener('resize', this.windowResize_handler);
-        };
-        HtmlElementResizeHelper.prototype.stopListen = function () {
-            window.removeEventListener('resize', this.windowResize_handler);
-        };
-        HtmlElementResizeHelper.prototype.windowResize_handler = function () {
-            this.checkSize();
-        };
-        /**
-         * 标记需要检查
-         */
-        HtmlElementResizeHelper.prototype.invalidateCheck = function () {
+        LegacyResizeHelper.startListen = function () {
             var _this = this;
-            if (this.checking) {
-                return;
-            }
-            this.checking = true;
-            setTimeout(function () {
-                _this.checking = false;
-                _this.checkSize();
-            }, 1);
+            this.stopListen();
+            this.intervalTag = setInterval(function () { _this.checkSize(); }, 1);
         };
-        HtmlElementResizeHelper.prototype.checkSize = function () {
+        LegacyResizeHelper.stopListen = function () {
+            clearInterval(this.intervalTag);
+        };
+        LegacyResizeHelper.checkSize = function () {
             this.listenList.forEach(function (element) {
                 var target = element['target'];
                 if (target.offsetWidth !== element['w'] || target.offsetHeight !== element['h']) {
@@ -4031,9 +3940,32 @@ var boxlayout;
                 }
             });
         };
-        return HtmlElementResizeHelper;
+        LegacyResizeHelper.listenList = [];
+        return LegacyResizeHelper;
     }());
-    boxlayout.HtmlElementResizeHelper = HtmlElementResizeHelper;
+    var NativeResizeHelper = /** @class */ (function () {
+        function NativeResizeHelper() {
+        }
+        NativeResizeHelper.watch = function (target) {
+            if (!NativeResizeHelper.ro) {
+                NativeResizeHelper.ro = new ResizeObserver(NativeResizeHelper.fireResize);
+            }
+            NativeResizeHelper.ro.observe(target);
+        };
+        NativeResizeHelper.unWatch = function (target) {
+            if (NativeResizeHelper.ro) {
+                NativeResizeHelper.ro.unobserve(target);
+            }
+        };
+        NativeResizeHelper.fireResize = function (entries, observer) {
+            entries.forEach(function (element) {
+                var target = element.target;
+                target.dispatchEvent(new Event('resize'));
+            });
+        };
+        NativeResizeHelper.ro = null;
+        return NativeResizeHelper;
+    }());
 })(boxlayout || (boxlayout = {}));
 var boxlayout;
 (function (boxlayout) {

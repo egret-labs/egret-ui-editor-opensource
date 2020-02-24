@@ -355,6 +355,7 @@ export class Workbench implements IFocusablePart {
 
 		this.toDispose = [];
 
+		boxlayout.HtmlElementResizeHelper.UseNative = true;
 		this.boxContainer = new boxlayout.BoxLayout();
 		const titleRenderFactory = this.instantiationService.createInstance(ClosableTitleRenderFactory);
 		this.boxContainer.init(this.parent,

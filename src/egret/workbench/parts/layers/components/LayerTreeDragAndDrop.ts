@@ -6,6 +6,7 @@ import { IExmlModel } from 'egret/exts/exml-exts/exml/common/exml/models';
 import { LayerPanelUtil } from 'egret/workbench/parts/layers/components/LayerPanelUtil';
 import { IClipboardService } from 'egret/platform/clipboard/common/clipboardService';
 import { IDragAndDropData } from 'vs/base/browser/dnd';
+import { DragMouseEvent } from 'vs/base/browser/mouseEvent';
 
 /**
  * 层拖拽
@@ -59,7 +60,7 @@ export class DomLayerTreeDragAndDrop implements IDragAndDrop {
 		
 	}
 
-	onDragStart(tree: ITree, data: LayerDragAndDropData, originalEvent: any): void {
+	onDragStart(tree: ITree, data: LayerDragAndDropData, originalEvent: DragMouseEvent): void {
 		if (data.getData().length === 1) {
 			originalEvent.dataTransfer.setDragImage(originalEvent.target.childNodes[0].childNodes[1], 0, 0);
 		}
@@ -75,7 +76,7 @@ export class DomLayerTreeDragAndDrop implements IDragAndDrop {
 		document.removeEventListener('dragend', (e) => { this.handleDragEnd(e); }, false);
 	}
 
-	onDragOver(tree: ITree, data: LayerDragAndDropData, targetElement: INode, originalEvent: any): IDragOverReaction {
+	onDragOver(tree: ITree, data: LayerDragAndDropData, targetElement: INode, originalEvent: DragMouseEvent): IDragOverReaction {
 		const clipStr = this.clipboardService.readText('eui-node');
 		
 		if (!this.isStartFromLayerTree) {
@@ -120,7 +121,7 @@ export class DomLayerTreeDragAndDrop implements IDragAndDrop {
 			return { accept: true };
 		}
 		//范围检查
-		if (originalEvent.pageX < tree.getHTMLElement().getBoundingClientRect().left || originalEvent.pageX > tree.getHTMLElement().getBoundingClientRect().right) {
+		if (originalEvent.posx < tree.getHTMLElement().getBoundingClientRect().left || originalEvent.posx > tree.getHTMLElement().getBoundingClientRect().right) {
 			this.borderedElements.forEach((item) => { this.clearElementBorder(item); });
 			return { accept: true };
 		}
@@ -128,7 +129,7 @@ export class DomLayerTreeDragAndDrop implements IDragAndDrop {
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		let elementCache = null;
 		if (LayerPanelUtil.isContainer(targetElement) && targetElement.getName() !== 'Scroller') {
-			if (this.judgeTop(aimHTMLElement, { x: originalEvent.pageX, y: originalEvent.pageY })) {
+			if (this.judgeTop(aimHTMLElement, { x: originalEvent.posx, y: originalEvent.posy })) {
 				if (aimHTMLElement.style.border === '1px solid red') {
 					aimHTMLElement.style.border = '';
 				}
@@ -137,13 +138,13 @@ export class DomLayerTreeDragAndDrop implements IDragAndDrop {
 				}
 				elementCache = aimHTMLElement;
 			}
-			else if (this.judgeMiddle(aimHTMLElement, { x: originalEvent.pageX, y: originalEvent.pageY })) {
+			else if (this.judgeMiddle(aimHTMLElement, { x: originalEvent.posx, y: originalEvent.posy })) {
 				if (aimHTMLElement.style.border !== '1px solid red') {
 					aimHTMLElement.style.border = '1px solid red';
 				}
 				elementCache = aimHTMLElement;
 			}
-			else if (this.judgeBottom(aimHTMLElement, { x: originalEvent.pageX, y: originalEvent.pageY })) {
+			else if (this.judgeBottom(aimHTMLElement, { x: originalEvent.posx, y: originalEvent.posy })) {
 				if (aimHTMLElement.style.border === '1px solid red') {
 					aimHTMLElement.style.border = '';
 				}
@@ -154,7 +155,7 @@ export class DomLayerTreeDragAndDrop implements IDragAndDrop {
 			}
 		}
 		else {
-			if (this.judgeTop(aimHTMLElement, { x: originalEvent.pageX, y: originalEvent.pageY })) {
+			if (this.judgeTop(aimHTMLElement, { x: originalEvent.posx, y: originalEvent.posy })) {
 				if (aimHTMLElement.style.border === '1px solid red') {
 					aimHTMLElement.style.border = '';
 				}
@@ -163,13 +164,13 @@ export class DomLayerTreeDragAndDrop implements IDragAndDrop {
 				}
 				elementCache = aimHTMLElement;
 			}
-			else if (this.judgeMiddle(aimHTMLElement, { x: originalEvent.pageX, y: originalEvent.pageY })) {
+			else if (this.judgeMiddle(aimHTMLElement, { x: originalEvent.posx, y: originalEvent.posy })) {
 				if (aimHTMLElement.style.border !== '1px solid red') {
 					aimHTMLElement.style.border = '1px solid red';
 				}
 				elementCache = aimHTMLElement;
 			}
-			else if (this.judgeBottom(aimHTMLElement, { x: originalEvent.pageX, y: originalEvent.pageY })) {
+			else if (this.judgeBottom(aimHTMLElement, { x: originalEvent.posx, y: originalEvent.posy })) {
 				if (aimHTMLElement.style.border === '1px solid red') {
 					aimHTMLElement.style.border = '';
 				}
@@ -188,7 +189,7 @@ export class DomLayerTreeDragAndDrop implements IDragAndDrop {
 		return { accept: true };
 	}
 
-	drop(tree: ITree, data: LayerDragAndDropData, targetElement: INode, originalEvent: any): void {
+	drop(tree: ITree, data: LayerDragAndDropData, targetElement: INode, originalEvent: DragMouseEvent): void {
 
 		const clipStr = this.clipboardService.readText('eui-node');
 		console.log('drop----clipStr--', clipStr);
@@ -201,17 +202,17 @@ export class DomLayerTreeDragAndDrop implements IDragAndDrop {
 		this.borderedElements.forEach((item) => { item.style.border = ''; });
 		const aimHTMLElement = originalEvent.target;
 		if (LayerPanelUtil.isContainer(targetElement) && targetElement.getName() !== 'Scroller') {
-			if (this.judgeTop(aimHTMLElement, { x: originalEvent.pageX, y: originalEvent.pageY })) {
+			if (this.judgeTop(aimHTMLElement, { x: originalEvent.posx, y: originalEvent.posy })) {
 				dropElements.forEach((element) => {
 					LayerPanelUtil.moveNodeForwardOtherNode(element, targetElement, this.exmlModel);
 				});
 			}
-			else if (this.judgeMiddle(aimHTMLElement, { x: originalEvent.pageX, y: originalEvent.pageY })) {
+			else if (this.judgeMiddle(aimHTMLElement, { x: originalEvent.posx, y: originalEvent.posy })) {
 				dropElements.forEach((element) => {
 					LayerPanelUtil.moveNodeIntoOtherNode(element, targetElement, this.exmlModel);
 				});
 			}
-			else if (this.judgeBottom(aimHTMLElement, { x: originalEvent.pageX, y: originalEvent.pageY }, targetElement.getIsRoot())) {
+			else if (this.judgeBottom(aimHTMLElement, { x: originalEvent.posx, y: originalEvent.posy }, targetElement.getIsRoot())) {
 				//加到节点后需要反过来遍历
 				for (let index = dropElements.length - 1; index >= 0; index--) {
 					const element = dropElements[index];
@@ -220,17 +221,17 @@ export class DomLayerTreeDragAndDrop implements IDragAndDrop {
 			}
 		}
 		else {
-			if (this.judgeTop(aimHTMLElement, { x: originalEvent.pageX, y: originalEvent.pageY })) {
+			if (this.judgeTop(aimHTMLElement, { x: originalEvent.posx, y: originalEvent.posy })) {
 				dropElements.forEach((element) => {
 					LayerPanelUtil.moveNodeForwardOtherNode(element, targetElement, this.exmlModel);
 				});
 			}
-			else if (this.judgeMiddle(aimHTMLElement, { x: originalEvent.pageX, y: originalEvent.pageY })) {
+			else if (this.judgeMiddle(aimHTMLElement, { x: originalEvent.posx, y: originalEvent.posy })) {
 				dropElements.forEach((element) => {
 					LayerPanelUtil.moveNodeIntoOtherNode(element, targetElement, this.exmlModel);
 				});
 			}
-			else if (this.judgeBottom(aimHTMLElement, { x: originalEvent.pageX, y: originalEvent.pageY }, targetElement.getIsRoot())) {
+			else if (this.judgeBottom(aimHTMLElement, { x: originalEvent.posx, y: originalEvent.posy }, targetElement.getIsRoot())) {
 				for (let index = dropElements.length - 1; index >= 0; index--) {
 					const element = dropElements[index];
 					LayerPanelUtil.moveNodeBehindOtherNode(element, targetElement, this.exmlModel);

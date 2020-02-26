@@ -144,8 +144,8 @@ export class LayerPanelUtil {
 			if (num === 1) {
 				const sub = tempContainer.getNodeAt(0);
 				if (isInstanceof(tempContainer, 'eui.IContainer')) {
-					node.getParent().removeNode(node);
 					LayerPanelUtil.switchNodeparent(node, sub.getInstance());
+					node.getParent().removeNode(node);
 					(sub as IContainer).addNode(node);
 				}
 			} else if (num === 0) {
@@ -156,8 +156,8 @@ export class LayerPanelUtil {
 			}
 		} else {
 			if (isInstanceof(targetNode, 'eui.IContainer')) {
-				node.getParent().removeNode(node);
 				LayerPanelUtil.switchNodeparent(node, targetNode.getInstance());
+				node.getParent().removeNode(node);
 				(<IContainer>targetNode).addNode(node);
 			}
 
@@ -167,12 +167,12 @@ export class LayerPanelUtil {
 		return true;
 	}
 	static switchNodeparent(node: INode, disParent: any) {
-		const dis: any = node.getInstance();
-		let pos: any = dis.localToGlobal(0, 0);
-		pos = disParent.globalToLocal(pos.x, pos.y);
+		const nodeInstance: egret.DisplayObject = node.getInstance();
+		let pos: egret.Point = nodeInstance.localToGlobal(0, 0);
+		let newPos = disParent.globalToLocal(pos.x, pos.y);
 		let oldParentScaleX: number = 1;
 		let oldParentScaleY: number = 1;
-		let tempDis: any = dis.parent;
+		let tempDis: any = nodeInstance.parent;
 		while (tempDis && tempDis.parent)//遍历至stage倒数第二层
 		{
 			oldParentScaleX *= tempDis.scaleX;
@@ -190,10 +190,10 @@ export class LayerPanelUtil {
 			tempDis = tempDis.parent;
 		}
 
-		node.setNumber('x', pos.x);
-		node.setNumber('y', pos.y);
-		node.setNumber('scaleX', dis.scaleX * oldParentScaleX / newParentScaleX);
-		node.setNumber('scaleY', dis.scaleY * oldParentScaleY / newParentScaleY);
+		node.setNumber('x', newPos.x);
+		node.setNumber('y', newPos.y);
+		node.setNumber('scaleX', nodeInstance.scaleX * oldParentScaleX / newParentScaleX);
+		node.setNumber('scaleY', nodeInstance.scaleY * oldParentScaleY / newParentScaleY);
 	}
 
 	/**

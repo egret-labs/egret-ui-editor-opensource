@@ -18,7 +18,8 @@ export enum FileRootCommands {
 	SAVE_ACTIVE = 'saveActive',
 	/** 保存所有文件 */
 	SAVE_ALL = 'saveAll',
-
 	/** 重新加载 */
-	RELOAD = 'reload'
+	RELOAD = 'reload',
+	/** 重新加载 */
+	INSTALL_SHELL_COMMAND = 'installShellCommand',
 }

@@ -157,9 +157,13 @@ export class AppMenu {
 		const closeCurrent = this.createMenuItem(mnemonicMenuLabel(localize('menus.setFileMenu.closeEditor', 'Close Editor(&&C)')), 'CmdOrCtrl+W', RootCommands.CLOSE_CURRENT, localize('menus.setFileMenu.closeEditorTxt', 'Close Editor'), localize('menus.setFileMenu.closeEditorOpt', 'Close the current editor'));
 
 		const reload = this.createMenuItem(mnemonicMenuLabel(localize('menus.setFileMenu.reload', 'Reload(&&R)')), '', FileRootCommands.RELOAD, null, null);
-		const memus = [open, __separator__(), createFolder, createExml, __separator__(), save, saveAll,__separator__(),closeCurrent,__separator__(),reload];
+		const memus = [open, __separator__(), createFolder, createExml, __separator__(), save, saveAll, __separator__(), closeCurrent, __separator__(), reload];
 
-		
+
+		if (isMacintosh) {
+			const installShellCommand = this.createMenuItem(mnemonicMenuLabel(localize('menus.setFileMenu.installShellCommand', 'Install shell command')), '', FileRootCommands.INSTALL_SHELL_COMMAND, null, null);
+			memus.push(__separator__(), installShellCommand);
+		}
 		if (isWindows) {
 			const preferences = this.getPreferencesMenu();
 			memus.push(__separator__(), preferences);
@@ -259,8 +263,8 @@ export class AppMenu {
 	 * 文件菜单
 	 */
 	private setViewMenu(viewMenu: Electron.Menu): void {
-		
-		
+
+
 		const explorer = this.createMenuItem(mnemonicMenuLabel(localize('menus.viewMenu.explorer', 'Explorer(&&U)')), '', RootCommands.EXPLORER_PANEL, '', '');
 		const layer = this.createMenuItem(mnemonicMenuLabel(localize('menus.viewMenu.layer', 'Layer(&&L)')), '', RootCommands.LAYER_PANEL, '', '');
 		const output = this.createMenuItem(mnemonicMenuLabel(localize('menus.viewMenu.output', 'Output(&&O)')), '', RootCommands.OUTPUT_PANEL, '', '');
@@ -272,7 +276,7 @@ export class AppMenu {
 		const quickOpen = this.createMenuItem(mnemonicMenuLabel(localize('menus.viewMenu.quickOpen', 'Quick Open(&&Q)')), 'CmdOrCtrl+P', RootCommands.PROMPT_QUICK_OPEN, localize('menus.viewMenu.quickOpenLabel', 'Quick Open'), localize('menus.viewMenu.quickOpenDes', 'Quick Open EXML file operation'));
 
 
-		const memus = [explorer, layer, output, assets, component, alignment, property,__separator__(),quickOpen];
+		const memus = [explorer, layer, output, assets, component, alignment, property, __separator__(), quickOpen];
 		memus.forEach(item => viewMenu.append(item));
 	}
 
@@ -296,11 +300,11 @@ export class AppMenu {
 			click: () => this.toggleDevTools(),
 			enabled: true
 		});
-		const about = this.createMenuItem(localize('system.about', 'About {0}', APPLICATION_NAME) , '', RootCommands.PROMPT_ABOUT, '', '');
+		const about = this.createMenuItem(localize('system.about', 'About {0}', APPLICATION_NAME), '', RootCommands.PROMPT_ABOUT, '', '');
 		const checkUpdate = this.createMenuItem(localize('system.checkUpdate', 'Check Update...'), '', RootCommands.CHECK_UPDATE, '', '');
 		// const feedback = this.createMenuItem(localize('system.feedback', 'Send Feedback...'), '', RootCommands.FEEDBACK, '', '');
 		const report = this.createMenuItem(localize('system.report', 'Report Issue'), '', RootCommands.REPORT, '', '');
-		const menus = [toggleDevToolsItem , report/*, feedback*/];
+		const menus = [toggleDevToolsItem, report/*, feedback*/];
 		if (isWindows) {
 			menus.push(about, checkUpdate);
 		}
@@ -343,7 +347,7 @@ export class AppMenu {
 	 * 在渲染进程中执行命令
 	 */
 	private runActionInRenderer(command: string): void {
-		if(command == FileRootCommands.RELOAD){
+		if (command == FileRootCommands.RELOAD) {
 			this.windowsMainService.reload();
 			return;
 		}

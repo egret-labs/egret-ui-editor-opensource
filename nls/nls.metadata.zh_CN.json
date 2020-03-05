@@ -739,6 +739,26 @@
 		"s": "Method {0} was not found in the child process",
 		"t": "方法 {0} 在子进程中没有找到"
 	},
+	"installShellCommandOperation.notAvailable": {
+		"s": "This command is not available",
+		"t": "此命令不可用"
+	},
+	"installShellCommandOperation.successIn": {
+		"s": "Shell command 'eui' successfully installed in PATH.",
+		"t": "已成功在 PATH 中安装了 Shell 命令“eui”。"
+	},
+	"installShellCommandOperation.warnEscalation": {
+		"s": "EUI Editor will now prompt with 'osascript' for Administrator privileges to install the shell command.",
+		"t": "EUI Editor 将通过 \"osascript\" 提示需要管理员权限才可安装 shell 命令。"
+	},
+	"installShellCommandOperation.cantCreateBinFolder": {
+		"s": "Unable to create '/usr/local/bin'.",
+		"t": "无法创建 \"/usr/local/bin\"。"
+	},
+	"installShellCommandOperation.aborted": {
+		"s": "Aborted",
+		"t": "已中止"
+	},
 	"keybindPanel.constructor.title": {
 		"s": "Shortcut Key Settings",
 		"t": "快捷键设置"
@@ -1058,6 +1078,10 @@
 	"menus.setFileMenu.reload": {
 		"s": "Reload(&&R)",
 		"t": "重新加载(&&R)"
+	},
+	"menus.setFileMenu.installShellCommand": {
+		"s": "Install shell command",
+		"t": "安装 shell 命令"
 	},
 	"menus.setFileMenu.save": {
 		"s": "Save(&&S)",

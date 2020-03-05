@@ -40,7 +40,7 @@ const WINDOW_STATES = 'windowStates';
 
 import './media/workbench.css';
 import { FileRootCommands } from '../parts/files/commands/fileRootCommands';
-import { NewExmlOperation, RevealFileInOsOperation, DeleteFileOperation, NewFolderOperation, CopyFilePathOperation, RenameFileOperation, SaveActiveOperation, SaveAllOperation } from '../parts/files/commands/fileRootOperations';
+import { NewExmlOperation, RevealFileInOsOperation, DeleteFileOperation, NewFolderOperation, CopyFilePathOperation, RenameFileOperation, SaveActiveOperation, SaveAllOperation, InstallShellCommandOperation } from '../parts/files/commands/fileRootOperations';
 import { IOperationBrowserService } from '../../platform/operations/common/operations-browser';
 import { SystemCommands } from 'egret/platform/operations/commands/systemCommands';
 import { PanelDom } from '../../parts/browser/panelDom';
@@ -397,6 +397,7 @@ export class Workbench implements IFocusablePart {
 		this.focusablePartCommandHelper.registerCommand(FileRootCommands.RENAME_FILE, RenameFileOperation);
 		this.focusablePartCommandHelper.registerCommand(FileRootCommands.SAVE_ACTIVE, SaveActiveOperation);
 		this.focusablePartCommandHelper.registerCommand(FileRootCommands.SAVE_ALL, SaveAllOperation);
+		this.focusablePartCommandHelper.registerCommand(FileRootCommands.INSTALL_SHELL_COMMAND, InstallShellCommandOperation);
 
 		this.operationService.registerFocusablePart(this);
 		//系统根命令

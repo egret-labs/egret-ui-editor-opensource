@@ -5,7 +5,7 @@ import { ILifecycleService } from 'egret/platform/lifecycle/electron-main/lifecy
 import { IBrowserWindowEx, IWindowConfiguration } from '../common/window';
 import { mixin } from 'egret/base/common/objects';
 import { BrowserWindowEx } from './browserWindowEx';
-import { dialog, ipcMain as ipc } from 'electron';
+import { app, dialog, ipcMain as ipc } from 'electron';
 import { isMacintosh } from 'egret/base/common/platform';
 import { normalizeNFC } from 'egret/base/common/strings';
 
@@ -35,6 +35,20 @@ export class WindowsMainService implements IWindowsMainService {
 		this.dialogs = new Dialogs(environmentService, stateService, this);
 		const lastOpenedFolder: string = this.stateService.getItem<string>(LAST_OPNED_FOLDER, '');
 		let folder:string = environmentService.args['folder'];
+		if(!folder){
+			const arg_ = environmentService.args['_'];
+			if(arg_ && arg_.length > 1){
+				const first: string = arg_[0];
+				const target: string = arg_[1];
+				if(first === app.getPath('exe')){
+					if(target === '.'){
+						folder = process.cwd();
+					} else {
+						folder = target;
+					}
+				}
+			}
+		}
 		if(folder){
 			if(
 				(folder.charAt(0) == '\'' || folder.charAt(0) == '"') && 
@@ -79,7 +93,6 @@ export class WindowsMainService implements IWindowsMainService {
 			if (closed) {
 				this.mainWindow.close();
 				this.mainWindow = null;
-				this.stateService.setItem(LAST_OPNED_FOLDER, options.folderPath ? options.folderPath : '');
 				this.openInBrowserWindow(options);
 			}
 		});
@@ -104,6 +117,7 @@ export class WindowsMainService implements IWindowsMainService {
 
 	private mainWindow: IBrowserWindowEx;
 	private openInBrowserWindow(options: IOpenBrowserWindowOptions): void {
+		this.stateService.setItem(LAST_OPNED_FOLDER, options.folderPath ? options.folderPath : '');
 		const configuration: IWindowConfiguration = mixin({}, options.cli);
 		configuration.machineId = this.machineId;
 		configuration.appRoot = this.environmentService.appRoot;

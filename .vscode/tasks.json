@@ -4,19 +4,6 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"label": "Kill Debug Renderer Process",
-			"type": "shell",
-			"command": "lsof -ti:9225 | xargs kill",
-			"windows": {
-				"command": ".\\scripts\\killdebug.bat"
-			},
-			"group": "test",
-			"presentation": {
-				"reveal": "always",
-				"panel": "shared"
-			}
-		},
-		{
 			"type": "npm",
 			"script": "setup",
 			"problemMatcher": []

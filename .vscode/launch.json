@@ -14,7 +14,6 @@
 				"webpack:///../node_modules/*": "${workspaceRoot}/node_modules/*",
 				"webpack:///./*": "${workspaceRoot}/src/*"
 			},
-			"preLaunchTask": "Kill Debug Renderer Process",
 			"runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
 			"windows": {
 				"runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd"
@@ -28,7 +27,6 @@
 			"type": "chrome",
 			"request": "launch",
 			"sourceMaps": true,
-			"preLaunchTask": "Kill Debug Renderer Process",
 			"cwd": "${workspaceRoot}",
 			"webRoot": "${workspaceRoot}",
 			"port": 9225,

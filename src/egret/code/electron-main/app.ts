@@ -26,7 +26,7 @@ export class CodeApplication {
 	 * 启动应用程序
 	 */
 	public startup(): void {
-		console.log('Starting Electron Editor');
+		console.log('Starting EUI Editor');
 		const appInstantiationService = this.initServices();
 		appInstantiationService.invokeFunction(accessor => {
 			const appInstantiationService = accessor.get(IInstantiationService);

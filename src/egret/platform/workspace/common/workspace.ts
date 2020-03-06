@@ -35,6 +35,10 @@ export interface IWorkspace {
 	 * 工作空间文件夹
 	 */
 	readonly uri: URI;
+	/**
+	 * 工作空间默认打开的文件
+	 */
+	readonly file: URI;
 }
 
 /**
@@ -45,6 +49,7 @@ export class Workspace implements IWorkspace {
 	constructor(
 		private _name: string = '',
 		private _uri: URI = null,
+		private _file: URI = null
 	) {
 	}
 	/**
@@ -65,13 +70,23 @@ export class Workspace implements IWorkspace {
 	public set uri(value: URI) {
 		this._uri = value;
 	}
+	/**
+	 * 工作空间默认打开的文件
+	 */
+	public get file(): URI {
+		return this._file;
+	}
+	public set file(value: URI) {
+		this._file = value;
+	}
 
 	/**
 	 * 更新工作空间
 	 * @param workspace 
 	 */
 	public update(workspace: Workspace) {
-		this._name 	= workspace.name;
-		this._uri 	= workspace.uri;
+		this._name = workspace.name;
+		this._uri = workspace.uri;
+		this._file = workspace.file;
 	}
 }

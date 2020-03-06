@@ -75,6 +75,6 @@ function createMainProcessServices(): ServiceCollection {
 }
 
 function createAndInitializeWorkspaceService(configuration: IWindowConfiguration, environmentService: EnvironmentService): Promise<WorkspaceService> {
-	const workspaceService = new WorkspaceService(environmentService, configuration.folderPath);
+	const workspaceService = new WorkspaceService(environmentService, configuration.folderPath, configuration.file);
 	return Promise.resolve(workspaceService);
 }

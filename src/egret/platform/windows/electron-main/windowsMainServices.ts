@@ -10,6 +10,7 @@ import { isMacintosh } from 'egret/base/common/platform';
 import { normalizeNFC } from 'egret/base/common/strings';
 
 import * as fs from 'fs';
+import * as path from 'path';
 import { IStateService } from '../../state/common/state';
 import { dirname } from '../../../base/common/paths';
 import { localize } from '../../../base/localization/nls';
@@ -33,38 +34,7 @@ export class WindowsMainService implements IWindowsMainService {
 		@IStateService private stateService: IStateService
 	) {
 		this.dialogs = new Dialogs(environmentService, stateService, this);
-		const lastOpenedFolder: string = this.stateService.getItem<string>(LAST_OPNED_FOLDER, '');
-		let folder:string = environmentService.args['folder'];
-		if(!folder){
-			const arg_ = environmentService.args['_'];
-			if(arg_ && arg_.length > 1){
-				const first: string = arg_[0];
-				const target: string = arg_[1];
-				if(first === app.getPath('exe')){
-					if(target === '.'){
-						folder = process.cwd();
-					} else {
-						folder = target;
-					}
-				}
-			}
-		}
-		if(folder){
-			if(
-				(folder.charAt(0) == '\'' || folder.charAt(0) == '"') && 
-				(folder.charAt(folder.length-1) == '\'' || folder.charAt(folder.length-1) == '"') 
-			){
-				folder = folder.slice(1,folder.length-1);
-			}
-		}
-		let targetToOpen:string = lastOpenedFolder;
-		if(folder){
-			targetToOpen = folder;
-		}
-		this.openInBrowserWindow({
-			cli: this.environmentService.args,
-			folderPath: targetToOpen
-		});
+		this.openInBrowserWindow(this.getWindowOptions());
 		this.registerListeners();
 	}
 	private registerListeners(): void {
@@ -77,6 +47,95 @@ export class WindowsMainService implements IWindowsMainService {
 		ipc.on('egret:pickFolderAndOpen', (event, options: INativeOpenDialogOptions) => {
 			this.pickFolderAndOpen(options);
 		});
+	}
+
+	private getWindowOptions(): IOpenBrowserWindowOptions {
+		const lastOpenedFolder: string = this.stateService.getItem<string>(LAST_OPNED_FOLDER, '');
+		let folder: string = this.environmentService.args['folder'];
+		if (!folder) {
+			const arg_ = this.environmentService.args['_'];
+			if (arg_ && arg_.length > 1) {
+				const first: string = arg_[0];
+				const target: string = arg_[1];
+				if (process.env['EUI_FROM_SHELL']) {
+					if (target === '.') {
+						folder = process.cwd();
+					} else {
+						folder = target;
+					}
+				}
+			}
+		}
+		// console.log(folder, process.env['EUI_FROM_SHELL']);
+		if (folder) {
+			if (
+				(folder.charAt(0) == '\'' || folder.charAt(0) == '"') &&
+				(folder.charAt(folder.length - 1) == '\'' || folder.charAt(folder.length - 1) == '"')
+			) {
+				folder = folder.slice(1, folder.length - 1);
+			}
+		}
+		let targetFile: string = null;
+		let targetToOpen: string = lastOpenedFolder;
+		if (folder) {
+			const project = this.getEUIProjectPath(folder);
+			if (project) {
+				targetToOpen = project.folderPath;
+				targetFile = project.file;
+			} else {
+				targetToOpen = null;
+			}
+		}
+		return {
+			cli: this.environmentService.args,
+			folderPath: targetToOpen,
+			file: targetFile
+		};
+	}
+
+	private getEUIProjectPath(target: string): { folderPath: string, file?: string } | null {
+		try {
+			const stat = fs.statSync(target);
+			if (stat.isDirectory()) {
+				return { folderPath: target };
+			} else {
+				const project = this.findProjectFromFile(target);
+				if (!project) {
+					return { folderPath: target };
+				} else {
+					return { folderPath: project, file: target };
+				}
+			}
+		} catch (error) {
+
+		}
+		return null;
+	}
+
+	private findProjectFromFile(file: string): string {
+		const dir = path.dirname(file);
+		if (!dir) {
+			return null;
+		}
+		if (dir === file) {
+			return null;
+		}
+		if (dir === '\\' || dir === '/') {
+			return null;
+		}
+		try {
+			const items = fs.readdirSync(dir);
+			for (let i = 0; i < items.length; i++) {
+				const element = items[i];
+				const stat = fs.statSync(path.join(dir, element));
+				if (stat.isFile() && element === 'egretProperties.json') {
+					return dir;
+				}
+			}
+		} catch (error) {
+
+		}
+		return this.findProjectFromFile(dir);
 	}
 
 	/**
@@ -100,11 +159,11 @@ export class WindowsMainService implements IWindowsMainService {
 	/**
 	 * 重新加载当前激活的窗体
 	 */
-	public reload():void{
+	public reload(): void {
 		let refreshPromise = Promise.resolve(true);
 		const focusedWindow = this.getFocusedWindow();
-		if(focusedWindow){
-			refreshPromise = this.lifecycleService.unload(this.mainWindow,true).then(veto => {
+		if (focusedWindow) {
+			refreshPromise = this.lifecycleService.unload(this.mainWindow, true).then(veto => {
 				return !veto;
 			});
 			refreshPromise.then(refresh => {
@@ -123,6 +182,7 @@ export class WindowsMainService implements IWindowsMainService {
 		configuration.appRoot = this.environmentService.appRoot;
 		configuration.execPath = process.execPath;
 		configuration.folderPath = options.folderPath;
+		configuration.file = options.file;
 
 		this.mainWindow = this.instantiationService.createInstance(BrowserWindowEx);
 		this.mainWindow.load(configuration);
@@ -153,11 +213,11 @@ export class WindowsMainService implements IWindowsMainService {
 
 		if (!internalOptions.dialogOptions.title) {
 			if (pickFolders && pickFiles) {
-				internalOptions.dialogOptions.title = localize('windowsMainService.doPickAndOpen.open','Open');
+				internalOptions.dialogOptions.title = localize('windowsMainService.doPickAndOpen.open', 'Open');
 			} else if (pickFolders) {
-				internalOptions.dialogOptions.title = localize('windowsMainService.doPickAndOpen.openFolder','Open Folder');
+				internalOptions.dialogOptions.title = localize('windowsMainService.doPickAndOpen.openFolder', 'Open Folder');
 			} else {
-				internalOptions.dialogOptions.title = localize('windowsMainService.doPickAndOpen.openFile','Open File');
+				internalOptions.dialogOptions.title = localize('windowsMainService.doPickAndOpen.openFile', 'Open File');
 			}
 		}
 		this.dialogs.pickAndOpen(internalOptions);
@@ -199,7 +259,7 @@ export class WindowsMainService implements IWindowsMainService {
 	/**
 	 * 得到所有窗体
 	 */
-	public getAllWindows():IBrowserWindowEx[]{
+	public getAllWindows(): IBrowserWindowEx[] {
 		return [this.mainWindow];
 	}
 }
@@ -296,6 +356,6 @@ class Dialogs {
 
 	public async showMessageBox(options: Electron.MessageBoxOptions, window: IBrowserWindowEx): Promise<IMessageBoxResult> {
 		const result = await dialog.showMessageBox(window.win, options);
-		return {button: result.response, checkboxChecked: result.checkboxChecked};
+		return { button: result.response, checkboxChecked: result.checkboxChecked };
 	}
 }

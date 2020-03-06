@@ -27,6 +27,8 @@ export interface IWindowConfiguration extends ParsedArgs {
 	 * 打开的文件夹路径
 	 */
 	folderPath: string;
+	/** 要打开的文件，该值只从eui命令行获取 */
+	file?: string;
 }
 
 /**

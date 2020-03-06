@@ -12,9 +12,10 @@ export class WorkspaceService implements IWorkspaceService {
 
 	private readonly workspace: IWorkspace;
 	constructor(private environmentService: IEnvironmentService,
-		folderPath: string) {
+		folderPath: string,
+		file: string) {
 		if (folderPath) {
-			this.workspace = new Workspace(path.basename(folderPath), URI.file(folderPath));
+			this.workspace = new Workspace(path.basename(folderPath), URI.file(folderPath), file ? URI.file(file) : null);
 		}
 	}
 	/**

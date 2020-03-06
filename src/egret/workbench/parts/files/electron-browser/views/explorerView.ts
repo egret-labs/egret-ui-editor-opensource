@@ -19,6 +19,7 @@ import { IPanel } from 'egret/parts/common/panel';
 import { localize } from 'egret/base/localization/nls';
 import { voluationToStyle } from 'egret/base/common/dom';
 import { IWorkbenchEditorService } from 'egret/workbench/services/editor/common/ediors';
+import { IWorkspaceService } from 'egret/platform/workspace/common/workspace';
 
 
 /**
@@ -42,6 +43,7 @@ export class ExplorerView extends PanelContentDom implements IModelRequirePart, 
 	constructor(
 		@IInstantiationService private instantiationService: IInstantiationService,
 		@IFileService private fileService: IFileService,
+		@IWorkspaceService private workspaceService: IWorkspaceService,
 		@IWorkbenchEditorService private editorService: IWorkbenchEditorService,
 		@INotificationService private notificationService: INotificationService,
 		@IOperationBrowserService private operationService: IOperationBrowserService
@@ -430,6 +432,26 @@ export class ExplorerView extends PanelContentDom implements IModelRequirePart, 
 		return this.doRefresh(targetsToExpand).then(() => {
 			this.disposables.push(this.editorService.onActiveEditorChanged(() => this.revealActiveFile()));
 			this.revealActiveFile();
+			return this.openDefaultFile();
+		});
+	}
+
+	/**
+	 * 打开默认文件，该文件由eui命令行指定
+	 */
+	private openDefaultFile(): Promise<void> {
+		const workspace = this.workspaceService.getWorkspace();
+		if(!workspace){
+			return Promise.resolve();
+		}
+		const file = workspace.file;
+		if(!file){
+			return Promise.resolve();
+		}
+		return this.select(file, true).then(()=> {
+			if(this.hasSingleSelection(file)){
+				this.editorService.openEditor({ resource: file }, false);
+			}
 		});
 	}
 

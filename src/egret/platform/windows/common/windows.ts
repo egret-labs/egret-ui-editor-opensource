@@ -9,8 +9,10 @@ import { IBrowserWindowEx } from './window';
 export interface IOpenBrowserWindowOptions {
 	/** 命令 */
 	cli?: ParsedArgs;
-	/** 要打开的路径 */
+	/** 要打开的项目路径 */
 	folderPath?: string;
+	/** 要打开的文件，该值只从eui命令行获取 */
+	file?: string;
 }
 
 /**

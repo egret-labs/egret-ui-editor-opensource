@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="15px"
+	 height="15px" viewBox="0 0 15 15" enable-background="new 0 0 15 15" xml:space="preserve">
+<g id="图层_2">
+</g>
+<g id="图层_3">
+</g>
+<g id="图层_1">
+	<g id="feather">
+	</g>
+	<g>
+		<rect x="1" fill="#c2c2c2" width="7" height="2"/>
+		<rect x="1" fill="#c2c2c2" width="1" height="15"/>
+		<rect x="13" y="3" fill="#c2c2c2" width="1" height="10"/>
+		<rect x="2" y="13" fill="#c2c2c2" width="12" height="2"/>
+		<rect fill="none" width="15" height="15"/>
+		<polygon fill="#c2c2c2" points="14,3.999 10,3.999 10,0 		"/>
+		<g>
+			<path fill="#4999FF" d="M8.17,5.376c0-0.748-0.44-1.331-1.42-1.331c-0.66,0-1.265,0.33-1.848,0.945L4.363,4.496
+				c0.682-0.693,1.408-1.188,2.476-1.188c1.363,0,2.222,0.792,2.222,1.991c0,1.694-2.376,2.068-2.068,3.752H6.189
+				C5.826,7.191,8.17,6.663,8.17,5.376z M6.607,10.084c0.451,0,0.836,0.309,0.836,0.814s-0.385,0.825-0.836,0.825
+				s-0.836-0.319-0.836-0.825S6.156,10.084,6.607,10.084z"/>
+		</g>
+	</g>
+</g>
+</svg>

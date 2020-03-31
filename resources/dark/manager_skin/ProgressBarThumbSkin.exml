@@ -1,0 +1,4 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.manager.ProgressBarThumbSkin" xmlns:e="http://ns.egret.com/eui">
+	<e:Image percentHeight="100" percentWidth="100" source="dark_progressbar_progressbar_thumb_png"/>
+</e:Skin>

@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.manager.CloseButtonSkin" states="up,over,down,disabled" minHeight="24" minWidth="30"
+        xmlns:e="http://ns.egret.com/eui">
+        
+   <e:Image id="back" horizontalCenter="0" verticalCenter="0" width="18" height="18"
+            source.up="dark_closebutton_normal_png" source.over="dark_closebutton_over_png" source.down="dark_closebutton_down_png"
+            source.disabled="dark_closebutton_disabled_png"/>
+   <e:Rect fillAlpha="0" percentHeight="100" percentWidth="100" />
+</e:Skin>

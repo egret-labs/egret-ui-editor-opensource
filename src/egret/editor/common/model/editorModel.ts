@@ -222,7 +222,7 @@ export abstract class FileEditorModel extends EditorModel implements IFileEditor
 				return this.fileService.resolveContent(this.getResource())
 					.then(content => this.loadWithContent(content))
 					.then(value => {
-						this._onDidStateChange.fire(StateChange.CONTENT_CHANGE);
+						this.firDidStateChange();
 						this.setDirty(false);
 						this.mtime = fileStat.mtime;
 						return value;
@@ -250,6 +250,10 @@ export abstract class FileEditorModel extends EditorModel implements IFileEditor
 			this._model = model;
 			return this;
 		});
+	}
+
+	protected firDidStateChange(): void {
+		this._onDidStateChange.fire(StateChange.CONTENT_CHANGE);
 	}
 
 	protected abstract doUpdateModel(value: string, model: IInnerModel): Promise<IInnerModel>;

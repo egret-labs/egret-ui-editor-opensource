@@ -3,7 +3,6 @@ import URI from 'egret/base/common/uri';
 import { dispose, IDisposable } from 'egret/base/common/lifecycle';
 import { IInstantiationService } from 'egret/platform/instantiation/common/instantiation';
 import { IFileModelService, ConfirmResult } from 'egret/workbench/services/editor/common/models';
-
 import * as paths from 'egret/base/common/paths';
 import { IEditorInput, IFileEditorInput } from '../../core/inputs';
 import { IEditorModel, FileModelChangeEvent } from '../../core/models';
@@ -98,7 +97,7 @@ export abstract class EditorInput implements IEditorInput {
 	/**
 	 * 从输入流获取对应的编辑器model
 	 */
-	public abstract resolve(refresh?: boolean): Promise<IEditorModel>;
+	public abstract resolve(refresh?: boolean, instantiationService?: IInstantiationService): Promise<IEditorModel>;
 	/**
 	 * 确认保存
 	 */
@@ -151,8 +150,8 @@ export class FileEditorInput extends EditorInput implements IFileEditorInput {
 	constructor(
 		private resource: URI,
 		private preferredEncoding: string,
-		@IInstantiationService private instantiationService: IInstantiationService,
-		@IFileModelService private fileModelService: IFileModelService,
+		@IInstantiationService protected instantiationService: IInstantiationService,
+		@IFileModelService protected fileModelService: IFileModelService,
 	) {
 		super();
 
@@ -162,9 +161,9 @@ export class FileEditorInput extends EditorInput implements IFileEditorInput {
 	}
 
 	private registerListeners(): void {
-		this.toUnbind.push(this.fileModelService.models.onModelDirty(e => this.onDirtyStateChange(e)));
-		this.toUnbind.push(this.fileModelService.models.onModelSaveError(e => this.onDirtyStateChange(e)));
-		this.toUnbind.push(this.fileModelService.models.onModelSaved(e => this.onDirtyStateChange(e)));
+		this.toUnbind.push(this.fileModelService.modelManager.onModelDirty(e => this.onDirtyStateChange(e)));
+		this.toUnbind.push(this.fileModelService.modelManager.onModelSaveError(e => this.onDirtyStateChange(e)));
+		this.toUnbind.push(this.fileModelService.modelManager.onModelSaved(e => this.onDirtyStateChange(e)));
 	}
 
 	private onDirtyStateChange(e: FileModelChangeEvent): void {
@@ -233,7 +232,7 @@ export class FileEditorInput extends EditorInput implements IFileEditorInput {
 	 * 输入流是否脏了
 	 */
 	public isDirty(): boolean {
-		const model = this.fileModelService.models.get(this.resource);
+		const model = this.fileModelService.modelManager.get(this.resource);
 		if (!model) {
 			return false;
 		}
@@ -243,8 +242,8 @@ export class FileEditorInput extends EditorInput implements IFileEditorInput {
 	/**
 	 * 从输入流获取对应的编辑器model
 	 */
-	public resolve(refresh?: boolean): Promise<IEditorModel> {
-		return this.fileModelService.models.loadOrCreate(this, { encoding: this.preferredEncoding, reload: refresh }).then(model => {
+	public resolve(refresh?: boolean, instantiationService?: IInstantiationService): Promise<IEditorModel> {
+		return this.fileModelService.modelManager.loadOrCreate(this, { encoding: this.preferredEncoding, reload: refresh }, instantiationService).then(model => {
 			return model;
 		});
 	}
@@ -270,7 +269,7 @@ export class FileEditorInput extends EditorInput implements IFileEditorInput {
 	 * 已经被解析
 	 */
 	public isResolved(): boolean {
-		return !!this.fileModelService.models.get(this.resource);
+		return !!this.fileModelService.modelManager.get(this.resource);
 	}
 	/**
 	 * 与另一个input是否匹配

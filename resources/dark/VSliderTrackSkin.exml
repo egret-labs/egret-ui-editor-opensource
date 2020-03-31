@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.VSliderTrackSkin"
+        states="up,over,down,disabled"
+        xmlns:e="http://ns.egret.com/eui">
+	<e:Rect fillAlpha="0" fillColor="0" left="0" right="0" top="0" bottom="0"/>
+</e:Skin>

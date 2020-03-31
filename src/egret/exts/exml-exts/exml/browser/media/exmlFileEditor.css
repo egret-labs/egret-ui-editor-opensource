@@ -1,6 +1,9 @@
 .refresh-icon{	  
 	background-image: url(./light/refresh.svg);
 }
+.save-icon{	  
+	background-image: url(./light/save.svg);
+}
 .design-icon{	  
 	background-image: url(./light/design.svg);
 }

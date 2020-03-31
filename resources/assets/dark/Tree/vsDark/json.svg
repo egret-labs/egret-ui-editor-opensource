@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="15px"
+	 height="15px" viewBox="0 0 15 15" enable-background="new 0 0 15 15" xml:space="preserve">
+<g id="图层_2">
+</g>
+<g id="图层_3">
+</g>
+<g id="图层_1">
+	<g id="feather">
+	</g>
+	<g>
+		<polygon fill="#c2c2c2" points="2,13 2,2 7,2 7,0 1,0 1,1 1,2 1,13 1,13.229 1,15 13,15 13,13 		"/>
+		<polygon fill="#c2c2c2" points="13,4 9,4 9,0.001 		"/>
+		<rect y="5" fill="#82BEF2" width="15" height="7"/>
+		<g>
+			<polygon points="2,10 1,10 1,11 3,11 3,10 3,6 2,6 			"/>
+			<polygon points="4,7 5,7 7,7 7,6 4,6 			"/>
+			<path d="M8,7v3v1h3v-1V7V6H8V7z M10,7v3H9V7H10z"/>
+			<polygon points="12,6 12,7 12,11 13,11 13,7 14,7 14,11 15,11 15,7 15,6 			"/>
+			<polygon points="4,8 4,9 5,9 6,9 6,10 4,10 4,11 7,11 7,10 7,9 7,8 6,8 5,8 5,7 4,7.001 			"/>
+		</g>
+		<rect fill="none" width="15" height="15"/>
+	</g>
+</g>
+</svg>

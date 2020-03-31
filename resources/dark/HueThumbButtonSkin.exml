@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.HueThumbButtonSkin"
+        width="37" height="1"
+        states="up,over,down,disabled"
+        xmlns:e="http://ns.egret.com/eui">
+	<e:Image y="-6" alpha="1" alpha.disabled="0.5" width="37" height="11" source="dakr_huethumbbutton_colorphase_thumb_png"/>
+</e:Skin>

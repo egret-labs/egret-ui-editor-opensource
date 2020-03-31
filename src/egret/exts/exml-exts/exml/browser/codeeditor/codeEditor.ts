@@ -1,23 +1,17 @@
 import { IDisposable, dispose } from 'egret/base/common/lifecycle';
-import { EventDispatcher, Event } from "../exmleditor/EventDispatcher";
 import { IExmlFileEditorModel, RootChangedEvent, TextChangedEvent } from "../../common/exml/models";
 import * as xmlStrUtil from '../../common/sax/xml-strUtils';
 import { isInstanceof, INode } from '../../common/exml/treeNodes';
 import { StateChange } from 'egret/editor/core/models';
 import { IEgretProjectService } from 'egret/exts/exml-exts/project';
 import { ICodeService } from '../../common/server/ICodeService';
+import { BaseTextEditor } from 'egret/editor/browser/baseTextEditor';
 
 /**
  */
-export class CodeEditor extends EventDispatcher implements IDisposable {
+export class CodeEditor extends BaseTextEditor {
 
-	private container: HTMLElement;
-	private _isActive: boolean;
-	private monacoDisposables: monaco.IDisposable[] = [];
 	private exmlFileModel: IExmlFileEditorModel;
-	private editor: monaco.editor.IStandaloneCodeEditor;
-	private _isDirty: boolean = false;
-	private _alternativeVersionId: number = -1;
 
 	/**
 	 *
@@ -32,35 +26,9 @@ export class CodeEditor extends EventDispatcher implements IDisposable {
 	 * 初始化
 	 * @param container 
 	 */
-	public init(container: HTMLElement): void {
-		this.container = container;
-		this.editor = monaco.editor.create(container, {
-			value: '',
-			language: 'xml',
-			contextmenu: true,
-			minimap: { enabled: false },
-			theme: 'vs-dark'
-		});
-		// DEBUG
-		// const actions = (this.editor as any).getActions();
-		// actions.forEach(element => {
-		// 	console.log(element.id);
-		// });
+	protected onInit(container: HTMLElement, language: string): void {
+		super.onInit(container, language);
 		this.codeService.attachEditor(this.editor);
-		// 禁用Command Palette快捷键
-		// https://github.com/Microsoft/monaco-editor/issues/419
-		this.editor.addCommand(monaco.KeyCode.F1, () => {
-			// do nothing.
-		});
-		this.monacoDisposables.push(this.editor.onDidChangeModelContent((e) => this.didChangeModelContent_handler(e)));
-	}
-
-	private didChangeModelContent_handler(e: monaco.editor.IModelContentChangedEvent): void {
-		if (e.isFlush) {
-			this.resetDirtyState();
-		} else {
-			this.upateDirtyState();
-		}
 	}
 
 	public setup(exmlModel: IExmlFileEditorModel): void {
@@ -72,14 +40,8 @@ export class CodeEditor extends EventDispatcher implements IDisposable {
 		}
 	}
 
-	/**
-	 */
-	public get isDirty(): boolean {
-		return this._isDirty;
-	}
-
 	public setActive(active: boolean): void {
-		this._isActive = active;
+		super.setActive(active);
 		if (!active) {
 			this.syncText();
 			this.updateSelectedNodeBySelection();
@@ -107,29 +69,12 @@ export class CodeEditor extends EventDispatcher implements IDisposable {
 		}
 	}
 
-	public getText(): string {
-		return this.editor.getValue();
-	}
-
 	/**
 	 * 清空
 	 */
 	private clear(): void {
 		this.editor.setValue('');
 	}
-
-	/**
-	 * 重置状态
-	 */
-	public resetState(): void {
-		this.resetDirtyState();
-		this.upateDirtyState();
-	}
-
-	public layout(): void {
-		this.editor.layout();
-	}
-
 	private modelDisposables: IDisposable[] = [];
 	private attachEventListener(): void {
 		if (this.exmlFileModel) {
@@ -176,28 +121,6 @@ export class CodeEditor extends EventDispatcher implements IDisposable {
 		if (e === StateChange.SAVED) {
 			this.resetState();
 		}
-	}
-
-	private resetDirtyState(): void {
-		this._alternativeVersionId = this.editor.getModel().getAlternativeVersionId();
-		const fire = this._isDirty;
-		this._isDirty = false;
-		if (fire) {
-			this.dispatchEvent(new Event('onDirtyStateChanged', false))
-		}
-	}
-
-	private upateDirtyState(): void {
-		const id = this.editor.getModel().getAlternativeVersionId();
-		if (this._alternativeVersionId === -1) {
-			this._alternativeVersionId = id;
-		}
-		const dirty = !(id === this._alternativeVersionId);
-		if (this._isDirty !== dirty) {
-			this._isDirty = dirty;
-			this.dispatchEvent(new Event('onDirtyStateChanged', dirty))
-		}
-		// console.log('CodeEditor, isDirty: ', this._isDirty);
 	}
 
 	private updateSelectionBySelectedNode(): void {
@@ -302,9 +225,7 @@ export class CodeEditor extends EventDispatcher implements IDisposable {
 	 * 释放
 	 */
 	public dispose(): void {
+		super.dispose();
 		this.detachEventListener();
-		dispose(this.monacoDisposables);
-		this.codeService.detachEditor(this.editor);
-		this.editor.dispose();
 	}
 }

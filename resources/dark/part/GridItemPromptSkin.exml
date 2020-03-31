@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.GridItemPromptSkin" width="400" height="300" xmlns:e="http://ns.egret.com/eui">
+	<e:Rect id="rectGrounp" fillColor="0x6dff66" fillAlpha="0.2" top="-1" left="-1" right="-1" bottom="-1" visible="false" strokeWeight="1"/>
+	<e:Rect id="rectWarning" fillColor="0xfff330" fillAlpha="0" top="0" left="0" right="0" bottom="0" visible="false"/>
+	<e:Rect id="rectError" fillColor="0xff0000" fillAlpha="0" top="1" left="1" right="1" bottom="1" visible="false" strokeWeight="1" strokeAlpha="0.8"/>
+</e:Skin>

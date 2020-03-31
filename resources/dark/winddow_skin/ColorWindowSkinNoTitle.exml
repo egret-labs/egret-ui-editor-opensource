@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.WinColorWindowNoTitleSkin" states="normal,maximized,minimized,disabled,normalAndInactive,maximizedAndInactive"
+xmlns:e="http://ns.egret.com/eui" xmlns:eui="eui.*">
+<e:Group id="group" left="0" right="0" bottom="0" top="0" touchEnabled="false">
+	<e:Rect id="backUI" strokeAlpha="1" strokeColor="0x1b2025" fillColor="0x1c1a28" percentHeight="100" percentWidth="100"/>
+	<e:Group id="contentGroup" top="0" left="0" right="0" bottom="0">
+		<e:Label text="选择颜色:" x="7" y="7" textColor="0xe1e1e1" size="12"/>
+		<e:Image id="hueLine" x="279" y="27" height="256"/>
+		<e:Label text="新的" right="26" y="7" textColor="0xe1e1e1" size="12"/>
+		<e:Label text="当前" right="26" y="90" textColor="0xe1e1e1" size="12"/>
+		<e:Rect fillColor="0xFFFFFF" fillAlpha="0" percentHeight="100" percentWidth="100" id="focusUi"/>
+		<e:Group id="saturationGroup" touchChildren="false" scrollEnabled="true" x="7" y="27" width="256" height="256">
+			<e:Rect id="saturationUI" width="256" height="256"/>
+			<e:Image id="saturationCircle" source="circle_white_png" width="14" height="14"/>
+		</e:Group>
+		<eui:HueSlider id="hueSlider" skinName="skins.HueSliderSkin" x="270" y="27" maximum="1535" minimum="0" height="256"/>
+		<e:Group right="16" bottom="16">
+			<e:layout >
+				<e:HorizontalLayout gap="16"/>
+			</e:layout>
+			<e:Button id="defaultButton" skinName="skins.ButtonSkin" width="60" label="还原"/>
+			<e:Button id="confirmButton" skinName="skins.ButtonSkin" width="60" label="确定"/>
+			<e:Button id="cancelButton" skinName="skins.ButtonSkin" width="60" label="取消"/>
+		</e:Group>
+		<e:Group right="7" y="132">
+			<e:layout>
+				<e:VerticalLayout gap="5" horizontalAlign="right"/>
+			</e:layout>
+			<e:Group>
+				<e:layout>
+					<e:HorizontalLayout gap="5" verticalAlign="middle"/>
+				</e:layout>
+				<e:Label textColor="0xe1e1e1" text="R:" size="12"/>
+				<e:TextInput id="rTextInput" maxChars="3" restrict="0-9" width="38" skinName="skins.TextInputSkin"/>
+			</e:Group>
+			<e:Group>
+				<e:layout>
+					<e:HorizontalLayout gap="5" verticalAlign="middle"/>
+				</e:layout>
+				<e:Label textColor="0xe1e1e1" text="G:" size="12"/>
+				<e:TextInput id="gTextInput" maxChars="3" restrict="0-9" width="38" skinName="skins.TextInputSkin"/>
+			</e:Group>
+			<e:Group>
+				<e:layout>
+					<e:HorizontalLayout gap="5" verticalAlign="middle"/>
+				</e:layout>
+				<e:Label textColor="0xe1e1e1" text="B:" size="12"/>
+				<e:TextInput id="bTextInput" maxChars="3" restrict="0-9" width="38"  skinName="skins.TextInputSkin"/>
+			</e:Group>
+			<e:Group y="231" right="7">
+				<e:layout>
+					<e:HorizontalLayout gap="5" verticalAlign="middle"/>
+				</e:layout>
+				<e:Label textColor="0xe1e1e1" text="#" size="12"/>
+				<e:TextInput id="rgbTextInput" restrict="0-9a-fA-Fx#" maxChars="6" width="62" skinName="skins.TextInputSkin" text="888888"/>
+			</e:Group>
+		</e:Group>
+		<e:Group right="7" y="27">
+			<e:layout>
+				<e:VerticalLayout gap="0"/>
+			</e:layout>
+			<e:Rect id="currentColorArea" width="62" height="28"/>
+			<e:Rect id="lastColorArea" width="62" height="28"/>
+		</e:Group>
+	</e:Group>
+	<e:Group id="leftResize" top="20" bottom="20" width="4" left="0" visible="false" visible.normal="true"/>
+	<e:Group id="rightResize" top="20" bottom="20" width="4" right="0" visible="false" visible.normal="true"/>
+	<e:Group id="topResize" left="20" right="20" top="0" height="4" visible="false" visible.normal="true"/>
+	<e:Group id="bottomResize" left="20" right="20" height="4" bottom="0" visible="false" visible.normal="true"/>
+	<e:Group id="topRightResize" right="0" height="20" width="4" visible="false" visible.normal="true"/>
+	<e:Group id="topLeftResize" left="0" top="0" height="20" width="20" visible="false" visible.normal="true"/>
+	<e:Group id="bottomLeftResize" left="0" bottom="0" height="20" width="20" visible="false" visible.normal="true"/>
+	<e:Group id="bottomRightResize" right="0" bottom="0" height="20" width="20" visible="false" visible.normal="true"/>
+	<e:Rect id="modalMask" fillColor="0xFFFFFF" left="0" right="0" top="0" bottom="0" alpha="0.1" visible="false" touchEnabled="false"/>
+</e:Group>
+</e:Skin>

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.HueSliderSkin"
+        states="normal,disabled"
+        xmlns:e="http://ns.egret.com/eui">
+	<e:Button id="thumb" height="1" skinName="skins.HueThumbButtonSkin"/>
+	<e:Button id="track" width="20" horizontalCenter="0" top="0" bottom="0" height="256" alpha="1" skinName="skins.VSliderTrackSkin"/>
+</e:Skin>

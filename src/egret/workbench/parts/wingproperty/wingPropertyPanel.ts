@@ -118,9 +118,8 @@ export class WingPropertyPanel extends InnerBtnWindow {
 		contentGroup.style.width = '400px';
 
 		// TODO 这个需要精确的描述
-		const descriptDisplay = new Label(contentGroup);
-
-		descriptDisplay.text = localize('wingPropertyPanel.render.description', 'The resource <resourcePlugin.configs> and theme <theme> in the project root directory wingProperties.json are required to display the EUI project.');
+		// const descriptDisplay = new Label(contentGroup);
+		// descriptDisplay.text = localize('wingPropertyPanel.render.description', 'The resource <resourcePlugin.configs> and theme <theme> in the project root directory wingProperties.json are required to display the EUI project.');
 
 		const themeAttItemContainer = new AttributeItemGroup(contentGroup);
 		themeAttItemContainer.additionalVisible = true;
@@ -137,7 +136,7 @@ export class WingPropertyPanel extends InnerBtnWindow {
 		resAttItemContainer.style.marginTop = '5px';
 		resAttItemContainer.label = localize('wingPropertyPanel.render.resource', 'Resource:');
 		this.resInput = new TextInput(resAttItemContainer.getElement());
-		this.resInput.prompt = localize('wingPropertyPanel.render.selectSourceFile', 'Select Add resource file');
+		this.resInput.prompt = localize('wingPropertyPanel.render.selectSourceFile', 'Select Add resource configuration file');
 		this.resInput.readonly = true;
 		this.resBtn = new SystemButton(resAttItemContainer.getAdditionalElement());
 		this.resBtn.label = localize('wingPropertyPanel.render.browse', 'Browse');

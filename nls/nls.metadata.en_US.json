@@ -51,6 +51,10 @@
 		"s": "Don't Save",
 		"t": "Don't Save"
 	},
+	"alert.button.no": {
+		"s": "No",
+		"t": "No"
+	},
 	"alert.button.ok": {
 		"s": "Ok",
 		"t": "Ok"
@@ -70,6 +74,10 @@
 	"alert.button.saveAndContinue": {
 		"s": "Save And Continue",
 		"t": "Save And Continue"
+	},
+	"alert.button.yes": {
+		"s": "Yes",
+		"t": "Yes"
 	},
 	"alignPart.doRender.align": {
 		"s": "Align",
@@ -1743,6 +1751,134 @@
 		"s": "New name:",
 		"t": "New name:"
 	},
+	"res.editor.jsonParseFailed": {
+		"s": "JSON parse failed, please check whether the file is JSON format",
+		"t": "JSON parse failed, please check whether the file is JSON format"
+	},
+	"res.editor.editScale9Grid": {
+		"s": "Edit Scale9Grid",
+		"t": "Edit Scale9Grid"
+	},
+	"res.editor.refreshSheet": {
+		"s": "Refresh Sheet",
+		"t": "Refresh Sheet"
+	},
+	"res.editor.deleteResource": {
+		"s": "Delete Resource",
+		"t": "Delete Resource"
+	},
+	"res.editor.deleteResourceGroup": {
+		"s": "Delete Resource Group",
+		"t": "Delete Resource Group"
+	},
+	"res.editor.removeResource": {
+		"s": "Remove Resource",
+		"t": "Remove Resource"
+	},
+	"res.editor.displayInManager": {
+		"s": "Display in resource manager",
+		"t": "Display in resource manager"
+	},
+	"res.editor.revealInWindows": {
+		"s": "Reveal in Explorer",
+		"t": "Reveal in Explorer"
+	},
+	"res.editor.revealInMac": {
+		"s": "Reveal in Finder",
+		"t": "Reveal in Finder"
+	},
+	"res.editor.openContainer": {
+		"s": "Open Containing Folder",
+		"t": "Open Containing Folder"
+	},
+	"res.editor.resourceGroup": {
+		"s": "Resource Group：",
+		"t": "Resource Group："
+	},
+	"res.editor.addGroup": {
+		"s": "Add Group",
+		"t": "Add Group"
+	},
+	"res.editor.groupName": {
+		"s": "Group Name",
+		"t": "Group Name"
+	},
+	"res.editor.itemName": {
+		"s": "Name",
+		"t": "Name"
+	},
+	"res.editor.itemUrl": {
+		"s": "Url",
+		"t": "Url"
+	},
+	"res.editor.ready": {
+		"s": "Ready",
+		"t": "Ready"
+	},
+	"res.editor.resNameError": {
+		"s": "Resource name error quantity：{0}",
+		"t": "Resource name error quantity：{0}"
+	},
+	"res.editor.resGroupError": {
+		"s": "Resource group error quantity：{0}",
+		"t": "Resource group error quantity：{0}"
+	},
+	"res.editor.otherError": {
+		"s": "other error quantity：{0}",
+		"t": "other error quantity：{0}"
+	},
+	"res.editor.filePathError": {
+		"s": "File path error or file parse failed: {0}",
+		"t": "File path error or file parse failed: {0}"
+	},
+	"res.editor.subError": {
+		"s": "Two level Key warning: {0}",
+		"t": "Two level Key warning: {0}"
+	},
+	"res.editor.materialSearchPrompt": {
+		"s": "/Start with matching folders",
+		"t": "/Start with matching folders"
+	},
+	"res.editor.fileChangeInSystem": {
+		"s": "Has changed the file on the file system. Do you want to replace the editor with these changes?",
+		"t": "Has changed the file on the file system. Do you want to replace the editor with these changes?"
+	},
+	"res.editor.jsonException": {
+		"s": "Json text modification exception",
+		"t": "Json text modification exception"
+	},
+	"res.editor.jsonFileError": {
+		"s": "Json format error, can not be resolved!",
+		"t": "Json format error, can not be resolved!"
+	},
+	"res.editor.NewResourceGroup": {
+		"s": "New Resource Group",
+		"t": "New Resource Group"
+	},
+	"res.editor.resInfo.itemName": {
+		"s": "       Name: ",
+		"t": "       Name: "
+	},
+	"res.editor.resInfo.itemType": {
+		"s": "       Type: ",
+		"t": "       Type: "
+	},
+	"res.editor.resInfo.itemUrl": {
+		"s": "      Url: ",
+		"t": "      Url: "
+	},
+	"res.editor.resInfo.otherParam": {
+		"s": "Additional Parameter: ",
+		"t": "Additional Parameter: "
+	},
+	"res.editor.resInfo.subkeys": {
+		"s": "  Subkeys: ",
+		"t": "  Subkeys: "
+	},
+	"res.editor.newGroupPanel.addGroup": {
+		"s": "Group Name",
+		"t": "Group Name"
+	},
 	"resType.bin": {
 		"s": "Bin",
 		"t": "Bin"
@@ -1956,8 +2092,8 @@
 		"t": "Resource:"
 	},
 	"wingPropertyPanel.render.selectSourceFile": {
-		"s": "Select Add resource file",
-		"t": "Select Add resource file"
+		"s": "Select Add resource configuration file",
+		"t": "Select Add resource configuration file"
 	},
 	"wingPropertyPanel.render.selectTopicFile": {
 		"s": "Select add theme file",

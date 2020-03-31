@@ -1,0 +1,4 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.SelectionIndicatorSkin" xmlns:e="http://ns.egret.com/eui">
+	<e:Rect fillColor="0x3595ff" strokeAlpha="1" strokeColor="0x006ed7" strokeWeight="1" percentHeight="100" percentWidth="100"/>
+</e:Skin>

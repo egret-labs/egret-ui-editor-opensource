@@ -67,7 +67,7 @@ export class AboutPanel extends InnerWindow {
 
 		let divContent = (<div className='aboutPage' style={{ marginBottom: 40 }}>
 			<div className='top'>
-				<img className='log' src={require('./media/code.svg')} />
+				<div className='log' />
 				<div className='titlePanel'>
 					<div style={{ fontSize: 20, color: '#E4E5E9' }}>{APPLICATION_NAME}</div>
 					<div style={{ fontSize: 20, color: '#E4E5E9' }}>{remote.app.getVersion()}</div>

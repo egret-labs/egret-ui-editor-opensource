@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<e:Skin class="skins.ResAddButton" states="up,over,down,disabled" minHeight="23" xmlns:e="http://ns.egret.com/eui">
+	<e:Group width="13" height="13" x="5" verticalCenter="0">
+		<e:Rect width="3" fillColor="0xf0f0f0" horizontalCenter="0" top="0" bottom="0"/>
+		<e:Rect width="13" fillColor="0xf0f0f0" horizontalCenter="0" x="10" height="3" verticalCenter="0"/>
+	</e:Group>
+    <e:Label bold="true" id="labelDisplay" top="0" bottom="0" alpha.disabled="0.2" fontFamily="Microsoft YaHei"
+             size="12" textColor.up="0xf0f0f0" verticalCenter="0" textColor.over="0xf6f6f6" textColor.down="0xffffff" verticalAlign="middle" textAlign="center" x="20"/>
+</e:Skin>

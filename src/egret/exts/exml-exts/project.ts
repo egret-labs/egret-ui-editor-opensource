@@ -53,7 +53,7 @@ export interface IEgretProjectService {
 	/**
 	 * 项目配置文件改变
 	 */
-	onProjectConfigChanged:Event<void>;
+	onProjectConfigChanged: Event<void>;
 
 	/**
 	 * 确保已经刷新过了
@@ -90,7 +90,7 @@ class EgretProjectService implements IEgretProjectService {
 	private _theme: ITheme;
 
 	private _onResConfigChanged: Emitter<void>;
-	private _onProjectConfigChanged:Emitter<void>;
+	private _onProjectConfigChanged: Emitter<void>;
 
 	constructor(
 		@IInstantiationService private instantiationService: IInstantiationService,
@@ -113,7 +113,7 @@ class EgretProjectService implements IEgretProjectService {
 	/**
 	 * 项目配置文件改变
 	 */
-	public get onProjectConfigChanged():Event<void>{
+	public get onProjectConfigChanged(): Event<void> {
 		return this._onProjectConfigChanged.event;
 	}
 

@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.StateItemSkin2" minWidth="80" height="30" xmlns:e="http://ns.egret.com/eui" states="up,over,down" >
+	<e:Rect id="back" top="1" bottom="1" top.down="0" bottom.down="0" left="0" right="0"
+	fillAlpha.up="0"
+	fillColor.over="0x3576f8"
+	fillColor.down="0x1c1b29"/>
+	<e:Label left="20" right="20" height="100%" textAlign="center" verticalAlign="middle" text="{data.label}" id='textDisplay' size='12' textColor="0xD4D4D4" alpha=".5" alpha.down="1"/>
+	<e:Image buttonMode="true" id="deleteBtn" right="3" verticalCenter="0" source="delete_png" visible="false" />
+	<e:Image buttonMode="true" id="stateBtn" x="5" source="setdefault_png" visible="false" />
+	<e:Image buttonMode="true" id="stateTag" x="5" source="default_png" visible="{data.isDefault}"/>
+	<e:Rect width="1" top="0" bottom="0" fillColor="0x5b5a65"/>
+</e:Skin>

@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.MenuButtonSkin" states="up,over,down,disabled" minHeight="17" minWidth="17"
+        xmlns:e="http://ns.egret.com/eui">
+	<e:Group percentHeight="100" percentWidth="100" alpha="1" alpha.disabled="0.5">
+		<e:Image top="0" left="0" right="0" bottom="0"  width="9" height="9" smoothing="false" source="btnBgNormal_png"
+		         source.disabled="btnBgNormal_png" source.over="btnBgHover_png"
+		         source.down="btnBgDown_png" />
+		<e:Image verticalCenter="0" horizontalCenter="0" source="iconMenu_png" width="9" height="9"/>
+	</e:Group>
+</e:Skin>

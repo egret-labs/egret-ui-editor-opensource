@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.MaterialPanelTextInputSkin" minHeight="23" states="normal,disabled,normalWithPrompt,disabledWithPrompt"
+	xmlns:e="http://ns.egret.com/eui">
+	<e:Group width="100%" height="100%" alpha="1" alpha.disabled="0.5" alpha.disabledWithPrompt="0.5">
+		<e:Image id="bgUnselect" right="0" bottom="0" top="0" left="0" scale9Grid="2,2,1,1" source="" />
+		<e:Image id="bgSelect" visible="false" right="0" bottom="0" top="0" left="0" scale9Grid="2,2,1,1" source="" />
+		<e:Rect height="100%" width="100%" x="0" y="0" fillColor="0x303030" />
+		<e:EditableText id="textDisplay" textColor="0xEEEEEE" height="23" size="12" multiline="false" left="5" right="5" verticalAlign="middle"
+			verticalCenter="0" fontFamily="Microsoft YaHei" wordWrap="false"/>
+		<e:Label id="promptDisplay" textColor="0x64696d" multiline="false" left="5" right="4" verticalCenter="0" verticalAlign="middle" touchEnabled="false"
+			size="12" includeIn="normalWithPrompt,disabledWithPrompt" fontFamily="Microsoft YaHei"/>
+		<e:Rect id="outlinetop" height="1" percentWidth="100" top="0" fillColor="0x252525" />
+		<e:Rect id="outlinedown" height="1" percentWidth="100" bottom="0" fillColor="0x252525" />
+		<e:Rect id="outlineleft" width="1" percentHeight="100" left="0" fillColor="0x252525" />
+		<e:Rect id="outlineright" width="1" percentHeight="100" right="0" fillColor="0x252525" /> </e:Group>
+</e:Skin>

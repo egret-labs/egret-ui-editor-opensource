@@ -33,6 +33,8 @@ export class TreeNodeType {
  */
 export class TreeNodeBase {
 
+	// 资源所在的*.res.json文件名称
+	public resFile: string;
 	//图标
 	public icon: string = '';
 

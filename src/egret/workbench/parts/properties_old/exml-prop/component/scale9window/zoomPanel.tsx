@@ -407,7 +407,7 @@ export class ZoomPanel extends React.Component<ZoomPanelProps, any>  {
 	}
 
 	private handleMouseWheel = (e: React.WheelEvent<HTMLDivElement>): void => {
-		e.preventDefault();
+		// e.preventDefault();
 		// console.log(e.deltaX, e.deltaY, e.deltaZ);
 		this.zoomContent(e);
 	}

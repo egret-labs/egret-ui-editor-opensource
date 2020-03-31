@@ -1,7 +1,7 @@
 import { IDisposable } from 'egret/base/common/lifecycle';
 import URI from 'egret/base/common/uri';
 import { Event } from 'egret/base/common/event';
-import { createDecorator } from 'egret/platform/instantiation/common/instantiation';
+import { createDecorator, IInstantiationService } from 'egret/platform/instantiation/common/instantiation';
 import { FileModelChangeEvent, IFileEditorModel } from 'egret/editor/core/models';
 import { IFileEditorInput } from 'egret/editor/core/inputs';
 
@@ -101,7 +101,7 @@ export interface IFileEditorModelManager {
 	 * @param resource 资源
 	 * @param options 加载配置
 	 */
-	loadOrCreate(input: IFileEditorInput, options?: IModelLoadOrCreateOptions): Promise<IFileEditorModel>;
+	loadOrCreate(input: IFileEditorInput, options?: IModelLoadOrCreateOptions, instantiationService?: IInstantiationService): Promise<IFileEditorModel>;
 	/**
 	 * 释放一个编辑器数据层
 	 * @param model 
@@ -126,7 +126,7 @@ export interface IFileModelService extends IDisposable {
 	/**
 	 * 模块管理器
 	 */
-	models: IFileEditorModelManager;
+	modelManager: IFileEditorModelManager;
 	/**
 	 * 判断指定的URI是否脏了，如果没有指定URI则会判断所有URI是否脏了
 	 * @param resource 

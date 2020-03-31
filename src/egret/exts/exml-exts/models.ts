@@ -2,6 +2,7 @@ import { createDecorator, IInstantiationService } from 'egret/platform/instantia
 import { IExmlModel } from './exml/common/exml/models';
 import { Event, Emitter } from 'egret/base/common/event';
 import { IWorkbenchEditorService } from 'egret/workbench/services/editor/common/ediors';
+import { ExmlFileEditor } from './exml/browser/exmlFileEditor';
 
 /**
  * 初始化ExmlModel服务实例
@@ -77,8 +78,11 @@ export class ExmlModelServices implements IExmlModelServices {
 
 
 	private currentModelChanged(): void {
-
 		const currentEditor = this.workbenchEditorService.getActiveEditor();
+		if(currentEditor && (currentEditor as any).getEditorId() !== ExmlFileEditor.ID){
+			this.doCurrentModelChanged(null);
+			return;
+		}
 		if (currentEditor) {
 			currentEditor.getModel().then(model => {
 				if (model && model.getModel()) {

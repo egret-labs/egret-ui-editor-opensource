@@ -170,6 +170,100 @@ export class EgretRuntimeDelegate implements IDisposable {
 	}
 }
 
+/**
+ * The runtime for egret res
+ */
+export class EgretAssetsRuntime implements IEgretAssetsRuntime {
+	public onLog: (message: any) => void;
+	public onWarn: (message: any) => void;
+	public onError: (message: any) => void;
+	private onLoaded: () => void;
+	private iframe: HTMLIFrameElement;
+	constructor() {
+		this.iframe = document.createElement('iframe');
+		this.iframe.style.borderWidth = '0';
+		this.iframe.style.border = 'none';
+		this.iframe.addEventListener('load', () => {
+			this.runtime_loadedHandler();
+		});
+		var container = this.getIframeContainer();
+		if (container.childNodes.length === 0) {
+			container.appendChild(this.iframe);
+		} else {
+			container.insertBefore(this.iframe, container.childNodes[0]);
+		}
+	}
+
+	private _loaded: boolean = false;
+	public get loaded(): boolean {
+		return this._loaded;
+	}
+
+	private runtime_loadedHandler(): void {
+		if (!this.iframe.contentWindow || !this.iframe.contentWindow['RES']) {
+			return;
+		}
+		this._loaded = true;
+		var window: any = this.iframe.contentWindow;
+		window.console = {};
+		window.console.log = (message: any) => {
+			if (this.onLog) {
+				this.onLog(message);
+			}
+		};
+		window.console.warn = (message: any) => {
+			if (this.onWarn) {
+				this.onWarn(message);
+			}
+		};
+		window.console.error = (message: any) => {
+			if (this.onError) {
+				this.onError(message);
+			}
+		};
+		this._runtimeEgret = window['egret'];
+		this._runtimeRES = window['RES'];
+		if (this.onLoaded) {
+			this.onLoaded();
+		}
+	}
+
+	private _runtimeRES: any;
+	public get runtimeRES(): any {
+		return this._runtimeRES;
+	}
+
+	private getIframeContainer(): HTMLElement {
+		var target = document.getElementById('root_runtime_container');
+		if (!target) {
+			target = document.createElement('div');
+			target.id = 'root_runtime_container';
+			target.style.visibility = 'false';
+			document.body.appendChild(target);
+		}
+		return target;
+	}
+
+	private _url: string = '';
+	public get url(): string {
+		return this._url;
+	}
+	private _runtimeEgret: any;
+
+	public initRuntime(url: string): Promise<void> {
+		return new Promise<void>((c, e) => {
+			this.onLoaded = () => {
+				c(null);
+			};
+			this.iframe.src = url;
+			this._url = url;
+		});
+	}
+	public dispose(): void {
+		this.iframe.remove();
+	}
+}
+
 /** 
  * 运行时接口
  */
@@ -231,5 +325,18 @@ export class IRuntimeAPI {
 	 */
 	readonly resumeOnceGlobal: () => void;
 	
+}
+
+/**
+ * The interface of runtime for egret RES
+ */
+export interface IEgretAssetsRuntime {
+	onLog: (message: any) => void;
+	onWarn: (message: any) => void;
+	onError: (message: any) => void;
+	readonly runtimeRES: any;
+	readonly url: string;
+	initRuntime(url: string): Promise<void>;
+	readonly loaded: boolean;
 }
 

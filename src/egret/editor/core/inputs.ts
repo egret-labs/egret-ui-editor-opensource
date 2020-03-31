@@ -1,7 +1,8 @@
-import { Event } from "egret/base/common/event";
-import URI from "egret/base/common/uri";
-import { IDisposable } from "egret/base/common/lifecycle";
-import { IEditorModel } from "./models";
+import { Event } from 'egret/base/common/event';
+import URI from 'egret/base/common/uri';
+import { IDisposable } from 'egret/base/common/lifecycle';
+import { IEditorModel } from './models';
+import { IInstantiationService } from 'egret/platform/instantiation/common/instantiation';
 
 
 /**
@@ -45,7 +46,7 @@ export interface IEditorInput extends IDisposable {
 	/**
 	 * 从输入流获取对应的编辑器model
 	 */
-	resolve(): Promise<IEditorModel>;
+	resolve(refresh?: boolean, instantiationService?: IInstantiationService): Promise<IEditorModel>;
 	/**
 	 * 当前输入流是否脏了
 	 */

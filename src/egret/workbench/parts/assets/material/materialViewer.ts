@@ -1,7 +1,7 @@
 import { IDataSource, ITree, IRenderer, IController, IDragAndDrop, IDragOverReaction, ContextMenuEvent, IFilter, ISorter } from 'vs/base/parts/tree/browser/tree';
 import { IDragAndDropData } from 'vs/base/browser/dnd';
 import * as DOM from 'vs/base/browser/dom';
-import { DefaultController } from 'vs/base/parts/tree/browser/treeDefaults';
+import { DefaultController, ClickBehavior, OpenMode } from 'vs/base/parts/tree/browser/treeDefaults';
 import { IMouseEvent, DragMouseEvent } from 'vs/base/browser/mouseEvent';
 import { Tree } from 'vs/base/parts/tree/browser/treeImpl';
 import { IFileService } from 'egret/platform/files/common/files';
@@ -34,13 +34,13 @@ export class MaterialDataSource implements IDataSource {
 	public getId(tree: ITree, stat: any): string {
 
 		if (stat instanceof TreeNodeBase) {
-			return 'model' + stat.model + stat.label;
+			return stat.resFile + 'model' + stat.model + stat.label;
 		}
 		else if (stat instanceof TreeLeafNode) {
-			return 'leaf' + stat.model + stat.label;
+			return stat.resFile + 'leaf' + stat.model + stat.label;
 		}
 		else if (stat instanceof TreeParentNode) {
-			return 'parent' + stat.model + stat.label;
+			return stat.resFile + 'parent' + stat.model + stat.label;
 		}
 
 	}
@@ -353,7 +353,7 @@ export class MaterialController extends DefaultController implements IController
 	public displayFun: Function;
 
 	constructor(_dispalyFun: Function, @IWorkbenchEditorService private editorService: IWorkbenchEditorService) {
-		super();
+		super({ clickBehavior: ClickBehavior.ON_MOUSE_UP, keyboardSupport: true, openMode: OpenMode.SINGLE_CLICK });
 		this.displayFun = _dispalyFun;
 	}
 

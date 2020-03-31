@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.DesInputGroupSkin" states="string,number,enum" xmlns:e="http://ns.egret.com/eui" xmlns:ns1="eui.*">
+	<e:Rect percentHeight="100" percentWidth="100" strokeColor="0xffffff" fillAlpha="0" strokeWeight="1"/>
+	<e:Group top="1" bottom="1" left="3" right="3">
+		<e:layout >
+			<e:HorizontalLayout verticalAlign="middle"/>
+		</e:layout>
+		<e:Label id="_nameLabel" size="12" percentWidth="20"/>
+        <e:TextInput id="_input"  skinName="skins.TextInputSkin" minWidth="55" percentWidth="30"
+                 includeIn="string,number" includeInLayout.enum="false" includeInLayout="true"/>
+        <ns1:DropDownList id="_list" skinName="skins.DropDownListSkin" itemRendererSkinName="skins.project.DownListItemRendererSkin" minWidth="55" percentWidth="30"
+       				 includeIn="enum" includeInLayout="false" includeInLayout.enum="true">
+        </ns1:DropDownList>
+		<e:Label id="_describeLabel" size="12" text="propertyDescribe" percentWidth="50"/>
+	</e:Group>
+</e:Skin>

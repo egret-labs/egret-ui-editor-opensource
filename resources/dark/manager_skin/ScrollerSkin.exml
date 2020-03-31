@@ -1,0 +1,4 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.manager.ScrollerSkin" xmlns:e="http://ns.egret.com/eui">
+	<e:VScrollBar id="verticalScrollBar" skinName="skins.manager.VScrollBarSkin" percentHeight="100" minWidth="13" right="0"/>
+</e:Skin>

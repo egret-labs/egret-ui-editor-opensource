@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="skins.HScrollBarSkin" minWidth="26" height="8" xmlns:e="http://ns.egret.com/eui">
+	<e:Button id="track" skinName="skins.HScrollBarTrackSkin" left="0" right="0" percentHeight="100" minWidth="15"/>
+    <e:Button id="thumb" skinName="skins.ScrollBarThumbSkin" minWidth="15" top="-1" bottom="0"/>
+</e:Skin>

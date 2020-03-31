@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.CloseTabButtonSkin" minHeight="26"
+        states="up,over,down,disabled,upAndSelected,overAndSelected,focus,downAndSelected,disabledAndSelected"
+        xmlns:e="http://ns.egret.com/eui">
+	<e:Rect top="0" left="0" right="0" bottom="0" strokeColor="0x1b2025" strokeAlpha="1"
+	        strokeWeight="1" fillColor="0x29323B" fillColor.up="0x22282e" fillColor.over="0x22282e"
+	        fillColor.disabled="0x22282e" fillColor.down="0x12161B" />
+	<e:Rect fillColor="0x29323B" bottom="0" height="1" left="1" right="0" visible="true"
+	        visible.down="false" visible.up="false" visible.disabled="false" visible.over="false" />
+	<e:Rect visible="false" top="1" left="1" bottom="0" right="0" fillColor="0x374552"
+	        visible.focus="true" />
+	<e:Label id="labelDisplay" left="10" right="26" text="{data.label}" size="12" verticalCenter="0"
+	         textColor="0xfefefe" textColor.over="0xfefefe" textColor.up="0x64696d"
+	         textColor.disabled="0x64696d" />
+	<e:Button id="closeButton" verticalCenter="0" right="4" skinName="skins.DocCloseButtonSkin"
+	          visible="true" visible.up="false" visible.disabled="false" />
+</e:Skin>

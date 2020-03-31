@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<e:Skin class="skins.ItemRendererSkin" states="up,over,down,disabled" minHeight="23" minWidth="23"
+	xmlns:e="http://ns.egret.com/eui">
+	<e:Rect left="0" right="0" top="0" bottom="0" fillColor.up="0x303030" fillColor.disabled="0x222222"
+		fillColor.over="0x1C1B29" fillColor.down="0x2C5BF6" />
+	<e:Label textAlign="left" text="{data.label}" size="12" verticalAlign="middle" left="5" top="0"
+		 bottom="0" right="5"  fontFamily="Microsoft YaHei"/>
+</e:Skin>

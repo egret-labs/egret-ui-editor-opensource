@@ -5,16 +5,15 @@ import { ILifecycleService } from 'egret/platform/lifecycle/electron-main/lifecy
 import { IBrowserWindowEx, IWindowConfiguration } from '../common/window';
 import { mixin } from 'egret/base/common/objects';
 import { BrowserWindowEx } from './browserWindowEx';
-import { app, dialog, ipcMain as ipc } from 'electron';
+import { dialog, ipcMain as ipc } from 'electron';
 import { isMacintosh } from 'egret/base/common/platform';
 import { normalizeNFC } from 'egret/base/common/strings';
-
 import * as fs from 'fs';
 import * as path from 'path';
 import { IStateService } from '../../state/common/state';
 import { dirname } from '../../../base/common/paths';
 import { localize } from '../../../base/localization/nls';
-import { debug } from 'util';
+import { ResdepotWindow } from './resdepotWindow';
 
 const LAST_OPNED_FOLDER: string = 'lastOpenedFolder';
 
@@ -34,10 +33,11 @@ export class WindowsMainService implements IWindowsMainService {
 		@IStateService private stateService: IStateService
 	) {
 		this.dialogs = new Dialogs(environmentService, stateService, this);
-		this.openInBrowserWindow(this.getWindowOptions());
+		this.openMainWindow(this.getWindowOptions());
 		this.registerListeners();
 	}
 	private registerListeners(): void {
+		this.lifecycleService.onWindowClosed(this.onWindowClosed, this);
 		ipc.on('egret:showMessageBox', (event, data: { options: MessageBoxOptions, replyChannel: string }) => {
 			const window = this.getWindowById(data.options.windowId) || this.getFocusedWindow();
 			this.showMessageBox(data.options).then(result => {
@@ -46,6 +46,14 @@ export class WindowsMainService implements IWindowsMainService {
 		});
 		ipc.on('egret:pickFolderAndOpen', (event, options: INativeOpenDialogOptions) => {
 			this.pickFolderAndOpen(options);
+		});
+		ipc.on('egret:openResWindow', (event, data: { folderPath: string, file: string }) => {
+			const options: IOpenBrowserWindowOptions = {
+				cli: this.environmentService.args,
+				folderPath: data.folderPath,
+				file: data.file
+			};
+			this.openResWindow(options);	
 		});
 	}
 
@@ -152,7 +160,7 @@ export class WindowsMainService implements IWindowsMainService {
 			if (closed) {
 				this.mainWindow.close();
 				this.mainWindow = null;
-				this.openInBrowserWindow(options);
+				this.openMainWindow(options);
 			}
 		});
 	}
@@ -175,23 +183,58 @@ export class WindowsMainService implements IWindowsMainService {
 	}
 
 	private mainWindow: IBrowserWindowEx;
-	private openInBrowserWindow(options: IOpenBrowserWindowOptions): void {
+	private openMainWindow(options: IOpenBrowserWindowOptions): void {
 		this.stateService.setItem(LAST_OPNED_FOLDER, options.folderPath ? options.folderPath : '');
+		const configuration: IWindowConfiguration = this.getConfiguration(options);
+
+		this.mainWindow = this.instantiationService.createInstance(BrowserWindowEx, 'main');
+		this.mainWindow.load(configuration);
+		this.lifecycleService.registerWindow(this.mainWindow);
+	}
+
+	private resWindow: IBrowserWindowEx;
+	private openResWindow(options: IOpenBrowserWindowOptions): void {
+		if(this.resWindow){
+			this.resWindow.send('egret:openResEditor', options.file);
+			this.resWindow.focus();
+			return;
+		}
+		const configuration: IWindowConfiguration = this.getConfiguration(options);
+
+		this.resWindow = this.instantiationService.createInstance(ResdepotWindow, 'res');
+		this.resWindow.load(configuration);
+		this.lifecycleService.registerWindow(this.resWindow);
+	}
+
+	private getConfiguration(options: IOpenBrowserWindowOptions): IWindowConfiguration {	
 		const configuration: IWindowConfiguration = mixin({}, options.cli);
 		configuration.machineId = this.machineId;
 		configuration.appRoot = this.environmentService.appRoot;
 		configuration.execPath = process.execPath;
 		configuration.folderPath = options.folderPath;
 		configuration.file = options.file;
-
-		this.mainWindow = this.instantiationService.createInstance(BrowserWindowEx);
-		this.mainWindow.load(configuration);
-		this.lifecycleService.registerWindow(this.mainWindow);
+		
+		return configuration;
 	}
+
+	private onWindowClosed(window: IBrowserWindowEx): void {
+		if(this.mainWindow === window){
+			if(this.resWindow){
+				this.resWindow.close();
+			}
+		}
+		if(this.resWindow === window){
+			this.resWindow = null;
+		}
+	}
+
 	/**
 	 * 退出
 	 */
 	public quit(): void {
+		if(this.resWindow){
+			this.resWindow.close();
+		}
 		this.mainWindow.close();
 	}
 	/**
@@ -245,6 +288,9 @@ export class WindowsMainService implements IWindowsMainService {
 	 * 获得当前window
 	 */
 	public getFocusedWindow(): IBrowserWindowEx {
+		if(this.resWindow && this.resWindow.isFocus()) {
+			return this.resWindow;
+		}
 		return this.mainWindow;
 	}
 	/**
@@ -253,6 +299,9 @@ export class WindowsMainService implements IWindowsMainService {
 	public getWindowById(id: number): IBrowserWindowEx {
 		if (this.mainWindow.id == id) {
 			return this.mainWindow;
+		}
+		if(this.resWindow && this.resWindow.id === id) {
+			return this.resWindow;
 		}
 		return null;
 	}

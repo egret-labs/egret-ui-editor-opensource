@@ -12,10 +12,9 @@ import { IWorkspaceService } from 'egret/platform/workspace/common/workspace';
 import { IOperationBrowserService } from 'egret/platform/operations/common/operations-browser';
 import { OperationBrowserService } from 'egret/platform/operations/electron-browser/operationService';
 import { BrowserWindow } from 'electron';
-import { Workbench } from './workbench';
-import { createBtn } from './test/testWindow';
 import { INotificationService } from 'egret/platform/notification/common/notifications';
 import { SimpleNotificationService } from '../services/notification/common/notification';
+import { NotImplementedError } from 'vs/base/common/errors';
 
 
 /**
@@ -98,7 +97,7 @@ export class WorkbenchShell {
 	private createContents(): void {
 		// 初始化服务
 		const [instantiationService, serviceCollection] = this.initServiceCollection();
-		this.createWorkbench(instantiationService, serviceCollection, this.content);
+		this.createWorkbench(instantiationService, serviceCollection, this.content, this.configuration);
 	}
 
 	/**
@@ -107,15 +106,8 @@ export class WorkbenchShell {
 	 * @param serviceCollection 服务集合
 	 * @param parent 父级容器
 	 */
-	private createWorkbench(instantiationService: IInstantiationService, serviceCollection: ServiceCollection, parent: HTMLElement): Workbench {
-		const workbench = instantiationService.createInstance(Workbench, parent, serviceCollection);
-
-		console.log('Workbench starting up...');
-		workbench.startup();
-
-		//TODO 测试Window
-		//  createBtn(instantiationService);
-		return workbench;
+	protected createWorkbench(instantiationService: IInstantiationService, serviceCollection: ServiceCollection, parent: HTMLElement, configuration: IWindowConfiguration): any {
+		throw new NotImplementedError();
 	}
 
 

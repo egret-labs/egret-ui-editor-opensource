@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.EUIDataGridDropDownItemRendererSkin" states="up,over,down,disabled" minHeight="23" minWidth="23" xmlns:e="http://ns.egret.com/eui">
+	<e:Rect left="0" right="0" top="0" bottom="0" fillColor.up="0x333333" fillColor.disabled="0x222222"
+	        fillColor.over="0x384552" fillColor.down="0x094771" />
+<e:Label id="labelDisplay" top="8" bottom="8" left="8" right="8"
+         size="12" fontFamily="Tahoma"
+         textColor="0xFFFFFF" text="{data}" verticalAlign="middle" textAlign="left"/>
+</e:Skin>

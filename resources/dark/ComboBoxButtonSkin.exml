@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.ComboBoxButtonSkin" states="up,over,down,disabled"
+        xmlns:e="http://ns.egret.com/eui">
+	<e:Rect top="0" bottom="0" right="0" left="0" fillColor.up="0x1f252b" fillColor.over="0x384450"
+	        fillColor.down="0x15191e" fillColor.disabled="0x1f252b" />
+	<e:Image horizontalCenter="0" verticalCenter="0" source="dark_dropdownlist_normal_arrownormal_png" height="9" width="9"/>
+</e:Skin>

@@ -21,7 +21,7 @@ export class FileModelService implements IFileModelService {
 	public _serviceBrand: any;
 
 	private toUnbind: IDisposable[];
-	private _models: FileEditorModelManager;
+	private _modelManager: FileEditorModelManager;
 
 	//TODO 生命周期，在窗体关闭的时候结束掉
 	constructor(
@@ -29,7 +29,7 @@ export class FileModelService implements IFileModelService {
 		@IInstantiationService private instantiationService: IInstantiationService,
 		@IWindowClientService private windowService: IWindowClientService
 	) {
-		this._models = this.instantiationService.createInstance(FileEditorModelManager);
+		this._modelManager = this.instantiationService.createInstance(FileEditorModelManager);
 		this.registerListeners();
 	}
 
@@ -68,8 +68,8 @@ export class FileModelService implements IFileModelService {
 	/**
 	 * 模块管理器
 	 */
-	public get models(): IFileEditorModelManager {
-		return this._models;
+	public get modelManager(): IFileEditorModelManager {
+		return this._modelManager;
 	}
 	/**
 	 * 根据指定的资源列表得到已经脏了的资源，如果没有指定则得到全部脏了的资源
@@ -85,7 +85,7 @@ export class FileModelService implements IFileModelService {
 	 * @param resource 
 	 */
 	public isDirty(resource?: URI): boolean {
-		if (this._models.getAll(resource).some(model => model.isDirty())) {
+		if (this._modelManager.getAll(resource).some(model => model.isDirty())) {
 			return true;
 		}
 		return false;
@@ -146,7 +146,7 @@ export class FileModelService implements IFileModelService {
 	public disposeModelAll(resources?: URI[]): Promise<void> {
 		const models = this.getFileModels(resources);
 		for (let i = 0; i < models.length; i++) {
-			this.models.disposeModel(models[i]);
+			this.modelManager.disposeModel(models[i]);
 		}
 		return Promise.resolve(void 0);
 	}
@@ -156,7 +156,7 @@ export class FileModelService implements IFileModelService {
 	 * @param resource 要被释放的目标文件
 	 */
 	public disposeModel(resource: URI): Promise<void> {
-		this.models.disposeModel(resource);
+		this.modelManager.disposeModel(resource);
 		return Promise.resolve(void 0);
 	}
 
@@ -171,7 +171,7 @@ export class FileModelService implements IFileModelService {
 
 			return models;
 		}
-		return this._models.getAll(<URI>arg1);
+		return this._modelManager.getAll(<URI>arg1);
 	}
 
 	private getDirtyFileModels(resources?: URI[]): IFileEditorModel[];
@@ -234,6 +234,6 @@ export class FileModelService implements IFileModelService {
 	 */
 	public dispose(): void {
 		this.toUnbind = dispose(this.toUnbind);
-		this._models.clear();
+		this._modelManager.clear();
 	}
 }

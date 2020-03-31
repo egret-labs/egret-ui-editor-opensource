@@ -4,11 +4,12 @@ import { IFileService, isParent } from 'egret/platform/files/common/files';
 import { FileStat, Model } from '../../common/explorerModel';
 import { IInstantiationService } from 'egret/platform/instantiation/common/instantiation';
 import { IDisposable } from 'vs/base/common/lifecycle';
-import { DefaultController, DefaultDragAndDrop } from 'vs/base/parts/tree/browser/treeDefaults';
+import { DefaultController, DefaultDragAndDrop, ClickBehavior, OpenMode } from 'vs/base/parts/tree/browser/treeDefaults';
 import { IMouseEvent, DragMouseEvent } from 'vs/base/browser/mouseEvent';
 import { Tree } from 'vs/base/parts/tree/browser/treeImpl';
-import * as paths from 'path';
-import { MenuItemConstructorOptions, MenuItem, remote, Menu } from 'electron';
+import * as path from 'path';
+import * as paths from 'egret/base/common/paths';
+import { MenuItemConstructorOptions, MenuItem, remote, Menu, ipcRenderer } from 'electron';
 import { isMacintosh, isWindows, isLinux } from 'egret/base/common/platform';
 import { IWorkspaceService } from 'egret/platform/workspace/common/workspace';
 import { IClipboardService } from 'egret/platform/clipboard/common/clipboardService';
@@ -168,15 +169,15 @@ export class FileRenderer implements IRenderer {
 	public renderTemplate(tree: ITree, templateId: string, container: HTMLElement): IFileTemplateData {
 		const iconDisplay: HTMLElement = document.createElement('div');
 
-		const iconSpan= DOM.append(container, DOM.$('span'));
-		addClass(iconSpan,'iconSpan');
-		addClass(iconDisplay,'file-icon');
+		const iconSpan = DOM.append(container, DOM.$('span'));
+		addClass(iconSpan, 'iconSpan');
+		addClass(iconDisplay, 'file-icon');
 		const labelDisplay: HTMLSpanElement = document.createElement('span');
 		addClass(labelDisplay, 'file-label');
 		container.appendChild(iconDisplay);
 		container.appendChild(labelDisplay);
 		addClass(container, 'explorer-item-container');
-		
+
 
 		const template: IFileTemplateData = {
 			container: container,
@@ -194,12 +195,12 @@ export class FileRenderer implements IRenderer {
 	 * @param templateData 
 	 */
 	public renderElement(tree: ITree, stat: FileStat, templateId: string, templateData: IFileTemplateData): void {
-		if(!stat.resource){
+		if (!stat.resource) {
 			// 空stat，表示当前没有打开任何项目
 			return;
 		}
 		let ext = stat.resource.fsPath;
-		ext = paths.extname(ext);
+		ext = path.extname(ext);
 		if (ext.charAt(0) == '.') {
 			ext = ext.slice(1);
 		}
@@ -240,10 +241,11 @@ export class FileController extends DefaultController implements IController, ID
 
 	constructor(
 		@IWorkbenchEditorService private editorService: IWorkbenchEditorService,
+		@IWorkspaceService private workspaceService: IWorkspaceService,
 		@IClipboardService private clipboardService: IClipboardService,
-		@IOperationBrowserService private operationService:IOperationBrowserService
+		@IOperationBrowserService private operationService: IOperationBrowserService
 	) {
-		super();
+		super({ clickBehavior: ClickBehavior.ON_MOUSE_UP, keyboardSupport: true, openMode: OpenMode.SINGLE_CLICK });
 		this.initContextMenuGeneral();
 	}
 
@@ -251,20 +253,20 @@ export class FileController extends DefaultController implements IController, ID
 	 * 添加一般的上下文菜单
 	 */
 	private initContextMenuGeneral(): void {
-		this.addContextMenuItemGeneral({ label: localize('fileController.initContextMenuGeneral.createSkin','Create Skin'), id: ContextMenuId.NEW_EXML });
-		this.addContextMenuItemGeneral({ label: localize('fileController.initContextMenuGeneral.createFolder','Create Folder'), id: ContextMenuId.NEW_FOLDER });
+		this.addContextMenuItemGeneral({ label: localize('fileController.initContextMenuGeneral.createSkin', 'Create Skin'), id: ContextMenuId.NEW_EXML });
+		this.addContextMenuItemGeneral({ label: localize('fileController.initContextMenuGeneral.createFolder', 'Create Folder'), id: ContextMenuId.NEW_FOLDER });
 		if (isMacintosh) {
-			this.addContextMenuItemGeneral({ label: localize('fileController.initContextMenuGeneral.openInFinder','Reveal in Finder'), id: ContextMenuId.REVEAL_IN_OS });
+			this.addContextMenuItemGeneral({ label: localize('fileController.initContextMenuGeneral.openInFinder', 'Reveal in Finder'), id: ContextMenuId.REVEAL_IN_OS });
 		} else {
-			this.addContextMenuItemGeneral({ label: localize('fileController.initContextMenuGeneral.openInResourceManager','Reveal in System Explorer'), id: ContextMenuId.REVEAL_IN_OS });
+			this.addContextMenuItemGeneral({ label: localize('fileController.initContextMenuGeneral.openInResourceManager', 'Reveal in System Explorer'), id: ContextMenuId.REVEAL_IN_OS });
 		}
 		this.addContextMenuSeparator();
-		this.addContextMenuItemGeneral({ label: localize('fileController.initContextMenuGeneral.copy','Copy'), id: ContextMenuId.COPY });
-		this.addContextMenuItemGeneral({ label: localize('fileController.initContextMenuGeneral.paste','Paste'), id: ContextMenuId.PASTE });
-		this.addContextMenuItemGeneral({ label: localize('fileController.initContextMenuGeneral.copyPath','Copy Path'), id: ContextMenuId.COPY_PATH });
+		this.addContextMenuItemGeneral({ label: localize('fileController.initContextMenuGeneral.copy', 'Copy'), id: ContextMenuId.COPY });
+		this.addContextMenuItemGeneral({ label: localize('fileController.initContextMenuGeneral.paste', 'Paste'), id: ContextMenuId.PASTE });
+		this.addContextMenuItemGeneral({ label: localize('fileController.initContextMenuGeneral.copyPath', 'Copy Path'), id: ContextMenuId.COPY_PATH });
 		this.addContextMenuSeparator();
-		this.addContextMenuItemGeneral({ label: localize('fileController.initContextMenuGeneral.rename','Rename'), id: ContextMenuId.RENAME });
-		this.addContextMenuItemGeneral({ label: localize('system.delete','Delete'), id: ContextMenuId.DELETE });
+		this.addContextMenuItemGeneral({ label: localize('fileController.initContextMenuGeneral.rename', 'Rename'), id: ContextMenuId.RENAME });
+		this.addContextMenuItemGeneral({ label: localize('system.delete', 'Delete'), id: ContextMenuId.DELETE });
 	}
 
 	private contextMenuItemsGeneral: { type: 'separator' | 'normal', option: MenuItemConstructorOptions, item: MenuItem }[] = [];
@@ -337,7 +339,7 @@ export class FileController extends DefaultController implements IController, ID
 				this.operationService.executeCommand(FileRootCommands.COPY_FILE_PATH);
 				break;
 			case ContextMenuId.RENAME:
-				this.operationService.executeCommand(FileRootCommands.RENAME_FILE,);
+				this.operationService.executeCommand(FileRootCommands.RENAME_FILE);
 				break;
 			case ContextMenuId.DELETE:
 				this.operationService.executeCommand(FileRootCommands.DELETE_FILE);
@@ -449,6 +451,14 @@ export class FileController extends DefaultController implements IController, ID
 	 */
 	private openEditor(stat: FileStat, isPreview: boolean): Promise<any> {
 		if (stat && !stat.isDirectory) {
+			const extname = paths.extname(stat.resource.fsPath);
+			if (extname === '.json') {
+				ipcRenderer.send('egret:openResWindow', {
+					folderPath: this.workspaceService.getWorkspace().uri.fsPath,
+					file: stat.resource.fsPath
+				});
+				return;
+			}
 			return this.editorService.openEditor({ resource: stat.resource }, isPreview);
 		}
 	}
@@ -595,17 +605,30 @@ export class FileFilter implements IFilter {
 		if (stat.isRoot) {
 			return true;
 		}
-		if (paths.basename(stat.resource.fsPath).toLocaleLowerCase() == '.ds_store') {
+		if (path.basename(stat.resource.fsPath).toLocaleLowerCase() == '.ds_store') {
 			return false;
 		}
-		if (paths.basename(stat.resource.fsPath).toLocaleLowerCase() == 'node_modules') {
+		if (path.basename(stat.resource.fsPath).toLocaleLowerCase() == 'node_modules') {
 			return false;
 		}
+		if (this.egretProjectService.projectModel &&
+			this.egretProjectService.projectModel.project) {
+			const configs = this.egretProjectService.projectModel.resConfigs;
+			for (let i = 0; i < configs.length; i++) {
+				const element = configs[i];
+				if (paths.isEqual(paths.normalize(stat.resource.fsPath), paths.join(this.egretProjectService.projectModel.project.fsPath, element.url))) {
+					return true;
+				}
+			}
+		}
+		// if (path.basename(stat.resource.fsPath).toLocaleLowerCase() === 'default.res.json') {
+		// 	return true;
+		// }
 		//有设置皮肤根路径
 		let exmlRoots: URI[] = [];
 		if (this.egretProjectService.projectModel &&
 			this.egretProjectService.projectModel.exmlRoot.length > 0
-		){
+		) {
 			exmlRoots = exmlRoots.concat(this.egretProjectService.projectModel.exmlRoot);
 		} else {
 			// 没有设置皮肤路径则添加默认皮肤路径
@@ -616,9 +639,9 @@ export class FileFilter implements IFilter {
 			this.workspaceService.getWorkspace().uri
 		) {
 			for (let i = 0; i < exmlRoots.length; i++) {
-				const curExmlRoot = paths.join(this.workspaceService.getWorkspace().uri.fsPath, exmlRoots[i].fsPath);
-				const result1 = isParent(stat.resource.fsPath, curExmlRoot);
-				const result2 = isParent(curExmlRoot, stat.resource.fsPath);
+				const curExmlRoot = path.join(this.workspaceService.getWorkspace().uri.fsPath, exmlRoots[i].fsPath);
+				const result1 = paths.isEqualOrParent(stat.resource.fsPath, curExmlRoot);
+				const result2 = paths.isEqualOrParent(curExmlRoot, stat.resource.fsPath);
 				const result3 = curExmlRoot.toLocaleLowerCase() == stat.resource.fsPath.toLocaleLowerCase();
 				if (result1 || result2 || result3) {
 					return true;
@@ -629,7 +652,7 @@ export class FileFilter implements IFilter {
 		if (stat.isDirectory) {
 			return true;
 		}
-		if (paths.extname(stat.resource.fsPath).toLocaleLowerCase() == '.exml') {
+		if (path.extname(stat.resource.fsPath).toLocaleLowerCase() == '.exml') {
 			return true;
 		}
 		return false;
@@ -815,7 +838,7 @@ export class FileDragAndDrop2 extends DefaultDragAndDrop {
 
 		const confirmDragAndDrop = !isCopy;
 		if (confirmDragAndDrop) {
-			const confirmBtn = { label:localize('alert.button.confirm', 'Confirm'), result: 0 };
+			const confirmBtn = { label: localize('alert.button.confirm', 'Confirm'), result: 0 };
 			const cancelBtn = { label: localize('alert.button.cancel', 'Cancel'), result: 1 };
 
 			const buttons: { label: string; result: number; }[] = [];
@@ -825,10 +848,10 @@ export class FileDragAndDrop2 extends DefaultDragAndDrop {
 				buttons.push(cancelBtn, confirmBtn);
 			}
 
-			const message = sources.length > 1 && sources.every(s => s.isRoot) ? localize('fileDragAndDrop2.handleExplorerDrop.confirmModifyMulitDir','Are you sure you want to modify the order of multiple root directories in your workspace?')
-				: sources.length > 1 ? getConfirmMessage(localize('fileDragAndDrop2.handleExplorerDrop.confirmMoveSome','Are you sure you want to move the following {0} files?',sources.length), sources.map(s => s.resource))
-					: sources[0].isRoot ? localize('fileDragAndDrop2.handleExplorerDrop.confirmMoveDir','Are you sure you want to move the following {0} directories and their contents？',sources[0].name)
-						: localize('fileDragAndDrop2.handleExplorerDrop.confirmMoveFile','Are you sure you want to move the file {0} ？',sources[0].name);
+			const message = sources.length > 1 && sources.every(s => s.isRoot) ? localize('fileDragAndDrop2.handleExplorerDrop.confirmModifyMulitDir', 'Are you sure you want to modify the order of multiple root directories in your workspace?')
+				: sources.length > 1 ? getConfirmMessage(localize('fileDragAndDrop2.handleExplorerDrop.confirmMoveSome', 'Are you sure you want to move the following {0} files?', sources.length), sources.map(s => s.resource))
+					: sources[0].isRoot ? localize('fileDragAndDrop2.handleExplorerDrop.confirmMoveDir', 'Are you sure you want to move the following {0} directories and their contents？', sources[0].name)
+						: localize('fileDragAndDrop2.handleExplorerDrop.confirmMoveFile', 'Are you sure you want to move the file {0} ？', sources[0].name);
 			const opts: MessageBoxOptions = {
 				message: message,
 				type: 'question',
@@ -858,15 +881,15 @@ export class FileDragAndDrop2 extends DefaultDragAndDrop {
 				if (dirty.length) {
 					let message: string;
 					if (distinctElements.length > 1) {
-						message = localize('fileDragAndDrop2.handleExplorerDrop.moveNotSaveAndContinue','You are moving files with unsaved changes. Do you want to continue?');
+						message = localize('fileDragAndDrop2.handleExplorerDrop.moveNotSaveAndContinue', 'You are moving files with unsaved changes. Do you want to continue?');
 					} else if (distinctElements[0].isDirectory) {
 						if (dirty.length === 1) {
-							message = localize('fileDragAndDrop2.handleExplorerDrop.moveNotSave','You are moving a folder with unsaved changes in 1 file. Do you want to continue?');
+							message = localize('fileDragAndDrop2.handleExplorerDrop.moveNotSave', 'You are moving a folder with unsaved changes in 1 file. Do you want to continue?');
 						} else {
-							message = localize('fileDragAndDrop2.handleExplorerDrop.moveHaveSomeFile','You are moving a folder with unsaved changes in {0} files. Do you want to continue?', dirty.length);
+							message = localize('fileDragAndDrop2.handleExplorerDrop.moveHaveSomeFile', 'You are moving a folder with unsaved changes in {0} files. Do you want to continue?', dirty.length);
 						}
 					} else {
-						message = localize('fileDragAndDrop2.handleExplorerDrop.confirmContinueMove','You are moving a file with unsaved changes. Do you want to continue?');
+						message = localize('fileDragAndDrop2.handleExplorerDrop.confirmContinueMove', 'You are moving a file with unsaved changes. Do you want to continue?');
 					}
 
 					const confirmBtn = { label: localize('alert.button.continue', 'Continue'), result: 0 };
@@ -881,7 +904,7 @@ export class FileDragAndDrop2 extends DefaultDragAndDrop {
 					const opts: MessageBoxOptions = {
 						message: message,
 						type: 'warning',
-						detail: localize('changes.will.lost','Your changes will be lost if you don\'t save them.'),
+						detail: localize('changes.will.lost', 'Your changes will be lost if you don\'t save them.'),
 						buttons: buttons.map(b => b.label),
 						noLink: true,
 						cancelId: buttons.indexOf(cancelBtn)
@@ -926,7 +949,7 @@ export class FileDragAndDrop2 extends DefaultDragAndDrop {
 						closeEditors.push(this.editorService.closeEditor(editor));
 					});
 					return Promise.all(closeEditors).then(() => {
-						const targetResource = target.resource.with({ path: paths.join(target.resource.path, source.name) });
+						const targetResource = target.resource.with({ path: path.join(target.resource.path, source.name) });
 						return this.fileService.moveFile(source.resource, targetResource, true).then(() => {
 							if (editors.length > 0) {
 								return this.editorService.openEditor({ resource: targetResource });

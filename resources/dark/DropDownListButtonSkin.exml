@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.DropDownListButtonSkin" currentState="up"
+        xmlns:e="http://ns.egret.com/eui" states="up,over,down,disabled">
+	<!--<e:Image top="0" bottom="0" right="0" left="0"
+	         source.up="dark_dropdownlist_up_bgnormal_png"
+	         source.over="dark_dropdownlist_over_bghover_png"
+	         scale9Grid="2,2,1,1"
+             smoothing="false"
+	         source.down="dark_dropdownlist_down_bgdown_png"
+	         source.disabled="dark_dropdownlist_up_bgnormal_png" x="0"/>-->
+	<e:Rect height="100%" width="100%" x="0" y="0" fillColor="0x303030" fillColor.over="0x3576f8" alpha.disabled="0.8"
+        	strokeColor.down="0x303030" strokeWeight.down="1" fillAlpha="1" strokeAlpha="1"/>
+	<e:Image right="6" source="dark_dropdownlist_normal_arrownormal_png" width="9" height="9" verticalCenter="0" />
+</e:Skin>

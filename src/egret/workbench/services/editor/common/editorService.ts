@@ -72,14 +72,14 @@ export class WorkbenchEditorService implements IWorkbenchEditorService {
 	 * @param input 输入流
 	 * @param isPreview
 	 */
-	public openEditor(input: IEditorInput | IResourceInput, isPreview: boolean = false): Promise<IEditor> {
+	public openEditor(input: IEditorInput | IResourceInput, isPreview: boolean = false, instantiationService?: IInstantiationService): Promise<IEditor> {
 		if (!input) {
 			return Promise.resolve(null);
 		}
 
-		const editorInput = this.createInput(input);
+		const editorInput = this.createInput(input, instantiationService);
 		if (editorInput) {
-			return this.doOpenEditor(editorInput, isPreview);
+			return this.doOpenEditor(editorInput, isPreview, instantiationService);
 		}
 		return Promise.resolve(null);
 	}
@@ -87,20 +87,23 @@ export class WorkbenchEditorService implements IWorkbenchEditorService {
 	 * 打开编辑器
 	 * @param input 
 	 */
-	public createEditor(input: IEditorInput | IResourceInput, isPreview: boolean = false): IEditor {
+	public createEditor(input: IEditorInput | IResourceInput, isPreview: boolean = false, instantiationService?: IInstantiationService): IEditor {
 		if (!input) {
 			return null;
 		}
-		const editorInput = this.createInput(input);
-		const editor = this.editorPart.createEditor(editorInput);
+		const editorInput = this.createInput(input, instantiationService);
+		if(!editorInput){
+			return null;
+		}
+		const editor = this.editorPart.createEditor(editorInput, false, instantiationService);
 		if (editor) {
 			this._onActiveEditorChanged.fire(editor);
 		}
 		return editor;
 	}
 
-	protected doOpenEditor(input: IEditorInput, isPreview: boolean = false): Promise<IEditor> {
-		return this.editorPart.openEditor(input, isPreview).then(editor => {
+	protected doOpenEditor(input: IEditorInput, isPreview: boolean = false, instantiationService?: IInstantiationService): Promise<IEditor> {
+		return this.editorPart.openEditor(input, isPreview, instantiationService).then(editor => {
 			this._onActiveEditorChanged.fire(editor);
 			return editor;
 		});
@@ -139,7 +142,7 @@ export class WorkbenchEditorService implements IWorkbenchEditorService {
 	 * 创建一个输入流
 	 * @param input 
 	 */
-	public createInput(input: any): IEditorInput {
+	public createInput(input: any, instantiationService?: IInstantiationService): IEditorInput {
 		if (!input) {
 			return null;
 		}
@@ -152,19 +155,22 @@ export class WorkbenchEditorService implements IWorkbenchEditorService {
 			if (!title) {
 				title = basename(resourceInput.resource.fsPath);
 			}
-			return this.createOrGet(resourceInput.resource, title, resourceInput.description, resourceInput.encoding);
+			return this.createOrGet(resourceInput.resource, title, resourceInput.description, resourceInput.encoding, instantiationService);
 		}
 		return null;
 	}
 
 
-	private createOrGet(resource: URI, title: string, description: string, encoding?: string): IEditorInput {
+	private createOrGet(resource: URI, title: string, description: string, encoding?: string, instantiationService?: IInstantiationService): IEditorInput {
 		if (WorkbenchEditorService.CACHE.has(resource)) {
 			const input = WorkbenchEditorService.CACHE.get(resource);
 			return input;
 		}
 		var encoding: string = encoding ? encoding : 'utf8';
-		const editorInput: IEditorInput = FileInputRegistry.getFileInput(resource, encoding, this.instantiationService);
+		const editorInput: IEditorInput = FileInputRegistry.getFileInput(resource, encoding, instantiationService ?? this.instantiationService);
+		if(!editorInput){
+			return null;
+		}
 		WorkbenchEditorService.CACHE.set(editorInput.getResource(), editorInput);
 		once(editorInput.onDispose)(() => {
 			WorkbenchEditorService.CACHE.delete(resource);

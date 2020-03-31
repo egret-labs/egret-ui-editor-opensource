@@ -17,7 +17,7 @@ export class CodeApplication {
 	constructor(
 		@IInstantiationService private instantiationService: IInstantiationService,
 		@ILifecycleService private lifecycleService: ILifecycleService,
-		@IStateService private stateService:IStateService
+		@IStateService private stateService: IStateService
 	) {
 		this.lifecycleService.ready();
 	}
@@ -27,26 +27,49 @@ export class CodeApplication {
 	 */
 	public startup(): void {
 		console.log('Starting EUI Editor');
-		const appInstantiationService = this.initServices();
-		appInstantiationService.invokeFunction(accessor => {
-			const appInstantiationService = accessor.get(IInstantiationService);
-			appInstantiationService.createInstance(AppMenu);
-		});
+		this.initServices();
+		this.instantiationService.createInstance(AppMenu);
 	}
 
-	private initServices(machineId: string = ''): IInstantiationService {
-		const services = new ServiceCollection();
+	private initServices(machineId: string = ''): void {
 		if (process.platform === 'win32') {
 		} else if (process.platform === 'linux') {
 		} else if (process.platform === 'darwin') {
 		}
 
 		this.windowsMainService = this.instantiationService.createInstance(WindowsMainService, machineId);
-		services.set(IWindowsMainService, this.windowsMainService);
+		this.instantiationService.addService(IWindowsMainService, this.windowsMainService);
 
-		this.operationService = new OperationMainService(this.stateService,this.windowsMainService);
-		services.set(IOperationMainService, this.operationService);
-		
-		return this.instantiationService.createChild(services);
+		this.operationService = new OperationMainService(this.stateService, this.windowsMainService);
+		this.instantiationService.addService(IOperationMainService, this.operationService);
+
 	}
+
+	// /**
+	//  * 启动应用程序
+	//  */
+	// public startup(): void {
+	// 	console.log('Starting EUI Editor');
+	// 	const appInstantiationService = this.initServices();
+	// 	appInstantiationService.invokeFunction(accessor => {
+	// 		const appInstantiationService = accessor.get(IInstantiationService);
+	// 		appInstantiationService.createInstance(AppMenu);
+	// 	});
+	// }
+
+	// private initServices(machineId: string = ''): IInstantiationService {
+	// 	const services = new ServiceCollection();
+	// 	if (process.platform === 'win32') {
+	// 	} else if (process.platform === 'linux') {
+	// 	} else if (process.platform === 'darwin') {
+	// 	}
+
+	// 	this.windowsMainService = this.instantiationService.createInstance(WindowsMainService, machineId);
+	// 	services.set(IWindowsMainService, this.windowsMainService);
+
+	// 	this.operationService = new OperationMainService(this.stateService,this.windowsMainService);
+	// 	services.set(IOperationMainService, this.operationService);
+
+	// 	return this.instantiationService.createChild(services);
+	// }
 }

@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.AccordionButtonSkin"
+        states="up,over,down,disabled,upAndSelected,overAndSelected,downAndSelected,disabledAndSelected"
+        xmlns:e="http://ns.egret.com/eui">
+	<e:Group minWidth="20" height="23" top="0" left="0" right="0" alpha="1" alpha.disabled="0.5"
+	         alpha.disabledAndSelected="0.5">
+		<e:Rect width="100%" height="100%" x="0" y="0"
+			fillAlpha.up="1" fillAlpha.down="1"  fillAlpha.over="1" fillColor="0x2e2f3e" fillColor.over="0x373749"
+			fillAlpha.disabled="0.5" fillAlpha.disabledAndSelected="0.5"
+			/>
+		<e:Image x="8" width="9" height="9" verticalCenter="0" source="iconClose_png" source.up="iconClose_png"
+		         source.over="iconClose_png" source.down="iconClose_png" source.disabled="iconClose_png"
+		         source.upAndSelected="iconOpen_png" source.overAndSelected="iconOpen_png"
+		         source.downAndSelected="iconOpen_png" source.disabledAndSelected="iconOpen_png" />
+		<e:Image x="30" verticalCenter="0" id="iconDisplay" height="15" width="15"/>
+		<e:Label left="53" right="10" size="12" id="labelDisplay" verticalCenter="0" textColor="0xD4D4D4" verticalAlign="middle" />
+		<e:Rect id="outlinetop" height="1" percentWidth="100" top="0" fillColor="0x0f0f1b"/>
+		<e:Rect id="outlinedown" height="1" percentWidth="100" bottom="0" fillColor="0x0f0f1b"/>
+	</e:Group>
+</e:Skin>

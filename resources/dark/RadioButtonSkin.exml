@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="skins.RadioButtonSkin" states="up,over,down,disabled,upAndSelected,overAndSelected,downAndSelected,disabledAndSelected" xmlns:e="http://ns.egret.com/eui">
+    <e:Group width="100%" height="100%">
+        <e:Image id="icon" width="15" height="15" verticalCenter="0" alpha="1" alpha.disabled="0.5" alpha.disabledAndSelected="0.5"
+                 source.up="dark_radio_unselectup_unselectnormal_png"
+                 source.disabled="dark_radio_unselectup_unselectnormal_png"
+                 source.over = "dark_radio_unselectover_unselecthover_png"
+                 source.down="dark_radio_unselectover_unselecthover_png"
+                 source.upAndSelected="dark_radio_up_selectnormal_png"
+                 source.overAndSelected="dark_radio_over_selecthover_png"
+                 source.downAndSelected="dark_radio_over_selecthover_png"
+                 source.disabledAndSelected="dark_radio_up_selectnormal_png"/>
+        <e:Label id="labelDisplay" multiline="false" left="15" right="0" size="12" verticalCenter="0"
+                 textAlign="left" verticalAlign="middle"/>
+                 
+    </e:Group>
+</e:Skin>

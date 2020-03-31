@@ -51,6 +51,10 @@
 		"s": "Don't Save",
 		"t": "不保存"
 	},
+	"alert.button.no": {
+		"s": "No",
+		"t": "否"
+	},
 	"alert.button.ok": {
 		"s": "Ok",
 		"t": "好的"
@@ -70,6 +74,10 @@
 	"alert.button.saveAndContinue": {
 		"s": "Save And Continue",
 		"t": "保存并继续"
+	},
+	"alert.button.yes": {
+		"s": "Yes",
+		"t": "是"
 	},
 	"alignPart.doRender.align": {
 		"s": "Align",
@@ -1743,6 +1751,134 @@
 		"s": "New name:",
 		"t": "新名称:"
 	},
+	"res.editor.jsonParseFailed": {
+		"s": "JSON parse failed, please check whether the file is JSON format",
+		"t": "JSON解析失败，请检查文件是否为JSON格式"
+	},
+	"res.editor.editScale9Grid": {
+		"s": "Edit Scale9Grid",
+		"t": "编辑九宫格"
+	},
+	"res.editor.refreshSheet": {
+		"s": "Refresh Sheet",
+		"t": "刷新Sheet"
+	},
+	"res.editor.deleteResource": {
+		"s": "Delete Resource",
+		"t": "删除资源"
+	},
+	"res.editor.deleteResourceGroup": {
+		"s": "Delete Resource Group",
+		"t": "删除资源组"
+	},
+	"res.editor.removeResource": {
+		"s": "Remove Resource",
+		"t": "移除资源"
+	},
+	"res.editor.displayInManager": {
+		"s": "Display in resource manager",
+		"t": "在资源管理器中显示"
+	},
+	"res.editor.revealInWindows": {
+		"s": "Reveal in Explorer",
+		"t": "在资源管理器中显示"
+	},
+	"res.editor.revealInMac": {
+		"s": "Reveal in Finder",
+		"t": "在Finder中显示"
+	},
+	"res.editor.openContainer": {
+		"s": "Open Containing Folder",
+		"t": "打开包含的目录"
+	},
+	"res.editor.resourceGroup": {
+		"s": "Resource Group：",
+		"t": "资源组："
+	},
+	"res.editor.addGroup": {
+		"s": "Add Group",
+		"t": "添加组"
+	},
+	"res.editor.groupName": {
+		"s": "Group Name",
+		"t": "组名"
+	},
+	"res.editor.itemName": {
+		"s": "Name",
+		"t": "名称"
+	},
+	"res.editor.itemUrl": {
+		"s": "Url",
+		"t": "路径"
+	},
+	"res.editor.ready": {
+		"s": "Ready",
+		"t": "准备就绪"
+	},
+	"res.editor.resNameError": {
+		"s": "Resource name error quantity：{0}",
+		"t": "资源名错误数量：{0}"
+	},
+	"res.editor.resGroupError": {
+		"s": "Resource group error quantity：{0}",
+		"t": "资源组错误数量：{0}"
+	},
+	"res.editor.otherError": {
+		"s": "other error quantity：{0}",
+		"t": "其他项错误数量：{0}"
+	},
+	"res.editor.filePathError": {
+		"s": "File path error or file parse failed: {0}",
+		"t": "文件路径错误或文件解析失败：{0}"
+	},
+	"res.editor.subError": {
+		"s": "Two level Key warning: {0}",
+		"t": "二级Key警告：{0}"
+	},
+	"res.editor.materialSearchPrompt": {
+		"s": "/Start with matching folders",
+		"t": "/开头以匹配文件夹"
+	},
+	"res.editor.fileChangeInSystem": {
+		"s": "Has changed the file on the file system. Do you want to replace the editor with these changes?",
+		"t": "已在文件系统上更改了文件。要用这些更改替换编辑器内容吗？"
+	},
+	"res.editor.jsonException": {
+		"s": "Json text modification exception",
+		"t": "Json文本修改异常"
+	},
+	"res.editor.jsonFileError": {
+		"s": "Json format error, can not be resolved!",
+		"t": "Json格式错误，无法解析！"
+	},
+	"res.editor.NewResourceGroup": {
+		"s": "New Resource Group",
+		"t": "新增资源组"
+	},
+	"res.editor.resInfo.itemName": {
+		"s": "       Name: ",
+		"t": "       名称:"
+	},
+	"res.editor.resInfo.itemType": {
+		"s": "       Type: ",
+		"t": "       类型: "
+	},
+	"res.editor.resInfo.itemUrl": {
+		"s": "      Url: ",
+		"t": "       路径: "
+	},
+	"res.editor.resInfo.otherParam": {
+		"s": "Additional Parameter: ",
+		"t": "附加参数: "
+	},
+	"res.editor.resInfo.subkeys": {
+		"s": "  Subkeys: ",
+		"t": "  二级key: "
+	},
+	"res.editor.newGroupPanel.addGroup": {
+		"s": "Group Name",
+		"t": "添加组"
+	},
 	"resType.bin": {
 		"s": "Bin",
 		"t": "二进制"
@@ -1956,8 +2092,8 @@
 		"t": "资源:"
 	},
 	"wingPropertyPanel.render.selectSourceFile": {
-		"s": "Select Add resource file",
-		"t": "选择添加资源文件"
+		"s": "Select Add resource configuration file",
+		"t": "选择添加资源配置文件"
 	},
 	"wingPropertyPanel.render.selectTopicFile": {
 		"s": "Select add theme file",

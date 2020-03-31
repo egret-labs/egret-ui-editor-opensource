@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.TreeDisclosureButtonSkin"
+        states="up,over,down,disabled,upAndSelected,overAndSelected,downAndSelected,disabledAndSelected"
+        xmlns:e="http://ns.egret.com/eui">
+	<e:Group alpha="1" alpha.disabled="0.5" alpha.disabledAndSelected="0.5" percentHeight="100">
+		<e:Image width="9" height="9" source.up="iconClose_png" source.over="iconClose_png" source.down="iconClose_png"
+		         source.disabled="iconClose_png" source.upAndSelected="iconOpen_png"
+		         source.overAndSelected="iconOpen_png" source.downAndSelected="iconOpen_png"
+		         source.disabledAndSelected="iconOpen_png" verticalCenter="0" horizontalCenter="0" />
+	</e:Group>
+</e:Skin>

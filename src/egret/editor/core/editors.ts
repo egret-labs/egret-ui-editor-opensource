@@ -1,4 +1,4 @@
-import { createDecorator } from 'egret/platform/instantiation/common/instantiation';
+import { createDecorator, IInstantiationService } from 'egret/platform/instantiation/common/instantiation';
 import { IResourceInput, IEditorInput } from './inputs';
 import { Event } from 'egret/base/common/event';
 import URI from '../../base/common/uri';
@@ -63,6 +63,13 @@ export interface IEditorService {
 	 * @param isPreview
 	 */
 	openEditor(input: IResourceInput, isPreview?: boolean): Promise<IEditor>;
+}
+
+export interface IMultiPageEditor {
+	/**
+	 * 同步各个子编辑器的数据
+	 */
+	syncModelData(): Promise<void>;
 }
 
 /**
@@ -137,17 +144,17 @@ export interface IEditorPart {
 	 * 通过输入流打开一个编辑器，如果已经打开了这个编辑器则激活
 	 * @param input 输入流
 	 */
-	openEditor(input: IEditorInput, isPreview?: boolean): Promise<IEditor>;
+	openEditor(input: IEditorInput, isPreview?: boolean, instantiationService?: IInstantiationService): Promise<IEditor>;
 	/**
 	 * 打开编辑器
 	 * @param input 
 	 */
-	createEditor(input: IEditorInput, isPreview?: boolean): IEditor;
+	createEditor(input: IEditorInput, isPreview?: boolean, instantiationService?: IInstantiationService): IEditor;
 	/**
 	 * 打开一组编辑器，如果已打开则忽略
 	 * @param inputs 输入流数组
 	 */
-	openEditors(inputs: IEditorInput[]): Promise<IEditor[]>;
+	openEditors(inputs: IEditorInput[], instantiationService?: IInstantiationService): Promise<IEditor[]>;
 	/**
 	 * 关闭一个编辑器
 	 * @param editor 指定要关闭的编辑器

@@ -1,6 +1,5 @@
 import { Emitter, Event } from 'egret/base/common/event';
-
-import { IEditorPart, IEditor, EditorOpeningEvent, IEditorOpeningEvent } from '../../core/editors';
+import { IEditorPart, IEditor, EditorOpeningEvent, IEditorOpeningEvent, IMultiPageEditor } from '../../core/editors';
 import { IEditorInput } from '../../core/inputs';
 import { EditorInput } from '../input/editorInput';
 import { BaseEditor } from '../../browser/baseEditor';
@@ -10,13 +9,11 @@ import { ConfirmResult } from 'egret/workbench/services/editor/common/models';
 import { dispose } from 'egret/base/common/lifecycle';
 import { IStorageService, StorageScope } from 'egret/platform/storage/common/storage';
 import { IFocusablePart } from 'egret/platform/operations/common/operations';
-
 import URI from 'egret/base/common/uri';
 import { IOperationBrowserService } from '../../../platform/operations/common/operations-browser';
 import { SystemCommands } from '../../../platform/operations/commands/systemCommands';
 import { localize } from '../../../base/localization/nls';
-import { resolve } from 'dns';
-import { ExmlFileEditor } from 'egret/exts/exml-exts/exml/browser/exmlFileEditor';
+import { IWorkspaceService } from 'egret/platform/workspace/common/workspace';
 
 const OPEN_EDITORS_STORAGE = 'openEditorsStorageKey';
 
@@ -28,9 +25,10 @@ export class EditorPart implements IEditorPart, IFocusablePart {
 	private _onEditorOpening: Emitter<IEditorOpeningEvent>;
 
 	constructor(
-		@IInstantiationService private instantiationService: IInstantiationService,
-		@IStorageService private storageService: IStorageService,
-		@IOperationBrowserService protected operationService: IOperationBrowserService
+		@IInstantiationService protected instantiationService: IInstantiationService,
+		@IStorageService protected storageService: IStorageService,
+		@IOperationBrowserService protected operationService: IOperationBrowserService,
+		@IWorkspaceService protected workspaceService: IWorkspaceService,
 	) {
 		this.windowFocus_handler = this.windowFocus_handler.bind(this);
 		this.windowBlur_handler = this.windowBlur_handler.bind(this);
@@ -95,7 +93,7 @@ export class EditorPart implements IEditorPart, IFocusablePart {
 		}
 	}
 
-	private documentGroup: boxlayout.DocumentGroup;
+	protected documentGroup: boxlayout.DocumentGroup;
 	/**
 	 * 初始化文档区
 	 * @param documentGroup 
@@ -105,11 +103,7 @@ export class EditorPart implements IEditorPart, IFocusablePart {
 		this.documentGroup.layout.addEventListener(boxlayout.BoxLayoutEvent.FOCUS_CHANGED, this.editorFocusChanged_handler, this);
 		this.documentGroup.layout.addEventListener(boxlayout.BoxLayoutEvent.PANEL_ADDED, this.editorOpen_handler, this);
 		this.documentGroup.layout.addEventListener(boxlayout.BoxLayoutEvent.PANEL_REMOVED, this.editorClose_handler, this);
-		const layoutConfigStr = this.storageService.get(OPEN_EDITORS_STORAGE, StorageScope.WORKSPACE);
-		if (layoutConfigStr) {
-			const layoutConfig = JSON.parse(layoutConfigStr);
-			this.documentGroup.layout.applyLayoutConfig(layoutConfig);
-		}
+		this.restoreDocumentGroupLayout();
 		setTimeout(() => {
 			if (this.getActiveEditor()) {
 				this.getActiveEditor().doFocusIn();
@@ -117,7 +111,13 @@ export class EditorPart implements IEditorPart, IFocusablePart {
 		}, 10);
 	}
 
-
+	protected restoreDocumentGroupLayout(): void {
+		const layoutConfigStr = this.storageService.get(OPEN_EDITORS_STORAGE, StorageScope.WORKSPACE);
+		if (layoutConfigStr) {
+			const layoutConfig = JSON.parse(layoutConfigStr);
+			this.documentGroup.layout.applyLayoutConfig(layoutConfig);
+		}
+	}
 
 	private editorFocusChanged_handler(e: boxlayout.BoxLayoutEvent): void {
 		const editor = e.data as BaseEditor;
@@ -137,7 +137,7 @@ export class EditorPart implements IEditorPart, IFocusablePart {
 
 	private editorClose_handler(e: boxlayout.BoxLayoutEvent): void {
 		const editor = e.data ? e.data.panel as BaseEditor : null;
-		if (editor) {
+		if (typeof editor['doClose'] === 'function') {
 			editor.doClose();
 		}
 	}
@@ -210,7 +210,7 @@ export class EditorPart implements IEditorPart, IFocusablePart {
 	 * 通过输入流打开一个编辑器，如果已经打开了这个编辑器则激活
 	 * @param input 输入流
 	 */
-	public openEditor(input: EditorInput, isPreview: boolean = false): Promise<IEditor> {
+	public openEditor(input: EditorInput, isPreview: boolean = false, instantiationService?: IInstantiationService): Promise<IEditor> {
 		const focusCache = document.activeElement as HTMLElement;
 		if (!input) {
 			return Promise.resolve(null);
@@ -221,7 +221,7 @@ export class EditorPart implements IEditorPart, IFocusablePart {
 		if (prevented) {
 			return prevented();
 		}
-		return this.doOpenEditor(input, isPreview).then(result => {
+		return this.doOpenEditor(input, isPreview, instantiationService).then(result => {
 			if (document.activeElement != focusCache) {
 				focusCache.focus();
 			}
@@ -229,14 +229,14 @@ export class EditorPart implements IEditorPart, IFocusablePart {
 		});
 	}
 
-	private doOpenEditor(input: EditorInput, isPreview: boolean = false): Promise<BaseEditor> {
+	private doOpenEditor(input: EditorInput, isPreview: boolean = false, instantiationService?: IInstantiationService): Promise<BaseEditor> {
 		//通过输入流类型得到编辑器描述
 		const descriptor = EditorRegistry.getEditor(input);
 		if (!descriptor) {
 			return Promise.reject(new Error(localize('editorPart.doOpenEidtor.errorTips', 'Unable to get registered editor description via input')));
 		}
 
-		const editor = this.doShowEditor(descriptor, input, true, isPreview);
+		const editor = this.doShowEditor(descriptor, input, true, isPreview, instantiationService);
 		if (!editor) {
 			return Promise.resolve(null);
 		}
@@ -248,14 +248,14 @@ export class EditorPart implements IEditorPart, IFocusablePart {
 	 * 打开编辑器
 	 * @param input 
 	 */
-	public createEditor(input: EditorInput, isPreview: boolean = false): BaseEditor {
+	public createEditor(input: EditorInput, isPreview: boolean = false, instantiationService?: IInstantiationService): BaseEditor {
 		//通过输入流类型得到编辑器描述
 		const descriptor = EditorRegistry.getEditor(input);
 		if (!descriptor) {
 			return null;
 		}
 
-		const editor = this.doShowEditor(descriptor, input, false, isPreview);
+		const editor = this.doShowEditor(descriptor, input, false, isPreview, instantiationService);
 		if (!editor) {
 			return null;
 		}
@@ -263,7 +263,7 @@ export class EditorPart implements IEditorPart, IFocusablePart {
 		return editor;
 	}
 
-	private doShowEditor(descriptor: IEditorDescriptor, input: EditorInput, show: boolean, isPreview: boolean): BaseEditor {
+	private doShowEditor(descriptor: IEditorDescriptor, input: EditorInput, show: boolean, isPreview: boolean, instantiationService?: IInstantiationService): BaseEditor {
 		const panels = this.documentGroup.getAllPanels();
 		let existEditor: BaseEditor = null;
 		for (let i = 0; i < panels.length; i++) {
@@ -290,7 +290,7 @@ export class EditorPart implements IEditorPart, IFocusablePart {
 				targetEditor.setPreview(isPreview);
 			}
 		} else {
-			targetEditor = this.doCreateEditor(descriptor);
+			targetEditor = this.createEditorInstance(descriptor, instantiationService);
 			if (isPreview) {
 				targetEditor.setPreview(isPreview);
 			}
@@ -304,8 +304,8 @@ export class EditorPart implements IEditorPart, IFocusablePart {
 		return targetEditor;
 	}
 
-	private doCreateEditor(descriptor: IEditorDescriptor): BaseEditor {
-		const editor = descriptor.instantiate(this.instantiationService);
+	protected createEditorInstance(descriptor: IEditorDescriptor, instantiationService?: IInstantiationService): BaseEditor {
+		const editor = descriptor.instantiate(instantiationService ?? this.instantiationService);
 		return editor;
 	}
 
@@ -328,13 +328,13 @@ export class EditorPart implements IEditorPart, IFocusablePart {
 	 * 打开一组编辑器，如果已打开则忽略
 	 * @param inputs 输入流数组
 	 */
-	public openEditors(inputs: EditorInput[]): Promise<IEditor[]> {
+	public openEditors(inputs: EditorInput[], instantiationService?: IInstantiationService): Promise<IEditor[]> {
 		if (!inputs || !inputs.length) {
 			return Promise.resolve([]);
 		}
 		const promises: Promise<IEditor>[] = [];
 		for (let i = 0; i < inputs.length; i++) {
-			promises.push(this.openEditor(inputs[i]));
+			promises.push(this.openEditor(inputs[i], false, instantiationService));
 		}
 		return Promise.all(promises);
 	}
@@ -385,9 +385,9 @@ export class EditorPart implements IEditorPart, IFocusablePart {
 		});
 	}
 
-	private doHandleDirty(editor: IEditor): Promise<boolean> {
-		if(editor instanceof ExmlFileEditor){
-			(editor as ExmlFileEditor).syncModelData();
+	private async doHandleDirty(editor: IEditor): Promise<boolean> {
+		if ('syncModelData' in editor) {
+			await (editor as IMultiPageEditor).syncModelData();
 		}
 		if (!editor || !editor.input || !editor.input.isDirty()) {
 			return Promise.resolve(false);

@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.ScrollerSkin" xmlns:e="http://ns.egret.com/eui">
+	<e:HScrollBar id="horizontalScrollBar" skinName="skins.HScrollBarSkin" bottom="-6" height="8" left="0" right="8"/>
+	<e:VScrollBar id="verticalScrollBar"  skinName="skins.VScrollBarSkin" right="0"  top="0" bottom="0"/>
+</e:Skin>

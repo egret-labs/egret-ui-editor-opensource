@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.EgretProjectCreateScaleItemRenderSkin" states="up,over,down,disabled"
+        width="170" height="30" xmlns:e="http://ns.egret.com/eui">
+   <e:Rect width="100%" height="100%" x="0" y="0"  id="backUI" fillAlpha.up="0" fillAlpha.down="1"  fillAlpha.over="1" fillColor.down="0x3576f8" fillColor.over="0x282737"/>
+   <e:Label id="labelDisplay" left="10" size="14" text="{data.name}" textAlign="left"
+            textColor="0xFFFFFF" verticalCenter="0" />
+   <e:Rect strokeWeight="1" strokeColor="0x000000" top="-1" left="-1" right="0" bottom="0" fillAlpha="0"/>
+</e:Skin>

@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.NewStatePanelSkin" states="normal,maximized,minimized,disabled,normalAndInactive,maximizedAndInactive"  width="356" height="250"
+        xmlns:e="http://ns.egret.com/eui">
+	<e:Image id="shadow" scale9Grid="8,8,3,3" left="0" right="0" top="0" bottom="0"/>
+	<e:Group id="group" left="7" right="7" bottom="7" top="7">
+		<e:Rect id="backUI" strokeAlpha="1" strokeColor="0x1b2025" fillColor="0x1a1b28" percentHeight="100" percentWidth="100"/>
+		<e:Rect id="hline" height="1" percentWidth="100" top="35" fillColor="0x000"/>
+		<e:Group id="moveArea" height="34" left="9" right="9" touchThrough="false" touchEnabled="true"/>
+		<e:Group id="titleContentGroup" height="34" left="5" right="100" touchEnabled="false" touchChildren="false">
+			<e:layout>
+				<e:HorizontalLayout verticalAlign="middle" gap="4"/>
+			</e:layout>
+			<e:Image id="appIcon"/>
+			<e:Group verticalCenter="0" id="titleGroup"/>
+			<e:Group verticalCenter="0" percentHeight="100" id="titleLeftGroup"/>
+			<e:Group id="titleDisplayGroup" percentHeight="100" percentWidth="100">
+				<e:Label id="titleDisplay" size="14" verticalCenter="0" left="5" right="5" height="20" text="标题"/>
+			</e:Group>
+			<e:Group id="titleRightGroup" verticalCenter="0" percentHeight="100"/>
+		</e:Group>
+		<e:Group id="buttonGroup" right="0" touchEnabled="false">
+			<e:layout>
+				<e:HorizontalLayout gap="-1"/>
+			</e:layout>
+			<e:Button id="closeButton" skinName="skins.WinCloseButtonSkin"/>
+		</e:Group>
+		<e:Rect id="outlinetop" height="1" percentWidth="100" top="0" fillColor="0x000"/>
+		<e:Rect id="outlinedown" height="1" percentWidth="100" bottom="0" fillColor="0x000"/>
+		<e:Rect id="outlineleft" width="1" percentHeight="100" left="0" fillColor="0x000"/>
+		<e:Rect id="outlineright" width="1" percentHeight="100" right="0" fillColor="0x000"/>
+		<e:Group id="leftResize" top="20" bottom="20" width="4" left="0" visible="false" visible.normal="true"/>
+		<e:Group id="rightResize" top="20" bottom="20" width="4" right="0" visible="false" visible.normal="true"/>
+		<e:Group id="topResize" left="20" right="20" top="0" height="4" visible="false" visible.normal="true"/>
+		<e:Group id="bottomResize" left="20" right="20" height="4" bottom="0" visible="false" visible.normal="true"/>
+		<e:Group id="topRightResize" right="0" height="20" width="4" visible="false" visible.normal="true"/>
+		<e:Group id="topLeftResize" left="0" top="0" height="20" width="20" visible="false" visible.normal="true"/>
+		<e:Group id="bottomLeftResize" left="0" bottom="0" height="20" width="20" visible="false" visible.normal="true"/>
+		<e:Group id="bottomRightResize" right="0" bottom="0" height="20" width="20" visible="false" visible.normal="true"/>
+		<e:Rect id="modalMask" fillColor="0xFFFFFF" left="0" right="0" top="0" bottom="0" alpha="0" touchEnabled="false"/>
+		<e:Group id="contentGroup" top="36" left="1" right="1" bottom="1">
+			<e:Label text="名称"  x="28" y="18" size="12"/>
+			<e:TextInput id="stateName"  x="89" y="14" width="246" height="25"/>
+			<e:Label text="创建为"  x="28" y="51" size="12"/>
+			<e:RadioButton id="copyFrom" label="以下内容的副本"  x="88" y="49"/>
+			<e:RadioButton id="emptyState" label="空白状态"  x="88" y="100"/>
+			<e:Label text="起始状态:"  x="28" y="130" size="12"/>
+			<e:CheckBox id="asStart" label="设置为起始状态"  x="88" y="150"/>
+			<e:Group height="23" width="200"  x="102" y="70" id="listGroup">
+			</e:Group>
+			<e:Button id="confirmBtn" label="确定"  right="80" bottom="5" width="60"/>
+			<e:Button id="cancelBtn" label="取消"  right="10" bottom="5" width="60"/>
+		</e:Group>
+
+	</e:Group>
+</e:Skin>

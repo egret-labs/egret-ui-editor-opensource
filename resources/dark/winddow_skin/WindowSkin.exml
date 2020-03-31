@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.WinWindowSkin" states="normal,maximized,minimized,disabled,normalAndInactive,maximizedAndInactive"  width="600" height="300"
+        xmlns:e="http://ns.egret.com/eui">
+	<e:Image id="shadow" scale9Grid="8,8,3,3" left="0" right="0" top="0" bottom="0"/>
+	<e:Group id="group" left="7" right="7" bottom="7" top="7">
+		<e:Rect id="backUI" strokeAlpha="1" strokeWeight="1" strokeColor="0x000000" fillColor="0x1a1b28" percentHeight="100" percentWidth="100"/>
+		<e:Rect id="hline" height="1" percentWidth="100" top="35" fillColor="0x000000"/>
+		<e:Group id="moveArea" height="34" left="0" right="0">
+			<e:Group id="titleContentGroup" height="34" left="0" right="100">
+				<e:layout>
+					<e:HorizontalLayout verticalAlign="middle" gap="4"/>
+				</e:layout>
+				<e:Image id="appIcon"/>
+				<e:Group verticalCenter="0" id="titleGroup"/>
+				<e:Group verticalCenter="0" percentHeight="100" id="titleLeftGroup"/>
+				<e:Group id="titleDisplayGroup" percentHeight="100" percentWidth="100">
+					<e:Label id="titleDisplay" size="14" verticalCenter="0" left="5" text="标题"/>
+				</e:Group>
+				<e:Group id="titleRightGroup" verticalCenter="0" percentHeight="100"/>
+			</e:Group>
+		</e:Group>
+		<e:Group id="buttonGroup" right="0" touchEnabled="false">
+			<e:layout>
+				<e:HorizontalLayout gap="-1"/>
+			</e:layout>
+			<e:Button id="closeButton" skinName="skins.WinCloseButtonSkin"/>
+		</e:Group>
+		<e:Group id="contentGroup" top="36" left="1" right="1" bottom="1"/>
+	</e:Group>
+</e:Skin>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 19.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 15 15" enable-background="new 0 0 15 15" xml:space="preserve">
+<g id="图层_2">
+</g>
+<g id="图层_3">
+</g>
+<g id="图层_1">
+	<g id="feather">
+	</g>
+	<g>
+		<rect opacity="0.3" fill="none" width="15" height="15"/>
+		<g>
+			<path fill="#BFBFBF" d="M13,7v6H7V7H13 M14,6H6v8h8V6L14,6z"/>
+		</g>
+		<rect x="7" y="7" opacity="0.5" fill="#BFBFBF" width="6" height="6"/>
+		<rect x="5" y="5" fill="#BFBFBF" width="3" height="3"/>
+		<rect x="12" y="5" fill="#BFBFBF" width="3" height="3"/>
+		<rect x="12" y="12" fill="#BFBFBF" width="3" height="3"/>
+		<rect x="5" y="12" fill="#BFBFBF" width="3" height="3"/>
+		<rect fill="#BFBFBF" width="3" height="3"/>
+		<rect x="7" fill="#BFBFBF" width="3" height="3"/>
+		<rect y="7" fill="#BFBFBF" width="3" height="3"/>
+		<polygon opacity="0.5" fill="#BFBFBF" points="4,4 8,4 8,2 2,2 2,8 4,8 		"/>
+		<rect x="1" y="1" fill="#BFBFBF" width="8" height="1"/>
+		<rect x="1" y="1" fill="#BFBFBF" width="1" height="8"/>
+		<rect x="8" y="1" fill="#BFBFBF" width="1" height="3"/>
+		<rect x="1" y="8" fill="#BFBFBF" width="3" height="1"/>
+	</g>
+</g>
+</svg>

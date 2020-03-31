@@ -1,0 +1,4 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.ColumnSeparatorSkin" xmlns:e="http://ns.egret.com/eui">
+	<e:Rect width="1" fillColor="0x383838" percentHeight="100"/>
+</e:Skin>

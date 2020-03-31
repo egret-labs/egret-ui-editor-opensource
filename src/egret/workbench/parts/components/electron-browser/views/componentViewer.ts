@@ -1,7 +1,7 @@
 import { IDataSource, ITree, IRenderer, IController, IDragAndDrop, IDragOverReaction, ContextMenuEvent, IFilter } from 'vs/base/parts/tree/browser/tree';
 import { ComponentStat } from '../../common/componentModel';
 import * as DOM from 'vs/base/browser/dom';
-import { DefaultController } from 'vs/base/parts/tree/browser/treeDefaults';
+import { DefaultController, ClickBehavior, OpenMode } from 'vs/base/parts/tree/browser/treeDefaults';
 import { IMouseEvent, DragMouseEvent } from 'vs/base/browser/mouseEvent';
 import { Tree } from 'vs/base/parts/tree/browser/treeImpl';
 import { addClass } from 'vs/base/browser/dom';
@@ -174,7 +174,7 @@ export class ComponentRenderer implements IRenderer {
  */
 export class ComponentController extends DefaultController implements IController {
 	constructor() {
-		super();
+		super({ clickBehavior: ClickBehavior.ON_MOUSE_UP, keyboardSupport: true, openMode: OpenMode.SINGLE_CLICK });
 	}
 	/**
 	 * 左键点击的时候

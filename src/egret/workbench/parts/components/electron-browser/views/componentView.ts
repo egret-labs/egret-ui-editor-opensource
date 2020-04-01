@@ -14,6 +14,7 @@ import { IModelRequirePart } from 'egret/exts/exml-exts/models';
 import { IDisposable } from 'egret/base/common/lifecycle';
 import { localize } from 'egret/base/localization/nls';
 import { voluationToStyle } from 'egret/base/common/dom';
+import { ClassChangedType } from 'egret/exts/exml-exts/exml/common/project/parsers/parser';
 
 
 export interface ComponentViewRef {
@@ -63,15 +64,15 @@ export class ComponentView extends PanelContentDom implements IModelRequirePart 
 	}
 
 	private registerListener(): void {
-		this.egretProjectService.ensureLoaded().then(()=>{
+		this.egretProjectService.ensureLoaded().then(() => {
 			if (this.egretProjectService.exmlConfig) {
-				this._disposes.push(this.egretProjectService.exmlConfig.onCustomClassChanged(e => this.onCustomClassChanged_handler()));
+				this._disposes.push(this.egretProjectService.exmlConfig.onCustomClassChanged(e => this.onCustomClassChanged_handler(e)));
 			}
-			this._disposes.push(this.egretProjectService.onProjectConfigChanged(e=> this.onProjectConfigChanged_handler()));
+			this._disposes.push(this.egretProjectService.onProjectConfigChanged(e => this.onProjectConfigChanged_handler()));
 		});
 	}
 
-	private unregisterListener(): void {	
+	private unregisterListener(): void {
 		this._disposes.map(v => v.dispose());
 		this._disposes = [];
 	}
@@ -81,8 +82,10 @@ export class ComponentView extends PanelContentDom implements IModelRequirePart 
 		this.registerListener();
 	}
 
-	private onCustomClassChanged_handler(): void {
-		this.create();
+	private onCustomClassChanged_handler(type: ClassChangedType): void {
+		if (type !== 'exml') {
+			this.create();
+		}
 	}
 
 	/**
@@ -105,13 +108,13 @@ export class ComponentView extends PanelContentDom implements IModelRequirePart 
 			renderer: renderer,
 			controller: controller,
 			dnd: dnd,
-			filter:this.treeFilter
+			filter: this.treeFilter
 		};
 		this.componentViewer = this.instantiationService.createInstance(Tree, this.treeContainer, treeConfiguration, {});
 		this.componentViewer.getHTMLElement().style.position = 'absolute';
 		this.create();
 		setTimeout(() => {
-			if(this.componentViewer){
+			if (this.componentViewer) {
 				this.componentViewer.layout();
 			}
 		}, 1);
@@ -124,7 +127,7 @@ export class ComponentView extends PanelContentDom implements IModelRequirePart 
 		searchInput.onValueChanging((v) => {
 			this.changeState(v);
 		});
-		
+
 		this.iconContainer = document.createElement('div');
 		this.searchContainer.appendChild(this.iconContainer);
 
@@ -171,7 +174,7 @@ export class ComponentView extends PanelContentDom implements IModelRequirePart 
 	 */
 	public doResize(width: number, height: any): void {
 		setTimeout(() => {
-			if(this.componentViewer){
+			if (this.componentViewer) {
 				this.componentViewer.layout();
 			}
 		}, 1);
@@ -186,8 +189,8 @@ export class ComponentView extends PanelContentDom implements IModelRequirePart 
 				const selected: ComponentStat[] = this.componentViewer.getSelection();
 				const expanded: ComponentStat[] = this.componentViewer.getExpandedElements();
 				const scrollPos = this.componentViewer.getScrollPosition();
-				return this.componentViewer.setInput(input).then(()=> {
-					return this.componentViewer.expandAll(expanded).then(()=> {
+				return this.componentViewer.setInput(input).then(() => {
+					return this.componentViewer.expandAll(expanded).then(() => {
 						this.componentViewer.setSelection(selected);
 						this.componentViewer.setScrollPosition(scrollPos);
 					});
@@ -269,8 +272,8 @@ export class ComponentView extends PanelContentDom implements IModelRequirePart 
 
 		this.treeContainer = document.createElement('div');
 		voluationToStyle(this.treeContainer.style,
-			{ flexGrow: '1', flexShrink: '1',width: '100%', position: 'relative' });
-			group.appendChild(this.treeContainer);
+			{ flexGrow: '1', flexShrink: '1', width: '100%', position: 'relative' });
+		group.appendChild(this.treeContainer);
 
 		this.searchContainer = document.createElement('div');
 		voluationToStyle(this.searchContainer.style,
@@ -284,5 +287,5 @@ export class ComponentView extends PanelContentDom implements IModelRequirePart 
 
 export namespace ComponentView {
 	export const ID: string = 'workbench.component';
-	export const TITLE: string = localize('componentView.title','Component');
+	export const TITLE: string = localize('componentView.title', 'Component');
 }

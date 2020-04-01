@@ -1,5 +1,5 @@
 import { IDisposable, dispose } from 'egret/base/common/lifecycle';
-import { IExmlFileEditorModel, RootChangedEvent, TextChangedEvent } from "../../common/exml/models";
+import { IExmlFileEditorModel, RootChangedEvent, TextChangedEvent } from '../../common/exml/models';
 import * as xmlStrUtil from '../../common/sax/xml-strUtils';
 import { isInstanceof, INode } from '../../common/exml/treeNodes';
 import { StateChange } from 'egret/editor/core/models';
@@ -59,11 +59,11 @@ export class CodeEditor extends BaseTextEditor {
 		this.resetState();
 	}
 
-	public syncText(): void {
+	public async syncText(): Promise<void> {
 		if (this.isDirty && this.exmlFileModel) {
 			const model = this.exmlFileModel.getModel();
 			if (model) {
-				model.insertText(this.getText(), 0, 2147483647, true, true);
+				await model.insertText(this.getText(), 0, 2147483647, true, true);
 				this.resetState();
 			}
 		}

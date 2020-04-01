@@ -162,8 +162,8 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 	/**
 	 * 同步各个子编辑器的数据
 	 */
-	public syncModelData(): Promise<void> {
-		this.codeView.syncModelData();
+	public async syncModelData(): Promise<void> {
+		await this.codeView.syncModelData();
 		if (this._model) {
 			this._model.updateDirty();
 		}

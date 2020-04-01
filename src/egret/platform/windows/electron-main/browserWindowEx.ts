@@ -39,6 +39,7 @@ export class BrowserWindowEx implements IBrowserWindowEx {
 			disableAutoHideCursor: true,
 			title: 'EUI Editor',
 			webPreferences: {
+				webSecurity: false,
 				nodeIntegration: true
 			}
 		};

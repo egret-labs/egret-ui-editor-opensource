@@ -13,7 +13,7 @@ import { EgretProjectModel } from './egretProject';
 import { EgretEngineInfo } from './egretSDK';
 import { IInstantiationService } from 'egret/platform/instantiation/common/instantiation';
 
-import { IParseCenter, createParseCenter, ClassChangedEvent } from './parsers/parser';
+import { IParseCenter, createParseCenter, ClassChangedEvent, ClassChangedType } from './parsers/parser';
 import { ExmlCoreParser, ExmlCoreParserEUI, ExmlCoreParserGUI, EUI } from './parsers/core/commons';
 import { Emitter, Event } from 'egret/base/common/event';
 
@@ -22,7 +22,7 @@ import { Emitter, Event } from 'egret/base/common/event';
  */
 export abstract class AbstractExmlConfig {
 
-	private _onCustomClassChanged: Emitter<void>;
+	private _onCustomClassChanged: Emitter<ClassChangedType>;
 
 	/**默认值字典，该字典由子类维护，该属性由当前类或当前类的子类进行维护*/
 	public defaultValueDic: { [prop: string]: any } = {};
@@ -33,14 +33,14 @@ export abstract class AbstractExmlConfig {
 		@IInstantiationService protected instantiationService: IInstantiationService,
 		@IFileService protected fileService: IFileService
 	) {
-		this._onCustomClassChanged = new Emitter<void>();
+		this._onCustomClassChanged = new Emitter<ClassChangedType>();
 		this.currentStamp = process.uptime();
 		this.initConfig();
 	}
 	/**
 	 * 类改变事件
 	 */
-	public get onCustomClassChanged(): Event<void> {
+	public get onCustomClassChanged(): Event<ClassChangedType> {
 		return this._onCustomClassChanged.event;
 	}
 
@@ -168,7 +168,7 @@ export abstract class AbstractExmlConfig {
 			}
 		}
 		this.currentStamp = process.uptime();
-		this._onCustomClassChanged.fire();
+		this._onCustomClassChanged.fire(event.type);
 	}
 	/**
 	 * 根据类名得到一个类的节点

@@ -222,10 +222,10 @@ export class AppMenu extends MenuBase {
 		const memus = [open, __separator__(), createFolder, createExml, __separator__(), save, saveAll, __separator__(), closeCurrent, __separator__(), reload];
 
 
-		if (isMacintosh) {
-			const installShellCommand = this.createMenuItem(mnemonicMenuLabel(localize('menus.setFileMenu.installShellCommand', 'Install shell command')), '', FileRootCommands.INSTALL_SHELL_COMMAND, null, null);
-			memus.push(__separator__(), installShellCommand);
-		}
+		// if (isMacintosh) {
+		// 	const installShellCommand = this.createMenuItem(mnemonicMenuLabel(localize('menus.setFileMenu.installShellCommand', 'Install shell command')), '', FileRootCommands.INSTALL_SHELL_COMMAND, null, null);
+		// 	memus.push(__separator__(), installShellCommand);
+		// }
 		if (isWindows) {
 			const preferences = this.getPreferencesMenu();
 			memus.push(__separator__(), preferences);

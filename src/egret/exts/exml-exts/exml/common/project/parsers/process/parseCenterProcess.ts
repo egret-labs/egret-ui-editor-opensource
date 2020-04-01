@@ -102,6 +102,7 @@ export class ParseCenterProcess implements IParseCenter {
 		}
 
 		const event = new ClassChangedEvent();
+		event.type = data.type,
 		event.classMap = classNodeMap;
 		event.skinNames = allSkins;
 		event.skinToPathMap = skinClassNameToPath;

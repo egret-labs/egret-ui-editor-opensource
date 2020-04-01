@@ -3,10 +3,13 @@ import { IInstantiationService } from 'egret/platform/instantiation/common/insta
 import { ClassNode } from '../syntaxNodes';
 import { ParseCenterProcess } from './process/parseCenterProcess';
 
+export type ClassChangedType = 'ts' | 'exml' | 'mix';
+
 /**
  * 类改变事件
  */
 export class ClassChangedEvent {
+	type: ClassChangedType;
 	/**
 	 * 类字典
 	 */

@@ -706,7 +706,7 @@ export class TemporaryData implements ITemporaryData {
 	/**
 	 * 图层滚动条的位置
 	 */
-	public layerScrollPos:number = 0;
+	public layerScrollPos: number = 0;
 }
 
 
@@ -781,7 +781,7 @@ export class ExmlModel implements IExmlModel {
 	public get onTreeChanged(): Event<TreeChangedEvent> {
 		return this._onTreeChanged.event;
 	}
-	
+
 
 	/**
 	 * exml解析器
@@ -1287,9 +1287,9 @@ export class ExmlModel implements IExmlModel {
 		try {
 			func();
 		} catch (error) {
-			if(error instanceof Error){
+			if (error instanceof Error) {
 				this._onCompileError.fire(error.message);
-			}else if(typeof error == 'string'){
+			} else if (typeof error == 'string') {
 				this._onCompileError.fire(error);
 			}
 		}
@@ -1809,7 +1809,7 @@ export class ExmlModel implements IExmlModel {
 	 * @param startIndex 要替换的起始索引
 	 * @param endIndex 要替换的结束索引(不包含)
 	 */
-	public insertText(insertText: string, startIndex: number = 0, endIndex: number = 2147483647, notifyListeners: boolean = false, refresh: boolean = true): void {
+	public async insertText(insertText: string, startIndex: number = 0, endIndex: number = 2147483647, notifyListeners: boolean = false, refresh: boolean = true): Promise<void> {
 		const maxLength: number = this._text ? this._text.length : 0;
 		if (endIndex >= maxLength) {
 			endIndex = maxLength;
@@ -1819,9 +1819,8 @@ export class ExmlModel implements IExmlModel {
 		}
 		this.pushTextChange(insertText, startIndex, endIndex, notifyListeners);
 		if (refresh) {
-			this.refreshTree().then(() => {
-				this.pushHistory();
-			});
+			await this.refreshTree();
+			this.pushHistory();
 		} else {
 			this.pushHistory();
 		}
@@ -1852,7 +1851,7 @@ export class ExmlModel implements IExmlModel {
 		if (this._text === null) {
 			this._text = '';
 		}
-		
+
 		this.needRefreshTree = true;
 		if (newText === null) {
 			newText = '';
@@ -2508,42 +2507,42 @@ export class ExmlModel implements IExmlModel {
 		if (value.asChild || value._host instanceof EArray) {
 			//如下代码是为了找到要被删除的部分前的最后一个换行之后，即：保留前一个换行
 			var startIndex = range[0];
-			var limitIndex = this._text.indexOf('<',startIndex);
-			var tmpIndex1 = this._text.lastIndexOf('>',startIndex);
-			var tmpIndex2 = this._text.indexOf('\r',tmpIndex1);
-			var tmpIndex3 = this._text.indexOf('\n',tmpIndex1);
+			var limitIndex = this._text.indexOf('<', startIndex);
+			var tmpIndex1 = this._text.lastIndexOf('>', startIndex);
+			var tmpIndex2 = this._text.indexOf('\r', tmpIndex1);
+			var tmpIndex3 = this._text.indexOf('\n', tmpIndex1);
 			var tmps = [];
-			if(tmpIndex1 != -1){ tmps.push(tmpIndex1);}
-			if(tmpIndex2 != -1){ tmps.push(tmpIndex2);}
-			if(tmpIndex3 != -1){ tmps.push(tmpIndex3);}
+			if (tmpIndex1 != -1) { tmps.push(tmpIndex1); }
+			if (tmpIndex2 != -1) { tmps.push(tmpIndex2); }
+			if (tmpIndex3 != -1) { tmps.push(tmpIndex3); }
 			var targetIndex = -1;
-			for(var i = 0;i<tmps.length;i++){
-				if(tmps[i] < limitIndex && tmps[i] > targetIndex){
+			for (var i = 0; i < tmps.length; i++) {
+				if (tmps[i] < limitIndex && tmps[i] > targetIndex) {
 					targetIndex = tmps[i];
 				}
 			}
-			startIndex = targetIndex+1;
+			startIndex = targetIndex + 1;
 
 			//如下代码是为了找到要被删除的部分后的最后一个换行之后，即：删除后一个换行
 			var endIndex = range[3];
-			var limitIndex = this._text.indexOf('<',endIndex);
-			if(limitIndex == -1){
+			var limitIndex = this._text.indexOf('<', endIndex);
+			if (limitIndex == -1) {
 				limitIndex = this._text.length;
 			}
-			var tmpIndex1 = this._text.indexOf('>',endIndex);
-			var tmpIndex2 = this._text.indexOf('\r',tmpIndex1);
-			var tmpIndex3 = this._text.indexOf('\n',tmpIndex1);
+			var tmpIndex1 = this._text.indexOf('>', endIndex);
+			var tmpIndex2 = this._text.indexOf('\r', tmpIndex1);
+			var tmpIndex3 = this._text.indexOf('\n', tmpIndex1);
 			var tmps = [];
-			if(tmpIndex1 != -1){ tmps.push(tmpIndex1);}
-			if(tmpIndex2 != -1){ tmps.push(tmpIndex2);}
-			if(tmpIndex3 != -1){ tmps.push(tmpIndex3);}
+			if (tmpIndex1 != -1) { tmps.push(tmpIndex1); }
+			if (tmpIndex2 != -1) { tmps.push(tmpIndex2); }
+			if (tmpIndex3 != -1) { tmps.push(tmpIndex3); }
 			var targetIndex = -1;
-			for(var i = 0;i<tmps.length;i++){
-				if(tmps[i] < limitIndex && tmps[i] > targetIndex){
+			for (var i = 0; i < tmps.length; i++) {
+				if (tmps[i] < limitIndex && tmps[i] > targetIndex) {
 					targetIndex = tmps[i];
 				}
 			}
-			endIndex = targetIndex+1;
+			endIndex = targetIndex + 1;
 
 			this.pushTextChange('', startIndex, endIndex);
 			if (value._readOnly && value._host instanceof EObject && hostInMultiState && value.getNs().uri !== W_EUI.uri) {

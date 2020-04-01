@@ -88,8 +88,8 @@ export class CodeView implements ICodeView {
 		this.codeEditor.setActive(active);
 	}
 
-	public syncModelData(): void {
-		this.codeEditor.syncText();
+	public syncModelData(): Promise<void> {
+		return this.codeEditor.syncText();
 	}
 
 	/**

@@ -16,6 +16,7 @@
     "dependencies": {
         "fs-extra": "^8.1.0",
         "gsap": "^3.2.4",
+        "iconv-lite": "^0.5.1",
         "minimist": "^1.2.5",
         "mousetrap": "^1.6.5",
         "react": "^16.13.1",

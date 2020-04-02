@@ -9,6 +9,7 @@ import * as fsextra from 'fs-extra';
 import * as paths from 'egret/base/common/paths';
 import * as fs from 'fs';
 import { IDisposable } from 'vs/base/common/lifecycle';
+import * as encoding from 'egret/base/common/encoding';
 import { IFileService, FileChangesEvent, IFileChange, FileChangeType } from 'egret/platform/files/common/files';
 import { ResUtil } from '../utils/ResUtil';
 import { FileUtil } from '../utils/FileUtil';
@@ -130,9 +131,9 @@ export class ResModel extends egret.EventDispatcher {
 						reject(new Error(resjson + ' not exits!!!'));
 					} else {
 						// 不要用UTF-8的方式读文件，可能是UTF-8 BOM格式，这样读出来的字符串无法JSON.parse
-						fsextra.readFile(resjson, 'utf8').then(fileContent => {
-							// let str = encoding.decode(fileContent, 'UTF-8');
-							contentHandler(fileContent);
+						fsextra.readFile(resjson).then(fileContent => {
+							let str = encoding.decode(fileContent, 'UTF-8');
+							contentHandler(str);
 						});
 					}
 				});

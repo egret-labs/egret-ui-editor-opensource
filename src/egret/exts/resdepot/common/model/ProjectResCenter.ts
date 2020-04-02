@@ -6,6 +6,7 @@ import { ResInfoVO } from 'egret/exts/resdepot/common/model/ResInfoVO';
 import { ResUtil } from 'egret/exts/resdepot/common/utils/ResUtil';
 import { ResFileHelper } from 'egret/exts/resdepot/common/utils/ResFileHelper';
 import { Event, Emitter } from 'vs/base/common/event';
+import * as encoding from 'egret/base/common/encoding';
 import events = require('vs/base/common/events');
 import { IFileService, FileChangesEvent, IFileChange, FileChangeType } from 'egret/platform/files/common/files';
 import { EgretProjectModel } from 'egret/exts/exml-exts/exml/common/project/egretProject';
@@ -151,9 +152,9 @@ export class ProjectResCenter {
 		return fsextra.pathExists(configPath).then(isExists => {
 			if (isExists) {
 				// 不要用UTF-8的方式读文件，可能是UTF-8 BOM格式，这样读出来的字符串无法JSON.parse
-				return fsextra.readFile(configPath, 'utf8').then(fileContent => {
-					// let str = encoding.decode(fileContent, 'UTF-8');
-					let obj: any = ResFileHelper.importJson(fileContent);
+				return fsextra.readFile(configPath).then(fileContent => {
+					let str = encoding.decode(fileContent, 'UTF-8');
+					let obj: any = ResFileHelper.importJson(str);
 					if (obj) {
 						let tasks: Promise<any>[] = [];
 						for (let i: number = 0; i < obj.resList.length; i++) {
@@ -183,9 +184,9 @@ export class ProjectResCenter {
 		return fsextra.pathExists(configPath).then(isExists => {
 			if (isExists) {
 				// 不要用UTF-8的方式读文件，可能是UTF-8 BOM格式，这样读出来的字符串无法JSON.parse
-				return fsextra.readFile(configPath, 'utf8').then(fileContent => {
-					// let str = encoding.decode(fileContent, 'UTF-8');
-					let obj: any = ResFileHelper.importJsonNew(fileContent);
+				return fsextra.readFile(configPath).then(fileContent => {
+					let str = encoding.decode(fileContent, 'UTF-8');
+					let obj: any = ResFileHelper.importJsonNew(str);
 					if (obj) {
 						let tasks: Promise<any>[] = [];
 						for (let i: number = 0; i < obj.resList.length; i++) {

@@ -5,10 +5,8 @@ import { ResType } from 'egret/exts/resdepot/common/consts/ResType';
 import { PathUtil } from 'egret/exts/resdepot/common/utils/PathUtil';
 import { AppStorage } from 'egret/exts/resdepot/common/storage/AppStorage';
 import { FileUtil } from 'egret/exts/resdepot/common/utils/FileUtil';
-/* tslint:disable */
-// import * as encoding from 'vs/base/node/encoding';
+import * as encoding from 'egret/base/common/encoding';
 import * as fsextra from 'fs-extra';
-/* tslint:enable */
 import * as paths from 'egret/base/common/paths';
 import { localize } from 'egret/base/localization/nls';
 
@@ -553,10 +551,10 @@ export class ResUtil {
 	private static getSheet(url: string): Promise<any> {
 		return fsextra.pathExists(url).then(exist => {
 			if (exist) {
-				return fsextra.readFile(url, 'uft8').then(fileContent => {
-					// let str = encoding.decode(fileContent, 'UTF-8');
+				return fsextra.readFile(url).then(fileContent => {
+					let str = encoding.decode(fileContent, 'UTF-8');
 					try {
-						let content: any = JSON.parse(fileContent);
+						let content: any = JSON.parse(str);
 						if (content && content.file && content.frames) {
 							return Promise.resolve(content);
 						}

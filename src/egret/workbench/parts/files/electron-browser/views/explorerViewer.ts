@@ -643,7 +643,8 @@ export class FileFilter implements IFilter {
 			// 没有设置皮肤路径则添加默认皮肤路径
 			exmlRoots.push(URI.file('resource/eui_skins'));
 		}
-		if (exmlRoots.length > 0 &&
+		if (stat.isDirectory &&
+			exmlRoots.length > 0 &&
 			this.workspaceService.getWorkspace() &&
 			this.workspaceService.getWorkspace().uri
 		) {

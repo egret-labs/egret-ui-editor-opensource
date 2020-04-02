@@ -4,7 +4,7 @@ import paths = require('egret/base/common/paths');
 import { URI } from 'vs/base/common/uri';
 /* tslint:disable */
 import { remote } from 'electron';
-// import * as encoding from 'vs/base/node/encoding';
+import * as encoding from 'egret/base/common/encoding';
 /* tslint:enable */
 
 export class FileUtil {
@@ -19,9 +19,9 @@ export class FileUtil {
 		fsextra.pathExists(path).then(exits => {
 			if (exits) {
 				if (charSet === 'UTF-8') {
-					fsextra.readFile(path, 'utf8').then(fileContent => {
-						// let str = encoding.decode(fileContent, 'UTF-8');
-						return callback && callback(fileContent);
+					fsextra.readFile(path).then(fileContent => {
+						let str = encoding.decode(fileContent, 'UTF-8');
+						return callback && callback(str);
 					});
 				} else {
 					fsextra.readFile(path, charSet).then((content: string) => {

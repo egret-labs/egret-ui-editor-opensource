@@ -487,20 +487,29 @@ export class FileController extends DefaultController implements IController, ID
 			tree.setSelection(this.statSelections);
 		}
 		this.setContextMenuEnable(true);
-		if (this.statSelections.length > 1) {
+		if (stat.isRoot || (stat.name === 'resource' && stat.isDirectory && stat.parent && stat.parent.isRoot)) {
 			this.setContextMenuEnable(false, ContextMenuId.NEW_EXML);
 			this.setContextMenuEnable(false, ContextMenuId.NEW_FOLDER);
-			this.setContextMenuEnable(false, ContextMenuId.RENAME);
+			this.setContextMenuEnable(false, ContextMenuId.COPY);
 			this.setContextMenuEnable(false, ContextMenuId.PASTE);
+			this.setContextMenuEnable(false, ContextMenuId.RENAME);
+			this.setContextMenuEnable(false, ContextMenuId.DELETE);
 		} else {
-			if (stat.isDirectory) {
-				if (!this.clipboardService.hasFiles()) {
-					this.setContextMenuEnable(false, ContextMenuId.PASTE);
-				}
-			} else {
+			if (this.statSelections.length > 1) {
 				this.setContextMenuEnable(false, ContextMenuId.NEW_EXML);
 				this.setContextMenuEnable(false, ContextMenuId.NEW_FOLDER);
+				this.setContextMenuEnable(false, ContextMenuId.RENAME);
 				this.setContextMenuEnable(false, ContextMenuId.PASTE);
+			} else {
+				if (stat.isDirectory) {
+					if (!this.clipboardService.hasFiles()) {
+						this.setContextMenuEnable(false, ContextMenuId.PASTE);
+					}
+				} else {
+					this.setContextMenuEnable(false, ContextMenuId.NEW_EXML);
+					this.setContextMenuEnable(false, ContextMenuId.NEW_FOLDER);
+					this.setContextMenuEnable(false, ContextMenuId.PASTE);
+				}
 			}
 		}
 		setTimeout(() => {

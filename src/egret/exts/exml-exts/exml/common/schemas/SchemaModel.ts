@@ -17,7 +17,6 @@ import { ClassChangedType } from '../project/parsers/parser';
 export class SchemaModel extends AbstractSchemaModel {
 	private schemaStrategy: ISchemaStrategy;
 	private inited: boolean = false;
-	private lastIdelRequest: any;
 	/**
      * 安装Xsd规范数据层
      * @param schemaStrategy

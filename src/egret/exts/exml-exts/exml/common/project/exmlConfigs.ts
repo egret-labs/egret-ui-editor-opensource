@@ -229,33 +229,73 @@ export abstract class AbstractExmlConfig {
 		return this.customClasses;
 	}
 
+	// /**
+	//  * 判断A是否继承或实现自了B
+	//  * @param classNameA 
+	//  * @param classNameB 
+	//  */
+	// public isInstanceOf(classNameA: string, classNameB: string): boolean {
+	// 	if (classNameB === 'any' || classNameB === 'Class') {
+	// 		return true;
+	// 	}
+	// 	if (classNameA === classNameB) {
+	// 		return true;
+	// 	}
+	// 	const classNode = this.getClassNode(classNameA);
+	// 	if (!classNode) {
+	// 		return false;
+	// 	}
+	// 	const baseClassNode = classNode.baseClass;
+	// 	if (baseClassNode) {
+	// 		if (this.isInstanceOf(baseClassNode.fullName, classNameB)) {
+	// 			return true;
+	// 		}
+	// 	}
+	// 	const implementedNodes = classNode.implementeds;
+	// 	for (let i = 0; i < implementedNodes.length; i++) {
+	// 		if (this.isInstanceOf(implementedNodes[i].fullName, classNameB)) {
+	// 			return true;
+	// 		}
+	// 	}
+	// 	return false;
+	// }
+
+	private isInstanceOfClass(classA: string, classB: string): boolean {
+		if (classB === 'any' || classB === 'Class') {
+			return true;
+		}
+		if (classA === classB) {
+			return true;
+		}
+		return false;
+	}
+
 	/**
 	 * 判断A是否继承或实现自了B
 	 * @param classNameA 
 	 * @param classNameB 
 	 */
 	public isInstanceOf(classNameA: string, classNameB: string): boolean {
-		if (classNameB === 'any' || classNameB === 'Class') {
-			return true;
-		}
-		if (classNameA === classNameB) {
+		if (this.isInstanceOfClass(classNameA, classNameB)) {
 			return true;
 		}
 		const classNode = this.getClassNode(classNameA);
 		if (!classNode) {
 			return false;
 		}
-		const baseClassNode = classNode.baseClass;
-		if (baseClassNode) {
-			if (this.isInstanceOf(baseClassNode.fullName, classNameB)) {
+		let temp = classNode.baseClass;
+		while (temp) {
+			if (this.isInstanceOfClass(temp.fullName, classNameB)) {
 				return true;
 			}
-		}
-		const implementedNodes = classNode.implementeds;
-		for (let i = 0; i < implementedNodes.length; i++) {
-			if (this.isInstanceOf(implementedNodes[i].fullName, classNameB)) {
-				return true;
+			const implementedNodes = temp.implementeds;
+			for (let i = 0; i < implementedNodes.length; i++) {
+				const item = implementedNodes[i];
+				if (this.isInstanceOfClass(item.fullName, classNameB)) {
+					return true;
+				}
 			}
+			temp = temp.baseClass;
 		}
 		return false;
 	}

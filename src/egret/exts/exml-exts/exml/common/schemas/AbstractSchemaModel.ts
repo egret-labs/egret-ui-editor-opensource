@@ -15,6 +15,25 @@ import { QName } from './../sax/QName';
 import { Namespace } from './../sax/Namespace';
 import * as sax from '../sax/sax';
 
+type RequestIdleCallbackHandle = any;
+type RequestIdleCallbackOptions = {
+	timeout: number;
+};
+type RequestIdleCallbackDeadline = {
+	readonly didTimeout: boolean;
+	timeRemaining: (() => number);
+};
+
+declare global {
+	interface Window {
+		requestIdleCallback: (
+			callback: ((deadline: RequestIdleCallbackDeadline) => void),
+			opts?: RequestIdleCallbackOptions,
+		) => RequestIdleCallbackHandle;
+		cancelIdleCallback: (handle: RequestIdleCallbackHandle) => void;
+	}
+}
+
 /**
  * xsd规则的数据层基类
  */
@@ -72,25 +91,20 @@ export class AbstractSchemaModel {
 		let hostComponentAttribute: Attribute = SchemaNodeCreater.createAttribute(new QName(this.getWorkNS().uri, 'name'), null);
 		hostComponentAttributeGroup.addNode(hostComponentAttribute);
 	}
+	private remainClassNames: string[] = [];
 	private addedClassNames: string[] = [];
 	private getNewClassNames(classNames: string[]): string[] {
 		const newItems: string[] = [];
 		for (let i = 0; i < classNames.length; i++) {
 			const element = classNames[i];
-			if(this.addedClassNames.indexOf(element) < 0) {
+			if (this.addedClassNames.indexOf(element) < 0) {
 				newItems.push(element);
 			}
 		}
 		return newItems;
 	}
-	/**
-	 * 更新自定义组件列表，此方法会移除掉所有旧的自定义组件节点，以新传入的替代。
-	 * @param classNames 自定义组件类名列表
-	 */
-	protected updateComponents(classNames: string[]): void {
-		const newItems = this.getNewClassNames(classNames);
-		this.addedClassNames = this.addedClassNames.concat(newItems);
-		
+
+	protected updateComponentsCore(newItems: string[]): void {
 		// 开始添加自定义组件节点到动态xsd中
 		for (let i = 0; i < newItems.length; i++) {
 			let currentClassName: string = newItems[i];
@@ -297,6 +311,44 @@ export class AbstractSchemaModel {
 			let attributeGroupRef: AttributeGroup = SchemaNodeCreater.createAttributeGroup(null, attributeGroup);
 			elementComplexType.addNode(attributeGroupRef);
 		}
+	}
+
+	private lastIdelRequest: any;
+	private updateComponentsIntermittent(): void {
+		if (this.remainClassNames.length === 0) {
+			return;
+		}
+		this.lastIdelRequest = window.requestIdleCallback((deadline) => {
+			if (this.remainClassNames.length === 0) {
+				return;
+			}
+			const index = this.remainClassNames.length >= 10 ? 10 : this.remainClassNames.length;
+			const nextItems = this.remainClassNames.splice(0, index);
+			// console.log('requestIdleCallback', index, nextItems.length, this.remainClassNames.length, this.addedClassNames.length);
+			this.updateComponentsCore(nextItems);
+			this.addedClassNames = this.addedClassNames.concat(nextItems);
+			if (this.remainClassNames.length > 0) {
+				setTimeout(() => {
+					this.updateComponentsIntermittent();
+				}, 0);
+			} else {
+				this.lastIdelRequest = null;
+			}
+		});
+	}
+
+	/**
+	 * 更新自定义组件列表，此方法会移除掉所有旧的自定义组件节点，以新传入的替代。
+	 * @param classNames 自定义组件类名列表
+	 */
+	protected updateComponents(classNames: string[]): void {
+		const newItems = this.getNewClassNames(classNames);
+		this.remainClassNames = newItems;
+		if (this.lastIdelRequest) {
+			window.cancelIdleCallback(this.lastIdelRequest);
+			// console.log('cancelIdleCallback');
+		}
+		this.updateComponentsIntermittent();
 	}
 	/**
 	 * 更新默认的命名空间，该方法子类中重写

@@ -2,6 +2,7 @@ import { IEnvironmentService, ParsedArgs } from 'egret/platform/environment/comm
 import { app } from 'electron';
 import * as os from 'os';
 import * as path from 'path';
+import { getDefaultUserDataPath } from 'egret/platform/node/userPaths';
 
 /**
  * 环境变量服务实例
@@ -26,7 +27,7 @@ export class EnvironmentService implements IEnvironmentService {
 		return path.join(this.userDataPath, 'Workspaces');
 	}
 	get userDataPath(): string {
-		return parseUserDataDir(this._args);
+		return parseUserDataDir(this._args, process);
 	}
 	get buildNls(): boolean {
 		return !!this.args['build-nls'];
@@ -34,17 +35,18 @@ export class EnvironmentService implements IEnvironmentService {
 	constructor(private _args: ParsedArgs, private _execPath: string) {
 	}
 }
-function parseUserDataDir(args: ParsedArgs): string {
-	return parsePathArg(args['user-data-dir'], process) || path.resolve(process.platform);
-}
-function parsePathArg(arg: string, process: NodeJS.Process): string {
-	if (!arg) {
-		return undefined;
+
+function parseUserDataDir(args: ParsedArgs, process: NodeJS.Process) {
+	const arg = args['user-data-dir'];
+	if (arg) {
+		// Determine if the arg is relative or absolute, if relative use the original CWD
+		// (APP_CWD), not the potentially overridden one (process.cwd()).
+		const resolved = path.resolve(arg);
+		if (path.normalize(arg) === resolved) {
+			return resolved;
+		} else {
+			return path.resolve(process.env['APP_CWD'] || process.cwd(), arg);
+		}
 	}
-	const resolved = path.resolve(arg);
-	if (path.normalize(arg) === resolved) {
-		return resolved;
-	} else {
-		return path.resolve(process.env['EGRET_CWD'] || process.cwd(), arg);
-	}
+	return path.resolve(getDefaultUserDataPath(process.platform));
 }

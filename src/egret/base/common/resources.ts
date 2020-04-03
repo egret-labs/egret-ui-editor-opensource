@@ -1,6 +1,7 @@
 'use strict';
 
-import * as paths from 'path';
+import * as path from 'path';
+import * as paths from 'egret/base/common/paths';
 import uri from 'egret/base/common/uri';
 
 /**
@@ -8,7 +9,7 @@ import uri from 'egret/base/common/uri';
  * @param resource 资源
  */
 export function basenameOrAuthority(resource: uri): string {
-	return paths.basename(resource.fsPath) || resource.authority;
+	return path.basename(resource.fsPath) || resource.authority;
 }
 
 /**
@@ -17,9 +18,10 @@ export function basenameOrAuthority(resource: uri): string {
  * @param candidate 子级路径
  */
 export function isEqualOrParent(resource: uri, candidate: uri): boolean {
-	const resourcePath:string = resource.toString().toLocaleLowerCase();
-	const candidatePath:string = candidate.toString().toLocaleLowerCase();
-	return resourcePath.indexOf(candidatePath) === 0;
+	// const resourcePath:string = resource.toString().toLocaleLowerCase();
+	// const candidatePath:string = candidate.toString().toLocaleLowerCase();
+	// return resourcePath.indexOf(candidatePath) === 0;
+	return paths.isEqualOrParent(resource.fsPath, candidate.fsPath);
 }
 /**
  * 判断两个uri是否相等
@@ -41,8 +43,8 @@ export function isEqual(first: uri, second: uri): boolean {
  * @param resource 目录
  */
 export function dirname(resource: uri): uri {
-	const dirname = paths.dirname(resource.path);
-	if (resource.authority && dirname && !paths.isAbsolute(dirname)) {
+	const dirname = path.dirname(resource.path);
+	if (resource.authority && dirname && !path.isAbsolute(dirname)) {
 		return null; 
 	}
 	return resource.with({

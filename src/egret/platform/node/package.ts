@@ -2,13 +2,16 @@
 
 import * as path from 'path';
 import * as fsextra from 'fs-extra';
-import uri from 'egret/base/common/uri';
+import { app, remote } from 'electron';
 
 export interface IPackageConfiguration {
 	name: string;
 	version: string;
 }
-;
-const configuration = fsextra.readJsonSync('./package.json') as IPackageConfiguration
+
+const rootPath: string = app ? app.getAppPath() : remote.app.getAppPath();
+const packageJsonPath = path.join(rootPath, 'package.json');
+console.log(packageJsonPath);
+const configuration = fsextra.readJsonSync(packageJsonPath) as IPackageConfiguration;
 
 export default configuration;

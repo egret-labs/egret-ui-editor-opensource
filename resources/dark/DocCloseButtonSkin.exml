@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.DocCloseButtonSkin"
+        states="up,over,down,disabled"
+        xmlns:e="http://ns.egret.com/eui">
+	<e:Image x="4" y="2" width="15" height="15" source.up="dark_closebutton_up_closebutton_png" source.disabled="dark_closebutton_up_closebutton_png"
+	         source.over="dark_closebutton_over_closebuttonover_png" source.down="dark_closebutton_down_closebuttondown_png"/>
+</e:Skin>

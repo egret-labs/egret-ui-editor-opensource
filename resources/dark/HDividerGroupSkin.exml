@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.HDividerGroupSkin" width="400" height="166" xmlns:e="http://ns.egret.com/eui">
+	 <e:Group height="165" width="400" x="0" y="0" id="dividerGroup">
+		<e:layout>
+			<e:HorizontalLayout gap="10" horizontalAlign="center" verticalAlign="middle">
+			</e:HorizontalLayout>
+		</e:layout>
+	</e:Group>
+</e:Skin>

@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.StateItemSkin" width="150" height="24" xmlns:e="http://ns.egret.com/eui" states="up,over,down" >
+	<e:Rect id="back" fillAlpha.up="0" height="100%" width="100%"  fillColor.up="0x000000" fillColor.over="0x262536" fillColor.down="0x3576f8"/>
+	<e:Group height="24" width="100%" >
+		<e:Image x="10" verticalCenter="0" source="state_png"/>
+		<e:Label text="{data}" x="35" verticalCenter="0" id='textDisplay' size='12' textColor="0xD4D4D4"/>
+	</e:Group>
+</e:Skin>

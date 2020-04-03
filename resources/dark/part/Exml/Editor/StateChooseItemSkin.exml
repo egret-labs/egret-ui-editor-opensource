@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.StateChooseItemSkin" minHeight="25" xmlns:e="http://ns.egret.com/eui">
+	<e:Rect percentHeight="100" percentWidth="100" fillColor="0x333333"/>
+	<e:Rect height="1" bottom="0" left="0" right="0" fillColor="0x1b2025"/>
+	<e:Label id="labelDisplay" x="31" verticalCenter="0"/>
+	<e:CheckBox id="checkBox" x="10" verticalCenter="0"/>
+</e:Skin>

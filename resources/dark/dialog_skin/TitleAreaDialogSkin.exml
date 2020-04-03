@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.TitleAreaDialogSkin" states="normal,disabled,normalAndInactive"  width="600" height="300"
+xmlns:e="http://ns.egret.com/eui">
+<e:Image id="shadow" scale9Grid="8,8,3,3" left="0" right="0" top="0" bottom="0"/>
+<e:Group id="group" left="7" right="7" bottom="7" top="7" touchEnabled="false">
+	<e:Rect id="backUI" strokeAlpha="1" strokeColor="0x0a0a12" fillColor="0x1c1b28" percentHeight="100" percentWidth="100"/>
+	<e:Rect id="hline" height="1" percentWidth="100" top="35" fillColor="0x0a0a12"/>
+	<e:Rect id="outlinetop" height="1" percentWidth="100" top="0" fillColor="0x0a0a12"/>
+	<e:Rect id="outlinedown" height="1" percentWidth="100" bottom="0" fillColor="0x0a0a12"/>
+	<e:Rect id="outlineleft" width="1" percentHeight="100" left="0" fillColor="0x0a0a12"/>
+	<e:Rect id="outlineright" width="1" percentHeight="100" right="0" fillColor="0x0a0a12"/>
+	<e:Group id="moveArea" height="34" left="9" right="102" touchThrough="false" touchEnabled="true"/>
+	<e:Group id="titleContentGroup" height="34" left="0" right="0" touchEnabled="false" touchChildren="false">
+		<e:layout>
+			<e:HorizontalLayout verticalAlign="middle" gap="4"/>
+		</e:layout>
+		<e:Image id="appIcon"/>
+		<e:Group verticalCenter="0" id="titleGroup"/>
+		<e:Group verticalCenter="0" percentHeight="100" id="titleLeftGroup"/>
+		<e:Group id="titleDisplayGroup" percentHeight="100" percentWidth="100">
+			<e:Label id="titleDisplay" size="14" verticalCenter="0" left="5" right="5" height="20" text="标题"/>
+		</e:Group>
+		<e:Group id="titleRightGroup" verticalCenter="0" percentHeight="100"/>
+	</e:Group>
+	<e:Group id="buttonGroup" right="0" touchEnabled="false">
+		<e:layout>
+			<e:HorizontalLayout gap="-1"/>
+		</e:layout>
+		<e:Button id="closeButton" skinName="skins.WinCloseButtonSkin"/>
+	</e:Group>
+	<e:Group id="contentGroup" top="36" left="1" right="1" bottom="1">
+		<e:layout>
+			<e:VerticalLayout gap="0" horizontalAlign="justify"/>
+		</e:layout>
+		<e:Group height="70">
+			<e:Rect percentHeight="100" percentWidth="100" fillColor="0x1c1b28"/>
+			<e:Label id="titleLabel" top="10" left="5" right="10" size="13" bold="true"/>
+			<e:Group  left="10" top="35" right="10">
+				<e:layout>
+					<e:HorizontalLayout gap="3" />
+				</e:layout>
+				<e:Image id="messageImage"/>
+				<e:Label id="messageLabel" percentWidth="100" size="12"/>
+			</e:Group>
+			<e:Image id="titleAreaImage" right="0" verticalCenter="0"/>
+		</e:Group>
+		<e:Rect fillColor="0x0a0a12
+		" height="1"/>
+		<e:Group id="dialogArea" percentWidth="100" percentHeight="100"/>
+		<e:Rect fillColor="0x0a0a12" height="1"/>
+		<e:Group id="buttonBar">
+			<e:layout>
+				<e:HorizontalLayout paddingBottom="12" paddingTop="12" paddingLeft="12" paddingRight="12" verticalAlign="middle" horizontalAlign="right"/>
+			</e:layout>
+		</e:Group>
+	</e:Group>
+	<e:Group id="leftResize" top="20" bottom="20" width="4" left="0" visible="false" visible.normal="true"/>
+	<e:Group id="rightResize" top="20" bottom="20" width="4" right="0" visible="false" visible.normal="true"/>
+	<e:Group id="topResize" left="20" right="20" top="0" height="4" visible="false" visible.normal="true"/>
+	<e:Group id="bottomResize" left="20" right="20" height="4" bottom="0" visible="false" visible.normal="true"/>
+	<e:Group id="topRightResize" right="0" height="20" width="4" visible="false" visible.normal="true"/>
+	<e:Group id="topLeftResize" left="0" top="0" height="20" width="20" visible="false" visible.normal="true"/>
+	<e:Group id="bottomLeftResize" left="0" bottom="0" height="20" width="20" visible="false" visible.normal="true"/>
+	<e:Group id="bottomRightResize" right="0" bottom="0" height="20" width="20" visible="false" visible.normal="true"/>
+	<e:Rect id="modalMask" fillColor="0xFFFFFF" left="0" right="0" top="0" bottom="0" alpha="0.1" touchEnabled="false" visible="false"/>
+</e:Group>
+</e:Skin>

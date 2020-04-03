@@ -405,7 +405,7 @@ class TweenItemController extends treeDefaults.DefaultController {
 		@IInstantiationService private instantiationService: IInstantiationService,
 		@IAnimationService private animationService: IAnimationService
 	) {
-		super();
+		super({ clickBehavior: treeDefaults.ClickBehavior.ON_MOUSE_UP, keyboardSupport: true, openMode: treeDefaults.OpenMode.SINGLE_CLICK });
 		this.actionProvider.onEnableChanged((obj) => {
 			this.setContextMenuEnable(obj.enable, obj.id);
 		});

@@ -7,8 +7,9 @@
 import { AbstractSchemaModel } from './AbstractSchemaModel';
 import { ISchemaStrategy } from './ISchemaStrategy';
 import { Namespace } from './../sax/Namespace';
-
 import * as sax from '../sax/sax';
+import { ClassChangedType } from '../project/parsers/parser';
+
 /**
  * xsd规范校验数据层
  */
@@ -16,7 +17,7 @@ import * as sax from '../sax/sax';
 export class SchemaModel extends AbstractSchemaModel {
 	private schemaStrategy: ISchemaStrategy;
 	private inited: boolean = false;
-    /**
+	/**
      * 安装Xsd规范数据层
      * @param schemaStrategy
      */
@@ -32,27 +33,30 @@ export class SchemaModel extends AbstractSchemaModel {
 		}
 	}
 
-    /**
+	/**
      * 卸载Xsd规范数据层
      */
 	public uninstall(): void {
-		this.schemaStrategy = null;
 		if (this.schemaStrategy) {
 			this.schemaStrategy.removeCustomChangedHandler(this.componentsChanged_handler, this);
 		}
+		this.schemaStrategy = null;
 	}
-    /**
+	/**
      * 自定义控件列表变化
      * @param event
      */
-	private componentsChanged_handler(): void {
+	private componentsChanged_handler(e: ClassChangedType): void {
+		if(e === 'exml'){
+			return;
+		}
 		if (!this.inited) {
 			return;
 		}
 		this.updateComponents(this.componentClassNames);
 	}
 
-    /**
+	/**
      * 得到gui的命名空间
      * @return
      */
@@ -62,7 +66,7 @@ export class SchemaModel extends AbstractSchemaModel {
 		}
 		return new Namespace();
 	}
-    /**
+	/**
      * 工作用的命名空间
      */
 	public getWorkNS(): Namespace {
@@ -71,7 +75,7 @@ export class SchemaModel extends AbstractSchemaModel {
 		}
 		return new Namespace();
 	}
-    /**
+	/**
      * 对自定义组件类名进行排序，按照从子类到父类的顺序排列。
      * @param classNames
      */
@@ -80,7 +84,7 @@ export class SchemaModel extends AbstractSchemaModel {
 			this.schemaStrategy.sortComponentClassNames(classNames);
 		}
 	}
-    /**
+	/**
      * 通过类名得到实现的接口列表。
      * @param className 类名
      * @return 指定类实现的接口列表
@@ -91,7 +95,7 @@ export class SchemaModel extends AbstractSchemaModel {
 		}
 		return [];
 	}
-    /**
+	/**
      * 得到一个类的继承链，子类继承实现此方法。
      * @param className 类名
      * @return 继承联列表
@@ -102,7 +106,7 @@ export class SchemaModel extends AbstractSchemaModel {
 		}
 		return [];
 	}
-    /**
+	/**
      * 得到父类的类名，子类继承实现此方法。
      * @param className 类名
      * @return 父类的类名
@@ -113,7 +117,7 @@ export class SchemaModel extends AbstractSchemaModel {
 		}
 		return '';
 	}
-    /**
+	/**
      * 得到当前类相对于指定父类的所有属性字典。
      * @param className 类名
      * @param superClassName 父类名
@@ -125,7 +129,7 @@ export class SchemaModel extends AbstractSchemaModel {
 		}
 		return {};
 	}
-    /**
+	/**
      * 为指定的完整类名创建命名空间。
      * @param className 类名
      * @param xml 要加入到的XML对象，用于检查前缀重复。
@@ -137,7 +141,7 @@ export class SchemaModel extends AbstractSchemaModel {
 		return new Namespace();
 	}
 
-    /**
+	/**
      * 组件类名列表
      */
 	public get componentClassNames(): string[] {
@@ -146,7 +150,7 @@ export class SchemaModel extends AbstractSchemaModel {
 		}
 		return [];
 	}
-    /**
+	/**
      * 皮肤类名列表
      */
 	public get skinClassNames(): string[] {

@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.WinCloseButtonSkin" states="up,over,down,disabled" width="35" height="20"
+        xmlns:e="http://ns.egret.com/eui">
+	<e:Group id="group" left="0" right="1" bottom="0" top="1" touchEnabled="true">
+		<e:Rect width="100%" height="100%" x="0" y="0"  id="backUI" fillColor="0x1c1b28" fillColor.down="0x12111b" fillColor.over="0x2c2a3a"/>
+		<!--<e:Rect id="outlinetop" height="1" percentWidth="100" top="0" fillColor="0x0a0a12"/>
+		<e:Rect id="outlineright" width="1" percentHeight="100" right="0" fillColor="0x0a0a12"/>-->
+		<e:Image id="icon" width="15" height="15" verticalCenter="0" horizontalCenter="0" alpha="1" alpha.disabled="0.3"
+			source="dark_windowclosebutton_close_icon_png"/>
+	</e:Group>
+</e:Skin>

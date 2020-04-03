@@ -4,7 +4,8 @@ import { Tree } from 'vs/base/parts/tree/browser/treeImpl';
 import { FileDataSource, FileRenderer, FileController, FileFilter, FileDragAndDrop2, FileSorter } from './explorerViewer';
 import { FileStat, Model } from '../../common/explorerModel';
 import URI from 'egret/base/common/uri';
-import { isEqualOrParent, dirname } from 'egret/base/common/resources';
+import { dirname } from 'egret/base/common/resources';
+import * as paths from 'egret/base/common/paths';
 import { IDisposable } from 'egret/base/common/lifecycle';
 import { IModelRequirePart } from 'egret/exts/exml-exts/models';
 import { IExmlModel } from 'egret/exts/exml-exts/exml/common/exml/models';
@@ -19,6 +20,7 @@ import { IPanel } from 'egret/parts/common/panel';
 import { localize } from 'egret/base/localization/nls';
 import { voluationToStyle } from 'egret/base/common/dom';
 import { IWorkbenchEditorService } from 'egret/workbench/services/editor/common/ediors';
+import { IWorkspaceService } from 'egret/platform/workspace/common/workspace';
 
 
 /**
@@ -42,6 +44,7 @@ export class ExplorerView extends PanelContentDom implements IModelRequirePart, 
 	constructor(
 		@IInstantiationService private instantiationService: IInstantiationService,
 		@IFileService private fileService: IFileService,
+		@IWorkspaceService private workspaceService: IWorkspaceService,
 		@IWorkbenchEditorService private editorService: IWorkbenchEditorService,
 		@INotificationService private notificationService: INotificationService,
 		@IOperationBrowserService private operationService: IOperationBrowserService
@@ -405,7 +408,9 @@ export class ExplorerView extends PanelContentDom implements IModelRequirePart, 
 			this.refreshFromEventFlag = true;
 			setTimeout(() => {
 				this.refreshFromEventFlag = false;
-				this.doRefresh();
+				this.doRefresh().finally(()=> {
+					this.refreshFromEventFlag = false;
+				});
 			}, 100);
 		} else {
 			this.shouldRefresh = true;
@@ -430,6 +435,26 @@ export class ExplorerView extends PanelContentDom implements IModelRequirePart, 
 		return this.doRefresh(targetsToExpand).then(() => {
 			this.disposables.push(this.editorService.onActiveEditorChanged(() => this.revealActiveFile()));
 			this.revealActiveFile();
+			return this.openDefaultFile();
+		});
+	}
+
+	/**
+	 * 打开默认文件，该文件由eui命令行指定
+	 */
+	private openDefaultFile(): Promise<void> {
+		const workspace = this.workspaceService.getWorkspace();
+		if(!workspace){
+			return Promise.resolve();
+		}
+		const file = workspace.file;
+		if(!file){
+			return Promise.resolve();
+		}
+		return this.select(file, true).then(()=> {
+			if(this.hasSingleSelection(file)){
+				this.editorService.openEditor({ resource: file }, false);
+			}
 		});
 	}
 
@@ -536,7 +561,7 @@ export class ExplorerView extends PanelContentDom implements IModelRequirePart, 
 				const statsToExpand: FileStat[] = this.explorerViewer.getExpandedElements().concat(targetsToExpand.map(expand => this.model.find(expand)));
 				if (input == this.explorerViewer.getInput()) {
 					return this.explorerViewer.refresh().then(() => {
-						this.explorerViewer.expandAll(statsToExpand);
+						return this.explorerViewer.expandAll(statsToExpand);
 					});
 				}
 				const promise = setInputAndExpand(input, statsToExpand);
@@ -557,7 +582,7 @@ export class ExplorerView extends PanelContentDom implements IModelRequirePart, 
 			if (!stat.isRoot) {
 				for (let i = resolvedDirectories.length - 1; i >= 0; i--) {
 					const resource = resolvedDirectories[i];
-					if (isEqualOrParent(stat.resource, resource)) {
+					if (paths.isEqualOrParent(stat.resource.fsPath, resource.fsPath)) {
 						resolvedDirectories.splice(i);
 					}
 				}
@@ -636,7 +661,7 @@ export class ExplorerView extends PanelContentDom implements IModelRequirePart, 
 		});
 	}
 	/**
-	 * 调整可是角位置到指定项
+	 * 调整可视角位置到指定项
 	 */
 	private reveal(element: any, relativeTop?: number): Promise<void> {
 		if (!this.explorerViewer) {

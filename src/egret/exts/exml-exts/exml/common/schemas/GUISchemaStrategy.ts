@@ -7,16 +7,16 @@ import { EUI, W_GUI } from '../project/parsers/core/commons';
  * GUI的exml规范策略
  */
 export class GUISchemaStrategy extends BaseSchemaStrategy implements ISchemaStrategy {
-    /**
+	/**
      * 工作的命名空间，具体子类重写
      */
-    public get guiNS(): Namespace {
-        return EUI;
-    }
-    /**
+	public get guiNS(): Namespace {
+		return EUI;
+	}
+	/**
      * GUI的命名空间，具体子类重写
      */
-    public get workNS(): Namespace {
-        return W_GUI;
-    }
+	public get workNS(): Namespace {
+		return W_GUI;
+	}
 }

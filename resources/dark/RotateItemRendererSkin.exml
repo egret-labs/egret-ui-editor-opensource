@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.RotateItemRendererSkin" states="up,over,down,disabled" height="150" width="150" xmlns:e="http://ns.egret.com/eui">
+	<e:Rect width="100%" height="100%" x="0" y="0"  id="backUI" fillAlpha.up="0" fillAlpha.down="1"  fillAlpha.over="1" fillColor.down="0x094771" fillColor.over="0x2A2D2E"/>
+	<e:Label textAlign="center" verticalAlign="middle" bottom="3" horizontalCenter="0" textColor="0xFFFFFF" id="labelDisplay" size="12" text="{data.name}"/>
+	<e:Image height="100" width="100" horizontalCenter="0" verticalCenter="0" id="image" source="{data.imageUrl}"/>
+</e:Skin>

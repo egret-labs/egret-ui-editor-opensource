@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.ColorPickerSkin" xmlns:e="http://ns.egret.com/eui">
+	<e:Rect strokeColor="0x383838" strokeWeight="1" fillAlpha="0" width="55" height="20"/>
+	<e:Rect id="colorDisplay" strokeColor="0xffffff" strokeAlpha="1" strokeWeight="2" fillColor="0x009aff" x="1" y="1"
+	        width="53" height="18"/>
+</e:Skin>

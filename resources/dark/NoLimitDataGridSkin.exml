@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.NoLimitDataGridSkin" minWidth="400" minHeight="300" xmlns:e="http://ns.egret.com/eui" xmlns:eui="eui.*">
+	<e:Group top="1" left="0"  right="1" bottom="0" id="group" >
+		<e:Group left="0" right="0"  bottom="0" top="23" id="contentGroup">
+			<e:Rect height="100%" width="100%" x="0" y="0" fillColor="0x1d1b2a"/>
+			<e:Scroller left="0" right="0"  bottom="0" top="0" id="scroller" bounces="false">
+				<e:viewport>
+					<eui:Grid height="100%" width="100%" x="0" y="0" id="grid" resizableColumns="true">
+						<eui:itemRenderer>
+							<eui:GridItemRenderer skinName="skins.GridItemRendererSkin"/>
+						</eui:itemRenderer>
+						<eui:GridLayer x="0" y="0" name="backgroundLayer"/>
+						<eui:GridLayer x="0" y="0" name="selectionLayer"/>
+						<eui:GridLayer x="0" y="0" name="editorIndicatorLayer"/>
+						<eui:GridLayer x="0" y="0" name="rendererLayer"/>
+						<eui:GridLayer x="0" y="0" name="overlayLayer"/>
+					</eui:Grid>
+				</e:viewport>
+			</e:Scroller>
+		</e:Group>
+		<eui:GridColumnHeaderGroup width="100%" x="0" y="0" minHeight="24" id="columnHeaderGroup">
+			<eui:columnSeparator>
+				<e:Rect width="1" height="100%" fillColor="0x383838"/>
+			</eui:columnSeparator>
+			<eui:itemRenderer>
+				<eui:GridItemRenderer skinName="skins.GridItemRendererSkin"/>
+			</eui:itemRenderer>
+		</eui:GridColumnHeaderGroup>
+
+		<e:Rect left="0" right="0" bottom="0" top="0" fillAlpha="0" touchEnabled="false" strokeWeight="1" strokeAlpha="1" strokeColor="0x383838" />
+	</e:Group>
+
+</e:Skin>

@@ -7,7 +7,7 @@ import * as DOM from 'vs/base/browser/dom';
 import { INode } from '../../../exts/exml-exts/exml/common/exml/treeNodes';
 import 'egret/workbench/parts/layers/media/euiComponent.css';
 import { IHost } from '../../../exts/exml-exts/exml/common/project/exmlConfigs';
-import { DefaultController } from 'vs/base/parts/tree/browser/treeDefaults';
+import { DefaultController, ClickBehavior, OpenMode } from 'vs/base/parts/tree/browser/treeDefaults';
 import { Tree } from 'vs/base/parts/tree/browser/treeImpl';
 import { IMouseEvent } from 'vs/base/browser/mouseEvent';
 import 'vs/base/parts/tree/browser/tree.less';
@@ -220,7 +220,7 @@ export class ExmlComponentController extends DefaultController implements IContr
 	private doubleClickCallback: Function;
 	private clickCallback: Function;
 	constructor(dcb: Function, ck: Function) {
-		super();
+		super({ clickBehavior: ClickBehavior.ON_MOUSE_UP, keyboardSupport: true, openMode: OpenMode.SINGLE_CLICK });
 		this.doubleClickCallback = dcb;
 		this.clickCallback = ck;
 	}

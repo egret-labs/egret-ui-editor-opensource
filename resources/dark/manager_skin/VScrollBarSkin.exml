@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.manager.VScrollBarSkin" minWidth="12" xmlns:e="http://ns.egret.com/eui">
+	<e:Rect percentHeight="100" percentWidth="100" fillColor="0xdcdedd"/>
+	<e:Button id="track" top="1" bottom="1" skinName="skins.manager.VScrollBarTrackSkin" percentWidth="100"/>
+	<e:Button id="thumb" left="1" right="1" skinName="skins.manager.VScrollBarThumbSkin" minWidth="12" minHeight="12"/>
+</e:Skin>

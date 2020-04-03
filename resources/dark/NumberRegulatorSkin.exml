@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.NumberRegulatorSkin" states="normal,prompt,edit,disabled" minHeight="12" minWidth="12" height="23" xmlns:e="http://ns.egret.com/eui">
+	<e:Rect fillColor="0x10101b" strokeAlpha="1" strokeWeight="1" strokeColor="0x0a0a13" right="0" bottom="0" top="0" left="0"/>
+	<e:Group id="inpitGroup" percentHeight="100" percentWidth="100"/>
+	<e:TextInput id="editableText" textColor="0xEEEEEE" restrict="0-9\.\\-" top="0" left="0" right="0" bottom="0" visible="false" visible.edit="true" visible.normal="false"/>
+	<e:Label id="labelDisplay" verticalAlign="middle" percentHeight="100" left="5" right="0" size="12" textAlign="left"
+	         visible="true" visible.edit="false" textColor.prompt="0x64696d" textColor="0xEEEEEE"/>
+</e:Skin>

@@ -59,6 +59,7 @@ body {
 }
 
 .aboutPage .log {
+	background-image: url("code.svg");
     width: 80px;
     height: 80px;
 }

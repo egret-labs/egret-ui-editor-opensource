@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.manager.MinButtonSkin" states="up,over,down,disabled" minHeight="24" minWidth="30"
+xmlns:e="http://ns.egret.com/eui">
+<e:Image id="back"  width="22" height="2" horizontalCenter="0" verticalCenter="0" source.up="dark_minbutton_up_min_normal_png"
+         source.over="dark_minbutton_over_min_over_png" source.down="dark_minbuttin_down_min_down_png" source.disabled="dark_minbutton_disabled_min_disabled_png"/>
+<e:Rect fillAlpha="0" percentHeight="100" percentWidth="100" />
+</e:Skin>

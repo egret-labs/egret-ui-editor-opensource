@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.IconTabBarButtonSkin"
+        states="up,over,down,disabled,upAndSelected,overAndSelected,downAndSelected,disabledAndSelected,focus"
+        minHeight="25" xmlns:e="http://ns.egret.com/eui">
+	<e:Rect id="backUI" strokeColor="0x131313" strokeWeight="1" strokeAlpha="1" top="0" bottom="0" right="0" left="0"
+	        fillColor="0x383838" fillColor.over="0x43445e" fillColor.focus="0x374552"
+	        fillColor.down="0x1E1E1E" fillColor.up="0x363745" fillColor.disabled="0x22282e"
+	        fillColor.upAndSelected="0x383838" fillColor.overAndSelected="0x1E1E1E"
+	        fillColor.downAndSelected="0x1E1E1E" fillColor.disabledAndSelected="0x383838" />
+	<e:Rect id="bottomLine" fillColor="0x374552" bottom="0" height="1" left="1" right="1"
+	        visible="true" visible.up="false" visible.over="false" visible.down="false"
+	        visible.disabled="false" fillColor.up="0x29323B" fillColor.focus="0x374552" />
+	<e:Rect id="focusRect" visible="false" visible.focus="true" top="1" left="1" bottom="0" right="1"
+	        fillColor="0x1c1b28" />
+	<e:Group verticalCenter="0">
+		<e:Image id="iconDisplay" width="15" height="15" x="12" source="{data.icon}" verticalCenter="0" alpha="1" alpha.up="0.5" alpha.disabled="0.5" />
+		<e:Label id="labelDisplay" text="{data.label}" size="12" left="35" right="5" verticalCenter="0" textColor="0xfefefe"
+		         textColor.up="0x64696d" textColor.disabled="0x64696d" />
+	</e:Group>
+</e:Skin>

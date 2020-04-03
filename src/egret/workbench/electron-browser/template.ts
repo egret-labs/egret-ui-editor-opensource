@@ -181,3 +181,5 @@ export var DefaultBoxLayoutTemplate = {
 		}
 	}
 };
+
+export var DefaultResBoxLayoutTemplate = { 'type': 'DocumentElement', 'bounds': { 'x': 0, 'y': 0, 'width': 1487, 'height': 900 }, 'layoutInfo': { 'type': 'BoxLayoutElement', 'bounds': { 'x': 0, 'y': 0, 'width': 1487, 'height': 900 }, 'render': { 'selectedIndex': -1, 'panels': [] } } };

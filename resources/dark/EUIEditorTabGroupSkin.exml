@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.EUIEditorTabGroupSkin" states="normal,disabled,focus" xmlns:e="http://ns.egret.com/eui"
+        xmlns:eui="eui.*">
+	<e:Rect id="backUI" left="0" right="0" top="25" bottom="0" fillColor="0x1c1b28" strokeColor="0x131313"
+	        strokeColor.focus="0x374552" strokeWeight="1" />
+	<e:Group left="0" right="0" top="0" height="26">
+		<e:Rect id="barBackUI" left="0" right="0" percentHeight="100" strokeAlpha="1" strokeWeight="1" strokeColor="0x131313"
+		        fillColor="0x2e2f3e" />
+		<e:Group id="moveArea" percentHeight="100" percentWidth="100" />
+		<e:TabBar requireSelection="true" left="0" id="titleTabBar" percentHeight="100" itemRenderer="eui.FocusTabBarButton"
+		          itemRendererSkinName="skins.IconTabBarButtonSkin">
+			<e:layout>
+				<e:HorizontalLayout verticalAlign="justify" gap="-1" />
+			</e:layout>
+		</e:TabBar>
+		<e:Group id="titleGroup" right="5" verticalCenter="0">
+			<e:layout>
+				<e:HorizontalLayout gap="0" />
+			</e:layout>
+		</e:Group>
+		<e:Button visible="false" includeInLayout="false" id="menuButton" right="4" verticalCenter="0"
+		          skinName="skins.MenuButtonSkin" />
+	</e:Group>
+	<e:ViewStack id="viewStack" left="3" bottom="3" right="3" top="28" />
+</e:Skin>

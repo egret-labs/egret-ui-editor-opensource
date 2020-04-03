@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.TabPanelSkin" states="normal,disabled" xmlns:e="http://ns.egret.com/eui">
+	<e:Group id="group" left="0" right="0" top="0" bottom="0">
+		<e:layout>
+			<e:VerticalLayout gap="0" />
+		</e:layout>
+		<e:Group percentWidth="100" >
+			<e:Group id="titleGroup" right="0">
+				<e:layout>
+					<e:HorizontalLayout gap="0" />
+				</e:layout>
+			</e:Group>
+		</e:Group>
+		<e:Rect id="gapLine" visible="false" fillColor="0x1b2025" height="1" percentWidth="100" />
+		<e:Group id="contentContainer" percentHeight="100" percentWidth="100" alpha.normal="1"
+		         alpha.disabled="0.5" />
+	</e:Group>
+	
+</e:Skin>

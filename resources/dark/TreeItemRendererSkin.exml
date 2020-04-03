@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.TreeItemRendererSkin" states="up,over,down,disabled" minHeight="23"
+        xmlns:e="http://ns.egret.com/eui" xmlns:eui="eui.*">
+	<!--<e:Image source.up="bgNormal_png" source.disabled="bgNormal_png" source.over="bgHover_png"
+	         source.down="bgDown_png" scale9Grid="1,1,1,1" left="0" right="0" bottom="0" top="0" />-->
+	<e:Rect fillColor.up="0x1b1b29" alpha='1' alpha.up='0'  fillColor.over="0x3F516C" alpha.disabled="0.5" fillColor.down="0x3595ff" alpha.down="1" left="0" right="0" bottom="0" top="0"/>
+	<e:Group id="contentGroup" top="0" bottom="0">
+		<e:layout>
+			<e:HorizontalLayout paddingLeft="2" gap="4" verticalAlign="middle" />
+		</e:layout>
+		<eui:AutoToggleButton id="disclosureButton" skinName="skins.TreeDisclosureButtonSkin"/>
+		<e:Image id="iconDisplay" source="{data.icon}" width='15' height='15'/>
+		<e:Label id="labelDisplay" text="{data.label}" textColor="0xf0f0f0" verticalAlign="middle" size="12" fontFamily="Microsoft YaHei"/>
+	</e:Group>
+</e:Skin>

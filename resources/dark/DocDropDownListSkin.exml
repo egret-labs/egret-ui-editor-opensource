@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.DocDropDownListSkin" height="27" xmlns:e="http://ns.egret.com/eui"
+        xmlns:eui="eui.*" states="normal,popup" minHeight="27">
+	<e:Button skinName="skins.IconButtonSkin" id="openButton" height="27" left="0" right="0" top="2" bottom="2" />
+	<e:Image touchEnabled="false" x="3" verticalCenter="0" source="dark_dropdownlist_docarrow_png" width="9" height="9"/>
+	<e:Label id="numberDisplay" text="label" left="12" top="1" bottom="1" multiline="false"
+	         touchEnabled="false" textAlign="left" size="12" verticalAlign="middle" />
+	<eui:PopUpAnchor id="popUpAnchor" bottom="0" width="150" popUpPosition="below" popUpWidthMatchesAnchorWidth="true">
+		<eui:popUp>
+			<e:Group touchEnabled="false">
+				<e:Image source="dark_dropdownlist_shadow_png" scale9Grid="37,35,2,2" left="-18" right="-18" top="-11" bottom="-25" touchEnabled="false"/>
+				<e:Image top="0" bottom="0" right="0" left="0" source="dark_dropdownlist_bg_png" scale9Grid="2,2,1,1" touchEnabled="false"/>
+				<e:Scroller id="scroller" scrollPolicyV="off" top="1" bottom="1" right="1" left="1">
+					<e:viewport>
+						<e:List id="list" top="1" bottom="1" left="1" right="1">
+							<e:layout>
+								<e:VerticalLayout gap="0" horizontalAlign="contentJustify" />
+							</e:layout>
+						</e:List>
+					</e:viewport>
+				</e:Scroller>
+			</e:Group>
+		</eui:popUp>
+	</eui:PopUpAnchor>
+</e:Skin>

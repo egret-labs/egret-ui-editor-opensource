@@ -1,0 +1,3402 @@
+{
+	"groups": [
+		{
+			"keys": "stop_png","name": "preload"
+		}
+	],
+	"resources": [
+		{
+			"url":"assets/control/navigator_pre_arrow.png",
+			"type":"image",
+			"name":"navigator_pre_arrow_png"
+		},
+		{
+			"url": "assets/Button/zoom_down_r.png",
+			"type": "image",
+			"name": "zoom_down_r_png"
+		},
+		{
+			"url": "assets/Button/zoom_up.png",
+			"type": "image",
+			"name": "zoom_up_png"
+		},
+		{
+			"url": "assets/Button/zoom_up_light.svg",
+			"type": "image",
+			"name": "zoom_up_light_svg"
+		},
+		{
+			"url": "assets/Button/zoom_up_r.png",
+			"type": "image",
+			"name": "zoom_up_r_png"
+		},
+		{
+			"url":"assets/control/navigator_add.png",
+			"type":"image",
+			"name":"navigator_add_png"
+		},
+		{
+			"url":"assets/control/navigator_moveArea.png",
+			"type":"image",
+			"name":"navigator_moveArea_png"
+		},
+		{
+			"url":"assets/control/navigator_next_arrow.png",
+			"type":"image",
+			"name":"navigator_next_arrow_png"
+		},
+		{
+			"url":"assets/control/navigator_remove_edge.png",
+			"type":"image",
+			"name":"navigator_remove_edge_png"
+		},
+		{
+			"url": "assets/CheckBox/checkbox_select_disabled.png",
+			"type": "image",
+			"name": "checkbox_select_disabled_png"
+		},
+		{
+			"url": "assets/CheckBox/checkbox_select_down.png",
+			"type": "image",
+			"name": "checkbox_select_down_png"
+		},
+		{
+			"url": "assets/CheckBox/checkbox_select_up.png",
+			"type": "image",
+			"name": "checkbox_select_up_png"
+		},
+		{
+			"url": "assets/CheckBox/checkbox_unselect.png",
+			"type": "image",
+			"name": "checkbox_unselect_png"
+		},
+		{
+			"url": "assets/Panel/border.png",
+			"type": "image",
+			"name": "border_png"
+		},
+		{
+			"url": "assets/Panel/header.png",
+			"type": "image",
+			"name": "header_png"
+		},
+		{
+			"url": "assets/RadioButton/radiobutton_select_disabled.png",
+			"type": "image",
+			"name": "radiobutton_select_disabled_png"
+		},
+		{
+			"url": "assets/RadioButton/radiobutton_select_down.png",
+			"type": "image",
+			"name": "radiobutton_select_down_png"
+		},
+		{
+			"url": "assets/RadioButton/radiobutton_select_up.png",
+			"type": "image",
+			"name": "radiobutton_select_up_png"
+		},
+		{
+			"url": "assets/RadioButton/radiobutton_unselect.png",
+			"type": "image",
+			"name": "radiobutton_unselect_png"
+		},
+		{
+			"url": "assets/ScrollBar/roundthumb.png",
+			"type": "image",
+			"name": "roundthumb_png"
+		},
+		{
+			"url": "assets/Slider/thumb.png",
+			"type": "image",
+			"name": "thumb_png"
+		},
+		{
+			"url": "assets/Slider/track.png",
+			"type": "image",
+			"name": "track_png"
+		},
+		{
+			"url": "assets/Slider/tracklight.png",
+			"type": "image",
+			"name": "tracklight_png"
+		},
+		{
+			"url": "assets/ToggleSwitch/handle.png",
+			"type": "image",
+			"name": "handle_png"
+		},
+		{
+			"url": "assets/ToggleSwitch/off.png",
+			"type": "image",
+			"name": "off_png"
+		},
+		{
+			"url": "assets/ToggleSwitch/on.png",
+			"type": "image",
+			"name": "on_png"
+		},
+		{
+			"url": "assets/Button/button_down.png",
+			"type": "image",
+			"name": "button_down_png"
+		},
+		{
+			"url": "assets/Button/button_up.png",
+			"type": "image",
+			"name": "button_up_png"
+		},
+		{
+			"url": "assets/Button/play.png",
+			"type": "image",
+			"name": "play_png"
+		},
+		{
+			"url": "assets/Button/play_r.png",
+			"type": "image",
+			"name": "play_r_png"
+		},
+		{
+			"url": "assets/Button/pause_r.png",
+			"type": "image",
+			"name": "pause_png"
+		},
+		{
+			"url": "assets/Button/pause_r.png",
+			"type": "image",
+			"name": "pause_r_png"
+		},
+		{
+			"url": "assets/Button/stop.png",
+			"type": "image",
+			"name": "stop_png"
+		},
+		{
+			"url": "assets/Button/stop_r.png",
+			"type": "image",
+			"name": "stop_r"
+		},
+		{
+			"url": "assets/ProgressBar/thumb_pb.png",
+			"type": "image",
+			"name": "thumb_pb_png"
+		},
+		{
+			"url": "assets/ProgressBar/track_pb.png",
+			"type": "image",
+			"name": "track_pb_png"
+		},
+		{
+			"url": "assets/ScrollBar/track_sb.png",
+			"type": "image",
+			"name": "track_sb_png"
+		},
+		{
+			"url": "assets/dark/Button/expand_dark.svg",
+			"type": "image",
+			"name": "expand_dark_png"
+		},
+		{
+			"url": "assets/dark/Button/expand_shallow.svg",
+			"type": "image",
+			"name": "expand_shallow_png"
+		},
+		{
+			"url": "assets/dark/Button/collapse_dark.svg",
+			"type": "image",
+			"name": "collapse_dark_png"
+		},
+		{
+			"url": "assets/dark/Button/collapse_shallow.svg",
+			"type": "image",
+			"name": "collapse_shallow_png"
+		},
+		{
+			"url": "assets/dark/AccordionBtn/bgDown.png",
+			"type": "image",
+			"name": "accordionBtn_bgDown_png"
+		},
+		{
+			"url": "assets/dark/AccordionBtn/bgHover.png",
+			"type": "image",
+			"name": "accordionBtn_bgHover_png"
+		},
+		{
+			"url": "assets/dark/AccordionBtn/bgNormal.png",
+			"type": "image",
+			"name": "accordionBtn_bgNormal_png"
+		},
+		{
+			"url": "assets/dark/AccordionBtn/iconClose.png",
+			"type": "image",
+			"name": "iconClose_png"
+		},
+		{
+			"url": "assets/light/AccordionBtn/iconClose_light.png",
+			"type": "image",
+			"name": "iconClose_light_png"
+		},
+		{
+			"url": "assets/dark/AccordionBtn/iconClose_r.png",
+			"type": "image",
+			"name": "iconClose_r_png"
+		},
+		{
+			"url": "assets/dark/AccordionBtn/iconOpen.png",
+			"type": "image",
+			"name": "iconOpen_png"
+		},
+		{
+			"url": "assets/light/AccordionBtn/iconOpen_light.png",
+			"type": "image",
+			"name": "iconOpen_light_png"
+		},
+		{
+			"url": "assets/dark/AccordionBtn/iconOpen_r.png",
+			"type": "image",
+			"name": "iconOpen_r_png"
+		},
+		{
+			"url": "assets/dark/Tree/egret_project.png",
+			"type": "image",
+			"name": "egret_project_png"
+		},
+		{
+			"url": "assets/dark/Tree/egret_project_open.png",
+			"type": "image",
+			"name": "egret_project_open_png"
+		},
+		{
+			"url": "assets/dark/Tree/folder.png",
+			"type": "image",
+			"name": "folder_png"
+		},
+		{
+			"url": "assets/dark/Tree/folder_open.png",
+			"type": "image",
+			"name": "folder_open_png"
+		},
+		{
+			"url": "assets/light/Tree/folder_light.svg",
+			"type": "image",
+			"name": "folder_light_svg"
+		},
+		{
+			"url": "assets/light/Tree/folder_open_light.svg",
+			"type": "image",
+			"name": "folder_open_light_svg"
+		},
+		{
+			"url": "assets/dark/Tree/vs/json.svg",
+			"type": "image",
+			"name": "json_light_svg"
+		},
+		{
+			"url": "assets/dark/Tree/vsDark/json.svg",
+			"type": "image",
+			"name": "json_svg"
+		},
+		{
+			"url": "assets/dark/Tree/folder_src.png",
+			"type": "image",
+			"name": "folder_src_png"
+		},
+		{
+			"url": "assets/dark/Tree/folder_src_open.png",
+			"type": "image",
+			"name": "folder_src_open_png"
+		},
+		{
+			"url": "assets/dark/Tree/html.png",
+			"type": "image",
+			"name": "html_png"
+		},
+		{
+			"url": "assets/dark/Tree/json.png",
+			"type": "image",
+			"name": "json_png"
+		},
+		{
+			"url": "assets/dark/Tree/package.png",
+			"type": "image",
+			"name": "package_png"
+		},
+		{
+			"url": "assets/dark/Tree/ts.png",
+			"type": "image",
+			"name": "ts_png"
+		},
+		{
+			"url": "assets/dark/ItemRenderer/bgDown.png",
+			"type": "image",
+			"name": "bgDown_png"
+		},
+		{
+			"url": "assets/dark/ItemRenderer/bgHover.png",
+			"type": "image",
+			"name": "bgHover_png"
+		},
+		{
+			"url": "assets/dark/ItemRenderer/bgNormal.png",
+			"type": "image",
+			"name": "bgNormal_png"
+		},
+		{
+			"url": "assets/dark/ItemRenderer/selected.png",
+			"type": "image",
+			"name": "selected_png"
+		},
+		{
+			"url": "assets/dark/Button/disabled.png",
+			"type": "image",
+			"name": "dark_button_disabled_disabledpng"
+		},
+		{
+			"url": "assets/dark/Button/down.png",
+			"type": "image",
+			"name": "dark_button_down_downpng"
+		},
+		{
+			"url": "assets/dark/Button/hover.png",
+			"type": "image",
+			"name": "dark_button_hover_hoverpng"
+		},
+		{
+			"url": "assets/dark/Button/normal.png",
+			"type": "image",
+			"name": "dark_button_normal_normalpng"
+		},
+		{
+			"url": "assets/dark/windowBtn/close_icon.png",
+			"type": "image",
+			"name": "dark_windowclosebutton_close_icon_png"
+		},
+		{
+			"url": "assets/light/windowBtn/close_icon_light.png",
+			"type": "image",
+			"name": "light_windowclosebutton_close_icon_png"
+		},
+		{
+			"url": "assets/dark/windowBtn/close_icon_r.png",
+			"type": "image",
+			"name": "dark_windowclosebutton_close_icon_r_png"
+		},
+		{
+			"url": "assets/dark/windowBtn/down.png",
+			"type": "image",
+			"name": "dark_shared_down_downpng"
+		},
+		{
+			"url": "assets/dark/windowBtn/hover.png",
+			"type": "image",
+			"name": "dark_shared_hover_hoverpng"
+		},
+		{
+			"url": "assets/dark/windowBtn/maximize_icon.png",
+			"type": "image",
+			"name": "dark_windowmaximizebutton_maximize_icon_png"
+		},
+		{
+			"url": "assets/dark/windowBtn/maximize_icon_r.png",
+			"type": "image",
+			"name": "dark_windowmaximizebutton_maximize_icon_r_png"
+		},
+		{
+			"url": "assets/dark/windowBtn/minimize_icon.png",
+			"type": "image",
+			"name": "dark_windowminimizebutton_minimize_icon_png"
+		},
+		{
+			"url": "assets/dark/windowBtn/minimize_icon_r.png",
+			"type": "image",
+			"name": "dark_windowminimizebutton_minimize_icon_r_png"
+		},
+		{
+			"url": "assets/dark/windowBtn/normal.png",
+			"type": "image",
+			"name": "dark_shared_normal_normalpng"
+		},
+		{
+			"url": "assets/dark/windowBtn/restore_icon.png",
+			"type": "image",
+			"name": "dark_windowrestorebutton_restore_icon_png"
+		},
+		{
+			"url": "assets/dark/windowBtn/restore_icon_r.png",
+			"type": "image",
+			"name": "dark_windowrestorebutton_restore_icon_r_png"
+		},
+		{
+			"url": "assets/dark/macBtn/MacCloseButton.png",
+			"type": "image",
+			"name": "dark_macclosebutton_up_macclosebutton_png"
+		},
+		{
+			"url": "assets/dark/macBtn/MacCloseButtonDisabled.png",
+			"type": "image",
+			"name": "dark_macclosebutton_disabled_macclosebuttondisabled_png"
+		},
+		{
+			"url": "assets/dark/macBtn/MacCloseButtonDisabled_r.png",
+			"type": "image",
+			"name": "dark_macclosebutton_disabled_macclosebuttondisabled_r_png"
+		},
+		{
+			"url": "assets/dark/macBtn/MacCloseButtonDown.png",
+			"type": "image",
+			"name": "dark_macclosebutton_dwon_macclosebuttondown_png"
+		},
+		{
+			"url": "assets/dark/macBtn/MacCloseButtonDown_r.png",
+			"type": "image",
+			"name": "dark_macclosebutton_dwon_macclosebuttondown_r_png"
+		},
+		{
+			"url": "assets/dark/macBtn/MacCloseButtonOver.png",
+			"type": "image",
+			"name": "dark_macclosebutton_over_macclosebuttonover_png"
+		},
+		{
+			"url": "assets/dark/macBtn/MacCloseButtonOver_r.png",
+			"type": "image",
+			"name": "dark_macclosebutton_over_macclosebuttonover_r_png"
+		},
+		{
+			"url": "assets/dark/macBtn/MacCloseButton_r.png",
+			"type": "image",
+			"name": "dark_macclosebutton_up_macclosebutton_r_png"
+		},
+		{
+			"url": "assets/dark/macBtn/MacFullScreenButtonDown.png",
+			"type": "image",
+			"name": "MacFullScreenButtonDown_png"
+		},
+		{
+			"url": "assets/dark/macBtn/MacFullScreenButtonDown_r.png",
+			"type": "image",
+			"name": "MacFullScreenButtonDown_r_png"
+		},
+		{
+			"url": "assets/dark/macBtn/MacFullScreenButtonOver.png",
+			"type": "image",
+			"name": "MacFullScreenButtonOver_png"
+		},
+		{
+			"url": "assets/dark/macBtn/MacFullScreenButtonOver_r.png",
+			"type": "image",
+			"name": "MacFullScreenButtonOver_r_png"
+		},
+		{
+			"url": "assets/dark/macBtn/MacMaximizeButton.png",
+			"type": "image",
+			"name": "dark_macmaximizebutton_up_macmaximizebutton_png"
+		},
+		{
+			"url": "assets/dark/macBtn/MacMaximizeButtonDown.png",
+			"type": "image",
+			"name": "dark_macmaximizebutton_down_macmaximizebuttondown_png"
+		},
+		{
+			"url": "assets/dark/macBtn/MacMaximizeButtonDown_r.png",
+			"type": "image",
+			"name": "dark_macmaximizebutton_down_macmaximizebuttondown_r_png"
+		},
+		{
+			"url": "assets/dark/macBtn/MacMaximizeButtonOver.png",
+			"type": "image",
+			"name": "dark_macmaximizebutton_over_macmaximizebuttonover_png"
+		},
+		{
+			"url": "assets/dark/macBtn/MacMaximizeButtonOver_r.png",
+			"type": "image",
+			"name": "dark_macmaximizebutton_over_macmaximizebuttonover_r_png"
+		},
+		{
+			"url": "assets/dark/macBtn/MacMaximizeButton_r.png",
+			"type": "image",
+			"name": "dark_macmaximizebutton_up_macmaximizebutton_r_png"
+		},
+		{
+			"url": "assets/dark/macBtn/MacMinimizeButton.png",
+			"type": "image",
+			"name": "dark_macminimizebutton_up_macminimizebutton_png"
+		},
+		{
+			"url": "assets/dark/macBtn/MacMinimizeButtonDown.png",
+			"type": "image",
+			"name": "dark_macminimizebutton_down_macminimizebuttondown_png"
+		},
+		{
+			"url": "assets/dark/macBtn/MacMinimizeButtonDown_r.png",
+			"type": "image",
+			"name": "dark_macminimizebutton_down_macminimizebuttondown_r_png"
+		},
+		{
+			"url": "assets/dark/macBtn/MacMinimizeButtonOver.png",
+			"type": "image",
+			"name": "dark_macminimizebutton_over_maxminimizebuttonover_png"
+		},
+		{
+			"url": "assets/dark/macBtn/MacMinimizeButtonOver_r.png",
+			"type": "image",
+			"name": "dark_macminimizebutton_over_maxminimizebuttonover_r_png"
+		},
+		{
+			"url": "assets/dark/macBtn/MacMinimizeButton_r.png",
+			"type": "image",
+			"name": "dark_macminimizebutton_up_macminimizebutton_r_png"
+		},
+		{
+			"url": "assets/dark/macBtn/MacNormalScreenButtonDown.png",
+			"type": "image",
+			"name": "dark_macnormalscreenbutton_down_macnormalscreenbuttondown_png"
+		},
+		{
+			"url": "assets/dark/macBtn/MacNormalScreenButtonDown_r.png",
+			"type": "image",
+			"name": "dark_macnormalscreenbutton_down_macnormalscreenbuttondown_r_png"
+		},
+		{
+			"url": "assets/dark/macBtn/MacNormalScreenButtonOver.png",
+			"type": "image",
+			"name": "dark_macnormalscreenbutton_over_macnormalscreenbuttonover_png"
+		},
+		{
+			"url": "assets/dark/macBtn/MacNormalScreenButtonOver_r.png",
+			"type": "image",
+			"name": "dark_macnormalscreenbutton_over_macnormalscreenbuttonover_r_png"
+		},
+		{
+			"url": "assets/dark/manager/back.png",
+			"type": "image",
+			"name": "back_png"
+		},
+		{
+			"url": "assets/dark/manager/close_disabled.png",
+			"type": "image",
+			"name": "dark_closebutton_disabled_png"
+		},
+		{
+			"url": "assets/dark/manager/close_disabled_r.png",
+			"type": "image",
+			"name": "dark_closebutton_disabled_r_png"
+		},
+		{
+			"url": "assets/dark/manager/close_down.png",
+			"type": "image",
+			"name": "dark_closebutton_down_png"
+		},
+		{
+			"url": "assets/dark/manager/close_down_r.png",
+			"type": "image",
+			"name": "dark_closebutton_down_r_png"
+		},
+		{
+			"url": "assets/dark/manager/close_normal.png",
+			"type": "image",
+			"name": "dark_closebutton_normal_png"
+		},
+		{
+			"url": "assets/dark/manager/close_normal_r.png",
+			"type": "image",
+			"name": "dark_closebutton_normal_r_png"
+		},
+		{
+			"url": "assets/dark/manager/close_over.png",
+			"type": "image",
+			"name": "dark_closebutton_over_png"
+		},
+		{
+			"url": "assets/dark/manager/close_over_r.png",
+			"type": "image",
+			"name": "dark_closebutton_over_r_png"
+		},
+		{
+			"url": "assets/dark/manager/down_disabled.png",
+			"type": "image",
+			"name": "down_disabled_png"
+		},
+		{
+			"url": "assets/dark/manager/down_disabled_r.png",
+			"type": "image",
+			"name": "down_disabled_r_png"
+		},
+		{
+			"url": "assets/dark/manager/down_down.png",
+			"type": "image",
+			"name": "down_down_png"
+		},
+		{
+			"url": "assets/dark/manager/down_down_r.png",
+			"type": "image",
+			"name": "down_down_r_png"
+		},
+		{
+			"url": "assets/dark/manager/down_normal.png",
+			"type": "image",
+			"name": "down_normal_png"
+		},
+		{
+			"url": "assets/dark/manager/down_normal_r.png",
+			"type": "image",
+			"name": "down_normal_r_png"
+		},
+		{
+			"url": "assets/dark/manager/down_over.png",
+			"type": "image",
+			"name": "down_over_png"
+		},
+		{
+			"url": "assets/dark/manager/down_over_r.png",
+			"type": "image",
+			"name": "down_over_r_png"
+		},
+		{
+			"url": "assets/dark/manager/min_disabled.png",
+			"type": "image",
+			"name": "dark_minbutton_disabled_min_disabled_png"
+		},
+		{
+			"url": "assets/dark/manager/min_down.png",
+			"type": "image",
+			"name": "dark_minbuttin_down_min_down_png"
+		},
+		{
+			"url": "assets/dark/manager/min_normal.png",
+			"type": "image",
+			"name": "dark_minbutton_up_min_normal_png"
+		},
+		{
+			"url": "assets/dark/manager/min_over.png",
+			"type": "image",
+			"name": "dark_minbutton_over_min_over_png"
+		},
+		{
+			"url": "assets/dark/manager/progressbar_thumb.png",
+			"type": "image",
+			"name": "dark_progressbar_progressbar_thumb_png"
+		},
+		{
+			"url": "assets/dark/manager/progressbar_track.png",
+			"type": "image",
+			"name": "dark_progressbar_progressbar_track_png"
+		},
+		{
+			"url": "assets/dark/manager/up_disabled.png",
+			"type": "image",
+			"name": "up_disabled_png"
+		},
+		{
+			"url": "assets/dark/manager/up_disabled_r.png",
+			"type": "image",
+			"name": "up_disabled_r_png"
+		},
+		{
+			"url": "assets/dark/manager/up_down.png",
+			"type": "image",
+			"name": "up_down_png"
+		},
+		{
+			"url": "assets/dark/manager/up_down_r.png",
+			"type": "image",
+			"name": "up_down_r_png"
+		},
+		{
+			"url": "assets/dark/manager/up_normal.png",
+			"type": "image",
+			"name": "up_normal_png"
+		},
+		{
+			"url": "assets/dark/manager/up_normal_r.png",
+			"type": "image",
+			"name": "up_normal_r_png"
+		},
+		{
+			"url": "assets/dark/manager/up_over.png",
+			"type": "image",
+			"name": "up_over_png"
+		},
+		{
+			"url": "assets/dark/manager/up_over_r.png",
+			"type": "image",
+			"name": "up_over_r_png"
+		},
+		{
+			"url": "assets/dark/manager/vscroller_thumb.png",
+			"type": "image",
+			"name": "vscroller_thumb_png"
+		},
+		{
+			"url": "assets/dark/manager/vscroller_track.png",
+			"type": "image",
+			"name": "vscroller_track_png"
+		},
+		{
+			"url": "assets/tests/accordionGroupIcon.png",
+			"type": "image",
+			"name": "accordionGroupIcon_png"
+		},
+		{
+			"url": "assets/tests/accordionGroupIcon_r.png",
+			"type": "image",
+			"name": "accordionGroupIcon_r_png"
+		},
+		{
+			"url": "assets/dark/menuBtn/btnBgDown.png",
+			"type": "image",
+			"name": "btnBgDown_png"
+		},
+		{
+			"url": "assets/dark/menuBtn/btnBgHover.png",
+			"type": "image",
+			"name": "btnBgHover_png"
+		},
+		{
+			"url": "assets/dark/menuBtn/btnBgNormal.png",
+			"type": "image",
+			"name": "btnBgNormal_png"
+		},
+		{
+			"url": "assets/dark/menuBtn/iconMenu.png",
+			"type": "image",
+			"name": "iconMenu_png"
+		},
+		{
+			"url": "assets/dark/menuBtn/iconMenu_r.png",
+			"type": "image",
+			"name": "iconMenu_r_png"
+		},
+		{
+			"url": "assets/dark/dropDownListBtn/arrowNormal.png",
+			"type": "image",
+			"name": "dark_dropdownlist_normal_arrownormal_png"
+		},
+		{
+			"url": "assets/light/dropDownListBtn/arrowNormal_light.png",
+			"type": "image",
+			"name": "light_dropdownlist_normal_arrownormal_png"
+		},
+		{
+			"url": "assets/dark/dropDownListBtn/arrowNormal_r.png",
+			"type": "image",
+			"name": "dark_dropdownlist_normal_arrownormal_r_png"
+		},
+		{
+			"url": "assets/dark/dropDownListBtn/bg.png",
+			"type": "image",
+			"name": "dark_dropdownlist_bg_png"
+		},
+		{
+			"url": "assets/dark/dropDownListBtn/bgDown.png",
+			"type": "image",
+			"name": "dark_dropdownlist_down_bgdown_png"
+		},
+		{
+			"url": "assets/dark/dropDownListBtn/bgHover.png",
+			"type": "image",
+			"name": "dark_dropdownlist_over_bghover_png"
+		},
+		{
+			"url": "assets/dark/dropDownListBtn/bgNormal.png",
+			"type": "image",
+			"name": "dark_dropdownlist_up_bgnormal_png"
+		},
+		{
+			"url": "assets/dark/dropDownListBtn/docArrow.png",
+			"type": "image",
+			"name": "dark_dropdownlist_docarrow_png"
+		},
+		{
+			"url": "assets/dark/dropDownListBtn/docArrow_r.png",
+			"type": "image",
+			"name": "dark_dropdownlist_docarrow_r_png"
+		},
+		{
+			"url": "assets/dark/scroll/bg.png",
+			"type": "image",
+			"name": "dark_scroller_bg_png"
+		},
+		{
+			"url": "assets/dark/scroll/downBtnDown.png",
+			"type": "image",
+			"name": "dark_scroller_down_downbtnbown_png"
+		},
+		{
+			"url": "assets/dark/scroll/downBtnDown_r.png",
+			"type": "image",
+			"name": "dark_scroller_down_downbtnbown_r_png"
+		},
+		{
+			"url": "assets/dark/scroll/downBtnHover.png",
+			"type": "image",
+			"name": "dark_scroller_over_downbtnhover_png"
+		},
+		{
+			"url": "assets/dark/scroll/downBtnHover_r.png",
+			"type": "image",
+			"name": "dark_scroller_over_downbtnhover_r_png"
+		},
+		{
+			"url": "assets/dark/scroll/downBtnNormal.png",
+			"type": "image",
+			"name": "dark_scroller_normal_downbtnnormal_png"
+		},
+		{
+			"url": "assets/dark/scroll/downBtnNormal_r.png",
+			"type": "image",
+			"name": "dark_scroller_normal_downbtnnormal_r_png"
+		},
+		{
+			"url": "assets/dark/scroll/leftBtnDown.png",
+			"type": "image",
+			"name": "dark_scroller_down_leftbtndown_png"
+		},
+		{
+			"url": "assets/dark/scroll/leftBtnDown_r.png",
+			"type": "image",
+			"name": "dark_scroller_down_leftbtndown_r_png"
+		},
+		{
+			"url": "assets/dark/scroll/leftBtnHover.png",
+			"type": "image",
+			"name": "dark_scroller_over_leftbtnhover_png"
+		},
+		{
+			"url": "assets/dark/scroll/leftBtnHover_r.png",
+			"type": "image",
+			"name": "dark_scroller_over_leftbtnhover_r_png"
+		},
+		{
+			"url": "assets/dark/scroll/leftBtnNormal.png",
+			"type": "image",
+			"name": "dark_scroller_normal_leftbtnnormal_png"
+		},
+		{
+			"url": "assets/dark/scroll/leftBtnNormal_r.png",
+			"type": "image",
+			"name": "dark_scroller_normal_leftbtnnormal_r_png"
+		},
+		{
+			"url": "assets/dark/scroll/rightBtnDown.png",
+			"type": "image",
+			"name": "dark_scroller_down_rightbtndown_png"
+		},
+		{
+			"url": "assets/dark/scroll/rightBtnDown_r.png",
+			"type": "image",
+			"name": "dark_scroller_down_rightbtndown_r_png"
+		},
+		{
+			"url": "assets/dark/scroll/rightBtnHover.png",
+			"type": "image",
+			"name": "dark_scroller_over_rightbtnhover_png"
+		},
+		{
+			"url": "assets/dark/scroll/rightBtnHover_r.png",
+			"type": "image",
+			"name": "dark_scroller_over_rightbtnhover_r_png"
+		},
+		{
+			"url": "assets/dark/scroll/rightBtnNormal.png",
+			"type": "image",
+			"name": "dark_scroller_normal_rightbtnnormal_png"
+		},
+		{
+			"url": "assets/dark/scroll/rightBtnNormal_r.png",
+			"type": "image",
+			"name": "dark_scroller_normal_rightbtnnormal_r_png"
+		},
+		{
+			"url": "assets/dark/scroll/upBtnDown.png",
+			"type": "image",
+			"name": "dark_scroller_down_upbtndown_png"
+		},
+		{
+			"url": "assets/dark/scroll/upBtnDown_r.png",
+			"type": "image",
+			"name": "dark_scroller_down_upbtndown_r_png"
+		},
+		{
+			"url": "assets/dark/scroll/upBtnHover.png",
+			"type": "image",
+			"name": "dark_scroller_over_upbtnhover_png"
+		},
+		{
+			"url": "assets/dark/scroll/upBtnHover_r.png",
+			"type": "image",
+			"name": "dark_scroller_over_upbtnhover_r_png"
+		},
+		{
+			"url": "assets/dark/scroll/upBtnNormal.png",
+			"type": "image",
+			"name": "dark_scroller_normal_upbtnnormal_png"
+		},
+		{
+			"url": "assets/dark/scroll/upBtnNormal_r.png",
+			"type": "image",
+			"name": "dark_scroller_normal_upbtnnormal_r_png"
+		},
+		{
+			"url": "assets/tests/tabPanelIcon1.png",
+			"type": "image",
+			"name": "tabPanelIcon1_png"
+		},
+		{
+			"url": "assets/tests/tabPanelIcon1_r.png",
+			"type": "image",
+			"name": "tabPanelIcon1_r_png"
+		},
+		{
+			"url": "assets/tests/tabPanelIcon2.png",
+			"type": "image",
+			"name": "tabPanelIcon2_png"
+		},
+		{
+			"url": "assets/tests/tabPanelIcon2_r.png",
+			"type": "image",
+			"name": "tabPanelIcon2_r_png"
+		},
+		{
+			"url": "assets/tests/tabPanelIcon3.png",
+			"type": "image",
+			"name": "tabPanelIcon3_png"
+		},
+		{
+			"url": "assets/tests/tabPanelIcon3_r.png",
+			"type": "image",
+			"name": "tabPanelIcon3_r_png"
+		},
+		{
+			"url": "assets/dark/textInput/select.png",
+			"type": "image",
+			"name": "textInput_select_png"
+		},
+		{
+			"url": "assets/dark/textInput/unSelect.png",
+			"type": "image",
+			"name": "textInput_unSelect_png"
+		},
+		{
+			"url": "assets/radio/selectHover.png",
+			"type": "image",
+			"name": "dark_radio_over_selecthover_png"
+		},
+		{
+			"url": "assets/radio/selectHover_r.png",
+			"type": "image",
+			"name": "dark_radio_over_selecthover_r_png"
+		},
+		{
+			"url": "assets/radio/selectNormal.png",
+			"type": "image",
+			"name": "dark_radio_up_selectnormal_png"
+		},
+		{
+			"url": "assets/radio/selectNormal_light.png",
+			"type": "image",
+			"name": "light_radio_up_selectnormal_png"
+		},
+		{
+			"url": "assets/radio/selectNormal_r.png",
+			"type": "image",
+			"name": "dark_radio_up_selectnormal_r_png"
+		},
+		{
+			"url": "assets/radio/unSelectHover.png",
+			"type": "image",
+			"name": "dark_radio_unselectover_unselecthover_png"
+		},
+		{
+			"url": "assets/radio/unSelectHover_r.png",
+			"type": "image",
+			"name": "dark_radio_unselectover_unselecthover_r_png"
+		},
+		{
+			"url": "assets/radio/unSelectNormal.png",
+			"type": "image",
+			"name": "dark_radio_unselectup_unselectnormal_png"
+		},
+		{
+			"url": "assets/radio/unSelectNormal_light.png",
+			"type": "image",
+			"name": "light_radio_unselectup_unselectnormal_png"
+		},
+		{
+			"url": "assets/radio/unSelectNormal_r.png",
+			"type": "image",
+			"name": "dark_radio_unselectup_unselectnormal_r_png"
+		},
+		{
+			"url": "assets/dark/checkBoxBtn/selectHover.png",
+			"type": "image",
+			"name": "dark_checkbox_selectover_selecthover_png"
+		},
+		{
+			"url": "assets/light/checkBoxBtn/selectHover_light.png",
+			"type": "image",
+			"name": "light_checkbox_selectover_selecthover_png"
+		},
+		{
+			"url": "assets/dark/checkBoxBtn/selectHover_r.png",
+			"type": "image",
+			"name": "dark_checkbox_selectover_selecthover_r_png"
+		},
+		{
+			"url": "assets/dark/checkBoxBtn/selectNormal.png",
+			"type": "image",
+			"name": "dark_checkbox_upselect_selectnormal_png"
+		},
+		{
+			"url": "assets/light/checkBoxBtn/selectNormal_light.png",
+			"type": "image",
+			"name": "light_checkbox_upselect_selectnormal_png"
+		},
+		{
+			"url": "assets/dark/checkBoxBtn/selectNormal_r.png",
+			"type": "image",
+			"name": "dark_checkbox_upselect_selectnormal_r_png"
+		},
+		{
+			"url": "assets/dark/checkBoxBtn/unSelectHover.png",
+			"type": "image",
+			"name": "dark_checkbox_over_unselecthover_png"
+		},
+		{
+			"url": "assets/light/checkBoxBtn/unSelectHover_light.png",
+			"type": "image",
+			"name": "light_checkbox_over_unselecthover_png"
+		},
+		{
+			"url": "assets/dark/checkBoxBtn/unSelectHover_r.png",
+			"type": "image",
+			"name": "dark_checkbox_over_unselecthover_r_png"
+		},
+		{
+			"url": "assets/dark/checkBoxBtn/unSelectNormal.png",
+			"type": "image",
+			"name": "dark_checkbox_up_unselecnnormal_png"
+		},
+		{
+			"url": "assets/light/checkBoxBtn/unSelectNormal_light.png",
+			"type": "image",
+			"name": "light_checkbox_up_unselecnnormal_png"
+		},
+		{
+			"url": "assets/dark/checkBoxBtn/unSelectNormal_r.png",
+			"type": "image",
+			"name": "dark_checkbox_up_unselecnnormal_r_png"
+		},
+		{
+			"url": "assets/dark/closeBtn/CloseButton.png",
+			"type": "image",
+			"name": "dark_closebutton_up_closebutton_png"
+		},
+		{
+			"url": "assets/dark/closeBtn/CloseButtonDown.png",
+			"type": "image",
+			"name": "dark_closebutton_down_closebuttondown_png"
+		},
+		{
+			"url": "assets/dark/closeBtn/CloseButtonDown_r.png",
+			"type": "image",
+			"name": "dark_closebutton_down_closebuttondown_r_png"
+		},
+		{
+			"url": "assets/dark/closeBtn/CloseButtonOver.png",
+			"type": "image",
+			"name": "dark_closebutton_over_closebuttonover_png"
+		},
+		{
+			"url": "assets/dark/closeBtn/CloseButtonOver_r.png",
+			"type": "image",
+			"name": "dark_closebutton_over_closebuttonover_r_png"
+		},
+		{
+			"url": "assets/dark/closeBtn/CloseButton_r.png",
+			"type": "image",
+			"name": "dark_closebutton_up_closebutton_r_png"
+		},
+		{
+			"url": "assets/tests/dark_scrollertest.png",
+			"type": "image",
+			"name": "dark_scrollertest_png"
+		},
+		{
+			"url": "assets/tests/package_panel.png",
+			"type": "image",
+			"name": "package_panel_png"
+		},
+		{
+			"url": "assets/tests/package_panel_r.png",
+			"type": "image",
+			"name": "package_panel_r_png"
+		},
+		{
+			"url": "assets/tests/outlineIcon.png",
+			"type": "image",
+			"name": "outlineIcon_png"
+		},
+		{
+			"url": "assets/tests/outlineIcon_r.png",
+			"type": "image",
+			"name": "outlineIcon_r_png"
+		},
+		{
+			"url": "assets/tests/console_panel.png",
+			"type": "image",
+			"name": "console_panel_png"
+		},
+		{
+			"url": "assets/tests/console_panel_r.png",
+			"type": "image",
+			"name": "console_panel_r_png"
+		},
+		{
+			"url": "assets/tests/progress_panel.png",
+			"type": "image",
+			"name": "progress_panel_png"
+		},
+		{
+			"url": "assets/tests/progress_panel_r.png",
+			"type": "image",
+			"name": "progress_panel_r_png"
+		},
+		{
+			"url": "assets/tests/search_panel.png",
+			"type": "image",
+			"name": "search_panel_png"
+		},
+		{
+			"url": "assets/tests/search_panel_r.png",
+			"type": "image",
+			"name": "search_panel_r_png"
+		},
+		{
+			"url": "assets/tests/error_panel.png",
+			"type": "image",
+			"name": "error_panel_png"
+		},
+		{
+			"url": "assets/tests/error_panel_r.png",
+			"type": "image",
+			"name": "error_panel_r_png"
+		},
+		{
+			"url": "assets/dark/dropDownListBtn/shadow.png",
+			"type": "image",
+			"name": "dark_dropdownlist_shadow_png"
+		},
+		{
+			"url": "assets/dark/dropDownListBtn/shadow_r.png",
+			"type": "image",
+			"name": "dark_dropdownlist_shadow_r_png"
+		},
+		{
+			"url": "assets/dark/colorPick/colorphase_thumb.png",
+			"type": "image",
+			"name": "dakr_huethumbbutton_colorphase_thumb_png"
+		},
+		{
+			"url": "assets/dark/colorPick/colorphase_thumb_r.png",
+			"type": "image",
+			"name": "dakr_huethumbbutton_colorphase_thumb_r_png"
+		},
+		{
+			"url": "assets/dark/projectTemplate/Empty-JS-review.png",
+			"type": "image",
+			"name": "Empty-JS-review_png"
+		},
+		{
+			"url": "assets/dark/projectTemplate/Empty-JS-review_r.png",
+			"type": "image",
+			"name": "Empty-JS-review_r_png"
+		},
+		{
+			"url": "assets/dark/projectTemplate/Empty-JS.png",
+			"type": "image",
+			"name": "Empty-JS_png"
+		},
+		{
+			"url": "assets/dark/projectTemplate/Empty-JS_r.png",
+			"type": "image",
+			"name": "Empty-JS_r_png"
+		},
+		{
+			"url": "assets/dark/projectTemplate/Empty-TS-review.png",
+			"type": "image",
+			"name": "Empty-TS-review_png"
+		},
+		{
+			"url": "assets/light/projectTemplate/Empty-TS-review_light.png",
+			"type": "image",
+			"name": "Empty-TS-review_light_png"
+		},
+		{
+			"url": "assets/dark/projectTemplate/Empty-TS-review_r.png",
+			"type": "image",
+			"name": "Empty-TS-review_r_png"
+		},
+		{
+			"url": "assets/dark/projectTemplate/Empty-TS.png",
+			"type": "image",
+			"name": "Empty-TS_png"
+		},
+		{
+			"url": "assets/light/projectTemplate/Empty-TS_light.png",
+			"type": "image",
+			"name": "Empty-TS_light_png"
+		},
+		{
+			"url": "assets/dark/projectTemplate/Empty-TS_r.png",
+			"type": "image",
+			"name": "Empty-TS_r_png"
+		},
+		{
+			"url": "assets/dark/projectTemplate/Game-TS-review.png",
+			"type": "image",
+			"name": "Game-TS-review_png"
+		},
+		{
+			"url": "assets/light/projectTemplate/Game-TS-review_light.png",
+			"type": "image",
+			"name": "Game-TS-review_light_png"
+		},
+		{
+			"url": "assets/dark/projectTemplate/Game-TS-review_r.png",
+			"type": "image",
+			"name": "Game-TS-review_r_png"
+		},
+		{
+			"url": "assets/dark/projectTemplate/Game-TS.png",
+			"type": "image",
+			"name": "Game-TS_png"
+		},
+		{
+			"url": "assets/light/projectTemplate/Game-TS_light.png",
+			"type": "image",
+			"name": "Game-TS_light_png"
+		},
+		{
+			"url": "assets/dark/projectTemplate/Game-TS_r.png",
+			"type": "image",
+			"name": "Game-TS_r_png"
+		},
+		{
+			"url": "assets/dark/projectTemplate/GUI-TS-review.png",
+			"type": "image",
+			"name": "GUI-TS-review_png"
+		},
+		{
+			"url": "assets/light/projectTemplate/GUI-TS-review_light.png",
+			"type": "image",
+			"name": "GUI-TS-review_light_png"
+		},
+		{
+			"url": "assets/dark/projectTemplate/GUI-TS-review_r.png",
+			"type": "image",
+			"name": "GUI-TS-review_r_png"
+		},
+		{
+			"url": "assets/dark/projectTemplate/GUI-TS.png",
+			"type": "image",
+			"name": "GUI-TS_png"
+		},
+		{
+			"url": "assets/light/projectTemplate/GUI-TS_light.png",
+			"type": "image",
+			"name": "GUI-TS_light_png"
+		},
+		{
+			"url": "assets/dark/projectTemplate/GUI-TS_r.png",
+			"type": "image",
+			"name": "GUI-TS_r_png"
+		},
+		{
+			"url": "assets/dark/projectTemplate/TS_icon_empty.png",
+			"type": "image",
+			"name": "TS_icon_empty_png"
+		},
+		{
+			"url": "assets/light/projectTemplate/TS_icon_empty_light.png",
+			"type": "image",
+			"name": "TS_icon_empty_light_png"
+		},
+		{
+			"url": "assets/dark/projectTemplate/TS_icon_empty_r.png",
+			"type": "image",
+			"name": "TS_icon_empty_r_png"
+		},
+		{
+			"url": "assets/dark/projectTemplate/TS_view_empty.png",
+			"type": "image",
+			"name": "TS_view_empty_png"
+		},
+		{
+			"url": "assets/light/projectTemplate/TS_view_empty_light.png",
+			"type": "image",
+			"name": "TS_view_empty_light_png"
+		},
+		{
+			"url": "assets/dark/projectTemplate/TS_view_empty_r.png",
+			"type": "image",
+			"name": "TS_view_empty_r_png"
+		},
+		{
+			"url": "assets/dark/createProject/auto.png",
+			"type": "image",
+			"name": "auto_png"
+		},
+		{
+			"url": "assets/dark/createProject/auto_r.png",
+			"type": "image",
+			"name": "auto_r_png"
+		},
+		{
+			"url": "assets/dark/createProject/exactFit.png",
+			"type": "image",
+			"name": "exactFit_png"
+		},
+		{
+			"url": "assets/dark/createProject/exactFit_landscape.png",
+			"type": "image",
+			"name": "exactFit_landscape_png"
+		},
+		{
+			"url": "assets/dark/createProject/exactFit_landscape_r.png",
+			"type": "image",
+			"name": "exactFit_landscape_r_png"
+		},
+		{
+			"url": "assets/dark/createProject/exactFit_r.png",
+			"type": "image",
+			"name": "exactFit_r_png"
+		},
+		{
+			"url": "assets/dark/createProject/fixedHeight.png",
+			"type": "image",
+			"name": "fixedHeight_png"
+		},
+		{
+			"url": "assets/dark/createProject/fixedHeight_landscape.png",
+			"type": "image",
+			"name": "fixedHeight_landscape_png"
+		},
+		{
+			"url": "assets/dark/createProject/fixedHeight_landscape_r.png",
+			"type": "image",
+			"name": "fixedHeight_landscape_r_png"
+		},
+		{
+			"url": "assets/dark/createProject/fixedHeight_r.png",
+			"type": "image",
+			"name": "fixedHeight_r_png"
+		},
+		{
+			"url": "assets/dark/createProject/fixedNarrow.png",
+			"type": "image",
+			"name": "fixedNarrow_png"
+		},
+		{
+			"url": "assets/dark/createProject/fixedNarrow_landscape.png",
+			"type": "image",
+			"name": "fixedNarrow_landscape_png"
+		},
+		{
+			"url": "assets/dark/createProject/fixedNarrow_landscape_r.png",
+			"type": "image",
+			"name": "fixedNarrow_landscape_r_png"
+		},
+		{
+			"url": "assets/dark/createProject/fixedNarrow_r.png",
+			"type": "image",
+			"name": "fixedNarrow_r_png"
+		},
+		{
+			"url": "assets/dark/createProject/fixedWide.png",
+			"type": "image",
+			"name": "fixedWide_png"
+		},
+		{
+			"url": "assets/dark/createProject/fixedWide_landscape.png",
+			"type": "image",
+			"name": "fixedWide_landscape_png"
+		},
+		{
+			"url": "assets/dark/createProject/fixedWide_landscape_r.png",
+			"type": "image",
+			"name": "fixedWide_landscape_r_png"
+		},
+		{
+			"url": "assets/dark/createProject/fixedWide_r.png",
+			"type": "image",
+			"name": "fixedWide_r_png"
+		},
+		{
+			"url": "assets/dark/createProject/fixedWidth.png",
+			"type": "image",
+			"name": "fixedWidth_png"
+		},
+		{
+			"url": "assets/dark/createProject/fixedWidth_landscape.png",
+			"type": "image",
+			"name": "fixedWidth_landscape_png"
+		},
+		{
+			"url": "assets/dark/createProject/fixedWidth_landscape_r.png",
+			"type": "image",
+			"name": "fixedWidth_landscape_r_png"
+		},
+		{
+			"url": "assets/dark/createProject/fixedWidth_r.png",
+			"type": "image",
+			"name": "fixedWidth_r_png"
+		},
+		{
+			"url": "assets/dark/createProject/landscape.png",
+			"type": "image",
+			"name": "landscape_png"
+		},
+		{
+			"url": "assets/dark/createProject/landscapeFlipped.png",
+			"type": "image",
+			"name": "landscapeFlipped_png"
+		},
+		{
+			"url": "assets/dark/createProject/landscapeFlipped_r.png",
+			"type": "image",
+			"name": "landscapeFlipped_r_png"
+		},
+		{
+			"url": "assets/dark/createProject/landscape_r.png",
+			"type": "image",
+			"name": "landscape_r_png"
+		},
+		{
+			"url": "assets/dark/createProject/noBorder.png",
+			"type": "image",
+			"name": "noBorder_png"
+		},
+		{
+			"url": "assets/dark/createProject/noBorder_landscape.png",
+			"type": "image",
+			"name": "noBorder_landscape_png"
+		},
+		{
+			"url": "assets/dark/createProject/noBorder_landscape_r.png",
+			"type": "image",
+			"name": "noBorder_landscape_r_png"
+		},
+		{
+			"url": "assets/dark/createProject/noBorder_r.png",
+			"type": "image",
+			"name": "noBorder_r_png"
+		},
+		{
+			"url": "assets/dark/createProject/noScale.png",
+			"type": "image",
+			"name": "noScale_png"
+		},
+		{
+			"url": "assets/dark/createProject/noScale_landscape.png",
+			"type": "image",
+			"name": "noScale_landscape_png"
+		},
+		{
+			"url": "assets/dark/createProject/noScale_landscape_r.png",
+			"type": "image",
+			"name": "noScale_landscape_r_png"
+		},
+		{
+			"url": "assets/dark/createProject/noScale_r.png",
+			"type": "image",
+			"name": "noScale_r_png"
+		},
+		{
+			"url": "assets/dark/createProject/portrait.png",
+			"type": "image",
+			"name": "portrait_png"
+		},
+		{
+			"url": "assets/dark/createProject/portrait_r.png",
+			"type": "image",
+			"name": "portrait_r_png"
+		},
+		{
+			"url": "assets/dark/createProject/sample.png",
+			"type": "image",
+			"name": "sample_png"
+		},
+		{
+			"url": "assets/dark/createProject/sample_dark.png",
+			"type": "image",
+			"name": "sample_dark_png"
+		},
+		{
+			"url": "assets/dark/createProject/sample_light.png",
+			"type": "image",
+			"name": "sample_light_png"
+		},
+		{
+			"url": "assets/dark/createProject/sample_r.png",
+			"type": "image",
+			"name": "sample_r_png"
+		},
+		{
+			"url": "assets/dark/createProject/showAll.png",
+			"type": "image",
+			"name": "showAll_png"
+		},
+		{
+			"url": "assets/dark/createProject/showAll_landscape.png",
+			"type": "image",
+			"name": "showAll_landscape_png"
+		},
+		{
+			"url": "assets/dark/createProject/showAll_landscape_r.png",
+			"type": "image",
+			"name": "showAll_landscape_r_png"
+		},
+		{
+			"url": "assets/dark/createProject/showAll_r.png",
+			"type": "image",
+			"name": "showAll_r_png"
+		},
+		{
+			"url": "assets/dark/colorPick/circle_black.png",
+			"type": "image",
+			"name": "circle_black_png"
+		},
+		{
+			"url": "assets/dark/colorPick/circle_black_r.png",
+			"type": "image",
+			"name": "circle_black_r_png"
+		},
+		{
+			"url": "assets/dark/colorPick/circle_white.png",
+			"type": "image",
+			"name": "circle_white_png"
+		},
+		{
+			"url": "assets/dark/colorPick/circle_white_r.png",
+			"type": "image",
+			"name": "circle_white_r_png"
+		},
+		{
+			"url": "assets/Button/components_panel.png",
+			"type": "image",
+			"name": "components_panel_png"
+		},
+		{
+			"url": "assets/Button/components_panel_r.png",
+			"type": "image",
+			"name": "components_panel_r_png"
+		},
+		{
+			"url": "assets/Button/components_panel_light.svg",
+			"type": "image",
+			"name": "components_panel_light_svg"
+		},
+		{
+			"url": "assets/Button/layer_panel.png",
+			"type": "image",
+			"name": "layer_panel_png"
+		},
+		{
+			"url": "assets/Button/layer_panel_light.svg",
+			"type": "image",
+			"name": "layer_panel_light_svg"
+		},
+		{
+			"url": "assets/Button/layer_panel_r.png",
+			"type": "image",
+			"name": "layer_panel_r_png"
+		},
+		{
+			"url": "assets/Button/material_panel.png",
+			"type": "image",
+			"name": "material_panel_png"
+		},
+		{
+			"url": "assets/Button/material_panel_light.svg",
+			"type": "image",
+			"name": "material_panel_light_svg"
+		},
+		{
+			"url": "assets/Button/material_panel_r.png",
+			"type": "image",
+			"name": "material_panel_r_png"
+		},
+		{
+			"url": "assets/Button/property_panel.png",
+			"type": "image",
+			"name": "property_panel_png"
+		},
+		{
+			"url": "assets/Button/property_panel_light.svg",
+			"type": "image",
+			"name": "property_panel_light_svg"
+		},
+		{
+			"url": "assets/Button/property_panel_r.png",
+			"type": "image",
+			"name": "property_panel_r_png"
+		},
+		{
+			"url": "assets/Button/state_panel.png",
+			"type": "image",
+			"name": "state_panel_png"
+		},
+		{
+			"url": "assets/Button/state_panel_light.svg",
+			"type": "image",
+			"name": "state_panel_light_svg"
+		},
+		{
+			"url": "assets/Button/state_panel_r.png",
+			"type": "image",
+			"name": "state_panel_r_png"
+		},
+		{
+			"url": "assets/Button/view_max.png",
+			"type": "image",
+			"name": "view_max_png"
+		},
+		{
+			"url": "assets/Button/zoom_down.png",
+			"type": "image",
+			"name": "zoom_down_png"
+		},
+		{
+			"url": "assets/Button/zoom_down_light.svg",
+			"type": "image",
+			"name": "zoom_down_light_svg"
+		},
+		{
+			"url": "assets/dark/part/exml/editor/add.png",
+			"type": "image",
+			"name": "add_png"
+		},
+		{
+			"url": "assets/light/part/exml/editor/add_light.png",
+			"type": "image",
+			"name": "add_light_png"
+		},
+
+
+		{
+			"url": "assets/dark/part/exml/editor/default.png",
+			"type": "image",
+			"name": "default_png"
+		},
+		{
+			"url": "assets/light/part/exml/editor/default_light.png",
+			"type": "image",
+			"name": "default_light_png"
+		},
+		{
+			"url": "assets/dark/part/exml/editor/setdefault.png",
+			"type": "image",
+			"name": "setdefault_png"
+		},
+		{
+			"url": "assets/light/part/exml/editor/setdefault_light.png",
+			"type": "image",
+			"name": "setdefault_light_png"
+		},
+		{
+			"url": "assets/dark/part/exml/editor/delete.png",
+			"type": "image",
+			"name": "delete_png"
+		},
+		{
+			"url": "assets/light/part/exml/editor/delete_light.svg",
+			"type": "image",
+			"name": "delete_light_svg"
+		},
+		{
+			"url": "assets/dark/part/exml/editor/groupIcon.svg",
+			"type": "image",
+			"name": "groupIcon_svg"
+		},
+		{
+			"url": "assets/light/part/exml/editor/groupIcon_light.svg",
+			"type": "image",
+			"name": "groupIcon_light_svg"
+		},
+		{
+			"url": "assets/dark/part/exml/editor/ungroupIcon.svg",
+			"type": "image",
+			"name": "ungroupIcon_svg"
+		},
+		{
+			"url": "assets/light/part/exml/editor/ungroupIcon_light.svg",
+			"type": "image",
+			"name": "ungroupIcon_light_svg"
+		},
+		{
+			"url": "assets/dark/part/exml/editor/edit.png",
+			"type": "image",
+			"name": "edit_png"
+		},
+		{
+			"url": "assets/light/part/exml/editor/edit_light.svg",
+			"type": "image",
+			"name": "edit_light_svg"
+		},
+		{
+			"url": "assets/dark/part/exml/editor/state.png",
+			"type": "image",
+			"name": "state_png"
+		},
+		{
+			"url": "assets/light/part/exml/editor/state_light.svg",
+			"type": "image",
+			"name": "state_light_svg"
+		},
+		{
+			"url": "assets/Button/layer_locked.png",
+			"type": "image",
+			"name": "layer_locked_png"
+		},
+		{
+			"url": "assets/Button/layer_locked_light.svg",
+			"type": "image",
+			"name": "layer_locked_light_svg"
+		},
+		{
+			"url": "assets/Button/layer_visible.png",
+			"type": "image",
+			"name": "layer_visible_png"
+		},
+		{
+			"url": "assets/Button/layer_visible_light.svg",
+			"type": "image",
+			"name": "layer_visible_light_svg"
+		},
+		{
+			"url": "assets/dark/part/component/BitmapLabel.png",
+			"type": "image",
+			"name": "BitmapLabel_png"
+		},
+		{
+			"url": "assets/dark/part/component/BitmapLabel_r.png",
+			"type": "image",
+			"name": "BitmapLabel_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/Button.png",
+			"type": "image",
+			"name": "Button_png"
+		},
+		{
+			"url": "assets/dark/part/component/Button_r.png",
+			"type": "image",
+			"name": "Button_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/CheckBox.png",
+			"type": "image",
+			"name": "CheckBox_png"
+		},
+		{
+			"url": "assets/dark/part/component/CheckBox_r.png",
+			"type": "image",
+			"name": "CheckBox_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/ComboBox.png",
+			"type": "image",
+			"name": "ComboBox_png"
+		},
+		{
+			"url": "assets/dark/part/component/ComboBox_r.png",
+			"type": "image",
+			"name": "ComboBox_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/Component.png",
+			"type": "image",
+			"name": "Component_png"
+		},
+		{
+			"url": "assets/dark/part/component/Component_r.png",
+			"type": "image",
+			"name": "Component_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/Custom.png",
+			"type": "image",
+			"name": "Custom_png"
+		},
+		{
+			"url": "assets/dark/part/component/Custom_r.png",
+			"type": "image",
+			"name": "Custom_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/DataGroup.png",
+			"type": "image",
+			"name": "DataGroup_png"
+		},
+		{
+			"url": "assets/dark/part/component/DataGroup_r.png",
+			"type": "image",
+			"name": "DataGroup_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/DropDownList.png",
+			"type": "image",
+			"name": "DropDownList_png"
+		},
+		{
+			"url": "assets/dark/part/component/DropDownList_r.png",
+			"type": "image",
+			"name": "DropDownList_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/EditableText.png",
+			"type": "image",
+			"name": "EditableText_png"
+		},
+		{
+			"url": "assets/dark/part/component/EditableText_r.png",
+			"type": "image",
+			"name": "EditableText_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/Group.png",
+			"type": "image",
+			"name": "Group_png"
+		},
+		{
+			"url": "assets/dark/part/component/Group_r.png",
+			"type": "image",
+			"name": "Group_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/HScrollBar.png",
+			"type": "image",
+			"name": "HScrollBar_png"
+		},
+		{
+			"url": "assets/dark/part/component/HScrollBar_r.png",
+			"type": "image",
+			"name": "HScrollBar_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/HSlider.png",
+			"type": "image",
+			"name": "HSlider_png"
+		},
+		{
+			"url": "assets/dark/part/component/HSlider_r.png",
+			"type": "image",
+			"name": "HSlider_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/Image.png",
+			"type": "image",
+			"name": "Image_png"
+		},
+		{
+			"url": "assets/dark/part/component/Image_r.png",
+			"type": "image",
+			"name": "Image_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/Label.png",
+			"type": "image",
+			"name": "Label_png"
+		},
+		{
+			"url": "assets/dark/part/component/Label_r.png",
+			"type": "image",
+			"name": "Label_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/List.png",
+			"type": "image",
+			"name": "List_png"
+		},
+		{
+			"url": "assets/dark/part/component/List_r.png",
+			"type": "image",
+			"name": "List_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/PageNavigator.png",
+			"type": "image",
+			"name": "PageNavigator_png"
+		},
+		{
+			"url": "assets/dark/part/component/PageNavigator_r.png",
+			"type": "image",
+			"name": "PageNavigator_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/Panel.png",
+			"type": "image",
+			"name": "Panel_png"
+		},
+		{
+			"url": "assets/dark/part/component/Panel_r.png",
+			"type": "image",
+			"name": "Panel_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/PopUpAnchor.png",
+			"type": "image",
+			"name": "PopUpAnchor_png"
+		},
+		{
+			"url": "assets/dark/part/component/PopUpAnchor_r.png",
+			"type": "image",
+			"name": "PopUpAnchor_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/ProgressBar.png",
+			"type": "image",
+			"name": "ProgressBar_png"
+		},
+		{
+			"url": "assets/dark/part/component/ProgressBar_r.png",
+			"type": "image",
+			"name": "ProgressBar_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/RadioButton.png",
+			"type": "image",
+			"name": "RadioButton_png"
+		},
+		{
+			"url": "assets/dark/part/component/RadioButton_r.png",
+			"type": "image",
+			"name": "RadioButton_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/Rect.png",
+			"type": "image",
+			"name": "Rect_png"
+		},
+		{
+			"url": "assets/dark/part/component/Rect_r.png",
+			"type": "image",
+			"name": "Rect_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/RichText.png",
+			"type": "image",
+			"name": "RichText_png"
+		},
+		{
+			"url": "assets/dark/part/component/RichText_r.png",
+			"type": "image",
+			"name": "RichText_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/Scroller.png",
+			"type": "image",
+			"name": "Scroller_png"
+		},
+		{
+			"url": "assets/dark/part/component/Scroller_r.png",
+			"type": "image",
+			"name": "Scroller_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/SkinnableComponent.png",
+			"type": "image",
+			"name": "SkinnableComponent_png"
+		},
+		{
+			"url": "assets/dark/part/component/SkinnableComponent_r.png",
+			"type": "image",
+			"name": "SkinnableComponent_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/SkinnableContainer.png",
+			"type": "image",
+			"name": "SkinnableContainer_png"
+		},
+		{
+			"url": "assets/dark/part/component/SkinnableContainer_r.png",
+			"type": "image",
+			"name": "SkinnableContainer_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/SkinnableDataContainer.png",
+			"type": "image",
+			"name": "SkinnableDataContainer_png"
+		},
+		{
+			"url": "assets/dark/part/component/SkinnableDataContainer_r.png",
+			"type": "image",
+			"name": "SkinnableDataContainer_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/Spacer.png",
+			"type": "image",
+			"name": "Spacer_png"
+		},
+		{
+			"url": "assets/dark/part/component/Spacer_r.png",
+			"type": "image",
+			"name": "Spacer_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/Spinner.png",
+			"type": "image",
+			"name": "Spinner_png"
+		},
+		{
+			"url": "assets/dark/part/component/Spinner_r.png",
+			"type": "image",
+			"name": "Spinner_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/TabBar.png",
+			"type": "image",
+			"name": "TabBar_png"
+		},
+		{
+			"url": "assets/dark/part/component/TabBar_r.png",
+			"type": "image",
+			"name": "TabBar_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/TabNavigator.png",
+			"type": "image",
+			"name": "TabNavigator_png"
+		},
+		{
+			"url": "assets/dark/part/component/TabNavigator_r.png",
+			"type": "image",
+			"name": "TabNavigator_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/TextArea.png",
+			"type": "image",
+			"name": "TextArea_png"
+		},
+		{
+			"url": "assets/dark/part/component/TextArea_r.png",
+			"type": "image",
+			"name": "TextArea_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/TextInput.png",
+			"type": "image",
+			"name": "TextInput_png"
+		},
+		{
+			"url": "assets/dark/part/component/TextInput_r.png",
+			"type": "image",
+			"name": "TextInput_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/TileGroup.png",
+			"type": "image",
+			"name": "TileGroup_png"
+		},
+		{
+			"url": "assets/dark/part/component/TileGroup_r.png",
+			"type": "image",
+			"name": "TileGroup_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/TitleWindow.png",
+			"type": "image",
+			"name": "TitleWindow_png"
+		},
+		{
+			"url": "assets/dark/part/component/TitleWindow_r.png",
+			"type": "image",
+			"name": "TitleWindow_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/ToggleButton.png",
+			"type": "image",
+			"name": "ToggleButton_png"
+		},
+		{
+			"url": "assets/dark/part/component/ToggleButton_r.png",
+			"type": "image",
+			"name": "ToggleButton_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/ToggleSwitch.png",
+			"type": "image",
+			"name": "ToggleSwitch_png"
+		},
+		{
+			"url": "assets/dark/part/component/ToggleSwitch_r.png",
+			"type": "image",
+			"name": "ToggleSwitch_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/Tree.png",
+			"type": "image",
+			"name": "Tree_png"
+		},
+		{
+			"url": "assets/dark/part/component/Tree_r.png",
+			"type": "image",
+			"name": "Tree_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/UIAsset.png",
+			"type": "image",
+			"name": "UIAsset_png"
+		},
+		{
+			"url": "assets/dark/part/component/UIAsset_r.png",
+			"type": "image",
+			"name": "UIAsset_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/ViewStack.png",
+			"type": "image",
+			"name": "ViewStack_png"
+		},
+		{
+			"url": "assets/dark/part/component/ViewStack_r.png",
+			"type": "image",
+			"name": "ViewStack_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/VScrollBar.png",
+			"type": "image",
+			"name": "VScrollBar_png"
+		},
+		{
+			"url": "assets/dark/part/component/VScrollBar_r.png",
+			"type": "image",
+			"name": "VScrollBar_r_png"
+		},
+		{
+			"url": "assets/dark/part/component/VSlider.png",
+			"type": "image",
+			"name": "VSlider_png"
+		},
+		{
+			"url": "assets/dark/part/component/VSlider_r.png",
+			"type": "image",
+			"name": "VSlider_r_png"
+		},
+		{
+			"url": "assets/light/part/component/BitmapLabel.svg",
+			"type": "image",
+			"name": "BitmapLabel_svg"
+		},
+		{
+			"url": "assets/light/part/component/Button.svg",
+			"type": "image",
+			"name": "Button_svg"
+		},
+		{
+			"url": "assets/light/part/component/CheckBox.svg",
+			"type": "image",
+			"name": "CheckBox_svg"
+		},
+		{
+			"url": "assets/light/part/component/ComboBox.svg",
+			"type": "image",
+			"name": "ComboBox_svg"
+		},
+		{
+			"url": "assets/light/part/component/Component.svg",
+			"type": "image",
+			"name": "Component_svg"
+		},
+		{
+			"url": "assets/light/part/component/Custom.svg",
+			"type": "image",
+			"name": "Custom_svg"
+		},
+		{
+			"url": "assets/light/part/component/DataGroup.svg",
+			"type": "image",
+			"name": "DataGroup_svg"
+		},
+		{
+			"url": "assets/light/part/component/DropDownList.svg",
+			"type": "image",
+			"name": "DropDownList_svg"
+		},
+		{
+			"url": "assets/light/part/component/EditableText.svg",
+			"type": "image",
+			"name": "EditableText_svg"
+		},
+		{
+			"url": "assets/light/part/component/Group.svg",
+			"type": "image",
+			"name": "Group_svg"
+		},
+		{
+			"url": "assets/light/part/component/HScrollBar.svg",
+			"type": "image",
+			"name": "HScrollBar_svg"
+		},
+		{
+			"url": "assets/light/part/component/HSlider.svg",
+			"type": "image",
+			"name": "HSlider_svg"
+		},
+		{
+			"url": "assets/light/part/component/Image.svg",
+			"type": "image",
+			"name": "Image_svg"
+		},
+		{
+			"url": "assets/light/part/component/Label.svg",
+			"type": "image",
+			"name": "Label_svg"
+		},
+		{
+			"url": "assets/light/part/component/List.svg",
+			"type": "image",
+			"name": "List_svg"
+		},
+		{
+			"url": "assets/light/part/component/PageNavigator.svg",
+			"type": "image",
+			"name": "PageNavigator_svg"
+		},
+		{
+			"url": "assets/light/part/component/Panel.svg",
+			"type": "image",
+			"name": "Panel_svg"
+		},
+		{
+			"url": "assets/light/part/component/PopUpAnchor.svg",
+			"type": "image",
+			"name": "PopUpAnchor_svg"
+		},
+		{
+			"url": "assets/light/part/component/ProgressBar.svg",
+			"type": "image",
+			"name": "ProgressBar_svg"
+		},
+		{
+			"url": "assets/light/part/component/RadioButton.svg",
+			"type": "image",
+			"name": "RadioButton_svg"
+		},
+		{
+			"url": "assets/light/part/component/Rect.svg",
+			"type": "image",
+			"name": "Rect_svg"
+		},
+		{
+			"url": "assets/light/part/component/RichText.svg",
+			"type": "image",
+			"name": "RichText_svg"
+		},
+		{
+			"url": "assets/light/part/component/Scroller.svg",
+			"type": "image",
+			"name": "Scroller_svg"
+		},
+		{
+			"url": "assets/light/part/component/SkinnableComponent.svg",
+			"type": "image",
+			"name": "SkinnableComponent_svg"
+		},
+		{
+			"url": "assets/light/part/component/SkinnableContainer.svg",
+			"type": "image",
+			"name": "SkinnableContainer_svg"
+		},
+		{
+			"url": "assets/light/part/component/SkinnableDataContainer.svg",
+			"type": "image",
+			"name": "SkinnableDataContainer_svg"
+		},
+		{
+			"url": "assets/light/part/component/Spacer.svg",
+			"type": "image",
+			"name": "Spacer_svg"
+		},
+		{
+			"url": "assets/light/part/component/Spinner.svg",
+			"type": "image",
+			"name": "Spinner_svg"
+		},
+		{
+			"url": "assets/light/part/component/TabBar.svg",
+			"type": "image",
+			"name": "TabBar_svg"
+		},
+		{
+			"url": "assets/light/part/component/TabNavigator.svg",
+			"type": "image",
+			"name": "TabNavigator_svg"
+		},
+		{
+			"url": "assets/light/part/component/TextArea.svg",
+			"type": "image",
+			"name": "TextArea_svg"
+		},
+		{
+			"url": "assets/light/part/component/TextInput.svg",
+			"type": "image",
+			"name": "TextInput_svg"
+		},
+		{
+			"url": "assets/light/part/component/TileGroup.svg",
+			"type": "image",
+			"name": "TileGroup_svg"
+		},
+		{
+			"url": "assets/light/part/component/TitleWindow.svg",
+			"type": "image",
+			"name": "TitleWindow_svg"
+		},
+		{
+			"url": "assets/light/part/component/ToggleButton.svg",
+			"type": "image",
+			"name": "ToggleButton_svg"
+		},
+		{
+			"url": "assets/light/part/component/ToggleSwitch.svg",
+			"type": "image",
+			"name": "ToggleSwitch_svg"
+		},
+		{
+			"url": "assets/light/part/component/Tree.svg",
+			"type": "image",
+			"name": "Tree_svg"
+		},
+		{
+			"url": "assets/light/part/component/UIAsset.svg",
+			"type": "image",
+			"name": "UIAsset_svg"
+		},
+		{
+			"url": "assets/light/part/component/ViewStack.svg",
+			"type": "image",
+			"name": "ViewStack_svg"
+		},
+		{
+			"url": "assets/light/part/component/VScrollBar.svg",
+			"type": "image",
+			"name": "VScrollBar_svg"
+		},
+		{
+			"url": "assets/light/part/component/VSlider.svg",
+			"type": "image",
+			"name": "VSlider_svg"
+		},
+		{
+			"url": "assets/Button/scale_9_grid.png",
+			"type": "image",
+			"name": "scale_9_grid_png"
+		},
+		{
+			"url": "assets/Button/scale_9_grid_light.svg",
+			"type": "image",
+			"name": "scale_9_grid_light_svg"
+		},
+		{
+			"url": "assets/Button/scale_9_grid_r.png",
+			"type": "image",
+			"name": "scale_9_grid_r_png"
+		},
+		{
+			"url": "assets/Button/search.png",
+			"type": "image",
+			"name": "search_png"
+		},
+		{
+			"url": "assets/Button/search_light.png",
+			"type": "image",
+			"name": "search_light_png"
+		},
+		{
+			"url": "assets/Button/search_light.svg",
+			"type": "image",
+			"name": "search_light_svg"
+		},
+		{
+			"url": "assets/Button/search_r.png",
+			"type": "image",
+			"name": "search_r_png"
+		},
+		{
+			"url": "assets/Button/search_icon.png",
+			"type": "image",
+			"name": "search_icon_png"
+		},
+		{
+			"url": "assets/Button/search_icon_r.png",
+			"type": "image",
+			"name": "search_icon_r_png"
+		},
+		{
+			"url": "assets/Button/folder_Add.png",
+			"type": "image",
+			"name": "folder_Add_png"
+		},
+		{
+			"url": "assets/Button/folder_add_light.png",
+			"type": "image",
+			"name": "folder_Add_light_png"
+		},
+		{
+			"url": "assets/Button/folder_Add_r.png",
+			"type": "image",
+			"name": "folder_Add_r_png"
+		},
+		{
+			"url": "assets/Button/sheet.png",
+			"type": "image",
+			"name": "sheet_png"
+		},
+		{
+			"url": "assets/Button/sheet_r.png",
+			"type": "image",
+			"name": "sheet_r_png"
+		},
+		{
+			"url": "assets/Button/folder_add.png",
+			"type": "image",
+			"name": "folder_add_png"
+		},
+		{
+			"url": "assets/Button/folder_add_r.png",
+			"type": "image",
+			"name": "folder_add_r_png"
+		},
+		{
+			"url": "assets/Button/UIMovieClip.png",
+			"type": "image",
+			"name": "UIMovieClip_png"
+		},
+		{
+			"url": "assets/Button/UIMovieClip_r.png",
+			"type": "image",
+			"name": "UIMovieClip_r_png"
+		},
+		{
+			"url": "assets/dark/part/accordionIcon/common.png",
+			"type": "image",
+			"name": "common_png"
+		},
+		{
+			"url": "assets/light/part/accordionIcon/common_light.svg",
+			"type": "image",
+			"name": "common_light_svg"
+		},
+		{
+			"url": "assets/dark/part/accordionIcon/common_r.png",
+			"type": "image",
+			"name": "common_r_png"
+		},
+		{
+			"url": "assets/dark/part/accordionIcon/layout.png",
+			"type": "image",
+			"name": "layout_png"
+		},
+		{
+			"url": "assets/light/part/accordionIcon/layout_light.svg",
+			"type": "image",
+			"name": "layout_light_svg"
+		},
+		{
+			"url": "assets/dark/part/accordionIcon/layout_r.png",
+			"type": "image",
+			"name": "layout_r_png"
+		},
+		{
+			"url": "assets/light/part/accordionIcon/postion_light.svg",
+			"type": "image",
+			"name": "position_light_svg"
+		},
+		{
+			"url": "assets/dark/part/accordionIcon/postion.png",
+			"type": "image",
+			"name": "postion_png"
+		},
+		{
+			"url": "assets/dark/part/accordionIcon/postion_r.png",
+			"type": "image",
+			"name": "postion_r_png"
+		},
+		{
+			"url": "assets/dark/part/accordionIcon/style.png",
+			"type": "image",
+			"name": "style_png"
+		},
+		{
+			"url": "assets/light/part/accordionIcon/style_light.svg",
+			"type": "image",
+			"name": "style_light_svg"
+		},
+		{
+			"url": "assets/dark/part/accordionIcon/style_r.png",
+			"type": "image",
+			"name": "style_r_png"
+		},
+		{
+			"url": "assets/dark/part/Button/prop_all.png",
+			"type": "image",
+			"name": "prop_all_png"
+		},
+		{
+			"url": "assets/light/part/Button/prop_all_light.svg",
+			"type": "image",
+			"name": "prop_all_light_svg"
+		},
+		{
+			"url": "assets/dark/part/Button/prop_all_r.png",
+			"type": "image",
+			"name": "prop_all_r_png"
+		},
+		{
+			"url": "assets/dark/part/Button/prop_normal.png",
+			"type": "image",
+			"name": "prop_normal_png"
+		},
+		{
+			"url": "assets/light/part/Button/prop_normal_light.svg",
+			"type": "image",
+			"name": "prop_normal_light_svg"
+		},
+		{
+			"url": "assets/dark/part/Button/prop_normal_r.png",
+			"type": "image",
+			"name": "prop_normal_r_png"
+		},
+		{
+			"url": "assets/dark/part/Button/align_avg_bottom.png",
+			"type": "image",
+			"name": "align_avg_bottom_png"
+		},
+		{
+			"url": "assets/dark/part/Button/align_avg_bottom_r.png",
+			"type": "image",
+			"name": "align_avg_bottom_r_png"
+		},
+		{
+			"url": "assets/dark/part/Button/align_avg_center.png",
+			"type": "image",
+			"name": "align_avg_center_png"
+		},
+		{
+			"url": "assets/dark/part/Button/align_avg_center_r.png",
+			"type": "image",
+			"name": "align_avg_center_r_png"
+		},
+		{
+			"url": "assets/dark/part/Button/align_avg_left.png",
+			"type": "image",
+			"name": "align_avg_left_png"
+		},
+		{
+			"url": "assets/dark/part/Button/align_avg_left_r.png",
+			"type": "image",
+			"name": "align_avg_left_r_png"
+		},
+		{
+			"url": "assets/dark/part/Button/align_avg_middle.png",
+			"type": "image",
+			"name": "align_avg_middle_png"
+		},
+		{
+			"url": "assets/dark/part/Button/align_avg_middle_r.png",
+			"type": "image",
+			"name": "align_avg_middle_r_png"
+		},
+		{
+			"url": "assets/dark/part/Button/align_avg_right.png",
+			"type": "image",
+			"name": "align_avg_right_png"
+		},
+		{
+			"url": "assets/dark/part/Button/align_avg_right_r.png",
+			"type": "image",
+			"name": "align_avg_right_r_png"
+		},
+		{
+			"url": "assets/dark/part/Button/align_avg_top.png",
+			"type": "image",
+			"name": "align_avg_top_png"
+		},
+		{
+			"url": "assets/dark/part/Button/align_avg_top_r.png",
+			"type": "image",
+			"name": "align_avg_top_r_png"
+		},
+		{
+			"url": "assets/dark/part/Button/align_bottom.png",
+			"type": "image",
+			"name": "align_bottom_png"
+		},
+		{
+			"url": "assets/dark/part/Button/align_bottom_r.png",
+			"type": "image",
+			"name": "align_bottom_r_png"
+		},
+		{
+			"url": "assets/dark/part/Button/align_center.png",
+			"type": "image",
+			"name": "align_center_png"
+		},
+		{
+			"url": "assets/dark/part/Button/align_center_r.png",
+			"type": "image",
+			"name": "align_center_r_png"
+		},
+		{
+			"url": "assets/dark/part/Button/align_left.png",
+			"type": "image",
+			"name": "align_left_png"
+		},
+		{
+			"url": "assets/dark/part/Button/align_left_r.png",
+			"type": "image",
+			"name": "align_left_r_png"
+		},
+		{
+			"url": "assets/dark/part/Button/align_middle.png",
+			"type": "image",
+			"name": "align_middle_png"
+		},
+		{
+			"url": "assets/dark/part/Button/align_middle_r.png",
+			"type": "image",
+			"name": "align_middle_r_png"
+		},
+		{
+			"url": "assets/dark/part/Button/align_right.png",
+			"type": "image",
+			"name": "align_right_png"
+		},
+		{
+			"url": "assets/dark/part/Button/align_right_r.png",
+			"type": "image",
+			"name": "align_right_r_png"
+		},
+		{
+			"url": "assets/dark/part/Button/align_top.png",
+			"type": "image",
+			"name": "align_top_png"
+		},
+		{
+			"url": "assets/dark/part/Button/align_top_r.png",
+			"type": "image",
+			"name": "align_top_r_png"
+		},
+		{
+			"url": "assets/dark/part/Button/bringForward.png",
+			"type": "image",
+			"name": "bringForward_png"
+		},
+		{
+			"url": "assets/light/part/Button/bringForward_light.svg",
+			"type": "image",
+			"name": "bringForward_light_svg"
+		},
+		{
+			"url": "assets/dark/part/Button/bringForward_r.png",
+			"type": "image",
+			"name": "bringForward_r_png"
+		},
+		{
+			"url": "assets/dark/part/Button/bringToFront.png",
+			"type": "image",
+			"name": "bringToFront_png"
+		},
+		{
+			"url": "assets/light/part/Button/bringToFront_light.svg",
+			"type": "image",
+			"name": "bringToFront_light_svg"
+		},
+		{
+			"url": "assets/dark/part/Button/bringToFront_r.png",
+			"type": "image",
+			"name": "bringToFront_r_png"
+		},
+		{
+			"url": "assets/dark/part/Button/sendBackward.png",
+			"type": "image",
+			"name": "sendBackward_png"
+		},
+		{
+			"url": "assets/light/part/Button/sendBackward_light.svg",
+			"type": "image",
+			"name": "sendBackward_light_svg"
+		},
+		{
+			"url": "assets/dark/part/Button/sendBackward_r.png",
+			"type": "image",
+			"name": "sendBackward_r_png"
+		},
+		{
+			"url": "assets/dark/part/Button/sendToBack.png",
+			"type": "image",
+			"name": "sendToBack_png"
+		},
+		{
+			"url": "assets/light/part/Button/sendToBack_light.svg",
+			"type": "image",
+			"name": "sendToBack_light_svg"
+		},
+		{
+			"url": "assets/dark/part/Button/sendToBack_r.png",
+			"type": "image",
+			"name": "sendToBack_r_png"
+		},
+		{
+			"url": "assets/dark/part/Button/pos_bottom.png",
+			"type": "image",
+			"name": "pos_bottom_png"
+		},
+		{
+			"url": "assets/light/part/Button/pos_bottom_light.svg",
+			"type": "image",
+			"name": "pos_bottom_light_svg"
+		},
+		{
+			"url": "assets/dark/part/Button/pos_bottom_r.png",
+			"type": "image",
+			"name": "pos_bottom_r_png"
+		},
+		{
+			"url": "assets/dark/part/Button/pos_horizontalCenter.png",
+			"type": "image",
+			"name": "pos_horizontalCenter_png"
+		},
+		{
+			"url": "assets/light/part/Button/pos_horizontalCenter_light.svg",
+			"type": "image",
+			"name": "pos_horizontalCenter_light_svg"
+		},
+		{
+			"url": "assets/dark/part/Button/pos_horizontalCenter_r.png",
+			"type": "image",
+			"name": "pos_horizontalCenter_r_png"
+		},
+		{
+			"url": "assets/dark/part/Button/pos_left.png",
+			"type": "image",
+			"name": "pos_left_png"
+		},
+		{
+			"url": "assets/light/part/Button/pos_left_light.svg",
+			"type": "image",
+			"name": "pos_left_light_svg"
+		},
+		{
+			"url": "assets/dark/part/Button/pos_left_r.png",
+			"type": "image",
+			"name": "pos_left_r_png"
+		},
+		{
+			"url": "assets/dark/part/Button/pos_right.png",
+			"type": "image",
+			"name": "pos_right_png"
+		},
+		{
+			"url": "assets/light/part/Button/pos_right_light.svg",
+			"type": "image",
+			"name": "pos_right_light_svg"
+		},
+		{
+			"url": "assets/dark/part/Button/pos_right_r.png",
+			"type": "image",
+			"name": "pos_right_r_png"
+		},
+		{
+			"url": "assets/dark/part/Button/pos_top.png",
+			"type": "image",
+			"name": "pos_top_png"
+		},
+		{
+			"url": "assets/light/part/Button/pos_top_light.svg",
+			"type": "image",
+			"name": "pos_top_light_svg"
+		},
+		{
+			"url": "assets/dark/part/Button/pos_top_r.png",
+			"type": "image",
+			"name": "pos_top_r_png"
+		},
+		{
+			"url": "assets/dark/part/Button/pos_verticalCenter.png",
+			"type": "image",
+			"name": "pos_verticalCenter_png"
+		},
+		{
+			"url": "assets/light/part/Button/pos_verticalCenter_light.svg",
+			"type": "image",
+			"name": "pos_verticalCenter_light_svg"
+		},
+		{
+			"url": "assets/dark/part/Button/pos_verticalCenter_r.png",
+			"type": "image",
+			"name": "pos_verticalCenter_r_png"
+		},
+		{
+			"url": "assets/dark/part/Button/size_percentAll.png",
+			"type": "image",
+			"name": "size_percentAll_png"
+		},
+		{
+			"url": "assets/light/part/Button/size_percentAll_light.svg",
+			"type": "image",
+			"name": "size_percentAll_light_svg"
+		},
+		{
+			"url": "assets/dark/part/Button/size_percentAll_r.png",
+			"type": "image",
+			"name": "size_percentAll_r_png"
+		},
+		{
+			"url": "assets/dark/part/Button/size_percentHeight.png",
+			"type": "image",
+			"name": "size_percentHeight_png"
+		},
+		{
+			"url": "assets/light/part/Button/size_percentHeight_light.svg",
+			"type": "image",
+			"name": "size_percentHeight_light_svg"
+		},
+		{
+			"url": "assets/dark/part/Button/size_percentHeight_r.png",
+			"type": "image",
+			"name": "size_percentHeight_r_png"
+		},
+		{
+			"url": "assets/dark/part/Button/size_percentWidth.png",
+			"type": "image",
+			"name": "size_percentWidth_png"
+		},
+		{
+			"url": "assets/light/part/Button/size_percentWidth_light.svg",
+			"type": "image",
+			"name": "size_percentWidth_light_svg"
+		},
+		{
+			"url": "assets/dark/part/Button/size_percentWidth_r.png",
+			"type": "image",
+			"name": "size_percentWidth_r_png"
+		},
+		{
+			"url": "assets/dark/part/control/Arrow_EW.png",
+			"type": "image",
+			"name": "Arrow_EW_png"
+		},
+		{
+			"url": "assets/light/part/control/Arrow_EW_light.svg",
+			"type": "image",
+			"name": "Arrow_EW_light_svg"
+		},
+		{
+			"url": "assets/dark/part/control/Arrow_EW_r.png",
+			"type": "image",
+			"name": "Arrow_EW_r_png"
+		},
+		{
+			"url": "assets/dark/part/control/Arrow_NS.png",
+			"type": "image",
+			"name": "Arrow_NS_png"
+		},
+		{
+			"url": "assets/light/part/control/Arrow_NS_light.svg",
+			"type": "image",
+			"name": "Arrow_NS_light_svg"
+		},
+		{
+			"url": "assets/dark/part/control/Arrow_NS_r.png",
+			"type": "image",
+			"name": "Arrow_NS_r_png"
+		},
+		{
+			"url": "assets/dark/part/control/next_arrow.png",
+			"type": "image",
+			"name": "next_arrow_png"
+		},
+		{
+			"url": "assets/dark/part/control/remove_edge.png",
+			"type": "image",
+			"name": "remove_edge_png"
+		},
+		{
+			"url": "assets/dark/part/control/pre_arrow.png",
+			"type": "image",
+			"name": "pre_arrow_png"
+		},
+		{
+			"url": "assets/dark/part/control/moveArea.png",
+			"type": "image",
+			"name": "moveArea_png"
+		},
+		{
+			"url": "assets/dark/part/control/add.png",
+			"type": "image",
+			"name": "add_png"
+		},
+		{
+			"url": "assets/dark/part/Button/new_file.png",
+			"type": "image",
+			"name": "new_file_png"
+		},
+		{
+			"url": "assets/dark/part/Button/new_file_r.png",
+			"type": "image",
+			"name": "new_file_r_png"
+		},
+		{
+			"url": "assets/light/part/Button/new_file_light.svg",
+			"type": "image",
+			"name": "new_file_light_svg"
+		},
+		{
+			"url": "assets/dark/part/text/C_Bold_md.png",
+			"type": "image",
+			"name": "C_Bold_md_png"
+		},
+		{
+			"url": "assets/light/part/text/C_Bold_md_light.png",
+			"type": "image",
+			"name": "C_Bold_md_light_png"
+		},
+		{
+			"url": "assets/dark/part/text/C_Bold_md_r.png",
+			"type": "image",
+			"name": "C_Bold_md_r_png"
+		},
+		{
+			"url": "assets/dark/part/text/C_Italics_md.png",
+			"type": "image",
+			"name": "C_Italics_md_png"
+		},
+		{
+			"url": "assets/light/part/text/C_Italics_md_light.png",
+			"type": "image",
+			"name": "C_Italics_md_light_png"
+		},
+		{
+			"url": "assets/dark/part/text/C_Italics_md_r.png",
+			"type": "image",
+			"name": "C_Italics_md_r_png"
+		},
+		{
+			"url": "assets/dark/part/text/align-center.png",
+			"type": "image",
+			"name": "align-center_png"
+		},
+		{
+			"url": "assets/light/part/text/align-center_light.png",
+			"type": "image",
+			"name": "align-center_light_png"
+		},
+		{
+			"url": "assets/dark/part/text/align-center_r.png",
+			"type": "image",
+			"name": "align-center_r_png"
+		},
+		{
+			"url": "assets/dark/part/text/align-left.png",
+			"type": "image",
+			"name": "align-left_png"
+		},
+		{
+			"url": "assets/light/part/text/align-left_light.png",
+			"type": "image",
+			"name": "align-left_light_png"
+		},
+		{
+			"url": "assets/dark/part/text/align-left_r.png",
+			"type": "image",
+			"name": "align-left_r_png"
+		},
+		{
+			"url": "assets/dark/part/text/align-right.png",
+			"type": "image",
+			"name": "align-right_png"
+		},
+		{
+			"url": "assets/light/part/text/align-right_light.png",
+			"type": "image",
+			"name": "align-right_light_png"
+		},
+		{
+			"url": "assets/dark/part/text/align-right_r.png",
+			"type": "image",
+			"name": "align-right_r_png"
+		},
+		{
+			"url": "assets/dark/part/text/valign-bottom.png",
+			"type": "image",
+			"name": "valign-bottom_png"
+		},
+		{
+			"url": "assets/light/part/text/valign-bottom_light.png",
+			"type": "image",
+			"name": "valign-bottom_light_png"
+		},
+		{
+			"url": "assets/dark/part/text/valign-bottom_r.png",
+			"type": "image",
+			"name": "valign-bottom_r_png"
+		},
+		{
+			"url": "assets/dark/part/text/valign-center.png",
+			"type": "image",
+			"name": "valign-center_png"
+		},
+		{
+			"url": "assets/light/part/text/valign-center_light.png",
+			"type": "image",
+			"name": "valign-center_light_png"
+		},
+		{
+			"url": "assets/dark/part/text/valign-center_r.png",
+			"type": "image",
+			"name": "valign-center_r_png"
+		},
+		{
+			"url": "assets/dark/part/text/valign-justify.png",
+			"type": "image",
+			"name": "valign-justify_png"
+		},
+		{
+			"url": "assets/light/part/text/valign-justify_light.png",
+			"type": "image",
+			"name": "valign-justify_light_png"
+		},
+		{
+			"url": "assets/dark/part/text/valign-justify_r.png",
+			"type": "image",
+			"name": "valign-justify_r_png"
+		},
+		{
+			"url": "assets/dark/part/text/valign-top.png",
+			"type": "image",
+			"name": "valign-top_png"
+		},
+		{
+			"url": "assets/light/part/text/valign-top_light.png",
+			"type": "image",
+			"name": "valign-top_light_png"
+		},
+		{
+			"url": "assets/dark/part/text/valign-top_r.png",
+			"type": "image",
+			"name": "valign-top_r_png"
+		},
+		{
+			"url": "assets/dark/other/canvasBg.png",
+			"type": "image",
+			"name": "canvasBg_png"
+		},
+		{
+			"url": "assets/dark/other/scale_9_grid.png",
+			"type": "image",
+			"name": "1_scale_9_grid_png"
+		},
+		{
+			"url": "assets/dark/other/scale_9_grid_over.png",
+			"type": "image",
+			"name": "scale_9_grid_over_png"
+		},
+		{
+			"url": "assets/dark/other/view_max.png",
+			"type": "image",
+			"name": "1_view_max_png"
+		},
+		{
+			"url": "assets/dark/other/view_max_r.png",
+			"type": "image",
+			"name": "1_view_max_r_png"
+		},
+		{
+			"url": "assets/dark/other/view_min.png",
+			"type": "image",
+			"name": "view_min_png"
+		},
+		{
+			"url": "assets/Button/view_min_light.svg",
+			"type": "image",
+			"name": "view_min_light_svg"
+		},
+		{
+			"url": "assets/dark/other/view_min_r.png",
+			"type": "image",
+			"name": "view_min_r_png"
+		},
+		{
+			"url": "assets/dark/other/zoom_up_r.png",
+			"type": "image",
+			"name": "1_zoom_up_r_png"
+		},
+		{
+			"url": "assets/dark/Tree/gif.png",
+			"type": "image",
+			"name": "gif_png"
+		},
+		{
+			"url": "assets/dark/Tree/gif_r.png",
+			"type": "image",
+			"name": "gif_r_png"
+		},
+		{
+			"url": "assets/dark/Tree/htmlfile.png",
+			"type": "image",
+			"name": "htmlfile_png"
+		},
+		{
+			"url": "assets/dark/Tree/htmlfile_r.png",
+			"type": "image",
+			"name": "htmlfile_r_png"
+		},
+		{
+			"url": "assets/dark/Tree/jpg.png",
+			"type": "image",
+			"name": "jpg_png"
+		},
+		{
+			"url": "assets/dark/Tree/jpg_r.png",
+			"type": "image",
+			"name": "jpg_r_png"
+		},
+		{
+			"url": "assets/dark/Tree/js.png",
+			"type": "image",
+			"name": "js_png"
+		},
+		{
+			"url": "assets/dark/Tree/json_r.png",
+			"type": "image",
+			"name": "json_r_png"
+		},
+		{
+			"url": "assets/dark/Tree/js_r.png",
+			"type": "image",
+			"name": "js_r_png"
+		},
+		{
+			"url": "assets/dark/Tree/new_project.png",
+			"type": "image",
+			"name": "new_project_png"
+		},
+		{
+			"url": "assets/dark/Tree/new_project_r.png",
+			"type": "image",
+			"name": "new_project_r_png"
+		},
+		{
+			"url": "assets/dark/Tree/package_empty.png",
+			"type": "image",
+			"name": "package_empty_png"
+		},
+		{
+			"url": "assets/dark/Tree/package_empty_r.png",
+			"type": "image",
+			"name": "package_empty_r_png"
+		},
+		{
+			"url": "assets/dark/Tree/package_r.png",
+			"type": "image",
+			"name": "package_r_png"
+		},
+		{
+			"url": "assets/dark/Tree/png.png",
+			"type": "image",
+			"name": "png_png"
+		},
+		{
+			"url": "assets/dark/Tree/png_r.png",
+			"type": "image",
+			"name": "png_r_png"
+		},
+		{
+			"url": "assets/dark/Tree/project_close.png",
+			"type": "image",
+			"name": "project_close_png"
+		},
+		{
+			"url": "assets/dark/Tree/project_close_r.png",
+			"type": "image",
+			"name": "project_close_r_png"
+		},
+		{
+			"url": "assets/dark/Tree/text.png",
+			"type": "image",
+			"name": "text_png"
+		},
+		{
+			"url": "assets/dark/Tree/text_r.png",
+			"type": "image",
+			"name": "text_r_png"
+		},
+		{
+			"url": "assets/dark/Tree/tm_animation.png",
+			"type": "image",
+			"name": "tm_animation_png"
+		},
+		{
+			"url": "assets/dark/Tree/tm_animation_r.png",
+			"type": "image",
+			"name": "tm_animation_r_png"
+		},
+		{
+			"url": "assets/dark/Tree/tm_bitmapFont.png",
+			"type": "image",
+			"name": "tm_bitmapFont_png"
+		},
+		{
+			"url": "assets/dark/Tree/tm_bitmapFont_r.png",
+			"type": "image",
+			"name": "tm_bitmapFont_r_png"
+		},
+		{
+			"url": "assets/dark/Tree/ts_project.png",
+			"type": "image",
+			"name": "ts_project_png"
+		},
+		{
+			"url": "assets/dark/Tree/ts_project_close.png",
+			"type": "image",
+			"name": "ts_project_close_png"
+		},
+		{
+			"url": "assets/dark/Tree/ts_project_close_r.png",
+			"type": "image",
+			"name": "ts_project_close_r_png"
+		},
+		{
+			"url": "assets/dark/Tree/ts_project_open.png",
+			"type": "image",
+			"name": "ts_project_open_png"
+		},
+		{
+			"url": "assets/dark/Tree/ts_project_open_r.png",
+			"type": "image",
+			"name": "ts_project_open_r_png"
+		},
+		{
+			"url": "assets/dark/Tree/ts_project_r.png",
+			"type": "image",
+			"name": "ts_project_r_png"
+		},
+		{
+			"url": "assets/dark/Tree/ts_r.png",
+			"type": "image",
+			"name": "ts_r_png"
+		},
+		{
+			"url": "assets/dark/Tree/unknown.png",
+			"type": "image",
+			"name": "unknown_png"
+		},
+		{
+			"url": "assets/dark/Tree/unknown_r.png",
+			"type": "image",
+			"name": "unknown_r_png"
+		},
+		{
+			"url": "assets/dark/Tree/xml.png",
+			"type": "image",
+			"name": "xml_png"
+		},
+		{
+			"url": "assets/dark/Tree/xml_r.png",
+			"type": "image",
+			"name": "xml_r_png"
+		},
+		{
+			"url": "assets/dark/Tree/egret_project_open_r.png",
+			"type": "image",
+			"name": "egret_project_open_r_png"
+		},
+		{
+			"url": "assets/dark/Tree/egret_project_r.png",
+			"type": "image",
+			"name": "egret_project_r_png"
+		},
+		{
+			"url": "assets/dark/Tree/folder_open_r.png",
+			"type": "image",
+			"name": "folder_open_r_png"
+		},
+		{
+			"url": "assets/dark/Tree/folder_r.png",
+			"type": "image",
+			"name": "folder_r_png"
+		},
+		{
+			"url": "assets/dark/Tree/folder_src_open_r.png",
+			"type": "image",
+			"name": "folder_src_open_r_png"
+		},
+		{
+			"url": "assets/dark/Tree/folder_src_r.png",
+			"type": "image",
+			"name": "folder_src_r_png"
+		},
+		{
+			"url": "assets/dark/Tree/html_r.png",
+			"type": "image",
+			"name": "html_r_png"
+		},
+		{
+			"url": "assets/dark/other/drophere.svg",
+			"type": "image",
+			"name": "drophere_svg"
+		},
+		{
+			"url": "assets/light/other/drophere_light.svg",
+			"type": "image",
+			"name": "drophere_light_svg"
+		},
+		{
+			"url": "assets/dark/projectTemplate/3D-Egret.png",
+			"type": "image",
+			"name": "3D-Egret_png"
+		},
+		{
+			"url": "assets/light/projectTemplate/3D-Egret_light.png",
+			"type": "image",
+			"name": "3D-Egret_light_png"
+		},
+		{
+			"url": "assets/dark/projectTemplate/3D-Egret_r.png",
+			"type": "image",
+			"name": "3D-Egret_r_png"
+		},
+		{
+			"url": "assets/dark/projectTemplate/3D-Egret-review.png",
+			"type": "image",
+			"name": "3D-Egret-review_png"
+		},
+		{
+			"url": "assets/light/projectTemplate/3D-Egret-review_light.png",
+			"type": "image",
+			"name": "3D-Egret-review_light_png"
+		},
+		{
+			"url": "assets/dark/projectTemplate/3D-Egret-review_r.png",
+			"type": "image",
+			"name": "3D-Egret-review_r_png"
+		}
+		,
+		{
+			"url": "assets/dark/projectTemplate/3D-Egret-review_r.png",
+			"type": "image",
+			"name": "3D-Egret-review_r_png"
+		},
+		{
+			"name":"copy_dark_svg",
+			"type":"image",
+			"url":"assets/Button/copy_dark.svg"
+		},
+		{
+			"name":"copy_light_svg",
+			"type":"image",
+			"url":"assets/Button/copy_light.svg"
+		}
+	]
+}

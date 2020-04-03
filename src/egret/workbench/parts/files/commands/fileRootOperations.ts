@@ -15,13 +15,18 @@ import { NewFolderPanel } from '../electron-browser/views/newFolderPanel';
 import { RenamePanel } from '../electron-browser/views/renamePanel';
 import { IWorkbenchEditorService } from '../../../services/editor/common/ediors';
 import * as paths from 'path';
+import { promisify } from 'util';
+import * as cp from 'child_process';
+import * as fsextra from 'fs-extra';
 import { INotificationService } from 'egret/platform/notification/common/notifications';
 import { IEgretProjectService } from 'egret/exts/exml-exts/project';
 import { localize } from 'egret/base/localization/nls';
 import { EUIExmlConfig } from 'egret/exts/exml-exts/exml/common/project/exmlConfigs';
 import { IClipboardService } from 'egret/platform/clipboard/common/clipboardService';
-import { ExmlFileEditor } from 'egret/exts/exml-exts/exml/browser/exmlFileEditor';
 import { innerWindowManager } from 'egret/platform/innerwindow/common/innerWindowManager';
+import { rtrim } from 'vs/base/common/strings';
+import { sep, normalize } from 'egret/base/common/paths';
+import { IMultiPageEditor } from 'egret/editor/core/editors';
 
 
 //TODO 这个新建exml的和框架层无关，未来不应该放在这里
@@ -363,11 +368,11 @@ export class RenameFileOperation implements IOperation {
 		);
 		if (dirty.length) {
 			let message: string;
-			if(dirty.length  == 1){
-				message = localize('rename.dirtyMessageFileRename','You need to save the file {0} before renaming.',paths.basename(dirty[0].fsPath));
-			}else{
+			if (dirty.length == 1) {
+				message = localize('rename.dirtyMessageFileRename', 'You need to save the file {0} before renaming.', paths.basename(dirty[0].fsPath));
+			} else {
 				message = getConfirmMessage(localize('rename.dirtyMessageFilesRename', 'You need to save the following {0} files before renaming.', dirty.length), dirty);
-				
+
 			}
 			const continueBtn = { label: localize('alert.button.saveAndContinue', 'Save And Continue'), result: 0 };
 			const cancelBtn = { label: localize('alert.button.cancel', 'Cancel'), result: 1 };
@@ -393,18 +398,18 @@ export class RenameFileOperation implements IOperation {
 			confirmDirtyPromise = this.windowService.showMessageBox(opts).then(result => {
 				const select = buttons[result.button].result;
 				return select == 0;
-			}).then(value=>{
-				if(!value){
+			}).then(value => {
+				if (!value) {
 					return value;
 				}
-				return this.fileModelService.saveAll(dirty).then(e=>{
+				return this.fileModelService.saveAll(dirty).then(e => {
 					//TODO 有可能不成功，暂时先不做处理
 					return true;
 				});
 			});
 		}
-		return confirmDirtyPromise.then(confirmed=>{
-			if(confirmed){
+		return confirmDirtyPromise.then(confirmed => {
+			if (confirmed) {
 				const renamePanel = this.instantiationService.createInstance(RenamePanel, fileStat);
 				renamePanel.open(null, true);
 				//弹出一个 重命名的窗口
@@ -434,11 +439,11 @@ export class SaveActiveOperation implements IOperation {
 	/**
 	 * 运行
 	 */
-	public run(): Promise<any> {
+	public async run(): Promise<any> {
 		const currentEditor = this.editorService.getActiveEditor();
 		if (currentEditor && currentEditor.input) {
-			if(currentEditor instanceof ExmlFileEditor){
-				(currentEditor as ExmlFileEditor).syncModelData();
+			if('syncModelData' in currentEditor){
+				await (currentEditor as IMultiPageEditor).syncModelData();
 			}
 			return this.fileModelService.save(currentEditor.input.getResource());
 		}
@@ -467,12 +472,12 @@ export class SaveAllOperation implements IOperation {
 	/**
 	 * 运行
 	 */
-	public run(): Promise<any> {
+	public async run(): Promise<any> {
 		const editors = this.editorService.getOpenEditors();
 		for (let i = 0; i < editors.length; i++) {
 			const editor = editors[i];
-			if(editor instanceof ExmlFileEditor){
-				(editor as ExmlFileEditor).syncModelData();
+			if('syncModelData' in editor){
+				await (editor as IMultiPageEditor).syncModelData();
 			}
 		}
 		return this.fileModelService.saveAll();
@@ -482,5 +487,129 @@ export class SaveAllOperation implements IOperation {
 	 */
 	public dispose(): void {
 		this.fileModelService = null;
+	}
+}
+
+/**
+ * MACOS下安装shell命令
+ */
+export class InstallShellCommandOperation implements IOperation {
+
+	constructor(
+		@IWindowClientService private windowService: IWindowClientService,
+		@INotificationService private notificationService: INotificationService) {
+	}
+
+	private ignore<T>(code: string, value: T): (err: any) => Promise<T> {
+		return err => err.code === code ? Promise.resolve<T>(value) : Promise.reject<T>(err);
+	}
+
+	private _source: string | null = null;
+	private getSource(): string {
+		if (!this._source) {
+			this._source = paths.resolve(process.resourcesPath, 'app', 'bin', 'eui');
+		}
+		return this._source;
+	}
+
+	private isAvailable(): Promise<boolean> {
+		return fsextra.pathExists(this.getSource());
+	}
+	private get target(): string {
+		return `/usr/local/bin/eui`;
+	}
+
+	private normalizePath(path: string): string {
+		return rtrim(normalize(path), sep);
+	}
+
+	private async realpath(path: string): Promise<string> {
+		try {
+			return await fsextra.realpath(path);
+		} catch (error) {
+
+			// We hit an error calling fs.realpath(). Since fs.realpath() is doing some path normalization
+			// we now do a similar normalization and then try again if we can access the path with read
+			// permissions at least. If that succeeds, we return that path.
+			// fs.realpath() is resolving symlinks and that can fail in certain cases. The workaround is
+			// to not resolve links but to simply see if the path is read accessible or not.
+			const normalizedPath = this.normalizePath(path);
+
+			await fsextra.access(normalizedPath, fsextra.constants.R_OK);
+
+			return normalizedPath;
+		}
+	}
+
+	run(): Promise<void> {
+		return this.isAvailable().then(isAvailable => {
+			if (!isAvailable) {
+				const message = localize('installShellCommandOperation.notAvailable', 'This command is not available');
+				this.notificationService.info({ content: message, duration: 3 });
+				return undefined;
+			}
+
+			return this.isInstalled()
+				.then(isInstalled => {
+					if (!isAvailable || isInstalled) {
+						return Promise.resolve(null);
+					} else {
+						return fsextra.unlink(this.target)
+							.then(undefined, this.ignore('ENOENT', null))
+							.then(() => fsextra.symlink(this.getSource(), this.target))
+							.then(undefined, err => {
+								if (err.code === 'EACCES' || err.code === 'ENOENT') {
+									return this.createBinFolderAndSymlinkAsAdmin();
+								}
+
+								return Promise.reject(err);
+							});
+					}
+				})
+				.then(() => {
+					this.notificationService.info({ content: localize('installShellCommandOperation.successIn', 'Shell command \'eui\' successfully installed in PATH.'), duration: 3 });
+				});
+		});
+	}
+
+	private isInstalled(): Promise<boolean> {
+		return fsextra.lstat(this.target)
+			.then(stat => stat.isSymbolicLink())
+			.then(() => this.realpath(this.target))
+			.then(link => link === this.getSource())
+			.then(undefined, this.ignore('ENOENT', false));
+	}
+
+	private createBinFolderAndSymlinkAsAdmin(): Promise<void> {
+		return new Promise<void>((resolve, reject) => {
+			const buttons = [localize('alert.button.confirm', 'OK'), localize('alert.button.cancel', 'Cancel')];
+			const message = localize('installShellCommandOperation.warnEscalation', `EUI Editor will now prompt with 'osascript' for Administrator privileges to install the shell command.`);
+			const opts: MessageBoxOptions = {
+				message: message,
+				type: 'warning',
+				buttons: buttons,
+				cancelId: 1
+			};
+			this.windowService.showMessageBox(opts).then((result)=> {
+				switch (result.button) {
+					case 0 /* OK */:
+						const command = 'osascript -e "do shell script \\"mkdir -p /usr/local/bin && ln -sf \'' + this.getSource() + '\' \'' + this.target + '\'\\" with administrator privileges"';
+
+						promisify(cp.exec)(command, {})
+							.then(undefined, _ => Promise.reject(new Error(localize('installShellCommandOperation.cantCreateBinFolder', `Unable to create '/usr/local/bin'.`))))
+							.then(() => resolve(), reject);
+						break;
+					case 1 /* Cancel */:
+						reject(new Error(localize('installShellCommandOperation.aborted', 'Aborted')));
+						break;
+				}
+			});
+		});
+	}
+	/**
+	 * 释放
+	 */
+	public dispose(): void {
+
 	}
 }

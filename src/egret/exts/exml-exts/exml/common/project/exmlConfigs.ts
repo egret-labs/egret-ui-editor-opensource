@@ -13,7 +13,7 @@ import { EgretProjectModel } from './egretProject';
 import { EgretEngineInfo } from './egretSDK';
 import { IInstantiationService } from 'egret/platform/instantiation/common/instantiation';
 
-import { IParseCenter, createParseCenter, ClassChangedEvent } from './parsers/parser';
+import { IParseCenter, createParseCenter, ClassChangedEvent, ClassChangedType } from './parsers/parser';
 import { ExmlCoreParser, ExmlCoreParserEUI, ExmlCoreParserGUI, EUI } from './parsers/core/commons';
 import { Emitter, Event } from 'egret/base/common/event';
 
@@ -22,7 +22,7 @@ import { Emitter, Event } from 'egret/base/common/event';
  */
 export abstract class AbstractExmlConfig {
 
-	private _onCustomClassChanged: Emitter<void>;
+	private _onCustomClassChanged: Emitter<ClassChangedType>;
 
 	/**默认值字典，该字典由子类维护，该属性由当前类或当前类的子类进行维护*/
 	public defaultValueDic: { [prop: string]: any } = {};
@@ -33,14 +33,14 @@ export abstract class AbstractExmlConfig {
 		@IInstantiationService protected instantiationService: IInstantiationService,
 		@IFileService protected fileService: IFileService
 	) {
-		this._onCustomClassChanged = new Emitter<void>();
+		this._onCustomClassChanged = new Emitter<ClassChangedType>();
 		this.currentStamp = process.uptime();
 		this.initConfig();
 	}
 	/**
 	 * 类改变事件
 	 */
-	public get onCustomClassChanged(): Event<void> {
+	public get onCustomClassChanged(): Event<ClassChangedType> {
 		return this._onCustomClassChanged.event;
 	}
 
@@ -168,7 +168,7 @@ export abstract class AbstractExmlConfig {
 			}
 		}
 		this.currentStamp = process.uptime();
-		this._onCustomClassChanged.fire();
+		this._onCustomClassChanged.fire(event.type);
 	}
 	/**
 	 * 根据类名得到一个类的节点
@@ -229,33 +229,73 @@ export abstract class AbstractExmlConfig {
 		return this.customClasses;
 	}
 
+	// /**
+	//  * 判断A是否继承或实现自了B
+	//  * @param classNameA 
+	//  * @param classNameB 
+	//  */
+	// public isInstanceOf(classNameA: string, classNameB: string): boolean {
+	// 	if (classNameB === 'any' || classNameB === 'Class') {
+	// 		return true;
+	// 	}
+	// 	if (classNameA === classNameB) {
+	// 		return true;
+	// 	}
+	// 	const classNode = this.getClassNode(classNameA);
+	// 	if (!classNode) {
+	// 		return false;
+	// 	}
+	// 	const baseClassNode = classNode.baseClass;
+	// 	if (baseClassNode) {
+	// 		if (this.isInstanceOf(baseClassNode.fullName, classNameB)) {
+	// 			return true;
+	// 		}
+	// 	}
+	// 	const implementedNodes = classNode.implementeds;
+	// 	for (let i = 0; i < implementedNodes.length; i++) {
+	// 		if (this.isInstanceOf(implementedNodes[i].fullName, classNameB)) {
+	// 			return true;
+	// 		}
+	// 	}
+	// 	return false;
+	// }
+
+	private isInstanceOfClass(classA: string, classB: string): boolean {
+		if (classB === 'any' || classB === 'Class') {
+			return true;
+		}
+		if (classA === classB) {
+			return true;
+		}
+		return false;
+	}
+
 	/**
 	 * 判断A是否继承或实现自了B
 	 * @param classNameA 
 	 * @param classNameB 
 	 */
 	public isInstanceOf(classNameA: string, classNameB: string): boolean {
-		if (classNameB === 'any' || classNameB === 'Class') {
-			return true;
-		}
-		if (classNameA === classNameB) {
+		if (this.isInstanceOfClass(classNameA, classNameB)) {
 			return true;
 		}
 		const classNode = this.getClassNode(classNameA);
 		if (!classNode) {
 			return false;
 		}
-		const baseClassNode = classNode.baseClass;
-		if (baseClassNode) {
-			if (this.isInstanceOf(baseClassNode.fullName, classNameB)) {
+		let temp = classNode.baseClass;
+		while (temp) {
+			if (this.isInstanceOfClass(temp.fullName, classNameB)) {
 				return true;
 			}
-		}
-		const implementedNodes = classNode.implementeds;
-		for (let i = 0; i < implementedNodes.length; i++) {
-			if (this.isInstanceOf(implementedNodes[i].fullName, classNameB)) {
-				return true;
+			const implementedNodes = temp.implementeds;
+			for (let i = 0; i < implementedNodes.length; i++) {
+				const item = implementedNodes[i];
+				if (this.isInstanceOfClass(item.fullName, classNameB)) {
+					return true;
+				}
 			}
+			temp = temp.baseClass;
 		}
 		return false;
 	}

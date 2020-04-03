@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.LockedButtonSkin" currentState="up" xmlns:e="http://ns.egret.com/eui" states="up,over,down,disabled,upAndSelected,overAndSelected,downAndSelected,disabledAndSelected" >
+	<e:Group minHeight="24" width="22" x="0" y="0" id="group" left="0" right="0" alpha="1">
+		<e:Image  id="ui1" source="layer_locked_png"  width="15" height="15" alpha="0.3" visible.up="false" visible.over="true" visible.down="false" visible.disabled="false"  horizontalCenter="0" verticalCenter="0"/>
+		<e:Image  id="ui2" source="layer_locked_png"  width="15" height="15" horizontalCenter="0" verticalCenter="0" visible.up="false" visible.over="false" visible.down="false" visible.disabled="false" visible.upAndSelected="true" visible.overAndSelected="true" visible.downAndSelected="true" visible.disabledAndSelected="true"/>
+	</e:Group>
+</e:Skin>

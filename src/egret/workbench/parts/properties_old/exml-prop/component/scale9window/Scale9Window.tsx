@@ -87,7 +87,7 @@ class Scale9Window extends React.Component<IScale9WindowProps, IScale9WindowStat
 		* 9宫格分割线位置修正值。
 		* 因为线条具有宽度，修正值=(宽度-1)/2
 		*/
-	private gridLineCorrectionSize: number = 0;
+	private gridLineCorrectionSize: number = 1;
 	// reset按钮是否将要置为100%
 	private resetIs100: boolean = true;
 

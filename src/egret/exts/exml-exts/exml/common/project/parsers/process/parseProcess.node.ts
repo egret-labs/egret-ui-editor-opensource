@@ -12,6 +12,7 @@ import { isTs, isExml } from '../core/commons';
 import * as paths from 'path';
 import * as fs from 'fs';
 import { isIgnore } from '../core/ignores';
+import { ClassChangedType } from '../parser';
 
 class ParserProcess extends NodeProcess implements IParserProcess {
 	private tsParser: TsParser;
@@ -35,7 +36,7 @@ class ParserProcess extends NodeProcess implements IParserProcess {
 			return this.select(workspace, ['.exml', '.ts'], stat => {
 				this.addFile(stat.resource);
 			},['node_modules','.git','.DS_Store']).then(() => {
-				this.doFilesChanged();
+				this.doFilesChanged('mix');
 			});
 		});
 	}
@@ -286,7 +287,7 @@ class ParserProcess extends NodeProcess implements IParserProcess {
 	private exmlFileChanged: boolean = false;
 
 	private fileChangedFlag: boolean = false;
-	private fileChanged(type: string = ''): void {
+	private fileChanged(type: ClassChangedType): void {
 		if (type === 'ts') {
 			this.tsFileChanged = true;
 		} else if (type === 'exml') {
@@ -297,11 +298,11 @@ class ParserProcess extends NodeProcess implements IParserProcess {
 		}
 		this.fileChangedFlag = true;
 		setTimeout(() => {
-			this.doFilesChanged();
+			this.doFilesChanged(type);
 		}, 100);
 	}
 
-	private doFilesChanged(): void {
+	private doFilesChanged(type: ClassChangedType): void {
 		this.fileChangedFlag = false;
 		if (this.tsFileChanged) {
 			this.tsParser.fileChanged(this.tsAdds, this.tsModifies, this.tsDelete);
@@ -318,11 +319,11 @@ class ParserProcess extends NodeProcess implements IParserProcess {
 		this.exmlFileChanged = false;
 		this.tsFileChanged = false;
 		this.currentStamp = process.uptime();
-		this.fireClassChanged();
+		this.fireClassChanged(type);
 		//TODO fuck
 	}
 
-	private fireClassChanged(): void {
+	private fireClassChanged(type: ClassChangedType): void {
 		const classMap: { [fullName: string]: ClassNode } = this.getClassNodeMap();
 		const classDataMap = {};
 		for (const fullName in classMap) {
@@ -345,7 +346,7 @@ class ParserProcess extends NodeProcess implements IParserProcess {
 		const allSkins = this.exmlParser.getAllSkinClassName();
 		const skinClassNameToPath = this.exmlParser.skinClassNameToPath;
 		this.send('classChanged', {
-			classDataMap, allSkins, skinClassNameToPath
+			type, classDataMap, allSkins, skinClassNameToPath
 		});
 	}
 

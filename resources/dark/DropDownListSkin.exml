@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.DropDownListSkin" height="20" xmlns:e="http://ns.egret.com/eui"
+        xmlns:eui="eui.*" states="normal,popup" minHeight="23">
+	<e:Image left="0" right="0" top="0" bottom="0" scale9Grid="2,2,1,1"
+	         source="dark_dropdownlist_bg_png" touchEnabled="false"/>
+    <e:Button skinName="skins.DropDownListButtonSkin" id="openButton" left="0" right="0"
+             top="0" bottom="0" />
+   <e:Label id="labelDisplay" text="{data}" left="5" right="25" top="1" bottom="1" multiline="false"
+            touchEnabled="false" textAlign="left" size="12" verticalAlign="middle" fontFamily="Microsoft YaHei"/>
+   <e:Rect fillColor="0x2b353e" right="25" width="1" verticalCenter="0" percentHeight="70" />
+   <eui:PopUpAnchor id="popUpAnchor" bottom="0" left="0" right="0" top="0" popUpPosition="below" popUpWidthMatchesAnchorWidth="true">
+      <eui:popUp>
+      	 <e:Group touchEnabled="false" maxHeight="300">
+      	 	<e:Scroller id="scroller" top="0" bottom="0" right="0" left="0">
+      	 		<e:viewport>
+      	 			<e:List id="list" top="0" bottom="0" left="0" right="0">
+      	 				<e:layout>
+      	 						<e:VerticalLayout gap="0" horizontalAlign="contentJustify" />
+      	 				</e:layout>
+      	 			</e:List>
+      	 		</e:viewport>
+      	 	</e:Scroller>
+      	 </e:Group>
+      </eui:popUp>
+   </eui:PopUpAnchor>
+</e:Skin>

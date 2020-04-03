@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.manager.ProgressBarSkin" minWidth="30" minHeight="18" xmlns:e="http://ns.egret.com/eui">
+<e:Component id="track" skinName="skins.manager.ProgressBarTrackSkin" percentHeight="100" left="0" right="0"/>
+<e:Component id="thumb" percentHeight="100" skinName="skins.manager.ProgressBarThumbSkin" left="0" right="0"/>
+</e:Skin>

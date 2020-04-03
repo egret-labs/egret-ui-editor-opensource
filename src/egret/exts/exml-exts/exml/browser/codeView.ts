@@ -4,7 +4,6 @@ import { IExmlFileEditorModel } from '../common/exml/models';
 import { IDisposable, dispose } from 'egret/base/common/lifecycle';
 import { IInstantiationService } from 'egret/platform/instantiation/common/instantiation';
 import { IEgretProjectService } from '../../project';
-import * as eventDispatcher from './exmleditor/EventDispatcher';
 import { Emitter, Event } from 'egret/base/common/event';
 
 export class CodeView implements ICodeView {
@@ -70,26 +69,27 @@ export class CodeView implements ICodeView {
 		this.codeEditor.setup(value);
 	}
 
+	private codeDisposables: IDisposable[] = [];
 	private disableCodeEditorInteractive(): void {
-		this.codeEditor.removeEventListener('onDirtyStateChanged', this.onCodeEditorDirtyStateChanged, this);
+		this.codeDisposables = dispose(this.codeDisposables);
 	}
 
 	private enableCodeEditorInteractive(): void {
 		this.disableCodeEditorInteractive();
-		this.codeEditor.addEventListener('onDirtyStateChanged', this.onCodeEditorDirtyStateChanged, this);
+		this.codeDisposables.push(this.codeEditor.onDirtyStateChanged(this.onCodeEditorDirtyStateChanged, this));
 	}
 
-	private onCodeEditorDirtyStateChanged(e: eventDispatcher.Event): void {
+	private onCodeEditorDirtyStateChanged(e: boolean): void {
 		// console.log('dirty state', e.data);
-		this._onDirtyStateChanged.fire(e.data);
+		this._onDirtyStateChanged.fire(e);
 	}
 
 	public setActive(active: boolean): void {
 		this.codeEditor.setActive(active);
 	}
 
-	public syncModelData(): void {
-		this.codeEditor.syncText();
+	public syncModelData(): Promise<void> {
+		return this.codeEditor.syncText();
 	}
 
 	/**

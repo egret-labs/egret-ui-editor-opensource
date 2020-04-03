@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.SliderThumbSkin" states="up,over,down,disabled" currentState="up"
+        minHeight="12" minWidth="12" xmlns:e="http://ns.egret.com/eui">
+	<e:Rect width="10" height="10" verticalCenter="0" horizontalCenter="0" fillColor="0xffffff" fillColor.over="0xf7f7f7" ellipseHeight="10"
+	        ellipseWidth="10" alpha="1" alpha.disabled="0.5" />
+</e:Skin>

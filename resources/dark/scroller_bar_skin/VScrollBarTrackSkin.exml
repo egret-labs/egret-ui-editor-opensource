@@ -1,0 +1,4 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.VScrollBarTrackSkin" xmlns:e="http://ns.egret.com/eui">
+	<e:Rect fillColor="0x000000" fillAlpha="0.1" top="0" right="0" bottom="0" left="0"/>
+</e:Skin>

@@ -8,12 +8,12 @@ import { BrowserWindowEx } from './browserWindowEx';
 import { dialog, ipcMain as ipc } from 'electron';
 import { isMacintosh } from 'egret/base/common/platform';
 import { normalizeNFC } from 'egret/base/common/strings';
-
 import * as fs from 'fs';
+import * as path from 'path';
 import { IStateService } from '../../state/common/state';
 import { dirname } from '../../../base/common/paths';
 import { localize } from '../../../base/localization/nls';
-import { debug } from 'util';
+import { ResdepotWindow } from './resdepotWindow';
 
 const LAST_OPNED_FOLDER: string = 'lastOpenedFolder';
 
@@ -33,27 +33,11 @@ export class WindowsMainService implements IWindowsMainService {
 		@IStateService private stateService: IStateService
 	) {
 		this.dialogs = new Dialogs(environmentService, stateService, this);
-		const lastOpenedFolder: string = this.stateService.getItem<string>(LAST_OPNED_FOLDER, '');
-		let folder:string = environmentService.args['folder'];
-		if(folder){
-			if(
-				(folder.charAt(0) == '\'' || folder.charAt(0) == '"') && 
-				(folder.charAt(folder.length-1) == '\'' || folder.charAt(folder.length-1) == '"') 
-			){
-				folder = folder.slice(1,folder.length-1);
-			}
-		}
-		let targetToOpen:string = lastOpenedFolder;
-		if(folder){
-			targetToOpen = folder;
-		}
-		this.openInBrowserWindow({
-			cli: this.environmentService.args,
-			folderPath: targetToOpen
-		});
+		this.openMainWindow(this.getWindowOptions());
 		this.registerListeners();
 	}
 	private registerListeners(): void {
+		this.lifecycleService.onWindowClosed(this.onWindowClosed, this);
 		ipc.on('egret:showMessageBox', (event, data: { options: MessageBoxOptions, replyChannel: string }) => {
 			const window = this.getWindowById(data.options.windowId) || this.getFocusedWindow();
 			this.showMessageBox(data.options).then(result => {
@@ -63,6 +47,103 @@ export class WindowsMainService implements IWindowsMainService {
 		ipc.on('egret:pickFolderAndOpen', (event, options: INativeOpenDialogOptions) => {
 			this.pickFolderAndOpen(options);
 		});
+		ipc.on('egret:openResWindow', (event, data: { folderPath: string, file: string }) => {
+			const options: IOpenBrowserWindowOptions = {
+				cli: this.environmentService.args,
+				folderPath: data.folderPath,
+				file: data.file
+			};
+			this.openResWindow(options);	
+		});
+	}
+
+	private getWindowOptions(): IOpenBrowserWindowOptions {
+		const lastOpenedFolder: string = this.stateService.getItem<string>(LAST_OPNED_FOLDER, '');
+		let folder: string = this.environmentService.args['folder'];
+		if (!folder) {
+			const arg_ = this.environmentService.args['_'];
+			if (arg_ && arg_.length > 1) {
+				const first: string = arg_[0];
+				const target: string = arg_[1];
+				if (process.env['EUI_FROM_SHELL']) {
+					if (target === '.') {
+						folder = process.cwd();
+					} else {
+						folder = target;
+					}
+				}
+			}
+		}
+		// console.log(folder, process.env['EUI_FROM_SHELL']);
+		if (folder) {
+			if (
+				(folder.charAt(0) == '\'' || folder.charAt(0) == '"') &&
+				(folder.charAt(folder.length - 1) == '\'' || folder.charAt(folder.length - 1) == '"')
+			) {
+				folder = folder.slice(1, folder.length - 1);
+			}
+		}
+		let targetFile: string = null;
+		let targetToOpen: string = lastOpenedFolder;
+		if (folder) {
+			const project = this.getEUIProjectPath(folder);
+			if (project) {
+				targetToOpen = project.folderPath;
+				targetFile = project.file;
+			} else {
+				targetToOpen = null;
+			}
+		}
+		return {
+			cli: this.environmentService.args,
+			folderPath: targetToOpen,
+			file: targetFile
+		};
+	}
+
+	private getEUIProjectPath(target: string): { folderPath: string, file?: string } | null {
+		try {
+			const stat = fs.statSync(target);
+			if (stat.isDirectory()) {
+				return { folderPath: target };
+			} else {
+				const project = this.findProjectFromFile(target);
+				if (!project) {
+					return { folderPath: target };
+				} else {
+					return { folderPath: project, file: target };
+				}
+			}
+		} catch (error) {
+
+		}
+		return null;
+	}
+
+	private findProjectFromFile(file: string): string {
+		const dir = path.dirname(file);
+		if (!dir) {
+			return null;
+		}
+		if (dir === file) {
+			return null;
+		}
+		if (dir === '\\' || dir === '/') {
+			return null;
+		}
+		try {
+			const items = fs.readdirSync(dir);
+			for (let i = 0; i < items.length; i++) {
+				const element = items[i];
+				const stat = fs.statSync(path.join(dir, element));
+				if (stat.isFile() && element === 'egretProperties.json') {
+					return dir;
+				}
+			}
+		} catch (error) {
+
+		}
+		return this.findProjectFromFile(dir);
 	}
 
 	/**
@@ -79,19 +160,18 @@ export class WindowsMainService implements IWindowsMainService {
 			if (closed) {
 				this.mainWindow.close();
 				this.mainWindow = null;
-				this.stateService.setItem(LAST_OPNED_FOLDER, options.folderPath ? options.folderPath : '');
-				this.openInBrowserWindow(options);
+				this.openMainWindow(options);
 			}
 		});
 	}
 	/**
 	 * 重新加载当前激活的窗体
 	 */
-	public reload():void{
+	public reload(): void {
 		let refreshPromise = Promise.resolve(true);
 		const focusedWindow = this.getFocusedWindow();
-		if(focusedWindow){
-			refreshPromise = this.lifecycleService.unload(this.mainWindow,true).then(veto => {
+		if (focusedWindow) {
+			refreshPromise = this.lifecycleService.unload(this.mainWindow, true).then(veto => {
 				return !veto;
 			});
 			refreshPromise.then(refresh => {
@@ -103,21 +183,58 @@ export class WindowsMainService implements IWindowsMainService {
 	}
 
 	private mainWindow: IBrowserWindowEx;
-	private openInBrowserWindow(options: IOpenBrowserWindowOptions): void {
+	private openMainWindow(options: IOpenBrowserWindowOptions): void {
+		this.stateService.setItem(LAST_OPNED_FOLDER, options.folderPath ? options.folderPath : '');
+		const configuration: IWindowConfiguration = this.getConfiguration(options);
+
+		this.mainWindow = this.instantiationService.createInstance(BrowserWindowEx, 'main');
+		this.mainWindow.load(configuration);
+		this.lifecycleService.registerWindow(this.mainWindow);
+	}
+
+	private resWindow: IBrowserWindowEx;
+	private openResWindow(options: IOpenBrowserWindowOptions): void {
+		if(this.resWindow){
+			this.resWindow.send('egret:openResEditor', options.file);
+			this.resWindow.focus();
+			return;
+		}
+		const configuration: IWindowConfiguration = this.getConfiguration(options);
+
+		this.resWindow = this.instantiationService.createInstance(ResdepotWindow, 'res');
+		this.resWindow.load(configuration);
+		this.lifecycleService.registerWindow(this.resWindow);
+	}
+
+	private getConfiguration(options: IOpenBrowserWindowOptions): IWindowConfiguration {	
 		const configuration: IWindowConfiguration = mixin({}, options.cli);
 		configuration.machineId = this.machineId;
 		configuration.appRoot = this.environmentService.appRoot;
 		configuration.execPath = process.execPath;
 		configuration.folderPath = options.folderPath;
-
-		this.mainWindow = this.instantiationService.createInstance(BrowserWindowEx);
-		this.mainWindow.load(configuration);
-		this.lifecycleService.registerWindow(this.mainWindow);
+		configuration.file = options.file;
+		
+		return configuration;
 	}
+
+	private onWindowClosed(window: IBrowserWindowEx): void {
+		if(this.mainWindow === window){
+			if(this.resWindow){
+				this.resWindow.close();
+			}
+		}
+		if(this.resWindow === window){
+			this.resWindow = null;
+		}
+	}
+
 	/**
 	 * 退出
 	 */
 	public quit(): void {
+		if(this.resWindow){
+			this.resWindow.close();
+		}
 		this.mainWindow.close();
 	}
 	/**
@@ -139,11 +256,11 @@ export class WindowsMainService implements IWindowsMainService {
 
 		if (!internalOptions.dialogOptions.title) {
 			if (pickFolders && pickFiles) {
-				internalOptions.dialogOptions.title = localize('windowsMainService.doPickAndOpen.open','Open');
+				internalOptions.dialogOptions.title = localize('windowsMainService.doPickAndOpen.open', 'Open');
 			} else if (pickFolders) {
-				internalOptions.dialogOptions.title = localize('windowsMainService.doPickAndOpen.openFolder','Open Folder');
+				internalOptions.dialogOptions.title = localize('windowsMainService.doPickAndOpen.openFolder', 'Open Folder');
 			} else {
-				internalOptions.dialogOptions.title = localize('windowsMainService.doPickAndOpen.openFile','Open File');
+				internalOptions.dialogOptions.title = localize('windowsMainService.doPickAndOpen.openFile', 'Open File');
 			}
 		}
 		this.dialogs.pickAndOpen(internalOptions);
@@ -171,6 +288,9 @@ export class WindowsMainService implements IWindowsMainService {
 	 * 获得当前window
 	 */
 	public getFocusedWindow(): IBrowserWindowEx {
+		if(this.resWindow && this.resWindow.isFocus()) {
+			return this.resWindow;
+		}
 		return this.mainWindow;
 	}
 	/**
@@ -180,12 +300,15 @@ export class WindowsMainService implements IWindowsMainService {
 		if (this.mainWindow.id == id) {
 			return this.mainWindow;
 		}
+		if(this.resWindow && this.resWindow.id === id) {
+			return this.resWindow;
+		}
 		return null;
 	}
 	/**
 	 * 得到所有窗体
 	 */
-	public getAllWindows():IBrowserWindowEx[]{
+	public getAllWindows(): IBrowserWindowEx[] {
 		return [this.mainWindow];
 	}
 }
@@ -282,6 +405,6 @@ class Dialogs {
 
 	public async showMessageBox(options: Electron.MessageBoxOptions, window: IBrowserWindowEx): Promise<IMessageBoxResult> {
 		const result = await dialog.showMessageBox(window.win, options);
-		return {button: result.response, checkboxChecked: result.checkboxChecked};
+		return { button: result.response, checkboxChecked: result.checkboxChecked };
 	}
 }

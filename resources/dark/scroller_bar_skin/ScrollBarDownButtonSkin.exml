@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.ScrollBarDownButtonSkin" states="up,over,down,disabled"
+        xmlns:e="http://ns.egret.com/eui">
+	<e:Rect id="back" fillColor="0x2f3b45" percentHeight="100" percentWidth="100"/>
+	<e:Image id="ui" horizontalCenter="0" verticalCenter="0" alpha="1" alpha.disabled="0.5"
+	         source="dark_scroller_normal_downbtnnormal_png" source.over="dark_scroller_over_downbtnhover_png" source.down="dark_scroller_down_downbtnbown_png"/>
+</e:Skin>

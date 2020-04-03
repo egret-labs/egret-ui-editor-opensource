@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+	<e:Skin class="skins.ProjectCreateTemplateItemRenderSkin" states="up,over,down,disabled" minHeight="23" minWidth="23" width="460" xmlns:e="http://ns.egret.com/eui">
+	<e:Group id="group" left="0" right="0" top="0" bottom="0" alpha="1" alpha.disabled="0.5">
+		<e:Rect width="100%" height="100%" x="0" y="0"  id="backUI" fillAlpha.up="0" fillAlpha.down="1"  fillAlpha.over="1" fillColor.down="0x3576f8" fillColor.over="0x282737"/>
+		<e:Label id="labelDisplay" maxWidth="340" left="50" verticalCenter="-10" size="12" text="{data.displayName}"/>
+		<e:Label id="descriptionDisplay" maxWidth="340" left="50" verticalCenter="10" size="11" text="{data.description}" alpha="0.7"/>
+		<e:Image id="iconUIAsset" width="40" height="40" verticalCenter="0" top="5" bottom="5" left="5" source="{data.icon}"/>
+		<e:Label id="versionLabel" verticalCenter="0" horizontalCenter="0" size="12"/>
+		<e:Label id="typeLabel" verticalCenter="0" right="25" size="12" text="{data.sdk.name}"/>
+		<e:Rect id="outlinetop" height="1" percentWidth="100" top="0" fillColor="0x0a0a12"/>
+		<e:Rect id="outlinedown" height="1" percentWidth="100" bottom="0" fillColor="0x0a0a12"/>
+		<e:Rect id="outlineleft" width="1" percentHeight="100" left="0" fillColor="0x0a0a12"/>
+		<e:Rect id="outlineright" width="1" percentHeight="100" right="0" fillColor="0x0a0a12"/>
+	</e:Group>
+</e:Skin>

@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.DialogContentSkin" states="normal,disabled"  width="600" height="300"
+xmlns:e="http://ns.egret.com/eui">
+	<e:Group top="1" left="1" right="1" bottom="1">
+		<e:layout>
+			<e:VerticalLayout gap="0" horizontalAlign="justify"/>
+		</e:layout>
+		<e:Group id="contentGroup" percentWidth="100" percentHeight="100"/>
+		<e:Group id="buttonBar">
+			<e:layout>
+				<e:HorizontalLayout paddingBottom="12" paddingTop="12" paddingLeft="12" paddingRight="12" verticalAlign="middle" horizontalAlign="right"/>
+			</e:layout>
+		</e:Group>
+	</e:Group>
+</e:Skin>

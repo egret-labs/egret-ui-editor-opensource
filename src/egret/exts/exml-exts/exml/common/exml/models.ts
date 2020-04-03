@@ -246,32 +246,32 @@ export interface IExmlModel extends IInnerModel {
 	 * @param startIndex 要替换的起始索引
 	 * @param endIndex 要替换的结束索引(不包含)
 	 */
-	insertText(insertText: string, startIndex: number, endIndex: number, notifyListeners: boolean, refresh: boolean): void;
+	insertText(insertText: string, startIndex: number, endIndex: number, notifyListeners: boolean, refresh: boolean): Promise<void>;
 	/**
 	 * 插入文本,并记录历史记录。
 	 * @param text 插入的文本内容
 	 * @param startIndex 要替换的起始索引
 	 * @param endIndex 要替换的结束索引(不包含)
 	 */
-	insertText(insertText: string, startIndex: number, endIndex: number, notifyListeners: boolean): void;
+	insertText(insertText: string, startIndex: number, endIndex: number, notifyListeners: boolean): Promise<void>;
 	/**
 	 * 插入文本,并记录历史记录。
 	 * @param text 插入的文本内容
 	 * @param startIndex 要替换的起始索引
 	 * @param endIndex 要替换的结束索引(不包含)
 	 */
-	insertText(insertText: string, startIndex: number, endIndex: number): void;
+	insertText(insertText: string, startIndex: number, endIndex: number): Promise<void>;
 	/**
 	 * 插入文本,并记录历史记录。
 	 * @param text 插入的文本内容
 	 * @param startIndex 要替换的起始索引
 	 */
-	insertText(insertText: string, startIndex: number): void;
+	insertText(insertText: string, startIndex: number): Promise<void>;
 	/**
 	 * 插入文本,并记录历史记录。
 	 * @param text 插入的文本内容
 	 */
-	insertText(insertText: string): void;
+	insertText(insertText: string): Promise<void>;
 	/**
 	 * 是否可以撤销
 	 */

@@ -160,7 +160,7 @@ export class FileEditorModelManager implements IFileEditorModelManager {
 	 * @param resource 资源
 	 * @param options 加载配置
 	 */
-	public loadOrCreate(input: IFileEditorInput, options?: IModelLoadOrCreateOptions): Promise<IFileEditorModel> {
+	public loadOrCreate(input: IFileEditorInput, options?: IModelLoadOrCreateOptions, instantiationService?: IInstantiationService): Promise<IFileEditorModel> {
 		const pendingLoad = this.mapResourceToPendingModelLoaders.get(input.getResource());
 		if (pendingLoad) {
 			return pendingLoad;
@@ -173,7 +173,7 @@ export class FileEditorModelManager implements IFileEditorModelManager {
 		if (model) { // 已经存在这个model
 			modelPromise = Promise.resolve<IFileEditorModel>(model);
 		} else { // 不存在这个model
-			model = FileModelRegistry.getFileModel(input, options ? options.encoding : void 0, this.instantiationService);
+			model = FileModelRegistry.getFileModel(input, options ? options.encoding : void 0, instantiationService ? instantiationService : this.instantiationService);
 			modelPromise = model.load() as Promise<IFileEditorModel>;
 			// 添加model个的事件监听，并在这里统一抛出
 			this.mapResourceToStateChangeListener.set(input.getResource(), model.onDidStateChange(state => {

@@ -310,7 +310,7 @@ class TweenGroupController extends treeDefaults.DefaultController {
 	constructor(
 		@IAnimationService private animationService: IAnimationService
 	) {
-		super();
+		super({ clickBehavior: treeDefaults.ClickBehavior.ON_MOUSE_UP, keyboardSupport: true, openMode: treeDefaults.OpenMode.SINGLE_CLICK });
 
 		if (isMacintosh) {
 			this.downKeyBindingDispatcher.set(KeyCode.Enter, this.onRename.bind(this));

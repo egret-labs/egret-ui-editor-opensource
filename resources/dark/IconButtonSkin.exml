@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.IconButtonSkin" states="up,over,down,disabled" minWidth="24" minHeight="24"
+	xmlns:e="http://ns.egret.com/eui">
+	<e:Rect percentHeight="100" percentWidth="100" fillColor="0x303030" fillColor.over="0x4c4c4c"
+		fillColor.down="0x505050" fillAlpha="0" fillAlpha.over="1" fillAlpha.down="1" alpha="1"
+		alpha.disabled="0.5" />
+	<e:Image id="iconDisplay" width="15" height="15" verticalCenter="0" horizontalCenter="0" alpha="1" alpha.disabled="0.5" />
+</e:Skin>

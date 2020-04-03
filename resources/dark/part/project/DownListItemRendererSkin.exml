@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<e:Skin class="skins.project.DownListItemRendererSkin" states="up,over,down,disabled" xmlns:e="http://ns.egret.com/eui">
+    <e:Image width="100%" height="100%" scale9Grid="2,2,1,1"
+	         source.up="dark_button_normal_normalpng" source.over="dark_button_hover_hoverpng" source.disabled="dark_button_disabled_disabledpng"
+	         source.down="dark_button_down_downpng"/>
+	<e:Label id="labelDisplay" top="8" bottom="8" left="8" right="8"
+	         size="12" fontFamily="Tahoma"
+	         textColor="0xFFFFFF" text="{data}" verticalAlign="middle" textAlign="left"/>
+</e:Skin>

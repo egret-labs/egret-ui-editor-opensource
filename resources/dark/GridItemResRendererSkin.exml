@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.GridItemResRendererSkin" states="up,over,down" minHeight="25"
+        xmlns:e="http://ns.egret.com/eui">
+	<!--e:Component skinName="skins.GridItemPromptSkin" id="promptRect" top="0" bottom="0" right="0" left= "0"/-->
+	<e:Label text="标签" x="9" y="12" id="labelDisplay" textColor="0xfbfbfb" verticalCenter="0" touchEnabled="true" size="12" left="6" right="4" visible="true" fontFamily="Microsoft YaHei"/>
+</e:Skin>

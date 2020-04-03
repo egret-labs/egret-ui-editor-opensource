@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.HPopUpSliderSkin" states="normal,open,disalbed" minWidth="50"
+        xmlns:e="http://ns.egret.com/eui" xmlns:eui="eui.*">
+	<eui:TextInputPro id="textInput" width="50" skinName="skins.TextInputSkin" left="0" right="12"
+	                  top="0" bottom="0" />
+	<e:Button id="openButton" width="12" right="0" top="0" bottom="0"
+	          skinName="skins.ComboBoxButtonSkin" />
+	<eui:PopUpAnchor displayPopUp.open="true" displayPopUp.normal="false" displayPopUp.disalbed="false"
+	                 id="popUp" left="0" right="0" top="0" bottom="-1" popUpPosition="below">
+		<eui:popUp>
+			<e:Group id="dropDown" width="100" height="22">
+				<e:Rect width="100%" height="100%" strokeColor="0x3c4853" strokeAlpha="1" strokeWeight="1"
+				        fillColor="0x384552" />
+				<e:Button id="track" left="9" right="9" verticalCenter="0" minWidth="33">
+					<e:Skin>
+						<e:Rect height="4" width="100%" ellipseWidth="2" ellipseHeight="2" fillColor="0x1e2329" />
+					</e:Skin>
+				</e:Button>
+				<e:Component id="trackHighlight" verticalCenter="0" minWidth="33" width="100">
+					<e:Skin>
+						<e:Rect height="4" ellipseWidth="2" ellipseHeight="2" fillColor="0x00a0f0" />
+					</e:Skin>
+				</e:Component>
+				<e:Button id="thumb" verticalCenter="0" width="10" height="10" skinName="skins.SliderThumbSkin" />
+			</e:Group>
+		</eui:popUp>
+	</eui:PopUpAnchor>
+</e:Skin>

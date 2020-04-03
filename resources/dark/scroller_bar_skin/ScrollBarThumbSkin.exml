@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.ScrollBarThumbSkin" states="up,over,down,disabled" minWidth="5" minHeight="5" xmlns:e="http://ns.egret.com/eui">
+   <e:Rect percentHeight="100" percentWidth="100" fillColor="0x999999" fillAlpha="0.5"
+           fillAlpha.over="0.5" fillAlpha.down="0.4"/>
+</e:Skin>

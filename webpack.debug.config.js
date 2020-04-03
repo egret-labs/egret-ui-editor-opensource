@@ -2,16 +2,19 @@ let path = require('path')
 let fs = require('fs')
 let htmlPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-var CopyWebpackPlugin = require('copy-webpack-plugin');
-var glob = require('glob');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const glob = require('glob');
 
 function getEntry() {
 	var entry = {};
 	entry['main'] = './main.ts';
 	entry['egret/workbench/electron-browser/bootstrap/index'] = './egret/workbench/electron-browser/bootstrap/index.ts';
+	entry['egret/workbench/electron-browser/bootstrap/resdepot'] = './egret/workbench/electron-browser/bootstrap/resdepot.ts';
 	// monaco-editor
 	entry['egret/workbench/electron-browser/bootstrap/monaco-editor/monaco-editor'] = './monaco-editor.js';
-	entry['egret/workbench/electron-browser/bootstrap/monaco-editor/editor.worker'] = "monaco-editor/esm/vs/editor/editor.worker.js"
+	entry['egret/workbench/electron-browser/bootstrap/monaco-editor/editor.worker'] = "monaco-editor/esm/vs/editor/editor.worker.js";
+	entry['egret/workbench/electron-browser/bootstrap/monaco-editor/json.worker'] = "monaco-editor/esm/vs/language/json/json.worker.js";
 	var srcDirName = './src/**/*.node.ts'; //需要获取的文件路径
 	glob.sync(srcDirName).forEach(function (name) {
 		var target = name;
@@ -41,6 +44,9 @@ module.exports = {
 		]
 	},
 	entry: getEntry(),
+	node: {
+		__dirname: false
+	},
 	output: {
 		filename: '[name].js',
 		path: __dirname + '/out',
@@ -88,6 +94,10 @@ module.exports = {
 		]
 	},
 	plugins: [
+        new CleanWebpackPlugin({
+			cleanStaleWebpackAssets: false,
+			protectWebpackAssets: false,
+		}),
         new MiniCssExtractPlugin({
             // Options similar to the same options in webpackOptions.output
             // both options are optional
@@ -99,6 +109,13 @@ module.exports = {
 			hash: false,
 			filename: './egret/workbench/electron-browser/bootstrap/index.html',
 			template: './egret/workbench/electron-browser/bootstrap/index.html',
+			chunks: []
+		}),
+		new htmlPlugin({
+			minify: false,
+			hash: false,
+			filename: './egret/workbench/electron-browser/bootstrap/resdepot.html',
+			template: './egret/workbench/electron-browser/bootstrap/resdepot.html',
 			chunks: []
 		}),
 		new CopyWebpackPlugin([

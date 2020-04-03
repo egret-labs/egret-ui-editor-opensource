@@ -9,19 +9,37 @@ import {
 	ISchemaContainer, Attribute, SchemaNodeType, Choice, Any,
 	AttributeGroup, Group
 } from '../core/Schema';
-
-
 import { ISchemaContentAssist } from './ISchemaContentAssist';
 import { SchemaContentAssist } from './SchemaContentAssist';
 import { QName } from './../sax/QName';
 import { Namespace } from './../sax/Namespace';
-
 import * as sax from '../sax/sax';
+
+type RequestIdleCallbackHandle = any;
+type RequestIdleCallbackOptions = {
+	timeout: number;
+};
+type RequestIdleCallbackDeadline = {
+	readonly didTimeout: boolean;
+	timeRemaining: (() => number);
+};
+
+declare global {
+	interface Window {
+		requestIdleCallback: (
+			callback: ((deadline: RequestIdleCallbackDeadline) => void),
+			opts?: RequestIdleCallbackOptions,
+		) => RequestIdleCallbackHandle;
+		cancelIdleCallback: (handle: RequestIdleCallbackHandle) => void;
+	}
+}
+
 /**
  * xsd规则的数据层基类
  */
 export class AbstractSchemaModel {
 	public constructor() {
+		this.updateDefaultNS();
 	}
 
 	/** xsd解析器 */
@@ -43,6 +61,7 @@ export class AbstractSchemaModel {
 	protected initSchema(xsd: sax.Tag): boolean {
 		try {
 			this._schemaDecoder.deocdeSchema(xsd);
+			this.addCustomComplexType();
 		} catch (error) {
 			console.log('\nerror:\nEgret类型项目xsd解析错误:' + error.message + '\n');
 			return false;
@@ -50,81 +69,45 @@ export class AbstractSchemaModel {
 		this.updateDefaultNS();
 		return true;
 	}
-	private classNames: any[] = [];
-	/** 自定义组件节点 */
-	protected customComponentNodes: ISchemaNode[] = [];
-	/**
-	 * 更新自定义组件列表，此方法会移除掉所有旧的自定义组件节点，以新传入的替代。
-	 * @param classNames 自定义组件类名列表
-	 */
-	protected updateComponents(classNames: string[]): void {
-		this.classNames = classNames;
-		// 更新默认的命名空间
-		this.updateDefaultNS();
-		// 移除掉所有旧的自定义组件列表
-		AbstractSchemaModel.removeCustomNodes(this.customComponentNodes);
+
+	private addCustomComplexType(): void {
 		// 给Skin添加一个<w:Declarations/>，内部添加一个any
 		let declarationsElement: Element = SchemaNodeCreater.createElement(new QName(this.getWorkNS().uri, 'Declarations'), null);
 		this._schemaDecoder.schema.addNode(declarationsElement);
-		this.customComponentNodes.push(declarationsElement);
 		let declarationsComplexType: ComplexType = SchemaNodeCreater.createComplexType(null);
 		declarationsElement.addNode(declarationsComplexType);
-		this.customComponentNodes.push(declarationsComplexType);
 		let declarationsChoice: Choice = SchemaNodeCreater.createChoice();
 		declarationsComplexType.addNode(declarationsChoice);
-		this.customComponentNodes.push(declarationsChoice);
 		let declarationsAny: Any = SchemaNodeCreater.createAny();
 		declarationsChoice.addNode(declarationsAny);
-		this.customComponentNodes.push(declarationsAny);
 
-		let declarationsRef: Element = SchemaNodeCreater.createElement(null, declarationsElement);
-		let skinElementQName: QName = new QName(this.getGuiNS().uri, 'Skin');
-		let skinElements: ISchemaNode[] = this._schemaDecoder.schema.getNodes(skinElementQName, SchemaNodeType.ELEMENT);
-		let skinElement: Element;
-		if (skinElements.length > 0) {
-			skinElement = skinElements[0] as Element;
-		}
-		let skinChoice: Choice = null;
-		if (skinElement) {
-			if (skinElement.numChildren > 0 && skinElement.getNodeAt(0) instanceof ComplexType) {
-				let skinComplexType: ComplexType = skinElement.getNodeAt(0) as ComplexType;
-				if (skinComplexType) {
-					for (let i = 0; i < skinComplexType.numChildren; i++) {
-						if (skinComplexType.getNodeAt(i) instanceof Choice) {
-							skinChoice = skinComplexType.getNodeAt(i) as Choice;
-							break;
-						}
-					}
-				}
-			}
-		}
-		if (skinChoice) {
-			skinChoice.addNode(declarationsRef);
-			this.customComponentNodes.push(declarationsRef);
-		}
 		// 给Skin添加一个 <w:HostComponent/> 他有一个name属性
 		let hostComponentElement: Element = SchemaNodeCreater.createElement(new QName(this.getWorkNS().uri, 'HostComponent'), null);
 		this._schemaDecoder.schema.addNode(hostComponentElement);
-		this.customComponentNodes.push(hostComponentElement);
 		let hostComponentComplexType: ComplexType = SchemaNodeCreater.createComplexType(null);
 		hostComponentElement.addNode(hostComponentComplexType);
-		this.customComponentNodes.push(hostComponentComplexType);
 		let hostComponentAttributeGroup: AttributeGroup = SchemaNodeCreater.createAttributeGroup(null, null);
 		hostComponentComplexType.addNode(hostComponentAttributeGroup);
-		this.customComponentNodes.push(hostComponentAttributeGroup);
 		let hostComponentAttribute: Attribute = SchemaNodeCreater.createAttribute(new QName(this.getWorkNS().uri, 'name'), null);
 		hostComponentAttributeGroup.addNode(hostComponentAttribute);
-		this.customComponentNodes.push(hostComponentAttribute);
-		if (skinChoice) {
-			let hostComponentElementRef: Element = SchemaNodeCreater.createElement(null, hostComponentElement);
-			skinChoice.addNode(hostComponentElementRef);
-			this.customComponentNodes.push(hostComponentElementRef);
-		}
-		// 对自定义组件类名进行排序，按照从子类到父类的顺序排列
-		this.sortComponentClassNames(classNames);
-		// 开始添加自定义组件节点到动态xsd中
+	}
+	private remainClassNames: string[] = [];
+	private addedClassNames: string[] = [];
+	private getNewClassNames(classNames: string[]): string[] {
+		const newItems: string[] = [];
 		for (let i = 0; i < classNames.length; i++) {
-			let currentClassName: string = classNames[i];
+			const element = classNames[i];
+			if (this.addedClassNames.indexOf(element) < 0) {
+				newItems.push(element);
+			}
+		}
+		return newItems;
+	}
+
+	protected updateComponentsCore(newItems: string[]): void {
+		// 开始添加自定义组件节点到动态xsd中
+		for (let i = 0; i < newItems.length; i++) {
+			let currentClassName: string = newItems[i];
 			// 得到当前自定义类的命名空间
 			let currentQname: QName = AbstractSchemaModel.getCustomClassQName(currentClassName);
 			// 将这个命名空间注册到默认命名空间里
@@ -133,7 +116,6 @@ export class AbstractSchemaModel {
 			let elementQName: QName = this.getClassQNameForElement(currentClassName);
 			let nameElement: Element = SchemaNodeCreater.createElement(elementQName, null);
 			this._schemaDecoder.schema.addNode(nameElement);
-			this.customComponentNodes.push(nameElement);
 
 			//////////////// 第一步////////////////////
 			// 查找这个类都实现了哪些接口。
@@ -152,7 +134,6 @@ export class AbstractSchemaModel {
 							if (c instanceof Choice) {
 								c.addNode(refElement);
 							}
-							this.customComponentNodes.push(refElement);
 						}
 						break;
 					}
@@ -176,7 +157,6 @@ export class AbstractSchemaModel {
 							if (c instanceof Choice) {
 								c.addNode(refElement);
 							}
-							this.customComponentNodes.push(refElement);
 						}
 						break;
 					}
@@ -191,7 +171,7 @@ export class AbstractSchemaModel {
 			let defaultPropType: string = '';
 			for (let j = 0; j < superArr.length; j++) {
 				let found: boolean = false;
-				if (classNames.indexOf(superArr[j]) === -1) {
+				if (newItems.indexOf(superArr[j]) === -1) {
 					let tempArr: string[] = (<string>superArr[j]).split('.');
 					let classId: string = tempArr.length > 0 ? tempArr[tempArr.length - 1] : '';
 					if (classId) {
@@ -219,10 +199,8 @@ export class AbstractSchemaModel {
 			// 给新的element添加一个complexType，给其内部添加一个choice
 			let elementComplexType: ComplexType = SchemaNodeCreater.createComplexType(null);
 			nameElement.addNode(elementComplexType);
-			this.customComponentNodes.push(elementComplexType);
 			let elementChoice: Choice = SchemaNodeCreater.createChoice();
 			elementComplexType.addNode(elementChoice);
-			this.customComponentNodes.push(elementChoice);
 
 			if (defaultPropType) {
 				let defaultPropTypeQname: QName = new QName(this.getGuiNS().uri, defaultPropType);
@@ -234,7 +212,6 @@ export class AbstractSchemaModel {
 						if (groupRef instanceof Group) {
 							groupRef = SchemaNodeCreater.createGroup(null, groupRef.resolveForRef);
 							elementChoice.addNode(groupRef);
-							this.customComponentNodes.push(groupRef);
 						}
 					}
 				}
@@ -249,7 +226,6 @@ export class AbstractSchemaModel {
 			let attributeElementGroupQName: QName = new QName(elementQName.uri, elementQName.localName + '_attributeElement');
 			let attributeElementGroup: Group = SchemaNodeCreater.createGroup(attributeElementGroupQName, null);
 			this._schemaDecoder.schema.addNode(attributeElementGroup);
-			this.customComponentNodes.push(attributeElementGroup);
 			// 找到父类的属性组
 			let parentClassName: string = this.getSuperClassName(currentClassName);
 			let parentAttributeElementGroup: Group;
@@ -263,11 +239,9 @@ export class AbstractSchemaModel {
 			// 将这个父级的属性组添加到自己的choice里
 			const choice = SchemaNodeCreater.createChoice();
 			attributeElementGroup.addNode(choice);
-			this.customComponentNodes.push(choice);
 			if (parentAttributeElementGroup instanceof Group) {
 				let parentAttributeElementGroupRef: Group = SchemaNodeCreater.createGroup(null, parentAttributeElementGroup);
 				choice.addNode(parentAttributeElementGroupRef);
-				this.customComponentNodes.push(parentAttributeElementGroupRef);
 			}
 			// 将自身的属性所谓element添加到choice里
 			let properties: any = this.getPropertyAfterBase(currentClassName, parentClassName);
@@ -278,7 +252,7 @@ export class AbstractSchemaModel {
 				// 把类型也放进去
 				let type: string = item.type as string;
 				let typeQName: QName;
-				if (classNames.indexOf(type) === -1) {
+				if (newItems.indexOf(type) === -1) {
 					typeQName = new QName(this.getGuiNS().uri, type);
 				} else {
 					typeQName = new QName(this.getClassQNameForElement(type).uri, type);
@@ -299,12 +273,10 @@ export class AbstractSchemaModel {
 				}
 
 				choice.addNode(attributeElement);
-				this.customComponentNodes.push(attributeElement);
 			}
 			// 把刚刚创建的group，添加到创建的element的complexType的choice里。
 			let attributeElementGroupRef: Group = SchemaNodeCreater.createGroup(null, attributeElementGroup);
 			elementChoice.addNode(attributeElementGroupRef);
-			this.customComponentNodes.push(attributeElementGroupRef);
 
 			//////////////// 第五步////////////////////
 			// 创建一个自身类名的attributeGroup，添加到根节点。
@@ -315,7 +287,6 @@ export class AbstractSchemaModel {
 			// 创建一个自身类名的attributeGroup，添加到根节点。
 			let attributeGroup: AttributeGroup = SchemaNodeCreater.createAttributeGroup(new QName(elementQName.uri, currentClassName), null);
 			this._schemaDecoder.schema.addNode(attributeGroup);
-			this.customComponentNodes.push(attributeGroup);
 			// 找到父类的属性组
 			let parentAttributeGroup: AttributeGroup;
 			if (parentClassName) {
@@ -327,7 +298,6 @@ export class AbstractSchemaModel {
 			if (parentAttributeGroup instanceof AttributeGroup) {
 				let parentAttributeGroupRef: AttributeGroup = SchemaNodeCreater.createAttributeGroup(null, parentAttributeGroup);
 				attributeGroup.addNode(parentAttributeGroupRef);
-				this.customComponentNodes.push(parentAttributeGroupRef);
 			}
 			// 把刚刚创建的Element的属性分别加到这个刚刚创建的属性组里。
 			for (let key in properties) {
@@ -335,14 +305,50 @@ export class AbstractSchemaModel {
 				// todo type 类型
 				let attribute: Attribute = SchemaNodeCreater.createAttribute(new QName(elementQName.uri, item.name), null);
 				attributeGroup.addNode(attribute);
-				this.customComponentNodes.push(attribute);
 			}
 
 			// 把刚刚创建的属性组添加到创建的element.complexType里
 			let attributeGroupRef: AttributeGroup = SchemaNodeCreater.createAttributeGroup(null, attributeGroup);
 			elementComplexType.addNode(attributeGroupRef);
-			this.customComponentNodes.push(attributeGroupRef);
 		}
+	}
+
+	private lastIdelRequest: any;
+	private updateComponentsIntermittent(): void {
+		if (this.remainClassNames.length === 0) {
+			return;
+		}
+		this.lastIdelRequest = window.requestIdleCallback((deadline) => {
+			if (this.remainClassNames.length === 0) {
+				return;
+			}
+			const index = this.remainClassNames.length >= 10 ? 10 : this.remainClassNames.length;
+			const nextItems = this.remainClassNames.splice(0, index);
+			// console.log('requestIdleCallback', index, nextItems.length, this.remainClassNames.length, this.addedClassNames.length);
+			this.updateComponentsCore(nextItems);
+			this.addedClassNames = this.addedClassNames.concat(nextItems);
+			if (this.remainClassNames.length > 0) {
+				setTimeout(() => {
+					this.updateComponentsIntermittent();
+				}, 0);
+			} else {
+				this.lastIdelRequest = null;
+			}
+		});
+	}
+
+	/**
+	 * 更新自定义组件列表，此方法会移除掉所有旧的自定义组件节点，以新传入的替代。
+	 * @param classNames 自定义组件类名列表
+	 */
+	protected updateComponents(classNames: string[]): void {
+		const newItems = this.getNewClassNames(classNames);
+		this.remainClassNames = newItems;
+		if (this.lastIdelRequest) {
+			window.cancelIdleCallback(this.lastIdelRequest);
+			// console.log('cancelIdleCallback');
+		}
+		this.updateComponentsIntermittent();
 	}
 	/**
 	 * 更新默认的命名空间，该方法子类中重写
@@ -439,24 +445,9 @@ export class AbstractSchemaModel {
 			uri += '.*';
 		}
 		// 如果不是自定义组件则为默认组件，默认组件用默认命名空间
-		if (this.classNames.indexOf(className) === -1) {
+		if (this.addedClassNames.indexOf(className) === -1) {
 			uri = this.getGuiNS().uri;
 		}
 		return new QName(uri, prefix);
-	}
-	/**
-	 * 移除所有自定义节点
-	 */
-	protected static removeCustomNodes(nodes: ISchemaNode[]): void {
-		if (!nodes) {
-			return;
-		}
-		while (nodes.length > 0) {
-			let node: ISchemaNode = nodes.pop();
-			let parent: ISchemaContainer = node.parent;
-			if (parent) {
-				parent.removeNode(node);
-			}
-		}
 	}
 }

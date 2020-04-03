@@ -40,6 +40,7 @@ export class MatTreeModel extends TreeModel {
 		if (this.$data && this.$data.length > 0) {
 			for (let listIndex: number = 0; listIndex < this.$data.length; listIndex++) {
 				pNode = new TreeParentNode();
+				pNode.resFile = this.$data[listIndex].file;
 				pNode.label = this.$data[listIndex].file;
 				pNode.isFolder = true;
 				pNode.model = this.$data[listIndex].file;
@@ -47,7 +48,7 @@ export class MatTreeModel extends TreeModel {
 				pNode.children = [];
 				rootNodes.push(pNode);
 				this.treeDataArr = pNode.children;
-				this.addReses(this.$data[listIndex].res);
+				this.addReses(this.$data[listIndex].file, this.$data[listIndex].res);
 			}
 		}
 		this.sortT(rootNodes);
@@ -59,9 +60,9 @@ export class MatTreeModel extends TreeModel {
 	 * 
 	 * @param reses 资源 vo
 	 */
-	public addReses(reses: ResInfoVO[]) {
+	public addReses(resFile: string, reses: ResInfoVO[]) {
 		for (let i: number = 0; i < reses.length; i++) {
-			this.addOneRes(reses[i]);
+			this.addOneRes(resFile, reses[i]);
 		}
 	}
 	/** 对数据源进行一次全面排序，从叶节点退至根节点排序 */
@@ -89,7 +90,7 @@ export class MatTreeModel extends TreeModel {
 	 * 向tree中添加数据，创建不存在的枝节点和叶节点。
 	 * @param resvo 根据resvo的url来创建枝和叶
 	 */
-	private addOneRes(resvo: ResInfoVO) {
+	private addOneRes(resFile: string, resvo: ResInfoVO) {
 		let tempArr: Array<any> = this.treeDataArr;
 		const normalizePath: string = paths.join(paths.dirname(paths.normalize(resvo.showUrl)), '');//join可以自动去掉多余的/
 		const pathSplits: string[] = normalizePath.split('/');// tree显示的资源目录，是相对于rootPath的相对目录结构
@@ -103,6 +104,7 @@ export class MatTreeModel extends TreeModel {
 			let pNode: TreeParentNode = <TreeParentNode>this.findFromArr(folderName, tempArr, 'label');
 			if (!pNode) {
 				pNode = new TreeParentNode();
+				pNode.resFile = resFile;
 				pNode.label = folderName;
 				pNode.model = curModes;
 				pNode.isFolder = true;
@@ -119,6 +121,7 @@ export class MatTreeModel extends TreeModel {
 		lNode = this.findFromArr(nodeLabel, tempArr);/// 资源库不创建重名的资源。
 		if (!lNode) {// file
 			lNode = new TreeLeafNode();
+			lNode.resFile = resFile;
 			lNode.label = nodeLabel;
 			lNode.resname = resvo.name;
 			lNode.resvo = resvo;
@@ -140,6 +143,7 @@ export class MatTreeModel extends TreeModel {
 					if (resvo.subList && resvo.subList.length) {
 						for (let sheetIndex: number = 0; sheetIndex < resvo.subList.length; sheetIndex++) {
 							const lNode: TreeLeafNode = new TreeLeafNode();
+							lNode.resFile = resFile;
 							const sheetvo: SheetSubVO = resvo.subList[sheetIndex];
 							lNode.label = sheetvo.name;
 							lNode.resname = resvo.name;

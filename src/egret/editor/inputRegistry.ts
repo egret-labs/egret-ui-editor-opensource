@@ -59,7 +59,7 @@ class FileInputRegistryImpl implements IFileInputRegistry {
 		for (let i = 0; i < exts.length; i++) {
 			const ext: string = exts[i].toLocaleLowerCase();
 			if (ext in this.fileInputClsMap) {
-				throw new Error(localize('inputRegistry.registerFileInput.error','Duplicate registration of input stream with file type {0}.',ext));
+				throw new Error(localize('inputRegistry.registerFileInput.error', 'Duplicate registration of input stream with file type {0}.', ext));
 			} else {
 				this.fileInputClsMap[ext] = inputCls;
 			}
@@ -72,13 +72,30 @@ class FileInputRegistryImpl implements IFileInputRegistry {
 	 * @param instantiationService 实例化服务
 	 */
 	public getFileInput(resource: URI, encoding: string, instantiationService: IInstantiationService): IFileEditorInput {
-		let ext: string = paths.extname(resource.fsPath);
-		if (ext) {
-			ext = ext.toLocaleLowerCase();
-			if (ext in this.fileInputClsMap) {
-				const inputCls = this.fileInputClsMap[ext];
-				return instantiationService.createInstance(inputCls, resource, encoding);
+		let baseName = paths.basename(resource.fsPath);
+		let dot = baseName.indexOf('.');
+		while (dot > -1) {
+			let ext: string = baseName.substring(dot);
+			if (ext) {
+				ext = ext.toLocaleLowerCase();
+				if (ext in this.fileInputClsMap) {
+					const inputCls = this.fileInputClsMap[ext];
+					return instantiationService.createInstance(inputCls, resource, encoding);
+				}
 			}
+			baseName = baseName.substring(dot + 1);
+			dot = baseName.indexOf('.');
+		}
+		// let ext: string = paths.extname(resource.fsPath);
+		// if (ext) {
+		// 	ext = ext.toLocaleLowerCase();
+		// 	if (ext in this.fileInputClsMap) {
+		// 		const inputCls = this.fileInputClsMap[ext];
+		// 		return instantiationService.createInstance(inputCls, resource, encoding);
+		// 	}
+		// }
+		if(!this._defaultFileInputCls){
+			return null;
 		}
 		return instantiationService.createInstance(this._defaultFileInputCls, resource, encoding);
 	}

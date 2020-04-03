@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="ProperyGridItemEditorSkin" states="normal,eumn" xmlns:e="http://ns.egret.com/eui" xmlns:eui="eui.*">
+	<eui:DropDownList id="combox" left="1" top="1" bottom="1" right="1" skinName="skins.DropDownListSkin"/>
+	
+	<e:TextInput id="textDisplay" left="1" top="1" bottom="1" right="1" verticalCenter="0" maxChars="15"/>
+</e:Skin>

@@ -1,0 +1,4 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.HoverIndicatorSkin" xmlns:e="http://ns.egret.com/eui">
+	<e:Rect fillColor="0x3F516C" percentHeight="100" percentWidth="100"/>
+</e:Skin>

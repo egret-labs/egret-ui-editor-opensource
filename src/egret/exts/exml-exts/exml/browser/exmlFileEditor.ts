@@ -18,14 +18,14 @@ import { localize } from 'egret/base/localization/nls';
 import { SystemCommands } from 'egret/platform/operations/commands/systemCommands';
 import { CodeView } from './codeView';
 import { OutputView } from 'egret/workbench/parts/output/browser/outputView';
-import { PanelDom } from 'egret/parts/browser/panelDom';
 import { AnimationView } from 'egret/workbench/parts/animation/electron-browser/views/animationView';
+import { IMultiPageEditor } from 'egret/editor/core/editors';
 
 //TODO 销毁方法
 /**
  * Exml文件编辑器
  */
-export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, ICodeViewContainer, IFocusablePart {
+export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, ICodeViewContainer, IFocusablePart, IMultiPageEditor {
 
 	constructor(
 		@IInstantiationService protected instantiationService: IInstantiationService,
@@ -162,11 +162,12 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 	/**
 	 * 同步各个子编辑器的数据
 	 */
-	public syncModelData(): void {
-		this.codeView.syncModelData();
+	public async syncModelData(): Promise<void> {
+		await this.codeView.syncModelData();
 		if (this._model) {
 			this._model.updateDirty();
 		}
+		return Promise.resolve();
 	}
 
 	/**

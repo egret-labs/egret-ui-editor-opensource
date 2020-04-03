@@ -47,6 +47,10 @@ export interface ILifecycleService {
 	 */
 	onBeforeWindowUnload: Event<IWindowUnloadEvent>;
 	/**
+	 * 窗体被关闭
+	 */
+	onWindowClosed: Event<IBrowserWindowEx>;
+	/**
 	 * 准备
 	 */
 	ready(): void;
@@ -93,6 +97,9 @@ export class LifecycleService implements ILifecycleService {
 
 	private _onBeforeWindowClose = new Emitter<IBrowserWindowEx>();
 	onBeforeWindowClose: Event<IBrowserWindowEx> = this._onBeforeWindowClose.event;
+
+	private _onWindowClosed = new Emitter<IBrowserWindowEx>();
+	onWindowClosed: Event<IBrowserWindowEx> = this._onWindowClosed.event;
 
 	constructor() {
 		this.windowToCloseRequest = Object.create(null);
@@ -143,6 +150,7 @@ export class LifecycleService implements ILifecycleService {
 			});
 		});
 		window.win.on('closed', e => {
+			this._onWindowClosed.fire(window);
 			const windowId = window.id;
 			this.windowCounter--;
 		});

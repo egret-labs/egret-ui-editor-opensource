@@ -2,6 +2,7 @@ import { ISchemaStrategy } from './ISchemaStrategy';
 import { Namespace } from '../sax/Namespace';
 import { AbstractExmlConfig } from '../project/exmlConfigs';
 import { ClassNode } from '../project/syntaxNodes';
+import { ClassChangedType } from '../project/parsers/parser';
 
 /**
  * exml规范策略
@@ -18,19 +19,19 @@ export class BaseSchemaStrategy implements ISchemaStrategy {
 	}
 
 	protected customChangedHandlers: any[] = [];
-    /**
+	/**
      * 添加自定义类改变的回调
      */
-	public addCustomChangedHandler(callBack: () => void, thisArg: any): void {
+	public addCustomChangedHandler(callBack: (e: ClassChangedType) => void, thisArg: any): void {
 		this.customChangedHandlers.push({
 			'func': callBack,
 			'thisArg': thisArg
 		});
 	}
-    /**
+	/**
      * 移除自定义类改变的回调
      */
-	public removeCustomChangedHandler(callBack: () => void, thisArg: any): void {
+	public removeCustomChangedHandler(callBack: (e: ClassChangedType) => void, thisArg: any): void {
 		for (var i = 0; i < this.customChangedHandlers.length; i++) {
 			if (this.customChangedHandlers[i]['func'] === callBack && this.customChangedHandlers[i]['thisArg'] === thisArg) {
 				for (var j = i; j < this.customChangedHandlers.length - 1; j++) {
@@ -41,27 +42,27 @@ export class BaseSchemaStrategy implements ISchemaStrategy {
 		}
 	}
 
-    /**
+	/**
      * 项目自定义类清单发生改变,然后派发更新自定义组件的事件。
      * @param event
      */
-	private customChangedHandler(): void {
+	private customChangedHandler(e: ClassChangedType): void {
 		this.currentStamp = process.uptime();
 		for (var i = 0; i < this.customChangedHandlers.length; i++) {
 			var func: Function = this.customChangedHandlers[i]['func'];
 			var thisArg: any = this.customChangedHandlers[i]['thisArg'];
-			func.call(thisArg);
+			func.call(thisArg, e);
 		}
 	}
 
-    /**
+	/**
      * 对自定义组件类名进行排序，按照从子类到父类的顺序排列。
      * @param classNames
      */
 	public sortComponentClassNames(classNames: string[]): void {
 		this.exmlConfig.sortComponentClassNames(classNames);
 	}
-    /**
+	/**
      * 通过类名得到实现的接口列表。
      * @param className 类名
      * @return 指定类实现的接口列表
@@ -91,7 +92,7 @@ export class BaseSchemaStrategy implements ISchemaStrategy {
 		}
 		return newResult;
 	}
-    /**
+	/**
      * 得到一个类的继承链。
      * @param className 类名
      * @return 继承联列表
@@ -104,7 +105,7 @@ export class BaseSchemaStrategy implements ISchemaStrategy {
 		}
 		return result;
 	}
-    /**
+	/**
      * 得到父类的类名。
      * @param className 类名
      * @return 父类的类名
@@ -115,7 +116,7 @@ export class BaseSchemaStrategy implements ISchemaStrategy {
 		}
 		return {};
 	}
-    /**
+	/**
      * 得到当前类相对于指定父类的所有属性字典，key:属性名,value:属性类型。
      * @param className 类名
      * @param superClassName 父类名
@@ -128,19 +129,19 @@ export class BaseSchemaStrategy implements ISchemaStrategy {
 		}
 		return '';
 	}
-    /**
+	/**
      * 工作的命名空间，具体子类重写
      */
 	public get guiNS(): Namespace {
 		return null;
 	}
-    /**
+	/**
      * GUI的命名空间，具体子类重写
      */
 	public get workNS(): Namespace {
 		return null;
 	}
-    /**
+	/**
      * 为指定的完整类名创建命名空间。
      * @param className 类名
      * @param xml 要加入到的XML对象，用于检查前缀重复。
@@ -148,7 +149,7 @@ export class BaseSchemaStrategy implements ISchemaStrategy {
 	public createNamespace(className: string, nsList: Namespace[]): Namespace {
 		return this.exmlConfig.createNamespace(className, nsList);
 	}
-    /**
+	/**
      * 组件类名列表
      */
 	public get componentClassNames(): string[] {
@@ -161,7 +162,7 @@ export class BaseSchemaStrategy implements ISchemaStrategy {
 		}
 		return [];
 	}
-	
+
 	private currentStamp: number = -1;
 	private getCodePromptStamp: number = -1;
 	private codePromptclassNames: string[] = [];
@@ -173,9 +174,8 @@ export class BaseSchemaStrategy implements ISchemaStrategy {
 			this.codePromptclassNames = [];
 			var classNodeMap = this.exmlConfig.getClassNodeMap();
 			for (var className in classNodeMap) {
-				if (!classNodeMap[className].isInterface && (
-					!classNodeMap[className].inEngine || classNodeMap[className].inPrompt
-				)) {
+				if (this.exmlConfig.isInstanceOf(classNodeMap[className].fullName, 'eui.UIComponent') ||
+					this.exmlConfig.isInstanceOf(classNodeMap[className].fullName, 'eui.IViewport')) {
 					this.codePromptclassNames.push(classNodeMap[className].fullName);
 				}
 			}
@@ -183,8 +183,8 @@ export class BaseSchemaStrategy implements ISchemaStrategy {
 		}
 		return this.codePromptclassNames;
 	}
-	
-    /**
+
+	/**
      * 皮肤类名列表
      */
 	public get skinClassNames(): string[] {

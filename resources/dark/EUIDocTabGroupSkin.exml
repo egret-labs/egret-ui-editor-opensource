@@ -1,0 +1,23 @@
+<e:Skin class="skins.EUIDocTabGroupSkin" states="normal,disabled,focus" xmlns:e="http://ns.egret.com/eui" xmlns:eui="eui.*">
+		<e:Rect id="backUI" left="0" right="0" top="0" bottom="0" fillColor="0x1c1b29" strokeAlpha="1"
+				strokeColor="0x131313" strokeColor.focus="0x374552" strokeWeight="1" />
+		<e:Group visible="false" includeInLayout="false" left="0" right="0" top="0" height="0">
+			<e:Rect left="0" right="0" percentHeight="100" strokeAlpha="1" strokeWeight="1" strokeColor="0x1b2025"
+					fillColor="0x22282e" />
+			<e:Group id="moveArea" percentHeight="100" percentWidth="100" />
+			<e:TabBar requireSelection="true" left="0" id="titleTabBar" percentHeight="100" itemRenderer="eui.CloseTabButton"
+					itemRendererSkinName="skins.CloseTabButtonSkin" >
+				<e:layout>
+					<e:HorizontalLayout horizontalAlign="left" gap="-1"/>
+				</e:layout>
+			</e:TabBar>
+			<e:Group id="titleGroup" right="25" verticalCenter="0">
+				<e:layout>
+					<e:HorizontalLayout gap="0" />
+				</e:layout>
+			</e:Group>
+			<e:Button id="menuButton" right="4" verticalCenter="0" skinName="skins.MenuButtonSkin" />
+		</e:Group>
+		<e:ViewStack id="viewStack" left="3" bottom="3" right="3" top="3" />
+		<eui:DocDropDownList visible="false" includeInLayout="false" id="tabDropDown" width="30" skinName="skins.DocDropDownListSkin" />
+</e:Skin>

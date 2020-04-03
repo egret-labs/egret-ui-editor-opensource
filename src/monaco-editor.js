@@ -5,7 +5,7 @@ import { MenuRegistry } from 'monaco-editor/esm/vs/platform/actions/common/actio
 // (2) Desired languages:
 // import 'monaco-editor/esm/vs/language/typescript/monaco.contribution';
 // import 'monaco-editor/esm/vs/language/css/monaco.contribution';
-// import 'monaco-editor/esm/vs/language/json/monaco.contribution';
+import 'monaco-editor/esm/vs/language/json/monaco.contribution';
 // import 'monaco-editor/esm/vs/language/html/monaco.contribution';
 // import 'monaco-editor/esm/vs/basic-languages/bat/bat.contribution.js';
 // import 'monaco-editor/esm/vs/basic-languages/coffee/coffee.contribution.js';
@@ -50,6 +50,8 @@ import { remote } from 'electron';
 
 const nls_zh = {
 	ChangeAllOccurrences: '修改所有出现的单词',
+	formatDocument: '格式化文档',
+	formatSelection: '格式化选定代码',
 	Cut: '剪切',
 	Copy: '复制',
 	Paste: '粘贴'
@@ -65,14 +67,12 @@ MenuRegistry.getMenuItems = function (id) {
 	}
 	for (let i = 0; i < result.length; i++) {
 		const item = result[i];
-		// 从右键菜单中移除 Command Palette
+		// 从右键菜单中移除 Command Palette 和 Go to Symbol...
 		// https://github.com/Microsoft/monaco-editor/issues/1237
-		if (item.command.id === 'editor.action.quickCommand') {
+		if (item.command.id === 'editor.action.quickCommand' ||
+			item.command.id === 'editor.action.quickOutline') {
 			result.splice(i, 1);
 			i--;
-			if (!iszh) {
-				break;
-			}
 		}
 		if (iszh) {
 			switch (item.command.id) {
@@ -88,17 +88,26 @@ MenuRegistry.getMenuItems = function (id) {
 				case 'editor.action.changeAll':
 					item.command.title = nls_zh.ChangeAllOccurrences;
 					break;
+				case 'editor.action.formatDocument':
+					item.command.title = nls_zh.formatDocument;
+					break;
+				case 'editor.action.formatSelection':
+					item.command.title = nls_zh.formatSelection;
+					break;
 				default:
 					break;
 			}
-		}
+			}
 	}
 	return result;
 };
 
 self.MonacoEnvironment = {
 	getWorkerUrl: function (moduleId, label) {
-        // console.log('getWorkerUrl', moduleId, label);
+		// console.log('getWorkerUrl', moduleId, label);
+		if (label === 'json') {
+			return './monaco-editor/json.worker.js';
+		}
 		return './monaco-editor/editor.worker.js';
 	}
 }

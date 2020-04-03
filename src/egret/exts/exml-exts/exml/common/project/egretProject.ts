@@ -374,6 +374,25 @@ export class EgretProjectModel {
 		}
 		return false;
 	}
+
+	/**
+	 * If use the new res manager
+	 */
+	public get useResourceManager(): Promise<boolean> {
+		return new Promise<boolean>((c, e) => {
+			if (this.getEgretProperties()) {
+				var modules: any[] = this.getEgretProperties()['modules'];
+				if (modules && modules.length) {
+					for (var i = 0; i < modules.length; i++) {
+						if (modules[i]['name'] === 'resourcemanager') {
+							c(true);
+						}
+					}
+				}
+			}
+			return c(false);
+		});
+	}
 }
 
 

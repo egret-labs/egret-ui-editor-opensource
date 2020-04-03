@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="skins.Scale9GridPanelSkin" states="normal,maximized,minimized,disabled,normalAndInactive,maximizedAndInactive"  width="600" height="580" xmlns:e="http://ns.egret.com/eui">
+	<e:Image id="shadow" scale9Grid="8,8,3,3" left="0" right="0" top="0" bottom="0"/>
+	<e:Group id="group" left="7" right="7" bottom="7" top="7">
+		<e:Rect id="backUI" strokeAlpha="1" strokeColor="0x1b2025" fillColor="0x1a1b28" percentHeight="100" percentWidth="100"/>
+		<e:Rect id="hline" height="1" percentWidth="100" top="35" fillColor="0x000"/>
+		<e:Group id="moveArea" height="34" left="9" right="9" touchThrough="false" touchEnabled="true"/>
+		<e:Group id="titleContentGroup" height="34" left="5" right="100" touchEnabled="false" touchChildren="false">
+			<e:layout>
+				<e:HorizontalLayout verticalAlign="middle" gap="4"/>
+			</e:layout>
+			<e:Image id="appIcon"/>
+			<e:Group verticalCenter="0" id="titleGroup"/>
+			<e:Group verticalCenter="0" percentHeight="100" id="titleLeftGroup"/>
+			<e:Group id="titleDisplayGroup" percentHeight="100" percentWidth="100">
+				<e:Label id="titleDisplay" size="14" verticalCenter="0" left="5" right="5" height="20" text="标题"/>
+			</e:Group>
+			<e:Group id="titleRightGroup" verticalCenter="0" percentHeight="100"/>
+		</e:Group>
+		<e:Group id="buttonGroup" right="0" touchEnabled="false">
+			<e:layout>
+				<e:HorizontalLayout gap="-1"/>
+			</e:layout>
+			<e:Button id="closeButton" skinName="skins.WinCloseButtonSkin"/>
+		</e:Group>
+		<e:Rect id="outlinetop" height="1" percentWidth="100" top="0" fillColor="0x000"/>
+		<e:Rect id="outlinedown" height="1" percentWidth="100" bottom="0" fillColor="0x000"/>
+		<e:Rect id="outlineleft" width="1" percentHeight="100" left="0" fillColor="0x000"/>
+		<e:Rect id="outlineright" width="1" percentHeight="100" right="0" fillColor="0x000"/>
+		<e:Group id="leftResize" top="20" bottom="20" width="4" left="0" visible="false" visible.normal="true"/>
+		<e:Group id="rightResize" top="20" bottom="20" width="4" right="0" visible="false" visible.normal="true"/>
+		<e:Group id="topResize" left="20" right="20" top="0" height="4" visible="false" visible.normal="true"/>
+		<e:Group id="bottomResize" left="20" right="20" height="4" bottom="0" visible="false" visible.normal="true"/>
+		<e:Group id="topRightResize" right="0" height="20" width="4" visible="false" visible.normal="true"/>
+		<e:Group id="topLeftResize" left="0" top="0" height="20" width="20" visible="false" visible.normal="true"/>
+		<e:Group id="bottomLeftResize" left="0" bottom="0" height="20" width="20" visible="false" visible.normal="true"/>
+		<e:Group id="bottomRightResize" right="0" bottom="0" height="20" width="20" visible="false" visible.normal="true"/>
+		<e:Rect id="modalMask" fillColor="0xFFFFFF" left="0" right="0" top="0" bottom="0" alpha="0" touchEnabled="false"/>
+		<e:Group id="contentGroup" top="36" left="1" right="1" bottom="1">
+			<e:Group id="vGroup" left="10" top="10" right="10" bottom="10">
+				<e:layout>
+					<e:VerticalLayout horizontalAlign="middle">
+					</e:VerticalLayout>
+				</e:layout>
+				<e:Group left="0" right="0">
+					<e:Label id='desLabel' text="滚轮:缩放 | 拖拽图片:挪动图片 | 拖拽虚线:编辑九宫格" size="13"/>
+				</e:Group>
+
+				<e:Group id="hGroup" percentWidth="100%">
+					<e:Group left="0">
+						<e:CheckBox id="checkBox" verticalCenter="0"  label="开启九宫格" skinName="skins.CheckBoxSkin"/>
+					</e:Group>
+					<e:Group horizontalCenter="0">
+						<e:layout>
+							<e:HorizontalLayout verticalAlign="middle">
+							</e:HorizontalLayout>
+						</e:layout>
+						<e:Label id="scaleSize" size="13" verticalCenter="0" horizontalCenter="0" text="100%"/>
+					</e:Group>
+					<e:Group right="10">
+						<e:layout>
+							<e:HorizontalLayout gap="10">
+							</e:HorizontalLayout>
+						</e:layout>
+						<e:Button skinName="skins.IconButtonSkin" id="bigBtn" iconDisplay="zoom_up_png" label="放大"/>
+						<e:Button skinName="skins.IconButtonSkin" id="smallBtn" iconDisplay="zoom_down_png" label="缩小"/>
+						<e:Button skinName="skins.IconButtonSkin" id="resizeBtn" iconDisplay="view_min_png" label="恢复"/>
+					</e:Group>
+				</e:Group>
+				<e:Group horizontalCenter="0">
+                    <e:Rect width="566" height="400" verticalCenter="0" horizontalCenter="0" fillColor="0x46464a"/>
+					<e:Group width="565" height="399" verticalCenter="0" horizontalCenter="0" id="imageShow"/>
+				</e:Group>
+				<e:Group horizontalCenter="0" percentWidth="100%">
+					<e:layout>
+						<e:HorizontalLayout gap="15" horizontalAlign="center"/>
+					</e:layout>
+					<e:Group>
+						<e:layout>
+							<e:HorizontalLayout gap="3" verticalAlign="middle"/>
+						</e:layout>
+						<e:Label text="x:" id="labelX" size="13"/>
+						<e:Label id="inputX" width="60"/>
+					</e:Group>
+					<e:Group>
+						<e:layout>
+							<e:HorizontalLayout gap="3" verticalAlign="middle"/>
+						</e:layout>
+						<e:Label text="y:" id="labelY" size="13"/>
+						<e:Label id="inputY" width="60"/>
+					</e:Group>
+					<e:Group>
+						<e:layout>
+							<e:HorizontalLayout gap="3" verticalAlign="middle"/>
+						</e:layout>
+						<e:Label text="width:" id="labelW" size="13"/>
+						<e:Label id="inputW" width="60"/>
+					</e:Group>
+					<e:Group>
+						<e:layout>
+							<e:HorizontalLayout gap="3" verticalAlign="middle"/>
+						</e:layout>
+						<e:Label text="height:" id="labelH" size="13"/>
+						<e:Label id="inputH" width="60"/>
+					</e:Group>
+				</e:Group>
+				<e:Group percentWidth="100%">
+					<e:Label id="errorLabel" size="13" textColor="0xff0000" visible="true"/>
+				</e:Group>
+				<e:Group horizontalCenter="0" percentWidth="100%">
+					<e:layout>
+						<e:HorizontalLayout gap="50" horizontalAlign="center"/>
+					</e:layout>
+					<e:Button label="确认" id="confirmButton" />
+					<e:Button label="取消" id="cancelButton"/>
+				</e:Group>
+
+			</e:Group>
+		</e:Group>
+
+	</e:Group>
+</e:Skin>

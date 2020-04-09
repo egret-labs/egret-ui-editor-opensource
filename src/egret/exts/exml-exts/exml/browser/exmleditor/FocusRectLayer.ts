@@ -961,6 +961,9 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 	/**刷新视图代理 */
 	private updateViewAdapter(): void {
 		this._scale = this.egretContentHost.getTarget().scaleX;
+		if (!Number.isFinite(this._scale)) {
+			this._scale = 1;
+		}
 		this._onScaleChanged.fire(this._scale);
 
 		let m: Matrix = this.egretContentHost.getTarget().matrix;
@@ -2023,15 +2026,37 @@ export class FocusRectExt extends FocusRect implements IP9TTarget {
 		this.rectRender.visible = targetVisible;
 	}
 
+	private getDisplayObjectSize(obj: egret.DisplayObject): { width: number; height: number } {
+		let width = obj.width;
+		if (!Number.isFinite(width)) {
+			if (this.container) {
+				width = this.container.clientWidth;
+			} else {
+				width = 0;
+			}
+		}
+		let height = obj.height;
+		if (!Number.isFinite(height)) {
+			if (this.container) {
+				height = this.container.clientHeight;
+			} else {
+				height = 0;
+			}
+		}
+
+		return { width: width, height: height };
+	}
+
 	protected doRefreshRectRender(): void {
 		if (!this.ownerLayer) {
 			return
 		}
 		let egretObj = this.targetNode.getInstance() as egret.DisplayObject;
-		var p1 = new Point(0, 0);
-		var p2 = new Point(egretObj.width, 0);
-		var p3 = new Point(egretObj.width, egretObj.height);
-		var p4 = new Point(0, egretObj.height);
+		let objSize = this.getDisplayObjectSize(egretObj);
+		let p1 = new Point(0, 0);
+		let p2 = new Point(objSize.width, 0);
+		let p3 = new Point(objSize.width, objSize.height);
+		let p4 = new Point(0, objSize.height);
 
 		let targetGlobalMatix: Matrix = this.getMatrix();
 		targetGlobalMatix.concat(MatrixUtil.getMatrixToWindow(this.container));

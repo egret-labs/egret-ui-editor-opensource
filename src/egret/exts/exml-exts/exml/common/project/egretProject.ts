@@ -111,17 +111,17 @@ export class EgretProjectModel {
 			let contentHeight = 800;
 			try {
 				const indexStr: string = fs.readFileSync(this.index.fsPath, { encoding: 'utf8' });
-				const scaleModelArr = indexStr.match(/data-scale-mode.*=(?:'|")(.*)(?:'|")/);
-				if (scaleModelArr && scaleModelArr.length >= 2) {
-					scaleMode = scaleModelArr[1];
+				const scaleModelArr = indexStr.match(/data-scale-mode=(["'])(.*?)\1/);
+				if (scaleModelArr && scaleModelArr.length >= 3) {
+					scaleMode = scaleModelArr[2];
 				}
-				const contentWidthArr = indexStr.match(/data-content-width.*=(?:'|")(.*)(?:'|")/);
-				if (contentWidthArr && contentWidthArr.length >= 2) {
-					contentWidth = parseFloat(contentWidthArr[1]);
+				const contentWidthArr = indexStr.match(/data-content-width=(["'])(.*?)\1/);
+				if (contentWidthArr && contentWidthArr.length >= 3) {
+					contentWidth = parseFloat(contentWidthArr[2]);
 				}
-				const contentHeightArr = indexStr.match(/data-content-height.*=(?:'|")(.*)(?:'|")/);
-				if (contentHeightArr && contentHeightArr.length >= 2) {
-					contentHeight = parseFloat(contentHeightArr[1]);
+				const contentHeightArr = indexStr.match(/data-content-height=(["'])(.*?)\1/);
+				if (contentHeightArr && contentHeightArr.length >= 3) {
+					contentHeight = parseFloat(contentHeightArr[2]);
 				}
 			} catch (error) { }
 			this.egretStageInfo = { scaleMode, contentWidth, contentHeight };

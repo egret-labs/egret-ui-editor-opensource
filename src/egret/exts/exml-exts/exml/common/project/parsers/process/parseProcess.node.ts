@@ -5,14 +5,11 @@ import { TsParser } from '../core/tsParser';
 import { ExmlParser, EUIParser, GUIParser } from '../core/exmlParser';
 import URI from 'egret/base/common/uri';
 import { ISelectedStat, FileChangeType, IFileChange } from 'egret/platform/files/common/files';
-import { isMacintosh } from 'egret/base/common/platform';
-import { normalizeNFC } from 'egret/base/common/strings';
 import { isTs, isExml } from '../core/commons';
-
-import * as paths from 'path';
 import * as fs from 'fs';
 import { isIgnore } from '../core/ignores';
 import { ClassChangedType } from '../parser';
+import * as fileUtils from 'egret/workbench/services/files/fileUtils';
 
 class ParserProcess extends NodeProcess implements IParserProcess {
 	private tsParser: TsParser;
@@ -33,10 +30,12 @@ class ParserProcess extends NodeProcess implements IParserProcess {
 			} else {
 				this.exmlParser = new GUIParser(URI.file(workspace));
 			}
-			return this.select(workspace, ['.exml', '.ts'], stat => {
-				this.addFile(stat.resource);
-			},['node_modules','.git','.DS_Store']).then(() => {
+			return this.select(workspace, ['.exml', '.ts'], null, ['node_modules', '.git', '.DS_Store']).then(fileStats => {
+				for (let i = 0; i < fileStats.length; i++) {
+					this.addFile(fileStats[i].resource);
+				}
 				this.doFilesChanged('mix');
+				console.log('ParserProcess Inited');
 			});
 		});
 	}
@@ -47,113 +46,10 @@ class ParserProcess extends NodeProcess implements IParserProcess {
 	 * @param exts 要查找的扩展名，如['.bmp','.txt']
 	 * @param onSelected 每查到一个目标文件的时候调用
 	 */
-	private select(filePath: string, exts: string[], onSelected?: (stat: ISelectedStat) => void,ignores?: string[]): Promise<ISelectedStat[]> {
-		const newExts: string[] = [];
-		for (let i = 0; i < exts.length; i++) {
-			newExts.push(exts[i].toLocaleLowerCase());
-		}
-		return new Promise<ISelectedStat[]>((resolve, reject) => {
-			const selectedStats: ISelectedStat[] = [];
-			const onCompelte = () => {
-				resolve(selectedStats);
-			};
-			this.doSelect(filePath, newExts, onSelected, selectedStats, onCompelte,null,ignores);
-		});
+	private select(filePath: string, exts: string[], onSelected?: (stat: ISelectedStat) => void, ignores?: string[]): Promise<ISelectedStat[]> {
+		return fileUtils.select(URI.file(filePath), exts, onSelected, ignores);
 	}
 
-	private doSelect(path: string, exts: string[], onSelected: (stat: ISelectedStat) => void, fileStats: ISelectedStat[], onComplete: () => void, selectedMap?: { [path: string]: boolean },ignores?: string[]): void {
-		if (!selectedMap) {
-			selectedMap = Object.create(null);
-		}
-		if (isIgnore(path)) {
-			onComplete();
-			return;
-		}
-		const baseName = paths.basename(path);
-		if(ignores.indexOf(baseName) != -1){
-			onComplete();
-			return;
-		}
-		fs.stat(path, (error, stat) => {
-			if (error) {
-				onComplete();
-				return;
-			}
-			if (!stat.isDirectory()) {
-				let ext = paths.extname(path);
-				if (!ext) {
-					ext = '';
-				}
-				ext = ext.toLocaleLowerCase();
-				if (exts.length > 0) {
-					if (exts.indexOf(ext) != -1) {
-						var selectedStat: ISelectedStat = {
-							resource: URI.file(path),
-							name: paths.basename(path),
-							mtime: stat.mtime.getTime(),
-							ext: ext
-						};
-						fileStats.push(selectedStat);
-						if (onSelected) {
-							onSelected(selectedStat);
-						}
-					}
-				} else {
-					var selectedStat: ISelectedStat = {
-						resource: URI.file(path),
-						name: paths.basename(path),
-						mtime: stat.mtime.getTime(),
-						ext: ext
-					};
-					fileStats.push(selectedStat);
-					if (onSelected) {
-						onSelected(selectedStat);
-					}
-				}
-				onComplete();
-				return;
-			}
-			if (selectedMap[path]) {
-				onComplete();
-				return;
-			}
-			selectedMap[path] = true;
-			this.readdir(path, (err, files) => {
-				if (files) {
-					const numSum = files.length;
-					let numFinish = 0;
-					const checkComplete = () => {
-						if (numFinish == numSum) {
-							onComplete();
-						}
-					};
-					const clb = () => {
-						numFinish++;
-						checkComplete();
-					};
-					for (let i = 0; i < files.length; i++) {
-						const file = files[i];
-						this.doSelect(paths.join(path, file), exts, onSelected, fileStats, clb, selectedMap,ignores);
-					}
-					checkComplete();
-				} else {
-					onComplete();
-				}
-			});
-		});
-	}
-
-	private readdir(path: string, callback: (error: Error, files: string[]) => void): void {
-		if (isMacintosh) {
-			return fs.readdir(path, (error, children) => {
-				if (error) {
-					return callback(error, null);
-				}
-				return callback(null, children.map(c => normalizeNFC(c)));
-			});
-		}
-		return fs.readdir(path, callback);
-	}
 	/**
 	 * 文件改变
 	 * @param changes 
@@ -168,6 +64,18 @@ class ParserProcess extends NodeProcess implements IParserProcess {
 			} else if (change.type == FileChangeType.UPDATED) {
 				this.updateFile(change.resource);
 			}
+		}
+		let changeType: ClassChangedType = 'mix';
+		if(changes.length === 0) {
+			const item = changes[0];
+			if(isTs(item.resource)){
+				changeType = 'ts';
+			} else if(isExml(item.resource)){
+				changeType = 'exml';
+			}
+		}
+		if(changes.length > 0) {
+			this.doFilesChanged(changeType);
 		}
 		return Promise.resolve(void 0);
 	}
@@ -200,7 +108,7 @@ class ParserProcess extends NodeProcess implements IParserProcess {
 	private exmlModifies: string[] = [];
 	private exmlDelete: string[] = [];
 	private addFile(resource: URI): void {
-		if(!resource){
+		if (!resource) {
 			return;
 		}
 		if (isIgnore(resource.fsPath)) {
@@ -297,9 +205,6 @@ class ParserProcess extends NodeProcess implements IParserProcess {
 			return;
 		}
 		this.fileChangedFlag = true;
-		setTimeout(() => {
-			this.doFilesChanged(type);
-		}, 100);
 	}
 
 	private doFilesChanged(type: ClassChangedType): void {
@@ -413,7 +318,7 @@ class ParserProcess extends NodeProcess implements IParserProcess {
 		const fullClassName: string = classNode.fullName;
 		for (let i = 0; i < classNode.props.length; i++) {
 			const prop = classNode.props[i];
-			prop.available = this.getPropAvailable(fullClassName,prop.name,eumnData);
+			prop.available = this.getPropAvailable(fullClassName, prop.name, eumnData);
 		}
 	}
 	/**
@@ -432,9 +337,9 @@ class ParserProcess extends NodeProcess implements IParserProcess {
 		}
 		return arr;
 	}
-	private getPropAvailable(fullClassName:string,propName:string,eumnData:any):string[]{
+	private getPropAvailable(fullClassName: string, propName: string, eumnData: any): string[] {
 		const extendsChains = this.getExtendsChain(fullClassName);
-		for(let i = 0;i<extendsChains.length;i++){
+		for (let i = 0; i < extendsChains.length; i++) {
 			const curClassName = extendsChains[i].fullName;
 			if (eumnData[curClassName] && eumnData[curClassName][propName]) {
 				return eumnData[eumnData[curClassName][propName]];

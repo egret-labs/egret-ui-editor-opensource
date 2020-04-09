@@ -2,16 +2,17 @@
 */
 export class RulerMotor {
 	constructor(scale: number = 1, transfromunit: number = 1, minmarklength: number = 50) {
-		this._scale = scale;
-		this._transformUint = transfromunit;
-		this._minMarkLength = minmarklength;
+		this._scale = this.validNumber(scale, 1);
+		this._transformUint = this.validNumber(transfromunit, 1);
+		this._minMarkLength = this.validNumber(minmarklength, 50);
 		this.calculate();
 	}
 
 	private _transformUint: number = 1;
 	public set transformUint(v: number) {
-		if (this._transformUint !== v) {
-			this._transformUint = v;
+		const newV = this.validNumber(v, 1);
+		if (this._transformUint !== newV) {
+			this._transformUint = newV;
 			this.calculate();
 		}
 	}
@@ -20,8 +21,9 @@ export class RulerMotor {
 	}
 	private _scale: number;
 	public set scale(v: number) {
-		if (this._scale !== v) {
-			this._scale = Math.max(v, 0.0001);
+		const newV = this.validNumber(v, 1);
+		if (this._scale !== newV) {
+			this._scale = Math.max(newV, 0.0001);
 			this.calculate();
 		}
 	}
@@ -30,8 +32,9 @@ export class RulerMotor {
 	}
 	private _minMarkLength: number;
 	public set minMarkLength(v: number) {
-		if (this._minMarkLength !== v) {
-			this._minMarkLength = v;
+		const newV = this.validNumber(v, 50);
+		if (this._minMarkLength !== newV) {
+			this._minMarkLength = newV;
 			this.calculate();
 		}
 	}
@@ -55,6 +58,20 @@ export class RulerMotor {
 	public get currentMarkLength(): number {
 		return this._currentMarkLength;
 	}
+
+	private validNumber(value: number, defaultValue: number): number {
+		if (typeof value === 'undefined') {
+			return defaultValue;
+		}
+		if (value === null) {
+			return defaultValue;
+		}
+		if (Number.isFinite(value)) {
+			return value;
+		}
+		return defaultValue;
+	}
+
 	private calculate(): void {
 		var rise: number = 1;
 		var tmpNum: number;
@@ -63,13 +80,17 @@ export class RulerMotor {
 		b: while (true) {
 			index = 0;
 			while (index < this._minMarkRange.length) {
-				tmpNum = this._minMarkRange[index] * rise;
-				tmpLength = tmpNum * this._transformUint * this._scale;
+				tmpNum = this.validNumber(this._minMarkRange[index] * rise, rise);
+				tmpLength = this.validNumber(tmpNum * this._transformUint * this._scale, tmpNum);
 				if (tmpLength >= this._minMarkLength)
 					break b;
 				index++;
 			}
 			rise *= 10;
+			// 避免某些情况下的无限循环
+			if (rise > 1000) {
+				break;
+			}
 		}
 		this._currentMarkNum = tmpNum;
 		this._currentMarkLength = tmpLength;

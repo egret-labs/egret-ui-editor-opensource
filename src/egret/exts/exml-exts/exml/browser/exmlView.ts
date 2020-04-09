@@ -208,13 +208,21 @@ export class ExmlView implements IExmlView {
 		if (this.exmlEditor.focusRectLayer) {
 			let screenWidth = 0;
 			let screenHeight = 0;
-			let screenScale = 0;
+			let screenScale = 1;
 			let fitContent = false;
 			if (PreviewConfig) {
 				screenWidth = PreviewConfig.screenWidth;
 				screenHeight = PreviewConfig.screenHeight;
 				screenScale = PreviewConfig.screenScale;
 				fitContent = PreviewConfig.fitContent;
+			} else {
+			}
+			if (screenWidth <= 0 || screenHeight <= 0) {
+				if (this.container) {
+					screenWidth = this.container.clientWidth;
+					screenHeight = this.container.clientHeight;
+					screenScale = 1;
+				}
 			}
 			setTimeout(() => {
 				const stageInfo = this.egretProjectService.projectModel.getStageInfo();

@@ -6,17 +6,14 @@ import { AssetsView } from 'egret/workbench/parts/assets/electron-browser/views/
 import { ComponentView } from 'egret/workbench/parts/components/electron-browser/views/componentView';
 import { LayerView } from 'egret/workbench/parts/layers/electron-browser/views/layerView';
 import { WorkbenchEditorService } from 'egret/workbench/services/editor/common/editorService';
-
 import { FileModelService } from 'egret/workbench/services/editor/common/modelServices';
 import { IFileModelService } from 'egret/workbench/services/editor/common/models';
 import { SyncDescriptor } from '../../platform/instantiation/common/descriptors';
-
 import { IFileService } from 'egret/platform/files/common/files';
 import { DefaultBoxLayoutTemplate } from './template';
 import { IWorkbenchEditorService } from '../services/editor/common/ediors';
 import { EditorPart } from 'egret/editor/common/parts/editorPart';
 import { Panel } from 'egret/parts/browser/panel';
-
 import { FileService } from '../services/files/fileServices';
 import { initExtensions } from 'egret/exts/extsInits';
 import { OutputView } from '../parts/output/browser/outputView';
@@ -36,14 +33,19 @@ import { IOperationBrowserService } from '../../platform/operations/common/opera
 import { SystemCommands } from 'egret/platform/operations/commands/systemCommands';
 import { PanelDom } from '../../parts/browser/panelDom';
 import { localize } from '../../base/localization/nls';
-import { checkUpdateFromLauncher } from 'egret/platform/launcher/common/launchers';
+// import { checkUpdateFromLauncher } from 'egret/platform/launcher/common/launchers';
 import { PropertyView } from '../parts/properties/electron-browser/views/propertyView';
 import { initCodeService } from 'egret/exts/exml-exts/exml/common/server/codeService';
 import { AnimationView } from '../parts/animation/electron-browser/views/animationView';
 import { IAnimationService } from 'egret/workbench/parts/animation/common/animation';
 import { AnimationService } from 'egret/workbench/parts/animation/common/animationService';
 import { ClosableTitleRenderFactory, DocumentPanelSerialize } from './boxlayoutRender';
+import { ipcRenderer } from 'electron';
+import { IWindowClientService } from 'egret/platform/windows/common/window';
 import './media/workbench.css';
+import { IExplorerService } from '../parts/files/common/explorer';
+import URI from 'egret/base/common/uri';
+import * as paths from 'egret/base/common/paths';
 
 /**
  * 工作台
@@ -68,6 +70,7 @@ export class Workbench implements IFocusablePart {
 		@IInstantiationService private instantiationService: IInstantiationService,
 		@ILifecycleService private lifecycleService: ILifecycleService,
 		@IStorageService private storageService: IStorageService,
+		@IWindowClientService private windowService: IWindowClientService,
 		@IOperationBrowserService private operationService: IOperationBrowserService
 	) {
 		this.parent = parent;
@@ -92,7 +95,42 @@ export class Workbench implements IFocusablePart {
 		this.workspaceService.registerBoxlayout(this.boxContainer);
 		this.focusablePartCommandHelper = this.instantiationService.createInstance(FocusablePartCommandHelper);
 		this.initCommands();
+		ipcRenderer.on('egret:openFile', this.onOpenEditorHandler);
 	}
+
+	private onOpenEditorHandler = (event: Electron.IpcRendererEvent, data: any): void => {
+		if (!data) {
+			return;
+		}
+		if (!this.editorService) {
+			return;
+		}
+		this.instantiationService.invokeFunction(async (accessor) => {
+			const service = accessor.get(IExplorerService);
+			if (service) {
+				try {
+					const target = URI.file(data);
+					await service.select(target, true);
+					const selections = service.getFileSelection();
+					for (let i = 0; i < selections.length; i++) {
+						const element = selections[i];
+						if (paths.isEqual(element.resource.toString(), target.toString())) {
+							const extname = paths.extname(target.fsPath);
+							if (extname === '.json') {
+								this.editorService.openResEditor(target);
+							} else {
+								this.editorService.openEditor({ resource: target }, false);
+							}
+							break;
+						}
+					}
+				} catch (error) {
+					console.log('open file error', error);
+				}
+			}
+		});
+	}
+
 	/** 注册当前编辑器可以执行的命令 */
 	private initCommands(): void {
 		//普通根命令
@@ -205,6 +243,7 @@ export class Workbench implements IFocusablePart {
 		this.initParts();
 		this.restoreLayout();
 		this.registerListeners();
+		ipcRenderer.send('egret:workbenchReady', this.windowService.getCurrentWindowId());
 	}
 
 	/**

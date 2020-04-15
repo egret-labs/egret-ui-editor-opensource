@@ -63,6 +63,11 @@ export interface IEditorService {
 	 * @param isPreview
 	 */
 	openEditor(input: IResourceInput, isPreview?: boolean): Promise<IEditor>;
+	/**
+	 * 打开res编辑器
+	 * @param file 
+	 */
+	openResEditor(file: URI): Promise<void>;
 }
 
 export interface IMultiPageEditor {

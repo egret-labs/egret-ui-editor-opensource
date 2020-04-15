@@ -19,4 +19,8 @@ export interface IExplorerService {
 	 * 得到首个被选中的文件夹
 	 */
 	getFirstSelectedFolder():URI;
+	/**
+	 * 根据指定的文件，选中并且使该项目可见。
+	 */
+	select(resource: URI, reveal: boolean): Promise<void>;
 }

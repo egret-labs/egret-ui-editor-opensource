@@ -8,6 +8,9 @@ import { EditorInput } from 'egret/editor/common/input/editorInput';
 import { basename } from 'egret/base/common/paths';
 import { FileInputRegistry } from 'egret/editor/inputRegistry';
 import { once, Emitter, Event } from 'egret/base/common/event';
+import { ipcRenderer } from 'electron';
+import { IWorkspaceService } from 'egret/platform/workspace/common/workspace';
+import { IWindowClientService } from 'egret/platform/windows/common/window';
 
 
 /**
@@ -23,6 +26,8 @@ export class WorkbenchEditorService implements IWorkbenchEditorService {
 	private _onActiveEditorChanged: Emitter<IEditor>;
 	public constructor(
 		editorPart: IEditorPart,
+		@IWorkspaceService private workspaceService: IWorkspaceService,
+		@IWindowClientService private windowService: IWindowClientService,
 		@IInstantiationService private instantiationService: IInstantiationService
 	) {
 		this.editorPart = editorPart;
@@ -66,7 +71,18 @@ export class WorkbenchEditorService implements IWorkbenchEditorService {
 	public getOpenEditors(): IEditor[] {
 		return this.editorPart.getOpenEditors();
 	}
-
+	/**
+	 * 打开res编辑器
+	 * @param file 
+	 */
+	public openResEditor(file: URI): Promise<void> {
+		ipcRenderer.send('egret:openResWindow', {
+			windowId: this.windowService.getCurrentWindowId(),
+			folderPath: this.workspaceService.getWorkspace().uri.fsPath,
+			file: file.fsPath
+		});
+		return Promise.resolve();
+	}
 	/**
 	 * 通过输入流打开一个编辑器，如果已经打开了这个编辑器则激活
 	 * @param input 输入流

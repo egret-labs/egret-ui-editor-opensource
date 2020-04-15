@@ -1,4 +1,13 @@
 
+/**
+ * 命令行参数
+ */
+export interface ParsedArgs {
+	_: string[];
+	folder?: string | string[];
+	status?: boolean;
+}
+
 function parseURLQueryArgs():any {
 	const search = window.location.search || '';
 	return search.split(/[?&]/)

@@ -1,7 +1,7 @@
-import { ParsedArgs } from '../../environment/common/environment';
 import { createDecorator } from '../../instantiation/common/instantiation';
 import { INativeOpenDialogOptions, MessageBoxOptions, IMessageBoxResult } from './windows';
 import { Event } from 'vs/base/common/event';
+import { ParsedArgs } from 'egret/platform/environment/common/args';
 
 
 /**
@@ -59,6 +59,9 @@ export interface IBrowserWindowEx {
 	load(config: IWindowConfiguration): void;
 	isFocus(): boolean;
 	focus(): void;
+	readonly isReady: boolean;
+	ready(): Promise<IBrowserWindowEx>;
+	setReady(): void;
 	/**
 	 * 重新加载
 	 */
@@ -73,6 +76,7 @@ export interface IBrowserWindowEx {
 	 * @param args 任意数据
 	 */
 	send(channel: string, ...args: any[]): void;
+	sendWhenReady(channel: string, ...args: any[]): void;
 }
 
 export const IWindowClientService = createDecorator<IWindowClientService>('windowClientService');

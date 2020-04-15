@@ -9,6 +9,7 @@ const glob = require('glob');
 function getEntry() {
 	var entry = {};
 	entry['main'] = './main.ts';
+	entry['cli'] = './cli.ts';
 	entry['egret/workbench/electron-browser/bootstrap/index'] = './egret/workbench/electron-browser/bootstrap/index.ts';
 	entry['egret/workbench/electron-browser/bootstrap/resdepot'] = './egret/workbench/electron-browser/bootstrap/resdepot.ts';
 	// monaco-editor

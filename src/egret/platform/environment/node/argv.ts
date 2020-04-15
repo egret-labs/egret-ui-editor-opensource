@@ -1,11 +1,6 @@
 
-import * as os from 'os';
 import * as minimist from 'minimist';
-import * as assert from 'assert';
-import { firstIndex } from 'egret/base/common/arrays';
-import { ParsedArgs } from '../common/environment';
-import { isWindows } from 'egret/base/common/platform';
-import product from 'egret/platform/node/product';
+import { ParsedArgs } from '../common/args';
 
 const options: minimist.Opts = {
 	string: [

@@ -243,6 +243,7 @@ export class FileController extends DefaultController implements IController, ID
 		@IWorkbenchEditorService private editorService: IWorkbenchEditorService,
 		@IWorkspaceService private workspaceService: IWorkspaceService,
 		@IClipboardService private clipboardService: IClipboardService,
+		@IWindowClientService private windowService: IWindowClientService,
 		@IOperationBrowserService private operationService: IOperationBrowserService
 	) {
 		super({ clickBehavior: ClickBehavior.ON_MOUSE_UP, keyboardSupport: true, openMode: OpenMode.SINGLE_CLICK });
@@ -453,11 +454,7 @@ export class FileController extends DefaultController implements IController, ID
 		if (stat && !stat.isDirectory) {
 			const extname = paths.extname(stat.resource.fsPath);
 			if (extname === '.json') {
-				ipcRenderer.send('egret:openResWindow', {
-					folderPath: this.workspaceService.getWorkspace().uri.fsPath,
-					file: stat.resource.fsPath
-				});
-				return;
+				return this.editorService.openResEditor(stat.resource);
 			}
 			return this.editorService.openEditor({ resource: stat.resource }, isPreview);
 		}

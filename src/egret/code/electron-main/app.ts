@@ -1,5 +1,5 @@
 import { IInstantiationService } from 'egret/platform/instantiation/common/instantiation';
-import { ServiceCollection } from 'egret/platform/instantiation/common/serviceCollection';
+// import { ServiceCollection } from 'egret/platform/instantiation/common/serviceCollection';
 import { IWindowsMainService } from 'egret/platform/windows/common/windows';
 import { WindowsMainService } from 'egret/platform/windows/electron-main/windowsMainServices';
 import { ILifecycleService } from 'egret/platform/lifecycle/electron-main/lifecycleMain';
@@ -7,6 +7,8 @@ import { IOperationMainService } from 'egret/platform/operations/common/operatio
 import { AppMenu } from './menus';
 import { OperationMainService } from '../../platform/operations/electron-main/operationMain';
 import { IStateService } from '../../platform/state/common/state';
+import { MainIPCServer, EUIPorject } from './mainIPC';
+import { IEnvironmentService } from 'egret/platform/environment/common/environment';
 /**
  * 应用程序主线程
  */
@@ -15,10 +17,13 @@ export class CodeApplication {
 	private windowsMainService: IWindowsMainService;
 	private operationService: IOperationMainService;
 	constructor(
+		private mainIPCServer: MainIPCServer,
 		@IInstantiationService private instantiationService: IInstantiationService,
 		@ILifecycleService private lifecycleService: ILifecycleService,
+		@IEnvironmentService private environmentService: IEnvironmentService,
 		@IStateService private stateService: IStateService
 	) {
+		this.mainIPCServer.onOpenInstance(this.openInstance);
 		this.lifecycleService.ready();
 	}
 
@@ -43,6 +48,15 @@ export class CodeApplication {
 		this.operationService = new OperationMainService(this.stateService, this.windowsMainService);
 		this.instantiationService.addService(IOperationMainService, this.operationService);
 
+	}
+
+	private openInstance = (project: EUIPorject): void => {
+		console.log('open instance', project);
+		this.windowsMainService.open({
+			cli: this.environmentService.args,
+			folderPath: project ? project.folderPath : null,
+			file: project ? project.file : null
+		});
 	}
 
 	// /**

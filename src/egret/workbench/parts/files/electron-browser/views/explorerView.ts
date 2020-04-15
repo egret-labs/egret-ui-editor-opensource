@@ -202,7 +202,7 @@ export class ExplorerView extends PanelContentDom implements IModelRequirePart, 
 	}
 
 	private collapseAll(): Promise<void> {
-		if(!this.isCreated){
+		if (!this.isCreated) {
 			return Promise.resolve();
 		}
 		return this.explorerViewer.collapseAll();
@@ -256,10 +256,10 @@ export class ExplorerView extends PanelContentDom implements IModelRequirePart, 
 				sorter: sorter,
 				filter: this.filter
 			}, {
-				autoExpandSingleChildren: true,
-				keyboardSupport: true,
-				ariaLabel: localize('explorerView.createViewer.fileResourceManager','File Explorer')
-			});
+			autoExpandSingleChildren: true,
+			keyboardSupport: true,
+			ariaLabel: localize('explorerView.createViewer.fileResourceManager', 'File Explorer')
+		});
 	}
 
 	private fileOperation_handler(e: FileOperationEvent): void {
@@ -408,7 +408,7 @@ export class ExplorerView extends PanelContentDom implements IModelRequirePart, 
 			this.refreshFromEventFlag = true;
 			setTimeout(() => {
 				this.refreshFromEventFlag = false;
-				this.doRefresh().finally(()=> {
+				this.doRefresh().finally(() => {
 					this.refreshFromEventFlag = false;
 				});
 			}, 100);
@@ -444,16 +444,21 @@ export class ExplorerView extends PanelContentDom implements IModelRequirePart, 
 	 */
 	private openDefaultFile(): Promise<void> {
 		const workspace = this.workspaceService.getWorkspace();
-		if(!workspace){
+		if (!workspace) {
 			return Promise.resolve();
 		}
 		const file = workspace.file;
-		if(!file){
+		if (!file) {
 			return Promise.resolve();
 		}
-		return this.select(file, true).then(()=> {
-			if(this.hasSingleSelection(file)){
-				this.editorService.openEditor({ resource: file }, false);
+		return this.select(file, true).then(() => {
+			if (this.hasSingleSelection(file)) {
+				const extname = paths.extname(file.fsPath);
+				if (extname === '.json') {
+					this.editorService.openResEditor(file);
+				} else {
+					this.editorService.openEditor({ resource: file }, false);
+				}
 			}
 		});
 	}
@@ -665,7 +670,7 @@ export class ExplorerView extends PanelContentDom implements IModelRequirePart, 
 	 */
 	private reveal(element: any, relativeTop?: number): Promise<void> {
 		if (!this.explorerViewer) {
-			return Promise.resolve(void 0);
+			return Promise.resolve();
 		}
 		return new Promise<void>((resolve, reject) => {
 			this.explorerViewer.reveal(element, relativeTop).then(result => {
@@ -690,22 +695,22 @@ export class ExplorerView extends PanelContentDom implements IModelRequirePart, 
 	}
 
 	private treeContainer: HTMLDivElement;
-	render(container:HTMLElement) {
+	render(container: HTMLElement) {
 		this.doRender(container);
 	}
 
-	private  doRender(container:HTMLElement):void{
+	private doRender(container: HTMLElement): void {
 		this.treeContainer = document.createElement('div');
-		voluationToStyle(this.treeContainer.style,{ width: '100%', height: '100%' });
+		voluationToStyle(this.treeContainer.style, { width: '100%', height: '100%' });
 		container.appendChild(this.treeContainer);
 		//创建资源管理器的树
 		this.createViewer(this.treeContainer);
 		this.create();
 		this.explorerViewer.layout();
-		
+
 	}
 }
 export namespace ExplorerView {
 	export const ID: string = 'workbench.explorer';
-	export const TITLE: string = localize('explorerView.resourceManager','Explorer');
+	export const TITLE: string = localize('explorerView.resourceManager', 'Explorer');
 }

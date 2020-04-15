@@ -15,23 +15,45 @@ type WindowState = {
 	isMaximized?: boolean;
 };
 
+const enum ReadyState {
+
+	/**
+	 * This window has not loaded any HTML yet
+	 */
+	NONE,
+
+	/**
+	 * This window is loading HTML
+	 */
+	LOADING,
+
+	/**
+	 * This window is done loading HTML
+	 */
+	READY
+}
+
 /**
  * 窗体扩展
  */
 export class BrowserWindowEx implements IBrowserWindowEx {
 	private _onClosed: Emitter<void> = new Emitter<void>();
+	private _readyState: ReadyState;
+	private readonly whenReadyCallbacks: { (window: IBrowserWindowEx): void }[];
 	protected _id: number;
 	protected _win: Electron.BrowserWindow;
 
 	constructor(protected windowId: string,
 		@IEnvironmentService private environmentService: IEnvironmentService) {
+		this.whenReadyCallbacks = [];
+		this._readyState = ReadyState.NONE;
 		this.initWindow();
 	}
 
 	protected initWindow(): void {
 		const state = this.getWindowState();
 		const options: BrowserWindowConstructorOptions = {
-			backgroundColor:'#3b3b3b',
+			backgroundColor: '#3b3b3b',
 			width: state.width,
 			height: state.height,
 			x: state.x,
@@ -44,7 +66,7 @@ export class BrowserWindowEx implements IBrowserWindowEx {
 			}
 		};
 		this._win = new BrowserWindow(options);
-		if(state.isMaximized){
+		if (state.isMaximized) {
 			this._win.maximize();
 		}
 		this.saveNormalBounds();
@@ -55,11 +77,11 @@ export class BrowserWindowEx implements IBrowserWindowEx {
 		this._id = this._win.id;
 	}
 
-	private _config:IWindowConfiguration;
+	private _config: IWindowConfiguration;
 	/**
 	 * 当前窗体的配置
 	 */
-	public get config():IWindowConfiguration{
+	public get config(): IWindowConfiguration {
 		return this._config;
 	}
 
@@ -69,15 +91,20 @@ export class BrowserWindowEx implements IBrowserWindowEx {
 	/**
 	 * 重新加载
 	 */
-	public reload():void{
-		if(this._win){
+	public reload(): void {
+		if (this._win) {
 			this._win.reload();
 		}
 	}
 
 	public focus(): void {
-		if(this._win){
+		if (this._win) {
+			if (this._win.isMinimized()) {
+				this._win.restore();
+			}
+			this._win.setAlwaysOnTop(true);
 			this._win.focus();
+			this._win.setAlwaysOnTop(false);
 		}
 	}
 
@@ -86,11 +113,36 @@ export class BrowserWindowEx implements IBrowserWindowEx {
 		return this._win === window;
 	}
 
+	setReady(): void {
+		this._readyState = ReadyState.READY;
+
+		// inform all waiting promises that we are ready now
+		while (this.whenReadyCallbacks.length) {
+			this.whenReadyCallbacks.pop()!(this);
+		}
+	}
+
+	ready(): Promise<IBrowserWindowEx> {
+		return new Promise<IBrowserWindowEx>(resolve => {
+			if (this.isReady) {
+				return resolve(this);
+			}
+
+			// otherwise keep and call later when we are ready
+			this.whenReadyCallbacks.push(resolve);
+		});
+	}
+
+	get isReady(): boolean {
+		return this._readyState === ReadyState.READY;
+	}
+
 	/**
 	 * 打开窗体
 	 * @param config 窗体的打开配置
 	 */
 	public load(config: IWindowConfiguration): void {
+		this._readyState = ReadyState.LOADING;
 		this._config = config;
 		const url = this.getUrl(config);
 		this._win.loadURL(url);
@@ -100,7 +152,7 @@ export class BrowserWindowEx implements IBrowserWindowEx {
 			webContents.setVisualZoomLevelLimits(1, 1);
 			webContents.setLayoutZoomLevelLimits(0, 0);
 		});
-		webContents.addListener('will-navigate',e=>{
+		webContents.addListener('will-navigate', e => {
 			e.preventDefault();
 		});
 	}
@@ -127,10 +179,19 @@ export class BrowserWindowEx implements IBrowserWindowEx {
 	 * 关闭窗体
 	 */
 	public close(): void {
-		if (this._win) {
+		if (this._win && !this._win.isDestroyed()) {
 			this._win.close();
 		}
 	}
+
+	public sendWhenReady(channel: string, ...args: any[]): void {
+		if (this.isReady) {
+			this.send(channel, ...args);
+		} else {
+			this.ready().then(() => this.send(channel, ...args));
+		}
+	}
+
 	/**
 	 * 通过channel向渲染器进程发送异步消息
 	 * @param channel 信道
@@ -155,7 +216,7 @@ export class BrowserWindowEx implements IBrowserWindowEx {
 	}
 
 	private isEmptyBound(bound: Electron.Rectangle): boolean {
-		if(!bound){
+		if (!bound) {
 			return true;
 		}
 		return bound.x == 0 && bound.y == 0 && bound.width == 0 && bound.height == 0;
@@ -167,7 +228,7 @@ export class BrowserWindowEx implements IBrowserWindowEx {
 	}
 
 	private saveNormalBounds(): void {
-		if(this.isNormal()){
+		if (this.isNormal()) {
 			this.normalBounds = this._win.getBounds();
 		}
 	}
@@ -179,7 +240,7 @@ export class BrowserWindowEx implements IBrowserWindowEx {
 	private getAllWindowState(): any {
 		try {
 			const exist = fsextra.pathExistsSync(this.configFile);
-			if(exist){
+			if (exist) {
 				return fsextra.readJsonSync(this.configFile);
 			}
 		} catch (error) {
@@ -192,24 +253,24 @@ export class BrowserWindowEx implements IBrowserWindowEx {
 		const window = this._win;
 		let bounds = window.getBounds();
 		const isMaximized = window.isMaximized();
-		if(!this.isNormal() && !this.isEmptyBound(this.normalBounds)){
+		if (!this.isNormal() && !this.isEmptyBound(this.normalBounds)) {
 			bounds = this.normalBounds;
 		}
-		const state: WindowState = { 
+		const state: WindowState = {
 			x: bounds.x,
 			y: bounds.y,
 			height: bounds.height,
 			width: bounds.width,
 			isMaximized: isMaximized
-		 };
-		 const allState = this.getAllWindowState();
-		 allState[this.windowId] = state;
-		 try {
-			 fsextra.writeJsonSync(this.configFile, allState, { spaces: '\t' });
-		 } catch (error) {
-			 // ignore
-			 console.log(error);
-		 }
+		};
+		const allState = this.getAllWindowState();
+		allState[this.windowId] = state;
+		try {
+			fsextra.writeJsonSync(this.configFile, allState, { spaces: '\t' });
+		} catch (error) {
+			// ignore
+			console.log(error);
+		}
 	}
 
 	private getWindowState(): WindowState {
@@ -222,7 +283,6 @@ export class BrowserWindowEx implements IBrowserWindowEx {
 			};
 		}
 		let boundsState: WindowState = layoutConfig[this.windowId];
-		const isMaximized = layoutConfig.isMaximized;
 
 		let isInScreen = false;
 		const offsetW: number = 40;

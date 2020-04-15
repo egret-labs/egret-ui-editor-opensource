@@ -1,11 +1,5 @@
 import { createDecorator } from 'egret/platform/instantiation/common/instantiation';
-
-
-/**
- * 命令行参数
- */
-export interface ParsedArgs {
-}
+import { ParsedArgs } from './args';
 
 export const IEnvironmentService = createDecorator<IEnvironmentService>('environmentService');
 /**
@@ -41,5 +35,6 @@ export interface IEnvironmentService {
 	 * 编译多语言
 	 */
 	readonly buildNls:boolean;
+	readonly mainIPCHandle: string;
 
 }

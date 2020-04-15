@@ -1,5 +1,3 @@
-import { ParsedArgs } from 'egret/platform/environment/common/environment';
-
 import * as path from 'path';
 import * as arrays from 'egret/base/common/arrays';
 import * as strings from 'egret/base/common/strings';

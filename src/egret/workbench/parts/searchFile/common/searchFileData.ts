@@ -67,8 +67,8 @@ export class SearchFileData {
 			firstNode = content.slice(startIndex,endIndex+1);
 		}
 		if(firstNode){
-			const tmpArr = firstNode.match(/class.*?['|"](.*?)['|"]/);
-			if(tmpArr.length >= 2){
+			const tmpArr = firstNode.match(/class=.*?['|"](.*?)['|"]/);
+			if(tmpArr && tmpArr.length >= 2){
 				const className = tmpArr[1];
 				return className;
 			}

@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import { ClassNode, Prop } from '../../syntaxNodes';
 import { TempClassData } from './commons';
 import { isIgnore } from './ignores';
+import { IDisposable } from 'egret/base/common/lifecycle';
 
 const _inEgret = [
 	'/libs/modules/egret/',
@@ -115,7 +116,7 @@ const options: ts.CompilerOptions = { module: ts.ModuleKind.CommonJS };
 /**
  * Ts类解析器
  */
-export class TsParser {
+export class TsParser implements IDisposable {
 	private files: ts.Map<{ version: number }>;
 	private servicesHost: ts.LanguageServiceHost;
 	private services: ts.LanguageService;
@@ -433,5 +434,13 @@ export class TsParser {
 			ids.push(this.getId(types[i], checker));
 		}
 		return ids;
+	}
+
+	public dispose(): void {
+		if(this.services){
+			this.services.dispose();
+			this.services = null;
+		}
+		this.servicesHost = null;
 	}
 }

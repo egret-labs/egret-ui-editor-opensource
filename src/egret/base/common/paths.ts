@@ -295,7 +295,7 @@ export function isAbsolute_posix(path: string): boolean {
 }
 
 
-export function isEqualOrParent(path: string, candidate: string): boolean {
+export function isEqualOrParent(path: string, candidate: string, ignoreCase: boolean = true, separator = sep): boolean {
 	if (path === candidate) {
 		return true;
 	}
@@ -308,6 +308,7 @@ export function isEqualOrParent(path: string, candidate: string): boolean {
 		return false;
 	}
 
+	if (ignoreCase) {
 		const beginsWith = startsWithIgnoreCase(path, candidate);
 		if (!beginsWith) {
 			return false;
@@ -318,11 +319,18 @@ export function isEqualOrParent(path: string, candidate: string): boolean {
 		}
 
 		let sepOffset = candidate.length;
-		if (candidate.charAt(candidate.length - 1) === nativeSep) {
+		if (candidate.charAt(candidate.length - 1) === separator) {
 			sepOffset--; // adjust the expected sep offset in case our candidate already ends in separator character
 		}
 
-		return path.charAt(sepOffset) === nativeSep;
+		return path.charAt(sepOffset) === separator;
+	}
+
+	if (candidate.charAt(candidate.length - 1) !== separator) {
+		candidate += separator;
+	}
+
+	return path.indexOf(candidate) === 0;
 }
 
 export function isEqual(pathA: string, pathB: string): boolean {

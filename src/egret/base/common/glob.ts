@@ -331,7 +331,7 @@ function wrapRelativePattern(parsedPattern: ParsedStringPattern, arg2: string | 
 	}
 
 	return function (path, basename) {
-		if (!paths.isEqualOrParent(path, arg2.base)) {
+		if (!paths.isEqualOrParent(paths.normalize(path), paths.normalize(arg2.base))) {
 			return null;
 		}
 

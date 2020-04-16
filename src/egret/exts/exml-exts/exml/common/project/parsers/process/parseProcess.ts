@@ -1,9 +1,10 @@
 import { IFileChange } from 'egret/platform/files/common/files';
+import { IDisposable } from 'egret/base/common/lifecycle';
 
 /**
  * 解析接口
  */
-export interface IParserProcess {
+export interface IParserProcess extends IDisposable {
 	/**
 	 * 初始化
 	 * @param propertiesPath 

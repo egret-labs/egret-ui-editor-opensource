@@ -3,14 +3,16 @@ import { remote } from 'electron';
 
 import * as paths from 'path';
 import { localize } from 'egret/base/localization/nls';
+import { IDisposable } from 'egret/base/common/lifecycle';
 
 
 /**
  * IPC的服务进程，主进程
  */
-class IPCServer {
+class IPCServer implements IDisposable {
 	private callIndex: number = 0;
 	private child: ChildProcess;
+	private childPid: number = 0;
 	public onReceiveHandler: (messageId: string, data: any) => void;
 
 	constructor(modulePath: string) {
@@ -18,16 +20,26 @@ class IPCServer {
 		this.exit_handler = this.exit_handler.bind(this);
 		this.message_handler = this.message_handler.bind(this);
 
-		this.child = fork(paths.join(remote.app.getAppPath(), './out', modulePath));
+		// this.child = fork(paths.join(remote.app.getAppPath(), './out', modulePath));
+		this.child = fork(paths.join(remote.app.getAppPath(), './out', modulePath), [], { silent: true });
+		this.child.stdout!.on('data', (data: Buffer) => console.log(data.toString('utf8').trim()));
+		this.child.stderr!.on('data', (data: Buffer) => console.log(data.toString('utf8').trim()));
 		this.child.addListener('error', this.error_handler);
 		this.child.addListener('exit', this.exit_handler);
 		this.child.addListener('message', this.message_handler);
+		this.childPid = this.child.pid;
 	}
 
 	private error_handler(error: Error): void {
+		if((error as any).code === 'EPIPE'){
+			console.log('IPCServer', this.childPid, 'closed');
+			return;
+		}
+		console.log('IPCServer', this.childPid, error);
 	}
 
 	private exit_handler(code: number, signal: string): void {
+		console.log('IPCServer exit', this.childPid, code, signal);
 	}
 
 	private message_handler(msg: any): void {
@@ -87,6 +99,14 @@ class IPCServer {
 	private send(data: any): void {
 		if (this.child && this.child.connected) {
 			this.child.send(data);
+		}
+	}
+
+	public dispose(): void {
+		if (this.child) {
+			console.log('kill IPCServer', this.child.pid);
+			this.child.kill();
+			this.child = null;
 		}
 	}
 }

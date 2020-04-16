@@ -621,8 +621,8 @@ export class FileFilter implements IFilter {
 			this.egretProjectService.projectModel.project) {
 			const configs = this.egretProjectService.projectModel.resConfigs;
 			for (let i = 0; i < configs.length; i++) {
-				const element = configs[i];
-				if (paths.isEqual(paths.normalize(stat.resource.fsPath), paths.join(this.egretProjectService.projectModel.project.fsPath, element.url))) {
+				const element = paths.normalize(paths.join(this.egretProjectService.projectModel.project.fsPath, configs[i].url));
+				if (paths.isEqualOrParent(element, paths.normalize(stat.resource.fsPath))) {
 					return true;
 				}
 			}
@@ -646,11 +646,9 @@ export class FileFilter implements IFilter {
 			this.workspaceService.getWorkspace().uri
 		) {
 			for (let i = 0; i < exmlRoots.length; i++) {
-				const curExmlRoot = path.join(this.workspaceService.getWorkspace().uri.fsPath, exmlRoots[i].fsPath);
-				const result1 = paths.isEqualOrParent(stat.resource.fsPath, curExmlRoot);
-				const result2 = paths.isEqualOrParent(curExmlRoot, stat.resource.fsPath);
-				const result3 = curExmlRoot.toLocaleLowerCase() == stat.resource.fsPath.toLocaleLowerCase();
-				if (result1 || result2 || result3) {
+				const curExmlRoot = paths.normalize(path.join(this.workspaceService.getWorkspace().uri.fsPath, exmlRoots[i].fsPath));
+				const result = paths.isEqualOrParent(curExmlRoot, paths.normalize(stat.resource.fsPath));
+				if (result) {
 					return true;
 				}
 			}

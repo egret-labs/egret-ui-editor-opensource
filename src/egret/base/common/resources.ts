@@ -21,7 +21,7 @@ export function isEqualOrParent(resource: uri, candidate: uri): boolean {
 	// const resourcePath:string = resource.toString().toLocaleLowerCase();
 	// const candidatePath:string = candidate.toString().toLocaleLowerCase();
 	// return resourcePath.indexOf(candidatePath) === 0;
-	return paths.isEqualOrParent(resource.fsPath, candidate.fsPath);
+	return paths.isEqualOrParent(paths.normalize(resource.fsPath), paths.normalize(candidate.fsPath));
 }
 /**
  * 判断两个uri是否相等

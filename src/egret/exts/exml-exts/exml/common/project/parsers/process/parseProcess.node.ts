@@ -66,15 +66,15 @@ class ParserProcess extends NodeProcess implements IParserProcess {
 			}
 		}
 		let changeType: ClassChangedType = 'mix';
-		if(changes.length === 0) {
+		if (changes.length === 0) {
 			const item = changes[0];
-			if(isTs(item.resource)){
+			if (isTs(item.resource)) {
 				changeType = 'ts';
-			} else if(isExml(item.resource)){
+			} else if (isExml(item.resource)) {
 				changeType = 'exml';
 			}
 		}
-		if(changes.length > 0) {
+		if (changes.length > 0) {
 			this.doFilesChanged(changeType);
 		}
 		return Promise.resolve(void 0);
@@ -346,6 +346,14 @@ class ParserProcess extends NodeProcess implements IParserProcess {
 			}
 		}
 		return [];
+	}
+
+	public dispose(): void {
+		console.log('ParserProcess Disposed');
+		if (this.tsParser) {
+			this.tsParser.dispose();
+			this.tsParser = null;
+		}
 	}
 }
 

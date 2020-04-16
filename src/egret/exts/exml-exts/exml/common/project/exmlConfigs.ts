@@ -16,13 +16,15 @@ import { IInstantiationService } from 'egret/platform/instantiation/common/insta
 import { IParseCenter, createParseCenter, ClassChangedEvent, ClassChangedType } from './parsers/parser';
 import { ExmlCoreParser, ExmlCoreParserEUI, ExmlCoreParserGUI, EUI } from './parsers/core/commons';
 import { Emitter, Event } from 'egret/base/common/event';
+import { IDisposable } from 'egret/base/common/lifecycle';
 
 /**
  * 抽象的项目级别Exml配置
  */
-export abstract class AbstractExmlConfig {
+export abstract class AbstractExmlConfig implements IDisposable {
 
 	private _onCustomClassChanged: Emitter<ClassChangedType>;
+	private currentEngineInfo: EgretEngineInfo = null;
 
 	/**默认值字典，该字典由子类维护，该属性由当前类或当前类的子类进行维护*/
 	public defaultValueDic: { [prop: string]: any } = {};
@@ -80,10 +82,23 @@ export abstract class AbstractExmlConfig {
 		this._projectModel = projectModel;
 	}
 
+	public async engineChanged(): Promise<boolean> {
+		if (!this._projectModel || !this.currentEngineInfo) {
+			return Promise.resolve(false);
+		}
+		const enginInfo = await this._projectModel.getEngineInfo();
+		if (this.currentEngineInfo.path !== enginInfo.path ||
+			this.currentEngineInfo.version !== enginInfo.version) {
+			return true;
+		}
+		return false;
+	}
+
 	protected manifest: sax.Tag = null;
 	private idMap: { [id: string]: string } = {};
 	protected doInit(): Promise<void> {
 		let promise = this._projectModel.getEngineInfo().then(engineInfo => {
+			this.currentEngineInfo = engineInfo;
 			this._projectUri = this._projectModel.project;
 			this._manifestUri = this.getManifestUri(engineInfo);
 			this._egretLibUri = URI.file(engineInfo.egretLibPath);
@@ -138,7 +153,11 @@ export abstract class AbstractExmlConfig {
 	 */
 	public ensurePaserCenterInited(): Promise<void> {
 		return this.ensureLoaded().then(() => {
-			return this.parseCenter.init();
+			if (this.parseCenter) {
+				return this.parseCenter.init();
+			} else {
+				return Promise.reject(new Error('disposed'));
+			}
 		});
 	}
 
@@ -467,6 +486,13 @@ export abstract class AbstractExmlConfig {
 			return URI.file(path);
 		}
 		return null;
+	}
+
+	public dispose(): void {
+		if (this.parseCenter) {
+			this.parseCenter.dispose();
+			this.parseCenter = null;
+		}
 	}
 }
 

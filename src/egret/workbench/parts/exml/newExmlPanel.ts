@@ -289,9 +289,13 @@ export class NewExmlPanel extends InnerBtnWindow {
 		if (!this.wingProperty.design) {
 			this.wingProperty.design = {};
 		}
-		this.wingProperty.design.height = height;
-		this.wingProperty.design.width = width;
-		writeWingProperty(this.wingProperty, path.join(this.projectService.projectModel.project.fsPath, path.sep, 'wingProperties.json'));
+		if (this.wingProperty.design.height !== height ||
+			this.wingProperty.design.width !== width) {
+			this.wingProperty.design.height = height;
+			this.wingProperty.design.width = width;
+
+			writeWingProperty(this.wingProperty, path.join(this.projectService.projectModel.project.fsPath, path.sep, 'wingProperties.json'));
+		}
 	}
 
 	/**

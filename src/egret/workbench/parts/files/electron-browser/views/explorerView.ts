@@ -587,7 +587,7 @@ export class ExplorerView extends PanelContentDom implements IModelRequirePart, 
 			if (!stat.isRoot) {
 				for (let i = resolvedDirectories.length - 1; i >= 0; i--) {
 					const resource = resolvedDirectories[i];
-					if (paths.isEqualOrParent(stat.resource.fsPath, resource.fsPath)) {
+					if (paths.isEqualOrParent(paths.normalize(stat.resource.fsPath), paths.normalize(resource.fsPath))) {
 						resolvedDirectories.splice(i);
 					}
 				}

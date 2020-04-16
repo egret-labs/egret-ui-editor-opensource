@@ -9,6 +9,8 @@ import { TsParser } from '../core/tsParser';
 import { ExmlParser, EUIParser, GUIParser } from '../core/exmlParser';
 import { ClassNode } from '../../syntaxNodes';
 import { isIgnore } from '../core/ignores';
+import { IDisposable } from 'egret/base/common/lifecycle';
+import { dispose } from 'vs/base/common/lifecycle';
 
 /**
  * Ts解析中心，单进程版本
@@ -32,6 +34,7 @@ export class ParseCenterOriginal implements IParseCenter {
 
 	private inited:boolean = false;
 	private initPromise:Promise<void> = null;
+	private disposables: IDisposable[] = [];
 	/**
 	 * 初始化完成
 	 */
@@ -59,7 +62,7 @@ export class ParseCenterOriginal implements IParseCenter {
 			} else {
 				this.exmlParser = this.instantiationService.createInstance(GUIParser, this.workspaceService.getWorkspace().uri);
 			}
-			this.fileService.onFileChanges(e => this.fileChanged_handler(e));
+			this.disposables.push(this.fileService.onFileChanges(e => this.fileChanged_handler(e)));
 			return this.fileService.select(this.workspaceService.getWorkspace().uri, ['.exml', '.ts'], null,['node_modules','.git','.DS_Store']).then(fileStats => {
 				for (let i = 0; i < fileStats.length; i++) {
 					this.addFile(fileStats[i].resource);
@@ -340,5 +343,9 @@ export class ParseCenterOriginal implements IParseCenter {
 			}
 		}
 		return [];
+	}
+
+	public dispose(): void {
+		dispose(this.disposables);
 	}
 }

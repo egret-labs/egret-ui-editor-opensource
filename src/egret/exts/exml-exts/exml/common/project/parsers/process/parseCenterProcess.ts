@@ -5,6 +5,7 @@ import { IWorkspaceService } from 'egret/platform/workspace/common/workspace';
 import { ClassNode } from '../../syntaxNodes';
 import { IParserProcess } from './parseProcess';
 import { createChildProcess } from 'egret/base/parts/ipc/node/ipcserver.cp';
+import { IDisposable, dispose } from 'egret/base/common/lifecycle';
 
 /**
  * Ts解析中心，worker版本
@@ -12,6 +13,7 @@ import { createChildProcess } from 'egret/base/parts/ipc/node/ipcserver.cp';
 export class ParseCenterProcess implements IParseCenter {
 	private readonly _onClassChanges: Emitter<ClassChangedEvent>;
 	private childProcess: IParserProcess;
+	private disposables: IDisposable[] = [];
 	constructor(
 		private propertiesPath: string,
 		private uiLib: 'eui' | 'gui',
@@ -21,7 +23,7 @@ export class ParseCenterProcess implements IParseCenter {
 		this._onClassChanges = new Emitter<ClassChangedEvent>();
 		this.childProcess = createChildProcess<IParserProcess>('egret/exts/exml-exts/exml/common/project/parsers/process/parseProcess.node.js',
 			(messageId, data) => this.receive_handler(messageId, data));
-		this.fileService.onFileChanges(e => this.fileChanged_handler(e));
+		this.disposables.push(this.fileService.onFileChanges(e => this.fileChanged_handler(e)));
 	}
 
 
@@ -52,7 +54,13 @@ export class ParseCenterProcess implements IParseCenter {
 	}
 
 	private fileChanged_handler(e: FileChangesEvent): void {
-		this.childProcess.onFileChanged(e.changes);
+		if (this.childProcess) {
+			this.init().then(() => {
+				if (this.childProcess) {
+					this.childProcess.onFileChanged(e.changes);
+				}
+			});
+		}
 	}
 
 	private receive_handler(messageId: string, data: any): void {
@@ -103,7 +111,7 @@ export class ParseCenterProcess implements IParseCenter {
 
 		const event = new ClassChangedEvent();
 		event.type = data.type,
-		event.classMap = classNodeMap;
+			event.classMap = classNodeMap;
 		event.skinNames = allSkins;
 		event.skinToPathMap = skinClassNameToPath;
 		this._onClassChanges.fire(event);
@@ -114,5 +122,14 @@ export class ParseCenterProcess implements IParseCenter {
 	 */
 	public get onClassChanges(): Event<ClassChangedEvent> {
 		return this._onClassChanges.event;
+	}
+
+	public dispose(): void {
+		this.inited = false;
+		dispose(this.disposables);
+		if (this.childProcess) {
+			this.childProcess.dispose();
+			this.childProcess = null;
+		}
 	}
 }

@@ -9,9 +9,8 @@ import { dialog, ipcMain as ipc } from 'electron';
 import { isMacintosh } from 'egret/base/common/platform';
 import { normalizeNFC } from 'egret/base/common/strings';
 import * as fs from 'fs';
-import * as path from 'path';
 import { IStateService } from '../../state/common/state';
-import { dirname, isEqual } from '../../../base/common/paths';
+import { dirname, normalize, isEqualOrParent } from '../../../base/common/paths';
 import { localize } from '../../../base/localization/nls';
 import { ResdepotWindow } from './resdepotWindow';
 import URI from 'egret/base/common/uri';
@@ -374,7 +373,7 @@ export class WindowsMainService implements IWindowsMainService {
 				}
 			} else if (value instanceof URI) {
 				if (instance.openedFolderUri) {
-					if (isEqual(instance.openedFolderUri.fsPath, value.fsPath)) {
+					if (isEqualOrParent(normalize(value.fsPath), normalize(instance.openedFolderUri.fsPath))) {
 						return instance;
 					}
 				}

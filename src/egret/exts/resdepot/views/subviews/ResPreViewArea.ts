@@ -252,21 +252,24 @@ export class ResPreViewArea {
 				imageObj.height = scale9Grid.height;
 				imageObj.isSet = true;
 			}
+			const thisObj = this;
 			var window: Scale9WindowPanel = this.instantiationService.createInstance(Scale9WindowPanel, imageObj, (v) => {
 				// 设置一个九宫格数据
 				scale9Grid = v;
-				if (this.scale9_grid_editvo) {
+				if (thisObj.scale9_grid_editvo) {
 					if (scale9Grid) {
-						this.scale9_grid_editvo.x = scale9Grid.x;
-						this.scale9_grid_editvo.y = scale9Grid.y;
-						this.scale9_grid_editvo.w = scale9Grid.width;
-						this.scale9_grid_editvo.h = scale9Grid.height;
+						thisObj.scale9_grid_editvo.x = scale9Grid.x;
+						thisObj.scale9_grid_editvo.y = scale9Grid.y;
+						thisObj.scale9_grid_editvo.w = scale9Grid.width;
+						thisObj.scale9_grid_editvo.h = scale9Grid.height;
+						thisObj.scale9_grid_editvo.other = `${scale9Grid.x},${scale9Grid.y},${scale9Grid.width},${scale9Grid.height}`;
 					} else {
-						this.scale9_grid_editvo.x = this.scale9_grid_editvo.y = this.scale9_grid_editvo.w = this.scale9_grid_editvo.h = 0;
+						thisObj.scale9_grid_editvo.x = thisObj.scale9_grid_editvo.y = thisObj.scale9_grid_editvo.w = thisObj.scale9_grid_editvo.h = 0;
+						thisObj.scale9_grid_editvo.other = '';
 					}
-					this.resEventService.sendEvent(ResGlobalEvents.UPDATE_SCALE9, this.scale9_grid_editvo);
-					this.resEventService.sendEvent(ResGlobalEvents.UPDATE_PREVIEW, this.scale9_grid_editvo);
-					this.resEventService.sendEvent(ResGlobalEvents.Json_Modifyed, this.scale9_grid_editvo);
+					thisObj.resEventService.sendEvent(ResGlobalEvents.UPDATE_SCALE9, thisObj.scale9_grid_editvo);
+					thisObj.resEventService.sendEvent(ResGlobalEvents.UPDATE_PREVIEW, thisObj.scale9_grid_editvo);
+					thisObj.resEventService.sendEvent(ResGlobalEvents.Json_Modifyed, thisObj.scale9_grid_editvo);
 				}
 			});
 			window.open('root', true);

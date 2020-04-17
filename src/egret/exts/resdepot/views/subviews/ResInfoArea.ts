@@ -418,10 +418,8 @@ export class ResInfoArea {
 		// if (0 !== resvo.x || 0 !== resvo.y || 0 !== resvo.w || 0 !== resvo.h) {
 		// 	this.otherParamEdit.text = '' + resvo.x + ',' + resvo.y + ',' + resvo.w + ',' + resvo.h;
 		// }
-		if (resvo.other) {
-			if (this.otherParamEdit.text !== resvo.other) {
-				this.otherParamEdit.text = resvo.other;
-			}
+		if (this.otherParamEdit.text !== resvo.other) {
+			this.otherParamEdit.text = resvo.other;
 		}
 	}
 	/**

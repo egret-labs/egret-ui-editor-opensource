@@ -36,6 +36,7 @@ export class ExmlView implements IExmlView {
 	exmlEditor: ExmlEditor;
 
 	private _onZoomChanged: Emitter<number>;
+	private _onViewChanged: Emitter<ExmlView>;
 
 	constructor(
 		protected rootContainer: IExmlViewContainer,
@@ -46,6 +47,7 @@ export class ExmlView implements IExmlView {
 		@IClipboardService protected clipboardService: IClipboardService
 	) {
 		this._onZoomChanged = new Emitter<number>();
+		this._onViewChanged = new Emitter<ExmlView>();
 		this._helper = this.instantiationService.createInstance(ExmlModelHelper, this);
 		this.runtimeLayer = document.createElement('div');
 		this.runtimeLayer.setAttribute('className', 'runtime-layer');
@@ -58,6 +60,13 @@ export class ExmlView implements IExmlView {
 	 */
 	public get onZoomChanged(): Event<number> {
 		return this._onZoomChanged.event;
+	}
+
+	/**
+	 * 试图改变，比如：切换子视图
+	 */
+	public get onViewChanged(): Event<ExmlView> {
+		return this._onViewChanged.event;
 	}
 
 	/**
@@ -614,6 +623,7 @@ export class ExmlView implements IExmlView {
 		if (this.exmlEditor) {
 			this.exmlEditor.visible = true;
 		}
+		this._onViewChanged.fire(this);
 	}
 
 	/** 
@@ -627,6 +637,7 @@ export class ExmlView implements IExmlView {
 			this.exmlEditor.visible = false;
 		}
 		//TODO 派发viewChanged事件
+		this._onViewChanged.fire(this._subview);
 	}
 
 

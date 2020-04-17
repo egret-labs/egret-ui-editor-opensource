@@ -3,6 +3,8 @@ import { IExmlModel } from './exml/common/exml/models';
 import { Event, Emitter } from 'egret/base/common/event';
 import { IWorkbenchEditorService } from 'egret/workbench/services/editor/common/ediors';
 import { ExmlFileEditor } from './exml/browser/exmlFileEditor';
+import { IEditor } from 'egret/editor/core/editors';
+import { IDisposable } from 'egret/base/common/lifecycle';
 
 /**
  * 初始化ExmlModel服务实例
@@ -57,6 +59,7 @@ export interface IExmlModelServices {
  */
 export class ExmlModelServices implements IExmlModelServices {
 	_serviceBrand: any;
+	private currrentEditor: IEditor;
 	constructor(
 		@IWorkbenchEditorService private workbenchEditorService: IWorkbenchEditorService
 	) {
@@ -65,7 +68,16 @@ export class ExmlModelServices implements IExmlModelServices {
 	}
 
 	private modelChangedFlag = false;
+	private eventDisabledList: IDisposable[] = [];
 	private activeEditorChanged_handler(): void {
+		const editor = this.workbenchEditorService.getActiveEditor();
+		this.currrentEditor = editor;
+		while (this.eventDisabledList.length > 0) {
+			this.eventDisabledList.pop().dispose();
+		}
+		if (this.currrentEditor) {
+			this.eventDisabledList.push(this.currrentEditor.onViewChanged(() => this.onViewChanged()));
+		}
 		if (this.modelChangedFlag) {
 			return;
 		}
@@ -76,20 +88,26 @@ export class ExmlModelServices implements IExmlModelServices {
 		}, 50);
 	}
 
+	private onViewChanged(): void {
+		this.currentModelChanged();
+	}
+
 
 	private currentModelChanged(): void {
 		const currentEditor = this.workbenchEditorService.getActiveEditor();
-		if(currentEditor && (currentEditor as any).getEditorId() !== ExmlFileEditor.ID){
+		if (currentEditor && currentEditor.getEditorId() !== ExmlFileEditor.ID) {
 			this.doCurrentModelChanged(null);
 			return;
 		}
 		if (currentEditor) {
 			currentEditor.getModel().then(model => {
-				if (model && model.getModel()) {
-					this.doCurrentModelChanged(model.getModel() as IExmlModel);
-				} else {
-					this.doCurrentModelChanged(null);
+				let currentModel: IExmlModel = null;
+				if (currentEditor instanceof ExmlFileEditor) {
+					currentModel = currentEditor.getActiveExmlModel();
+				} else if (model) {
+					currentModel = model.getModel() as IExmlModel;
 				}
+				this.doCurrentModelChanged(currentModel);
 			});
 		} else {
 			this.doCurrentModelChanged(null);

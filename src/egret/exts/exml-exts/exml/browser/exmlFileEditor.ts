@@ -2,7 +2,7 @@ import { BaseEditor } from 'egret/editor/browser/baseEditor';
 import { EditorInput } from 'egret/editor/common/input/editorInput';
 import { IInstantiationService } from 'egret/platform/instantiation/common/instantiation';
 import { ExmlView } from './exmlView';
-import { IExmlFileEditorModel } from '../common/exml/models';
+import { IExmlFileEditorModel, IExmlModel } from '../common/exml/models';
 import { IExmlViewContainer, IExmlView, ICodeViewContainer, ICodeView } from './editors';
 import { dispose } from 'egret/base/common/lifecycle';
 import { ExmlFileEditorNavigation } from './exmlFileEditorNavigation';
@@ -184,8 +184,8 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 				}
 				this.resolveModelPromiseResolve = null;
 				this.resolveModelPromise = null;
-			}, (error)=> {
-				if(error.code === 'ENOENT'){
+			}, (error) => {
+				if (error.code === 'ENOENT') {
 					// 文件不存在，关闭当前editor
 					this.editorService.closeEditor(this);
 				}
@@ -233,6 +233,14 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 			}
 			return this.resolveModelPromise;
 		}
+	}
+
+	public getActiveExmlModel(): IExmlModel {
+		var view = this.exmlView;
+		while (view.subview) {
+			view = view.subview;
+		}
+		return view.getModel();
 	}
 
 	private navigationContainer: HTMLElement;
@@ -294,6 +302,7 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 
 	private initExmlView(): void {
 		this.exmlView.onZoomChanged(scale => this.zoomChanged_handler(scale));
+		this.exmlView.onViewChanged((view) => this.viewChanged_handler(view));
 		this.exmlView.absorbAble = this.navigation.adsorbed;
 		this.exmlView.lockGroup = this.navigation.lockGroup;
 		this.zoomChanged_handler(this.exmlView.getCurrentZoom());
@@ -374,7 +383,7 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 	}
 
 	private toogleAnimationEnable(enable: boolean): void {
-		if(!this._model){
+		if (!this._model) {
 			this.getModel().then((model) => {
 				model.getModel().getAnimationModel().setEnabled(enable);
 			});
@@ -418,6 +427,12 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 		if (this.navigation) {
 			this.navigation.updateZoomDisplay(scale);
 		}
+	}
+	private viewChanged_handler(view: ExmlView): void {
+		if (this.stateBar) {
+			this.stateBar.setModel(view.getModel());
+		}
+		this._onViewChanged.fire();
 	}
 	private adsortChanged_handler(value: boolean): void {
 		this.exmlView.absorbAble = value;

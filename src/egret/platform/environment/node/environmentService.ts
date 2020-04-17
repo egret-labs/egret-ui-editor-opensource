@@ -94,7 +94,7 @@ function getIPCHandle(userDataPath: string, type: string): string {
 }
 
 export function getEUIProject(args: ParsedArgs): { folderPath: string | null, file: string | null } {
-	console.log('args', args);
+	// console.log('args', args);
 	let folder: string;
 	if(args.folder){
 		if(typeof args.folder === 'string'){

@@ -41,7 +41,7 @@ export class ComponentSourceDataCreater{
 						const data:ComponentStat = new ComponentStat();
 						data.isFolder = false;
 						data.name = customClass[index].fullName;
-						data.id = customClass[index].fullName;
+						data.id = customFolder.id + '-' + customClass[index].fullName;
 						data.parent = customFolder;
 						data.isCustom = true;
 						customFolder.children.push(data);
@@ -56,7 +56,7 @@ export class ComponentSourceDataCreater{
 					const data:ComponentStat = new ComponentStat();
 					data.isFolder = false;
 					data.name = component.id;
-					data.id = component.id;
+					data.id = componentFolder.id + '-' + component.id;
 					data.parent = componentFolder;
 					data.target = component;
 					componentFolder.children.push(data);
@@ -70,7 +70,7 @@ export class ComponentSourceDataCreater{
 					const data:ComponentStat = new ComponentStat();
 					data.isFolder = false;
 					data.name = component.id;
-					data.id = component.id;
+					data.id = containerFolder.id + '-' + component.id;
 					data.parent = containerFolder;
 					data.target = component;
 					containerFolder.children.push(data);

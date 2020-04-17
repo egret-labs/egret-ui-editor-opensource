@@ -15,11 +15,11 @@ export class Scale9WindowPanel extends InnerBtnWindow {
 	// 组件引用
 	private Scale9Window: Scale9Window;
 	// 确认颜色时执行
-	public confirm: Function;
+	public confirm: (e: any) => void;
 	// 取消按钮事件
-	public cancel: Function;
+	public cancel: () => void;
 
-	constructor(image, confirmCallback: Function) {
+	constructor(image, confirmCallback: (e: any) => void) {
 		super();
 		// 设置窗体标题
 		this.title = localize('scale9WindowPanel.constructor.title', 'Scale9Grid Setting');
@@ -69,7 +69,7 @@ export class Scale9WindowPanel extends InnerBtnWindow {
 					width: this.Scale9Window.state.width,
 					height: this.Scale9Window.state.height
 				};
-				this.Scale9Window.state.axisIsShow ? this.confirm(v) : this.confirm(null);
+				this.Scale9Window.state.axisIsShow ? this.confirm( v) : this.confirm(null);
 				break;
 			// 取消按钮
 			case InnerButtonType.SECOND_BUTTON:

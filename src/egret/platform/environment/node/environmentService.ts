@@ -96,10 +96,10 @@ function getIPCHandle(userDataPath: string, type: string): string {
 export function getEUIProject(args: ParsedArgs): { folderPath: string | null, file: string | null } {
 	// console.log('args', args);
 	let folder: string;
-	if(args.folder){
-		if(typeof args.folder === 'string'){
+	if (args.folder) {
+		if (typeof args.folder === 'string') {
 			folder = args.folder;
-		} else if(isArray(args.folder)){
+		} else if (isArray(args.folder)) {
 			folder = args.folder.length > 0 ? args.folder[0] : null;
 		}
 	}
@@ -142,8 +142,6 @@ export function getEUIProject(args: ParsedArgs): { folderPath: string | null, fi
 		if (project) {
 			targetToOpen = project.folderPath;
 			targetFile = project.file;
-		} else {
-			targetToOpen = null;
 		}
 	}
 	return {
@@ -156,19 +154,19 @@ function getEUIProjectPath(target: string): { folderPath: string, file?: string 
 	try {
 		const stat = fs.statSync(target);
 		if (stat.isDirectory()) {
-			return { folderPath: target };
-		} else {
-			const project = findProjectFromFile(target);
-			if (!project) {
+			if (isEgretFolder(target)) {
 				return { folderPath: target };
-			} else {
-				return { folderPath: project, file: target };
 			}
 		}
 	} catch (error) {
 
 	}
-	return null;
+	const project = findProjectFromFile(target);
+	if (!project) {
+		return { folderPath: target };
+	} else {
+		return { folderPath: project, file: target };
+	}
 }
 
 function findProjectFromFile(file: string): string {
@@ -183,16 +181,27 @@ function findProjectFromFile(file: string): string {
 		return null;
 	}
 	try {
-		const items = fs.readdirSync(dir);
-		for (let i = 0; i < items.length; i++) {
-			const element = items[i];
-			const stat = fs.statSync(path.join(dir, element));
-			if (stat.isFile() && element === 'egretProperties.json') {
-				return dir;
-			}
+		if (isEgretFolder(dir)) {
+			return dir;
 		}
 	} catch (error) {
 
 	}
 	return findProjectFromFile(dir);
+}
+
+function isEgretFolder(dir: string): boolean {
+	try {
+		const items = fs.readdirSync(dir);
+		for (let i = 0; i < items.length; i++) {
+			const element = items[i];
+			const stat = fs.statSync(path.join(dir, element));
+			if (stat.isFile() && element === 'egretProperties.json') {
+				return true;
+			}
+		}
+	} catch (error) {
+
+	}
+	return false;
 }

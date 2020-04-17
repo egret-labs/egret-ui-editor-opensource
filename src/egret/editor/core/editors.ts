@@ -81,6 +81,7 @@ export interface IMultiPageEditor {
  * 编辑器接口
  */
 export interface IEditor {
+	readonly onViewChanged: Event<void>;
 	/**
 	 * 编辑器的输入流
 	 */
@@ -89,6 +90,10 @@ export interface IEditor {
 	 * 编辑器的id
 	 */
 	getId(): string;
+	/**
+	* 编辑器类型的标识
+	*/
+	getEditorId(): string;
 	/**
 	 * 给编辑器赋予焦点
 	 */

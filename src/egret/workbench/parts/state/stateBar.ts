@@ -88,8 +88,7 @@ export class StateBar {
 	private stateChanged_handler(): void {
 		this.doUpdateStates();
 	}
-
-
+	
 	private items: StateItemRenderer[] = [];
 	private itemListeners: IDisposable[] = [];
 	private doUpdateStates(): void {

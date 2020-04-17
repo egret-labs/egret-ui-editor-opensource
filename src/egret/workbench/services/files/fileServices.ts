@@ -165,7 +165,7 @@ export class FileService implements IFileService {
 		} else {
 			resource = (<IFileStat>arg1).resource;
 		}
-		return normalize(resource.fsPath);
+		return normalize(resource.fsPath, true);
 	}
 
 

@@ -2,11 +2,11 @@ import { IEditor } from 'egret/editor/core/editors';
 import { Panel } from '../../parts/browser/panel';
 import { EditorInput } from '../common/input/editorInput';
 import { IInstantiationService } from 'egret/platform/instantiation/common/instantiation';
-import { IFileEditorModel, IEditorModel, StateChange } from '../core/models';
+import { IFileEditorModel, StateChange } from '../core/models';
 import { IDisposable, dispose } from 'egret/base/common/lifecycle';
 import { IFileStat } from '../../platform/files/common/files';
 import { IWorkbenchEditorService } from '../../workbench/services/editor/common/ediors';
-import { addClass, removeClass } from 'egret/base/common/dom';
+import { Emitter, Event } from 'egret/base/common/event';
 
 
 /**
@@ -15,11 +15,17 @@ import { addClass, removeClass } from 'egret/base/common/dom';
 export abstract class BaseEditor extends Panel implements IEditor {
 	protected _input: EditorInput;
 	protected _IsPreview: boolean;
+	protected _onViewChanged: Emitter<void>;
 	constructor(
 		@IInstantiationService protected instantiationService: IInstantiationService,
 		@IWorkbenchEditorService protected editorService: IWorkbenchEditorService
 	) {
 		super('', '', null, '', instantiationService);
+		this._onViewChanged = new Emitter<void>();
+	}
+
+	public get onViewChanged(): Event<void> {
+		return this._onViewChanged.event;
 	}
 	/**
 	 * 窗体关闭

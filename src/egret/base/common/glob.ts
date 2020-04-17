@@ -21,7 +21,7 @@ const NO_PATH_REGEX = '[^/\\\\]';	// any non-slash and non-backslash
 const ALL_FORWARD_SLASHES = /\//g;
 
 
-interface SiblingsPattern { siblings: string[], name: string }
+interface SiblingsPattern { siblings: string[]; name: string; }
 interface ParsedExpressionPattern {
 	(path: string, basename: string, siblingsPatternFn: () => SiblingsPattern | Promise<SiblingsPattern>): string | Promise<string> /* the matching pattern */;
 	requiresSiblings?: boolean;

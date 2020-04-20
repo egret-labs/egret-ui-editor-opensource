@@ -84,8 +84,8 @@ export class CodeView implements ICodeView {
 		this._onDirtyStateChanged.fire(e);
 	}
 
-	public setActive(active: boolean): void {
-		this.codeEditor.setActive(active);
+	public setActive(active: boolean): Promise<void> {
+		return this.codeEditor.setActive(active);
 	}
 
 	public syncModelData(): Promise<void> {

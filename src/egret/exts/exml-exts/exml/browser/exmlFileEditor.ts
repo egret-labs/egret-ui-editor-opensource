@@ -350,24 +350,17 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 		this.updateTitle();
 	}
 
-	private updateEditMode(mode: EditMode): void {
+	private async updateEditMode(mode: EditMode): Promise<void> {
 		if (mode === EditMode.CODE) {
 			this.codeViewContainer.style.display = 'block';
 			this.exmlRootContainer.style.display = 'none';
 			if (this.codeView) {
-				this.codeView.setActive(true);
+				await this.codeView.setActive(true);
 				this.codeView.doResize();
 			}
 		} else {
-			let shouldRefresh: boolean = false;
-			if (this._currentMode === EditMode.CODE) {
-				shouldRefresh = this._isCodeDirty;
-			}
 			if (this.codeView) {
-				this.codeView.setActive(false);
-			}
-			if (shouldRefresh) {
-				this.refreshExml();
+				await this.codeView.setActive(false);
 			}
 			this.codeViewContainer.style.display = 'none';
 			this.exmlRootContainer.style.display = 'flex';

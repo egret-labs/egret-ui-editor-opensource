@@ -211,17 +211,17 @@ export class ResEditor extends BaseEditor implements IMultiPageEditor {
 		this.updateTitle();
 	}
 
-	private updateEditMode(mode: ResEditorMode): void {
+	private async updateEditMode(mode: ResEditorMode): Promise<void> {
 		if (mode === ResEditorMode.Code) {
 			this.codeViewContainer.style.display = 'block';
 			this.exmlRootContainer.style.display = 'none';
 			if (this.codeView) {
-				this.codeView.setActive(true);
+				await this.codeView.setActive(true);
 				this.codeView.layout();
 			}
 		} else {
 			if (this.codeView) {
-				this.codeView.setActive(false);
+				await this.codeView.setActive(false);
 			}
 			this.codeViewContainer.style.display = 'none';
 			this.exmlRootContainer.style.display = 'flex';

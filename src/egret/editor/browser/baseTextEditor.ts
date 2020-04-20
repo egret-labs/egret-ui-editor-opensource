@@ -73,8 +73,9 @@ export class BaseTextEditor implements IDisposable {
 	}
 
 
-	public setActive(active: boolean): void {
+	public setActive(active: boolean): Promise<void> {
 		this._isActive = active;
+		return Promise.resolve();
 	}
 
 	public getText(): string {

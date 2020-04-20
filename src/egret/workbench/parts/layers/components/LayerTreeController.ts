@@ -8,16 +8,20 @@ import platform = require('vs/base/common/platform');
 import { ITree, IController, ContextMenuEvent } from 'vs/base/parts/tree/browser/tree';
 import { INode } from 'egret/exts/exml-exts/exml/common/exml/treeNodes';
 import { LayerPanelUtil } from 'egret/workbench/parts/layers/components/LayerPanelUtil';
+import { localize } from 'egret/base/localization/nls';
+import { MenuItemConstructorOptions, MenuItem, remote, Menu } from 'electron';
 
+
+enum ContextMenuId {
+	COPY_DEFINITION = 'copyDefinition',
+}
 
 /**
  * 树控制器
  */
 export class DomLayerTreeController implements IController {
-
-	
 	constructor() {
-		// @IContextMenuService private contextMenuService: IContextMenuService
+		this.initContextMenuGeneral();
 	}
 	onceClick: boolean = false;
 	private intervalTag: any = -1;
@@ -117,11 +121,63 @@ export class DomLayerTreeController implements IController {
 
 		tree.setFocus(element);
 	}
+	/**
+	 * 添加一般的上下文菜单
+	 */
+	private initContextMenuGeneral(): void {
+		this.addContextMenuItemGeneral({ label: localize('layerView.contextMenu.tsCopyAction', 'Copy The Definition'), id: ContextMenuId.COPY_DEFINITION });
+	}
+
+	private contextMenuItemsGeneral: { type: 'separator' | 'normal', option: MenuItemConstructorOptions, item: MenuItem }[] = [];
+
+	/**
+	 * 在上下文菜单中添加一个项目
+	 * @param option 
+	 */
+	private addContextMenuItemGeneral(option: MenuItemConstructorOptions): void {
+		option.click = (item, win) => {
+			this.contextMenuGeneralSelected_handler(option.id as ContextMenuId);
+		};
+		const item = new remote.MenuItem(option);
+		this.contextMenuItemsGeneral.push({
+			type: 'normal',
+			option: option,
+			item: item
+		});
+	}
+
+	/**
+	 * 上下文菜单被选择
+	 * @param itemId 
+	 */
+	private contextMenuGeneralSelected_handler(action: ContextMenuId): void {
+		switch (action) {
+			case ContextMenuId.COPY_DEFINITION:
+				if(this.copySelectDefCallback){
+					this.copySelectDefCallback(this.contextMenuData);
+				}
+				break;
+			default:
+				break;
+		}
+	}
+
+	/**
+	 * 创建上下文菜单
+	 */
+	private createContextMenu(): Menu {
+		const menu = new remote.Menu();
+		for (let i = 0; i < this.contextMenuItemsGeneral.length; i++) {
+			menu.append(this.contextMenuItemsGeneral[i].item);
+		}
+		return menu;
+	}
 
 	/**
 	 * 拷贝节点
 	 */
 	public copySelectDefCallback: (element: INode[]) => void;
+	private contextMenuData: INode[] = [];
 
 	onContextMenu(tree: ITree, element: INode, event: ContextMenuEvent): boolean {
 		tree.setFocus(element);
@@ -133,8 +189,13 @@ export class DomLayerTreeController implements IController {
 		if (items.indexOf(element) === -1) {
 			items.push(element);
 		}
+		this.contextMenuData = items;
 
-		// TODO 暂时没有写右键操作 ，老版本wing 是拷贝引用
+		setTimeout(() => {
+			this.createContextMenu().popup({
+				window: remote.getCurrentWindow()
+			});
+		}, 10);
 		return true;
 	}
 

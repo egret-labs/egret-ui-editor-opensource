@@ -795,6 +795,10 @@
 		"s": "text",
 		"t": "text"
 	},
+	"layerView.contextMenu.tsCopyAction": {
+		"s": "Copy The Definition",
+		"t": "Copy The Definition"
+	},
 	"layerView.handleOperation.groupNodes": {
 		"s": "Group",
 		"t": "Group"

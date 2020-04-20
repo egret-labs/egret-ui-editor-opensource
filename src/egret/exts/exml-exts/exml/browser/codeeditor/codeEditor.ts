@@ -40,10 +40,10 @@ export class CodeEditor extends BaseTextEditor {
 		}
 	}
 
-	public setActive(active: boolean): void {
-		super.setActive(active);
+	public async setActive(active: boolean): Promise<void> {
+		await super.setActive(active);
 		if (!active) {
-			this.syncText();
+			await this.syncText();
 			this.updateSelectedNodeBySelection();
 		} else {
 			this.updateSelectionBySelectedNode();

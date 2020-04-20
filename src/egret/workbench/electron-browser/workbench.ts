@@ -23,7 +23,7 @@ import { ILifecycleService } from 'egret/platform/lifecycle/common/lifecycle';
 import { IClipboardService } from 'egret/platform/clipboard/common/clipboardService';
 import { ClipboardService } from 'egret/platform/clipboard/electron-browser/clipboardService';
 import { IWorkspaceService } from 'egret/platform/workspace/common/workspace';
-import { IStorageService } from '../../platform/storage/common/storage';
+import { IStorageService, StorageScope } from '../../platform/storage/common/storage';
 import { IFocusablePart, FocusablePartCommandHelper, KeybindingType } from '../../platform/operations/common/operations';
 import { RootCommands } from './commands/rootCommands';
 import { OpenFolderOperation, PromptAboutOperation, WingPropertyOperation, KeybindingSettingOperation, CheckUpdateOperation, FeedbackOperation, PrompQuickOpenOperation, CloseCurrentOperation, ReportIssueOperation } from './commands/rootOperations';
@@ -47,6 +47,7 @@ import { IExplorerService } from '../parts/files/common/explorer';
 import URI from 'egret/base/common/uri';
 import * as paths from 'egret/base/common/paths';
 
+const WORKBENCH_GLOBAL_STORAGE = 'workbenchGlobalStorageKey';
 /**
  * 工作台
  */
@@ -241,7 +242,6 @@ export class Workbench implements IFocusablePart {
 		initExtensions(this.instantiationService);
 		initCodeService(this.instantiationService);
 		this.initParts();
-		this.restoreLayout();
 		this.registerListeners();
 		ipcRenderer.send('egret:workbenchReady', this.windowService.getCurrentWindowId());
 	}
@@ -263,7 +263,7 @@ export class Workbench implements IFocusablePart {
 		this.boxContainer.registPanel(this.instantiationService.createInstance(PanelDom, OutputView.ID, OutputView.TITLE, OutputView, './resources/icons/console.png'));
 		this.boxContainer.registPanel(this.instantiationService.createInstance(PanelDom, AlignView.ID, AlignView.TITLE, AlignView, './resources/icons/alignment.svg'));
 		this.boxContainer.registPanel(this.instantiationService.createInstance(PanelDom, AnimationView.ID, AnimationView.TITLE, AnimationView, './resources/icons/animation.svg'));
-		this.boxContainer.applyLayoutConfig(DefaultBoxLayoutTemplate);
+		this.restoreLayout();
 		this.editorPart.initDocument(this.boxContainer.getDocumentElement().render as boxlayout.DocumentGroup);
 	}
 	/**
@@ -291,10 +291,30 @@ export class Workbench implements IFocusablePart {
 	}
 
 	private shutdown(): void {
+		this.storeLayoutState();
 		this.shutdownPanels();
 	}
 	private storeLayoutState(): void {
-		//TODO 存储布局状态，需要杨宁的支持
+		const documentLayout = this.boxContainer.getLayoutConfig();
+		// 移除布局中与具体项目有关的DocumentElement panels信息
+		this.removeDocumentLayout(documentLayout);
+		const layoutConfigStr = JSON.stringify(documentLayout);
+		this.storageService.store(WORKBENCH_GLOBAL_STORAGE, layoutConfigStr, StorageScope.GLOBAL);
+	}
+
+	private removeDocumentLayout(layoutConfig: any): void {
+		if (!layoutConfig) {
+			return;
+		}
+		if (layoutConfig.type === 'DocumentElement') {
+			if (layoutConfig.layoutInfo &&
+				layoutConfig.layoutInfo.render) {
+				layoutConfig.layoutInfo.render.panels = [];
+			}
+		} else {
+			this.removeDocumentLayout(layoutConfig.firstElement);
+			this.removeDocumentLayout(layoutConfig.secondElement);
+		}
 	}
 
 	private shutdownPanels(): void {
@@ -325,5 +345,13 @@ export class Workbench implements IFocusablePart {
 	 * 恢复布局
 	 */
 	private restoreLayout(): void {
+		const layoutConfigStr = this.storageService.get(WORKBENCH_GLOBAL_STORAGE, StorageScope.GLOBAL);
+		if (layoutConfigStr) {
+			const layoutConfig = JSON.parse(layoutConfigStr);
+			this.removeDocumentLayout(layoutConfig);
+			this.boxContainer.applyLayoutConfig(layoutConfig);
+		} else {
+			this.boxContainer.applyLayoutConfig(DefaultBoxLayoutTemplate);
+		}
 	}
 }

@@ -1072,16 +1072,16 @@
 		"t": "新建文件夹"
 	},
 	"menus.setFileMenu.openFolder": {
-		"s": "Open Folder(&&P)",
-		"t": "打开文件夹(&&P)"
+		"s": "Open Egret Project(&&P)",
+		"t": "打开 Egret 项目(&&P)"
 	},
 	"menus.setFileMenu.openFolderOpt": {
-		"s": "Open folder (project) operation",
-		"t": "打开文件夹(项目)操作"
+		"s": "Open egret project operation",
+		"t": "打开 Egret 项目操作"
 	},
 	"menus.setFileMenu.openFolderTxt": {
-		"s": "Open Folder",
-		"t": "打开文件夹"
+		"s": "OOpen Egret Project",
+		"t": "打开 Egret 项目"
 	},
 	"menus.setFileMenu.quit": {
 		"s": "Quit(&&X)",

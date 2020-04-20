@@ -795,6 +795,10 @@
 		"s": "text",
 		"t": "文本"
 	},
+	"layerView.contextMenu.tsCopyAction": {
+		"s": "Copy The Definition",
+		"t": "复制自定义"
+	},
 	"layerView.handleOperation.groupNodes": {
 		"s": "Group",
 		"t": "合组"

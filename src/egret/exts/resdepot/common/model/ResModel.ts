@@ -347,8 +347,8 @@ export class ResModel extends egret.EventDispatcher {
 				let excuteUrls: number = 0;//已经检查的url数量
 				for (let i: number = 0; i < urls.length; i++) {
 					excuteUrls++;
-					fsextra.pathExists(urls[i]).then(isFile => {
-						if (isFile) {
+					fsextra.stat(urls[i]).then(stat => {
+						if (stat.isFile()) {
 							excuteUrls--;
 							allDragInFileUrls.push(urls[i]);
 							if (excuteUrls === 0) {
@@ -363,6 +363,8 @@ export class ResModel extends egret.EventDispatcher {
 								}
 							});
 						}
+					}, (err)=> {
+						// ignore error
 					});
 				}
 			} else {

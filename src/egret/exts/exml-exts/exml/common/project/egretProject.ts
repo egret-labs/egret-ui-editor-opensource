@@ -5,6 +5,15 @@ import { EgretEngineInfo, engineInfo } from './egretSDK';
 import URI from 'egret/base/common/uri';
 import { INotificationService } from 'egret/platform/notification/common/notifications';
 
+const defaultWingProperties = {
+	resourcePlugin:{
+		configs:[{
+			configPath:'resource/default.res.json',
+			relativePath:'resource/'
+		}]
+	},
+	theme:'resource/default.thm.json'
+};
 
 /**
  * 项目数据层模块
@@ -54,6 +63,11 @@ export class EgretProjectModel {
 		if (!this.wingPropertiesParserd) {
 			this.wingPropertiesParserd = true;
 			try {
+				const isExist = fs.existsSync(this.wingPropertie.fsPath);
+				if(!isExist){
+					fs.writeFileSync(this.wingPropertie.fsPath, JSON.stringify(defaultWingProperties, null, 2));
+					return defaultWingProperties;
+				}
 				const wingPropertyStr: string = fs.readFileSync(this.wingPropertie.fsPath, { encoding: 'utf8' });
 				this.wingProperties = JSON.parse(wingPropertyStr);
 			} catch (error) { }
@@ -68,6 +82,10 @@ export class EgretProjectModel {
 			try {
 				const egretPropertyStr: string = fs.readFileSync(this.egretPropertie.fsPath, { encoding: 'utf8' });
 				this.egretProperties = JSON.parse(egretPropertyStr);
+				// const exmlRoot = this.exmlRoot;
+				// if(exmlRoot.length === 0) {
+					
+				// }
 			} catch (error) { }
 		}
 		return this.egretProperties;

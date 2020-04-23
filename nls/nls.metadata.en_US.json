@@ -643,6 +643,10 @@
 		"s": "Rename",
 		"t": "Rename"
 	},
+	"fileController.initContextMenuGeneral.settings": {
+		"s": "EUI Project Setting",
+		"t": "EUI Project Setting"
+	},
 	"fileDragAndDrop2.handleExplorerDrop.confirmContinueMove": {
 		"s": "You are moving a file with unsaved changes. Do you want to continue?",
 		"t": "You are moving a file with unsaved changes. Do you want to continue?"

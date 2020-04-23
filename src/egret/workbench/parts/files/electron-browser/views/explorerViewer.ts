@@ -33,6 +33,7 @@ import './media/explorer.css';
 import { IWorkbenchEditorService } from 'egret/workbench/services/editor/common/ediors';
 import { IFileModelService } from 'egret/workbench/services/editor/common/models';
 import { IDragAndDropData } from 'vs/base/browser/dnd';
+import { RootCommands } from 'egret/workbench/electron-browser/commands/rootCommands';
 
 /**
  * 文件数据源
@@ -230,8 +231,36 @@ enum ContextMenuId {
 	PASTE = 'paste',
 	COPY_PATH = 'copyPath',
 	RENAME = 'rename',
-	DELETE = 'delete'
+	DELETE = 'delete',
+	SETTINGS = 'settings'
 }
+
+type FileStatSelectionInfo = {
+	/**
+	 * true: 选中项包含皮肤根目录的父节点 
+	 */
+	hasExmlRootParent: boolean;
+	/**
+	 * true: 选中项包含皮肤根目录的子节点
+	 */
+	hasExmlRootChild: boolean;
+	/**
+	 * true: 选中项包含皮肤根目录的同级节点
+	 */
+	hasExmlRootSibling: boolean;
+	/**
+	 * true: 选中项包含皮肤根目录
+	 */
+	hasExmlRoot: boolean;
+	/***
+	 * true: 选中项是单个文件夹 
+	 */
+	isSingleDirectory: boolean,
+	/**
+	 * true: 选中项是单个文件
+	 */
+	isSingleFile: boolean;
+};
 
 /**
  * 处理用户交互
@@ -241,6 +270,7 @@ export class FileController extends DefaultController implements IController, ID
 
 	constructor(
 		@IWorkbenchEditorService private editorService: IWorkbenchEditorService,
+		@IEgretProjectService private egretProjectService: IEgretProjectService,
 		@IWorkspaceService private workspaceService: IWorkspaceService,
 		@IClipboardService private clipboardService: IClipboardService,
 		@IWindowClientService private windowService: IWindowClientService,
@@ -268,6 +298,8 @@ export class FileController extends DefaultController implements IController, ID
 		this.addContextMenuSeparator();
 		this.addContextMenuItemGeneral({ label: localize('fileController.initContextMenuGeneral.rename', 'Rename'), id: ContextMenuId.RENAME });
 		this.addContextMenuItemGeneral({ label: localize('system.delete', 'Delete'), id: ContextMenuId.DELETE });
+		this.addContextMenuSeparator();
+		this.addContextMenuItemGeneral({ label: localize('fileController.initContextMenuGeneral.settings', 'EUI Project Setting'), id: ContextMenuId.SETTINGS });
 	}
 
 	private contextMenuItemsGeneral: { type: 'separator' | 'normal', option: MenuItemConstructorOptions, item: MenuItem }[] = [];
@@ -344,6 +376,9 @@ export class FileController extends DefaultController implements IController, ID
 				break;
 			case ContextMenuId.DELETE:
 				this.operationService.executeCommand(FileRootCommands.DELETE_FILE);
+				break;
+			case ContextMenuId.SETTINGS:
+				this.operationService.executeCommand(RootCommands.WING_PROPERTY);
 				break;
 			default:
 				break;
@@ -460,7 +495,75 @@ export class FileController extends DefaultController implements IController, ID
 		}
 	}
 
-	private statSelections: FileStat[] = [];
+	/**
+	 * 
+	 * 
+	 * @param selections 
+	 * @returns
+	 */
+	private statSelections(selections: FileStat[]): FileStatSelectionInfo {
+		let result: FileStatSelectionInfo = {
+			hasExmlRootParent: false,
+			hasExmlRootChild: false,
+			hasExmlRootSibling: false,
+			hasExmlRoot: false,
+			isSingleDirectory: false,
+			isSingleFile: false
+		};
+		if (selections.length === 0) {
+			return result;
+		}
+		let exmlRoots: URI[] = [];
+		if (this.egretProjectService.projectModel &&
+			this.egretProjectService.projectModel.exmlRoot.length > 0
+		) {
+			exmlRoots = exmlRoots.concat(this.egretProjectService.projectModel.exmlRoot);
+		}
+		let workspaceRoot: string = null;
+		if (exmlRoots.length > 0 &&
+			this.workspaceService.getWorkspace() &&
+			this.workspaceService.getWorkspace().uri
+		) {
+			workspaceRoot = this.workspaceService.getWorkspace().uri.fsPath;
+		}
+		if (workspaceRoot && selections.length > 0) {
+			for (let i = 0; i < selections.length; i++) {
+				const item = selections[i];
+				let isSibling: boolean = true;
+				for (let j = 0; j < exmlRoots.length; j++) {
+					const curExmlRoot = paths.normalize(path.join(workspaceRoot, exmlRoots[j].fsPath));
+					const isExmlRoot = paths.isEqual(curExmlRoot, paths.normalize(item.resource.fsPath));
+					if (isExmlRoot) {
+						result.hasExmlRoot = true;
+						isSibling = false;
+					}
+					const value = paths.isEqualOrParent(paths.normalize(item.resource.fsPath), curExmlRoot);
+					if (value && !isExmlRoot) {
+						result.hasExmlRootChild = true;
+						isSibling = false;
+					}
+					const value2 = paths.isEqualOrParent(curExmlRoot, paths.normalize(item.resource.fsPath));
+					if (value2 && !isExmlRoot) {
+						result.hasExmlRootParent = true;
+						isSibling = false;
+					}
+				}
+				if (isSibling) {
+					result.hasExmlRootSibling = isSibling;
+				}
+			}
+		}
+		if (selections.length === 1) {
+			if (selections[0].isDirectory) {
+				result.isSingleDirectory = true;
+			} else {
+				result.isSingleFile = true;
+			}
+		}
+
+		return result;
+	}
+
 	/**
 	 * 请求菜单内容的时候
 	 * @param tree 
@@ -476,15 +579,16 @@ export class FileController extends DefaultController implements IController, ID
 		if (!stat) {
 			return;
 		}
-		this.statSelections = tree.getSelection() as FileStat[];
-		if (this.statSelections.length == 0 ||
-			this.statSelections.length == 1 ||
-			this.statSelections.indexOf(stat) == -1) {
-			this.statSelections = [stat];
-			tree.setSelection(this.statSelections);
+		let statSelections = tree.getSelection() as FileStat[];
+		if (statSelections.length == 0 ||
+			statSelections.length == 1 ||
+			statSelections.indexOf(stat) == -1) {
+			statSelections = [stat];
+			tree.setSelection(statSelections);
 		}
 		this.setContextMenuEnable(true);
-		if (stat.isRoot || (stat.name === 'resource' && stat.isDirectory && stat.parent && stat.parent.isRoot)) {
+		const stats = this.statSelections(statSelections);
+		if (stats.hasExmlRootParent) {
 			this.setContextMenuEnable(false, ContextMenuId.NEW_EXML);
 			this.setContextMenuEnable(false, ContextMenuId.NEW_FOLDER);
 			this.setContextMenuEnable(false, ContextMenuId.COPY);
@@ -492,20 +596,27 @@ export class FileController extends DefaultController implements IController, ID
 			this.setContextMenuEnable(false, ContextMenuId.RENAME);
 			this.setContextMenuEnable(false, ContextMenuId.DELETE);
 		} else {
-			if (this.statSelections.length > 1) {
+			if (stats.hasExmlRoot) {
+				this.setContextMenuEnable(false, ContextMenuId.RENAME);
+				this.setContextMenuEnable(false, ContextMenuId.COPY);
+			}
+			if (stats.hasExmlRootSibling) {
 				this.setContextMenuEnable(false, ContextMenuId.NEW_EXML);
 				this.setContextMenuEnable(false, ContextMenuId.NEW_FOLDER);
-				this.setContextMenuEnable(false, ContextMenuId.RENAME);
 				this.setContextMenuEnable(false, ContextMenuId.PASTE);
-			} else {
-				if (stat.isDirectory) {
+				this.setContextMenuEnable(false, ContextMenuId.RENAME);
+			}
+			if (stats.hasExmlRootChild) {
+				if (stats.isSingleDirectory) {
 					if (!this.clipboardService.hasFiles()) {
 						this.setContextMenuEnable(false, ContextMenuId.PASTE);
 					}
 				} else {
-					this.setContextMenuEnable(false, ContextMenuId.NEW_EXML);
-					this.setContextMenuEnable(false, ContextMenuId.NEW_FOLDER);
 					this.setContextMenuEnable(false, ContextMenuId.PASTE);
+					if(!stats.isSingleFile) {
+						this.setContextMenuEnable(false, ContextMenuId.NEW_EXML);
+						this.setContextMenuEnable(false, ContextMenuId.NEW_FOLDER);
+					}
 				}
 			}
 		}
@@ -647,7 +758,7 @@ export class FileFilter implements IFilter {
 		) {
 			for (let i = 0; i < exmlRoots.length; i++) {
 				const curExmlRoot = paths.normalize(path.join(this.workspaceService.getWorkspace().uri.fsPath, exmlRoots[i].fsPath));
-				const result = paths.isEqualOrParent(curExmlRoot, paths.normalize(stat.resource.fsPath));
+				const result = paths.isEqualOrParent(paths.normalize(stat.resource.fsPath), curExmlRoot);
 				if (result) {
 					return true;
 				}

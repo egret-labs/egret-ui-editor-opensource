@@ -643,6 +643,10 @@
 		"s": "Rename",
 		"t": "重命名"
 	},
+	"fileController.initContextMenuGeneral.settings": {
+		"s": "EUI Project Setting",
+		"t": "EUI 项目设置"
+	},
 	"fileDragAndDrop2.handleExplorerDrop.confirmContinueMove": {
 		"s": "You are moving a file with unsaved changes. Do you want to continue?",
 		"t": "你要移动的文件未保存，是否要继续移动？"

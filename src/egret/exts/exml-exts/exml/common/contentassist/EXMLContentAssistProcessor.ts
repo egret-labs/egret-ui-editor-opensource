@@ -77,7 +77,7 @@ export class EXMLContentAssistProcessor {
 		if (schemaStrategy) {
 			this.schema = new SchemaModel();
 			const engine = await this._projectModel.getEngineInfo();
-			this.labelStyle.init(this.getthemePath(this._projectModel.wingPropertie.fsPath));
+			this.labelStyle.init(this.getthemePath(this._projectModel.wingPropertiesUri.fsPath));
 			schemaStrategy.init(this._exmlConfig);
 			let xsd: sax.Tag = null;
 			if (isEUI) {

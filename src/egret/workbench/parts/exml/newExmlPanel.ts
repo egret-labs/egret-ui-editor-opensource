@@ -20,7 +20,6 @@ import { IInstantiationService } from '../../../platform/instantiation/common/in
 import { localize } from '../../../base/localization/nls';
 import { INotificationService } from 'egret/platform/notification/common/notifications';
 import { trim } from 'egret/base/common/strings';
-import { writeWingProperty } from 'egret/exts/exml-exts/egretChecker';
 
 //TODO 这个文件不应该放在这里，  应该放到Exml相关的文件夹里，和对应的命令放到一起
 /**
@@ -58,7 +57,6 @@ export class NewExmlPanel extends InnerBtnWindow {
 
 	constructor(
 		_euiHost: any,
-		private wingProperty: any,
 		@IFileService private fileService: IFileService,
 		@IExplorerService private explorerService: IExplorerService,
 		@IEgretProjectService private projectService: IEgretProjectService,
@@ -270,7 +268,7 @@ export class NewExmlPanel extends InnerBtnWindow {
 	private getDefaultSize(): { height: number; width: number } {
 		let height: number = 300;
 		let width: number = 400;
-		const design = this.wingProperty.design;
+		const design = this.projectService.projectModel.getExmlConfig('design');
 		if (design) {
 			if (typeof design.height !== 'undefined') {
 				height = design.height;
@@ -286,15 +284,12 @@ export class NewExmlPanel extends InnerBtnWindow {
 	}
 
 	private saveDefaultSize(height: number | string, width: number | string) {
-		if (!this.wingProperty.design) {
-			this.wingProperty.design = {};
-		}
-		if (this.wingProperty.design.height !== height ||
-			this.wingProperty.design.width !== width) {
-			this.wingProperty.design.height = height;
-			this.wingProperty.design.width = width;
-
-			writeWingProperty(this.wingProperty, path.join(this.projectService.projectModel.project.fsPath, path.sep, 'wingProperties.json'));
+		const design = this.projectService.projectModel.getExmlConfig('design');
+		if (design.height !== height ||
+			design.width !== width) {
+			design.height = height;
+			design.width = width;
+			this.projectService.projectModel.setExmlConfig('design', design);
 		}
 	}
 

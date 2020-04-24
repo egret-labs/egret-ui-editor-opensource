@@ -29,17 +29,17 @@ export class EgretChecker {
 		if (project.UILibrary == 'eui') {
 			let wingPropertyJson = null;
 			//step1 先确保得到一个WingProperty
-			if (!fs.existsSync(project.wingPropertie.fsPath)) {
+			if (!fs.existsSync(project.wingPropertiesUri.fsPath)) {
 				wingPropertyJson = TemplateTool.getWingProperties();
-				writeWingProperty(wingPropertyJson,project.wingPropertie.fsPath);
+				writeWingProperty(wingPropertyJson,project.wingPropertiesUri.fsPath);
 			} else {
 				try {
-					const wingPropertyStr = fs.readFileSync(project.wingPropertie.fsPath, 'utf8');
+					const wingPropertyStr = fs.readFileSync(project.wingPropertiesUri.fsPath, 'utf8');
 					wingPropertyJson = JSON.parse(wingPropertyStr);
 				} catch (error) { }
 				if (!wingPropertyJson) {
 					wingPropertyJson = TemplateTool.getWingProperties();
-					writeWingProperty(wingPropertyJson,project.wingPropertie.fsPath);
+					writeWingProperty(wingPropertyJson,project.wingPropertiesUri.fsPath);
 				}
 			}
 

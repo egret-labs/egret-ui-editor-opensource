@@ -2084,8 +2084,8 @@
 		"t": "Open Folder"
 	},
 	"wingPropertyPanel.constructor,title": {
-		"s": "wingProperty.json Setting",
-		"t": "wingProperty.json Setting"
+		"s": "EUI Project Setting",
+		"t": "EUI Project Setting"
 	},
 	"wingPropertyPanel.render.browse": {
 		"s": "Browse",
@@ -2107,6 +2107,14 @@
 		"s": "Select add theme file",
 		"t": "Select add theme file"
 	},
+	"wingPropertyPanel.render.skin": {
+		"s": "Skin:",
+		"t": "Skin:"
+	},
+	"wingPropertyPanel.render.selectSkinRoot": {
+		"s": "Select Add skins root path",
+		"t": "Select Add skins root path"
+	},
 	"wingPropertyPanel.render.topic": {
 		"s": "Theme:",
 		"t": "Theme:"
@@ -2123,9 +2131,17 @@
 		"s": "Unable to find file {0}",
 		"t": "Unable to find file {0}"
 	},
+	"wingPropertyPanel.validateProperty.notExistFolder": {
+		"s": "Unable to find folder {0}",
+		"t": "Unable to find folder {0}"
+	},
 	"wingPropertyPanel.validateProperty.resourceFileNotExist": {
 		"s": "Need to set the resource configuration file",
 		"t": "Need to set the resource configuration file"
+	},
+	"wingPropertyPanel.validateProperty.skinRootNotExist": {
+		"s": "Need to set the skins root path",
+		"t": "Need to set the skins root path"
 	},
 	"workbench.initCommands.deleteSys": {
 		"s": "System delete command",

@@ -5,16 +5,6 @@ import { EgretEngineInfo, engineInfo } from './egretSDK';
 import URI from 'egret/base/common/uri';
 import { INotificationService } from 'egret/platform/notification/common/notifications';
 
-const defaultWingProperties = {
-	resourcePlugin: {
-		configs: [{
-			configPath: 'resource/default.res.json',
-			relativePath: 'resource/'
-		}]
-	},
-	theme: 'resource/default.thm.json'
-};
-
 /**
  * 项目数据层模块
  */
@@ -63,11 +53,6 @@ export class EgretProjectModel {
 		if (!this.wingPropertiesParserd) {
 			this.wingPropertiesParserd = true;
 			try {
-				const isExist = fs.existsSync(this.wingPropertiesUri.fsPath);
-				if (!isExist) {
-					fs.writeFileSync(this.wingPropertiesUri.fsPath, JSON.stringify(defaultWingProperties, null, 2));
-					return defaultWingProperties;
-				}
 				const wingPropertyStr: string = fs.readFileSync(this.wingPropertiesUri.fsPath, { encoding: 'utf8' });
 				this.wingProperties = JSON.parse(wingPropertyStr);
 			} catch (error) { }
@@ -86,18 +71,7 @@ export class EgretProjectModel {
 				if (exmlRoot.length === 0) {
 					// 没有配置exmlRoot，写入默认值
 					this._exmlRoots.push(URI.file('resource/eui_skins'));
-					if (!this.egretProperties.eui) {
-						this.egretProperties.eui = {
-							exmlRoot: [
-								'resource/eui_skins'
-							]
-						};
-					} else {
-						this.egretProperties.eui.exmlRoot = [
-							'resource/eui_skins'
-						];
-					}
-					fs.writeFileSync(this.egretPropertiesUri.fsPath, JSON.stringify(this.egretProperties, null, 2));
+					this.saveEgretProperties();
 				}
 			} catch (error) { }
 		}
@@ -111,6 +85,27 @@ export class EgretProjectModel {
 	public saveWingProperties() {
 		fs.writeFileSync(this.wingPropertiesUri.fsPath, JSON.stringify(this.getWingProperties(), null, 2));
 	}
+
+	public saveEgretProperties() {
+		if (!this.egretProperties.eui) {
+			this.egretProperties.eui = {};
+		}
+		let formatedExmlRoots: string[] = [];
+		for (let i = 0; i < this._exmlRoots.length; i++) {
+			const item = this._exmlRoots[i];
+			let skin = item.fsPath.replace(/\\/g, '/');
+			if (skin.startsWith('/')) {
+				skin = skin.slice(1);
+			}
+			if (skin.endsWith('/')) {
+				skin = skin.slice(0, skin.length - 1);
+			}
+			formatedExmlRoots.push(skin);
+		}
+		this.egretProperties.eui.exmlRoot = formatedExmlRoots;
+		fs.writeFileSync(this.egretPropertiesUri.fsPath, JSON.stringify(this.egretProperties, null, 2));
+	}
+
 	private exmlProperties: any = null;
 	private exmlPropertiesParserd: boolean = false;
 	private getExmlProperties(): any {

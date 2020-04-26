@@ -2084,8 +2084,8 @@
 		"t": "打开文件夹"
 	},
 	"wingPropertyPanel.constructor,title": {
-		"s": "wingProperty.json Setting",
-		"t": "WingProperty.json 设置"
+		"s": "EUI Project Setting",
+		"t": "EUI 项目设置"
 	},
 	"wingPropertyPanel.render.browse": {
 		"s": "Browse",
@@ -2107,6 +2107,14 @@
 		"s": "Select add theme file",
 		"t": "选择添加主题文件"
 	},
+	"wingPropertyPanel.render.skin": {
+		"s": "Skin:",
+		"t": "皮肤:"
+	},
+	"wingPropertyPanel.render.selectSkinRoot": {
+		"s": "Select Add skins root path",
+		"t": "选择添加皮肤文件根路径"
+	},
 	"wingPropertyPanel.render.topic": {
 		"s": "Theme:",
 		"t": "主题:"
@@ -2123,9 +2131,17 @@
 		"s": "Unable to find file {0}",
 		"t": "无法找到 {0} 文件"
 	},
+	"wingPropertyPanel.validateProperty.notExistFolder": {
+		"s": "Unable to find folder {0}",
+		"t": "无法找到 {0} 文件夹"
+	},
 	"wingPropertyPanel.validateProperty.resourceFileNotExist": {
 		"s": "Need to set the resource configuration file",
 		"t": "需要设置资源配置文件"
+	},
+	"wingPropertyPanel.validateProperty.skinRootNotExist": {
+		"s": "Need to set the skins root path",
+		"t": "需要设置皮肤文件根路径"
 	},
 	"workbench.initCommands.deleteSys": {
 		"s": "System delete command",

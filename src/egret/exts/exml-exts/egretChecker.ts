@@ -43,7 +43,7 @@ export class EgretChecker {
 				}
 			}
 
-			const prompts = validateProperty(wingPropertyJson, project.project.fsPath);
+			const prompts = validateProperty(wingPropertyJson, project.exmlRoot, project.project.fsPath);
 			if (!prompts.isResExist || !prompts.isThemeExist || prompts.prompts.length > 0) {
 				return this.promptPanel(wingPropertyJson, project);
 				// .then(() => {

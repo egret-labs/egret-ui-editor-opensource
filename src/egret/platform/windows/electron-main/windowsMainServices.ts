@@ -156,7 +156,7 @@ export class WindowsMainService implements IWindowsMainService {
 			const useExistInstance = this.getWindowInstance(URI.file(options.folderPath));
 			if (useExistInstance) {
 				if (options.file) {
-					console.log('open file', useExistInstance.mainWindow.isReady,  options.file);
+					console.log('open file', useExistInstance.mainWindow.isReady, options.file);
 					useExistInstance.mainWindow.sendWhenReady('egret:openFile', options.file);
 				}
 				useExistInstance.mainWindow.focus();
@@ -175,6 +175,7 @@ export class WindowsMainService implements IWindowsMainService {
 						if (unloaded) {
 							this.stateService.setItem(LAST_OPNED_FOLDER, options.folderPath);
 							const configuration: IWindowConfiguration = this.getConfiguration(options);
+							targetIntance.closeRes();
 							targetIntance.mainWindow.load(configuration);
 							targetIntance.openedFolderUri = URI.file(options.folderPath);
 						}
@@ -197,6 +198,13 @@ export class WindowsMainService implements IWindowsMainService {
 			});
 			refreshPromise.then(unloaded => {
 				if (unloaded) {
+					const targetIntance = this.getWindowInstance(focusedWindow.id);
+					if (targetIntance) {
+						if (targetIntance.resWindow &&
+							targetIntance.resWindow.id !== focusedWindow.id) {
+							targetIntance.closeRes();
+						}
+					}
 					focusedWindow.reload();
 				}
 			});
@@ -237,7 +245,7 @@ export class WindowsMainService implements IWindowsMainService {
 	private onWindowClosed(window: IBrowserWindowEx): void {
 		for (let i = 0; i < this.openedWindows.length; i++) {
 			const instance = this.openedWindows[i];
-			if(instance.resWindow === window){
+			if (instance.resWindow === window) {
 				instance.resWindow = null;
 				break;
 			}

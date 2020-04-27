@@ -11,12 +11,10 @@ import { IClipboardService } from 'egret/platform/clipboard/common/clipboardServ
 import { ClipboardService } from 'egret/platform/clipboard/electron-browser/clipboardService';
 import { IWorkspaceService } from 'egret/platform/workspace/common/workspace';
 import { remote, ipcRenderer } from 'electron';
-import { IStorageService, StorageScope } from '../../platform/storage/common/storage';
+import { IStorageService } from '../../platform/storage/common/storage';
 import { IFocusablePart, FocusablePartCommandHelper } from '../../platform/operations/common/operations';
 import { FileRootCommands } from '../parts/files/commands/fileRootCommands';
 import { IOperationBrowserService } from '../../platform/operations/common/operations-browser';
-import { checkUpdateFromLauncher } from 'egret/platform/launcher/common/launchers';
-import { ResEditor } from 'egret/exts/resdepot/views/resEditor';
 import { SaveActiveOperation, SaveAllOperation } from '../parts/files/commands/fileRootOperations';
 import { WorkbenchEditorService } from '../services/editor/common/editorService';
 import { IWorkbenchEditorService } from '../services/editor/common/ediors';
@@ -30,6 +28,7 @@ import { initProject } from 'egret/exts/exml-exts/project';
 import { ResEditorPart } from 'egret/editor/common/parts/resEditorPart';
 import { IOutputService } from '../parts/output/common/output';
 import { initResEventService } from 'egret/exts/resdepot/events/ResEventService';
+import * as path from 'path';
 
 class EmptyOutputService implements IOutputService {
 	_serviceBrand: any;
@@ -92,6 +91,7 @@ export class ResdepotWorkbench implements IFocusablePart {
 
 		this.focusablePartCommandHelper = this.instantiationService.createInstance(FocusablePartCommandHelper);
 		this.initCommands();
+		this.updateWindowTitle();
 		ipcRenderer.on('egret:openResEditor', this.onOpenResEditorHandler);
 	}
 
@@ -195,6 +195,20 @@ export class ResdepotWorkbench implements IFocusablePart {
 		this.serviceCollection.set(IOutputService, new EmptyOutputService());
 	}
 
+	private updateWindowTitle(): void {
+		const window = remote.getCurrentWindow();
+		let projectName = '';
+		const workspace = this.workspaceService.getWorkspace();
+		if (workspace && workspace.uri) {
+			projectName = path.basename(workspace.uri.fsPath);
+		}
+		if (projectName) {
+			window.setTitle(`${projectName} - Res Editor`);
+		} else {
+			window.setTitle(`Res Editor`);
+		}
+	}
+
 	private onEditorChanged(): void {
 		const window = remote.getCurrentWindow();
 		const editor = this.editorPart.getActiveEditor();
@@ -202,7 +216,6 @@ export class ResdepotWorkbench implements IFocusablePart {
 			window.close();
 			return;
 		}
-		window.setTitle('Res Editor - ' + (editor as ResEditor).getTitle());
 	}
 
 	private registerListeners(): void {

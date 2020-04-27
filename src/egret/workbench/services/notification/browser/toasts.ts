@@ -35,7 +35,7 @@ export class Toast {
 	 * @param content 内容
 	 * @param duration 持续时间
 	 */
-	public show(content: string | HTMLElement, duration: number = 3000): void {
+	public show(content: string | HTMLElement, duration: number = 5000): void {
 		this.isShow = true;
 		this.container.innerHTML = '';
 		if (content instanceof HTMLElement) {

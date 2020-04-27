@@ -747,9 +747,6 @@ export class FileFilter implements IFilter {
 			this.egretProjectService.projectModel.exmlRoot.length > 0
 		) {
 			exmlRoots = exmlRoots.concat(this.egretProjectService.projectModel.exmlRoot);
-		} else {
-			// 没有设置皮肤路径则添加默认皮肤路径
-			exmlRoots.push(URI.file('resource/eui_skins'));
 		}
 		if (stat.isDirectory &&
 			exmlRoots.length > 0 &&

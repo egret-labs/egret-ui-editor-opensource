@@ -261,7 +261,10 @@ export class WingPropertyPanel extends InnerBtnWindow {
 			if (filePaths) {
 				if (filePaths.length === 1) {
 					temp = filePaths[0];
-					const relativerPath = path.relative(this.projectModel.project.fsPath, temp);
+					let relativerPath = path.relative(this.projectModel.project.fsPath, temp);
+					if(relativerPath === ''){
+						relativerPath = '.';
+					}
 					//判断是否已经存在
 					if (!this.isExmlRootExist(temp)) {
 						if (relativerPath.indexOf('..') === -1) {

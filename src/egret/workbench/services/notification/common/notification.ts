@@ -60,7 +60,10 @@ export class SimpleNotificationService implements INotificationService {
 			}
 			this.toast.onHided = () => this.hided_handler();
 			const content = msg.msg.content;
-			const duration = msg.msg.duration > 0 ? msg.msg.duration * 1000 : 0;
+			let duration = 5000;
+			if (typeof msg.msg.duration === 'number') {
+				duration = msg.msg.duration > 0 ? msg.msg.duration * 1000 : 0;
+			}
 			this.toast.show(content, duration);
 		}
 	}

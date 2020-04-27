@@ -1291,6 +1291,10 @@
 		"s": "The width cannot be empty.",
 		"t": "宽度不能为空!"
 	},
+	"newExmlPanel.validate.pathInvalid": {
+		"s": "Please add this folder ({0}) as the root directory of the skin files in the EUI project settings.",
+		"t": "请先在 EUI 项目设置中将该文件夹({0})添加到皮肤文件根目录"
+	},
 	"newFolderOperation.run.notExistParentFolder": {
 		"s": "There is no parent folder and cannot create a folder",
 		"t": "不存在父级文件夹，无法创建文件夹"

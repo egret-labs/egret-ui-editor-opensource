@@ -660,6 +660,8 @@ export class ResUtil {
 				type = ResType.TYPE_TEXT;
 			} else if (ResType.FONT_TYPE_EXTS.indexOf(extension) !== -1) {
 				type = ResType.TYPE_FONT;
+			} else if (ResType.TTF_TYPE_EXTS.indexOf(extension) !== -1) {
+				type = ResType.TYPE_TTF;
 			} else if (ResType.JSON_TYPE_EXTS.indexOf(extension) !== -1) {
 				// check is sheet type
 				let file_path: string = url;

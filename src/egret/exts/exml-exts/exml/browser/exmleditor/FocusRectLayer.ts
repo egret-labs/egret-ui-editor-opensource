@@ -61,7 +61,6 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 	public get onScaleChanged(): VSEvent<number> {
 		return this._onScaleChanged.event;
 	}
-
 	private container: HTMLElement;
 
 	//视图代理焦点对象，
@@ -78,6 +77,9 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 		this.viewAdapterFocusRect = new FocusRect(container, false);
 		this.viewAdapterFocusRect.render(container);
 		this.rootFocusRect = new FocusRectExt(container);
+		this.rootFocusRect.addEventListener(P9TTargetEvent.DISPLAYCHANGE, () => {
+			this.dispatchEvent(new Event(FocusRectLayerEvent.VIEWCHANGED, null));
+		}, this);
 		this.viewAdapterFocusRect.addFocusRect(this.rootFocusRect);
 		HtmlElementResizeHelper.watch(container);
 
@@ -916,15 +918,6 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 			this.container.parentElement.style.cursor = '';
 		}
 	}
-
-
-
-
-
-
-
-
-
 
 	private attachMouseEvent(): void {
 		document.addEventListener('mousemove', this.notifyMouseEvent, true);

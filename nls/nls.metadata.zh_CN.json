@@ -175,6 +175,42 @@
 		"s": "Assets",
 		"t": "资源库"
 	},
+	"BackgroundSettingPanel.title": {
+		"s": "Background Setting",
+		"t": "背景设置"
+	},
+	"BackgroundSettingPanel.button.current": {
+		"s": "Apply to current",
+		"t": "应用到当前文件"
+	},
+	"BackgroundSettingPanel.button.global": {
+		"s": "Apply to all",
+		"t": "应用到所有文件"
+	},
+	"BackgroundSettingPanel.button.addImage": {
+		"s": "Add",
+		"t": "添加"
+	},
+	"BackgroundSettingPanel.defaultBackground": {
+		"s": "Default Background",
+		"t": "默认背景"
+	},
+	"BackgroundSettingPanel.customBackground": {
+		"s": "Custom Background",
+		"t": "自定义背景"
+	},
+	"BackgroundSettingPanel.backgroundColor": {
+		"s": "Background Color",
+		"t": "背景色"
+	},
+	"BackgroundSettingPanel.backgroundImage": {
+		"s": "Background Image",
+		"t": "背景图"
+	},
+	"BackgroundSettingPanel.backgroundAlpha": {
+		"s": "Alpha:",
+		"t": "透明度:"
+	},
 	"boundPart.render.anchorX": {
 		"s": "Anchor X:",
 		"t": "X锚点:"

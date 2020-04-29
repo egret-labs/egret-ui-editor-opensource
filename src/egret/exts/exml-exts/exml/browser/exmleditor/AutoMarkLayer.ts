@@ -10,6 +10,7 @@ import { Point } from './data/Point';
 import { IContainer, isInstanceof, INode, IScroller } from '../../common/exml/treeNodes';
 import { MatrixUtil } from './t9transformer/util/MatrixUtil';
 import { localize } from 'egret/base/localization/nls';
+import { IExmlModel } from '../../common/exml/models';
 
 /**
  * 目标容器的自动表示层，可以控制是拖入到指定容易还是平行拖拽。
@@ -100,6 +101,38 @@ export class AutoMarkLayer implements IDisposable {
 		this.tipDisplay.style.borderRadius = '5px';
 		this.tipDisplay.style.left = '50%';
 		this.tipDisplay.style.bottom = '5%';
+	}
+
+	
+	private exmlModel: IExmlModel;
+	public setup(exmlModel: IExmlModel) {
+		this.detachEventListener();
+		this.exmlModel = exmlModel;
+		this.attachEventListener();
+	}
+
+	private listenerList: IDisposable[] = [];
+	private attachEventListener(): void {
+		if (this.exmlModel) {
+			this.listenerList.push(this.exmlModel.onDesignConfigChanged(this.exmlModelConfigChangeHandle, this));
+		}
+	}
+	private detachEventListener(): void {
+		if (this.exmlModel) {
+			this.listenerList.forEach(v => { v.dispose() });
+			this.listenerList = [];
+		}
+	}
+
+	private exmlModelConfigChangeHandle(): void {
+		let userAutoLayerMark: boolean = this.exmlModel.getDesignConfig().globalAutoLayerMarkEnable;
+		if (!userAutoLayerMark) {
+			this.containerMarkRect.stopMark();
+			this.isStartMark = false;
+		}
+		// if (this.userTip.stage) {
+		// 	this.showUserTip();
+		// }
 	}
 
 	cacheStageX: number;

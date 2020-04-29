@@ -20,6 +20,7 @@ import { CodeView } from './codeView';
 import { OutputView } from 'egret/workbench/parts/output/browser/outputView';
 import { AnimationView } from 'egret/workbench/parts/animation/electron-browser/views/animationView';
 import { IMultiPageEditor } from 'egret/editor/core/editors';
+import { BackgroundSettingPanel } from './exmleditor/background/BackgroundSettingPanel';
 
 //TODO 销毁方法
 /**
@@ -289,6 +290,7 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 		this.navigation.onAdsortChanged(e => this.adsortChanged_handler(e));
 		this.navigation.onLockGroupChanged(e => this.lockGroupChanged_handler(e));
 		this.navigation.onGrabChanged(e => this.grabChanged_handler(e));
+		this.navigation.onBackgroundClick(e => this.backgroundClick_handler());
 
 		this.stateBarContainer = document.createElement('div');
 		this.stateBarContainer.style.width = '100%';
@@ -436,6 +438,17 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 	}
 	private grabChanged_handler(value: boolean): void {
 		this.exmlView.exmlEditor.dragEnabled = value;
+	}
+	private async backgroundClick_handler() {
+		let exmlModel: IExmlModel;
+		if (!this._model) {
+			const model = await this.getModel();
+			exmlModel = model.getModel();
+		} else {
+			exmlModel = this._model.getModel();
+		}
+		var window = this.instantiationService.createInstance(BackgroundSettingPanel, exmlModel);
+		window.open('root', true);
 	}
 
 	private _container: HTMLElement;

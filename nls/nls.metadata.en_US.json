@@ -175,6 +175,42 @@
 		"s": "Assets",
 		"t": "Assets"
 	},
+	"BackgroundSettingPanel.title": {
+		"s": "Background Setting",
+		"t": "Background Setting"
+	},
+	"BackgroundSettingPanel.button.current": {
+		"s": "Apply to current",
+		"t": "Apply to current"
+	},
+	"BackgroundSettingPanel.button.global": {
+		"s": "Apply to global",
+		"t": "Apply to global"
+	},
+	"BackgroundSettingPanel.button.addImage": {
+		"s": "Add",
+		"t": "Add"
+	},
+	"BackgroundSettingPanel.defaultBackground": {
+		"s": "Default Background",
+		"t": "Default Background"
+	},
+	"BackgroundSettingPanel.customBackground": {
+		"s": "Custom Background",
+		"t": "Custom Background"
+	},
+	"BackgroundSettingPanel.backgroundColor": {
+		"s": "Background Color",
+		"t": "Background Color"
+	},
+	"BackgroundSettingPanel.backgroundImage": {
+		"s": "Background Image",
+		"t": "Background Image"
+	},
+	"BackgroundSettingPanel.backgroundAlpha": {
+		"s": "Alpha:",
+		"t": "Alpha:"
+	},
 	"boundPart.render.anchorX": {
 		"s": "Anchor X:",
 		"t": "Anchor X:"

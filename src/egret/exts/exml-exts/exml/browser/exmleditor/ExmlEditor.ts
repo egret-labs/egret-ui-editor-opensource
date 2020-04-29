@@ -218,6 +218,7 @@ export class ExmlEditor extends EventDispatcher {
 		this.transformLayer.focusRectLayer = this.focusRectLayer;
 		//启动拖拽工作器
 		this.dragWorker.setup(exmlModel, this.runtime);
+		this.autoMarkLayer.setup(exmlModel);
 		this.setuped = true;
 	}
 	public clearRuntime():void{
@@ -261,11 +262,13 @@ export class ExmlEditor extends EventDispatcher {
 	public transformContainer: HTMLElement;
 	private initView(): void {
 		this.gridContainer = document.createElement('div');
+		this.gridContainer.className = 'exmleditor-gridContainer';
 		this.backgroundContainer.appendChild(this.gridContainer);
 		this.setStyle(this.gridContainer);
 		this.gridAlpha = this.gridAlpha;//刷新网格的透明度
 
 		this.focusRectContainer = document.createElement('div');
+		this.focusRectContainer.className = 'exmleditor-focusRectContainer';
 		this.container.appendChild(this.focusRectContainer);
 		this.setStyle(this.focusRectContainer);
 

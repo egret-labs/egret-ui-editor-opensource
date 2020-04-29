@@ -20,12 +20,14 @@ export class ResType extends egret.HashObject {
 	public static TYPE_SHEET: string;
 	public static TYPE_FONT: string;
 	public static TYPE_SOUND: string;
+	public static TYPE_TTF: string;
 	//资源扩展
 	public static IMAGE_TYPE_EXTS: Array<string>;
 	public static SOUND_TYPE_EXTS: Array<string>;
 	public static TEXT_TYPE_EXTS: Array<string>;
 	public static FONT_TYPE_EXTS: Array<string>;
 	public static JSON_TYPE_EXTS: Array<string>;
+	public static TTF_TYPE_EXTS: Array<string>;
 	//附加参数类型
 	public static SOUND_TYPE: Array<string>;
 	public static DEFAULT_TYPE: Array<any>;
@@ -39,12 +41,14 @@ ResType.TYPE_JSON = 'json';
 ResType.TYPE_SHEET = 'sheet';
 ResType.TYPE_FONT = 'font';
 ResType.TYPE_SOUND = 'sound';
+ResType.TYPE_TTF = 'ttf';
 
 ResType.IMAGE_TYPE_EXTS = ['png', 'jpg', 'jpeg', 'bmp', 'gif', 'svg'];
 ResType.SOUND_TYPE_EXTS = ['mp3', 'wav', 'm4a'];
 ResType.TEXT_TYPE_EXTS = ['txt'];
 ResType.FONT_TYPE_EXTS = ['fnt'];
 ResType.JSON_TYPE_EXTS = ['json'];
+ResType.TTF_TYPE_EXTS = ['ttf'];
 
 ResType.SOUND_TYPE = ['music', 'effect'];
 
@@ -55,5 +59,6 @@ ResType.DEFAULT_TYPE = [
 	{ 'name': '文本', 'key': 'text', 'isShow': true, 'type': 'default', 'exts': ResType.TEXT_TYPE_EXTS },
 	{ 'name': '字体', 'key': 'font', 'isShow': true, 'type': 'default', 'exts': ResType.FONT_TYPE_EXTS },
 	{ 'name': 'Sheet', 'key': 'sheet', 'isShow': false, 'type': 'default', 'exts': ResType.JSON_TYPE_EXTS },
-	{ 'name': 'Json', 'key': 'json', 'isShow': true, 'type': 'default', 'exts': ResType.JSON_TYPE_EXTS }
+	{ 'name': 'Json', 'key': 'json', 'isShow': true, 'type': 'default', 'exts': ResType.JSON_TYPE_EXTS },
+	{ 'name': 'ttf', 'key': 'ttf', 'isShow': true, 'type': 'default', 'exts': ResType.TTF_TYPE_EXTS }
 ];

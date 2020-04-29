@@ -775,12 +775,13 @@ class InnerBtnWindowCls extends InnerWindowCls implements IInnerBtnWindow {
 			this.button2.style.marginRight = '20px';
 			this.toDisposes.push(this.button2.onClick(target => this.button2Click_handler(target)));
 
-			const spacer = document.createElement('div');
-			spacer.style.width = '100%';
-			this._buttonContainer.appendChild(spacer);
+			// const spacer = document.createElement('div');
+			// spacer.style.width = '100%';
+			// this._buttonContainer.appendChild(spacer);
 
 			this.button3 = new SystemButton(this._buttonContainer);
 			this.button3.label = arg3.label;
+			this.button3.style.marginRight = '20px';
 			this.toDisposes.push(this.button3.onClick(target => this.button3Click_handler(target)));
 		} else if (arg1 && arg2) {
 			this.button1 = new SystemButton(this._buttonContainer);

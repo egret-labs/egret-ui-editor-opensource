@@ -18,6 +18,7 @@ export class ExmlFileEditorNavigation {
 	private _onEditModeChanged: Emitter<EditMode>;
 	private _onPreviewOptionChanged: Emitter<void>;
 	private _onRefreshClick: Emitter<void>;
+	private _onBackgroundClick: Emitter<void>;
 	private _onZoomInClick: Emitter<void>;
 	private _onZoomOutClick: Emitter<void>;
 	private _onShowAllClick: Emitter<void>;
@@ -41,6 +42,7 @@ export class ExmlFileEditorNavigation {
 		this._onGrabChanged = new Emitter<boolean>();
 		this._onLockGroupChanged = new Emitter<boolean>();
 		this._onAdsortChanged = new Emitter<boolean>();
+		this._onBackgroundClick = new Emitter<void>();
 
 		this.container = container;
 		const navigationContainer: HTMLElement = document.createElement('div');
@@ -59,6 +61,10 @@ export class ExmlFileEditorNavigation {
 	/** 刷新按钮点击 */
 	public get onRefreshClick(): Event<void> {
 		return this._onRefreshClick.event;
+	}
+	/** 参考图按钮点击 */
+	public get onBackgroundClick(): Event<void> {
+		return this._onBackgroundClick.event;
 	}
 	/** 缩小点击 */
 	public get onZoomInClick(): Event<void> {
@@ -106,6 +112,7 @@ export class ExmlFileEditorNavigation {
 	private grabBtn: ToggleIconButton;
 	private lockGroupBtn: ToggleIconButton;
 	private adsorbBtn: ToggleIconButton;
+	private backgroundBtn: IconButton;
 
 
 	private zoomContainer: HGroup;
@@ -209,11 +216,15 @@ export class ExmlFileEditorNavigation {
 		this.lockGroupBtn.iconClass = 'lockgroup-icon';
 		this.lockGroupBtn.onSelectedChanged(() => this._onLockGroupChanged.fire(this.lockGroupBtn.selected));
 
-
 		this.adsorbBtn = new ToggleIconButton(this.funcContainer);
 		this.adsorbBtn.iconClass = 'adsorb-icon';
 		this.adsorbBtn.style.marginLeft = '3px';
 		this.adsorbBtn.onSelectedChanged(() => this._onAdsortChanged.fire(this.adsorbBtn.selected));
+		
+		this.backgroundBtn = new IconButton(this.funcContainer);
+		this.backgroundBtn.iconClass = 'background-icon';
+		this.backgroundBtn.style.marginLeft = '3px';
+		this.backgroundBtn.onClick(e => this.backgroundClick_handler());
 
 		this.zoomContainer = new HGroup(container);
 		this.zoomContainer.style.marginRight = '10px';
@@ -339,5 +350,9 @@ export class ExmlFileEditorNavigation {
 
 	private refreshClick_handler(): void {
 		this._onRefreshClick.fire(void 0);
+	}
+
+	private backgroundClick_handler(): void {
+		this._onBackgroundClick.fire(void 0);
 	}
 }

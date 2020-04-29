@@ -304,8 +304,17 @@ export class EgretProjectModel {
 		this.exmlPropertiesSaving = true;
 		setTimeout(() => {
 			this.exmlPropertiesSaving = false;
-			this.getExmlProperties();
-			fs.writeFileSync(this.exmlPropertiesUri.fsPath, JSON.stringify(this.getExmlProperties(), null, 2));
+			const properties = this.getExmlProperties();
+			// 清理空数据
+			for (const key in properties) {
+				if (properties.hasOwnProperty(key)) {
+					const element = properties[key];
+					if(Object.keys(element).length === 0) {
+						delete properties[key];
+					}
+				}
+			}
+			fs.writeFileSync(this.exmlPropertiesUri.fsPath, JSON.stringify(properties, null, 2));
 		}, 100);
 	}
 

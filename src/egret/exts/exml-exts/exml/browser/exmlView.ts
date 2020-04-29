@@ -24,6 +24,10 @@ import { Emitter, Event } from 'egret/base/common/event';
 import { IClipboardService } from 'egret/platform/clipboard/common/clipboardService';
 import { localize } from 'egret/base/localization/nls';
 import { SystemCommands } from 'egret/platform/operations/commands/systemCommands';
+import { IDesignConfig } from '../common/exml/designConfig';
+import { BackgroundType } from '../common/exml/designConfigImpl';
+import { Matrix } from './exmleditor/data/Matrix';
+import { FocusRectLayerEvent } from './exmleditor/FocusRectLayer';
 
 
 /**
@@ -351,6 +355,7 @@ export class ExmlView implements IExmlView {
 	}
 
 	private backgroundLayer: HTMLElement;
+	private designBackgroundLayer: HTMLElement;
 	private editLayer: HTMLElement;
 	private _container: HTMLElement;
 	/**
@@ -380,8 +385,7 @@ export class ExmlView implements IExmlView {
 			this.outputService.append(message);
 		};
 		this.backgroundLayer = document.createElement('div');
-		this.editLayer = document.createElement('div');
-
+		this.backgroundLayer.className = 'backgroundLayer';
 		this.backgroundLayer.style.width = '100%';
 		this.backgroundLayer.style.height = '100%';
 		this.backgroundLayer.style.position = 'absolute';
@@ -389,6 +393,20 @@ export class ExmlView implements IExmlView {
 		this.backgroundLayer.style.left = '0';
 		this.backgroundLayer.style.zIndex = '-2';
 
+		this.designBackgroundLayer = document.createElement('div');
+		this.designBackgroundLayer.className = 'exmlEditor-designBackgroundLayer';
+		this.designBackgroundLayer.style.width = '0px';
+		this.designBackgroundLayer.style.height = '0px';
+		this.designBackgroundLayer.style.position = 'absolute';
+		this.designBackgroundLayer.style.top = '0';
+		this.designBackgroundLayer.style.left = '0';
+		this.designBackgroundLayer.style.zIndex = '-2';
+		this.designBackgroundLayer.style.backgroundRepeat = 'no-repeat';
+		this.designBackgroundLayer.style.backgroundSize = '100%';
+		this.designBackgroundLayer.style.transformOrigin = 'left top';
+		this.designBackgroundLayer.style.backgroundSize = 'cover';
+
+		this.editLayer = document.createElement('div');
 		this.editLayer.style.width = '100%';
 		this.editLayer.style.height = '100%';
 		this.editLayer.style.top = '0';
@@ -404,6 +422,7 @@ export class ExmlView implements IExmlView {
 		this._container.style.zIndex = '0';
 
 		this._container.appendChild(this.backgroundLayer);
+		this._container.appendChild(this.designBackgroundLayer);
 		this._container.appendChild(this.runtimeLayer);
 		this._container.appendChild(this.editLayer);
 
@@ -411,6 +430,7 @@ export class ExmlView implements IExmlView {
 
 		this.exmlEditor.init(this.editLayer, this.backgroundLayer, this.rootContainer, this.clipboardService);
 		this.exmlEditor.focusRectLayer.onScaleChanged(scale => { this._onZoomChanged.fire(scale); });
+		this.exmlEditor.focusRectLayer.addEventListener(FocusRectLayerEvent.VIEWCHANGED, () => { this.updateDesignBackgroundLayer(); }, this);
 		this.refreshRuntime();
 	}
 	/**
@@ -495,6 +515,7 @@ export class ExmlView implements IExmlView {
 
 	protected modelDisposables: IDisposable[] = [];
 	protected _model: IExmlModel;
+	protected _designConfig: IDesignConfig;
 	/**
 	 * 当前视图的exml数据层
 	 */
@@ -513,16 +534,67 @@ export class ExmlView implements IExmlView {
 			this._helper.setModel(value);
 
 			this._model = value;
+			this._designConfig = this._model.getDesignConfig();
 			this.modelDisposables.push(this._model.onRootChanged(e => this.rootChanged_handler(e)));
 			this.modelDisposables.push(this._model.onViewStackIndexChanged(e => this.viewStackIndexChanged_handler(e)));
 			this.modelDisposables.push(this._model.onCompileError(e => this.compileError_handler(e)));
 			this.modelDisposables.push(this._model.onCompileWarning(e => this.compileWarning_handler(e)));
+			this.modelDisposables.push(this._model.onDesignConfigChanged(e => this.applyDesignConfig()));
 
 			this._model.getExmlConfig().setRuntime(this._runtime);
 			this._model.refreshTree();
 		} else {
 			this.exmlEditor.clearRuntime();
 		}
+	}
+
+	private updateDesignBackgroundLayer(): void {
+		if (this.exmlEditor.focusRectLayer.egretContentHost) {
+			let m: Matrix = this.exmlEditor.focusRectLayer.egretContentHost.getTarget().matrix;
+			this.designBackgroundLayer.style.transform = 'matrix(' + m.a + ',' + m.b + ',' + m.c + ',' + m.d + ',' + m.tx + ',' + m.ty + ')';
+		}
+		const rootFocusRect = this.exmlEditor.focusRectLayer.getRootFocusRect();
+		this.designBackgroundLayer.style.width = rootFocusRect.width + 'px';
+		this.designBackgroundLayer.style.height = rootFocusRect.height + 'px';
+	}
+
+	private applyDesignConfig(): void {
+		this.updateDesignBackgroundLayer();
+		const configModel: IDesignConfig = this._model.getDesignConfig();
+
+		switch (configModel.backgroundType) {
+			case BackgroundType.User:
+				if (configModel.useBgColor) {
+					this.designBackgroundLayer.style.backgroundColor = configModel.backgroundColor;
+				}
+				else {
+					this.designBackgroundLayer.style.backgroundColor = '';
+				}
+				if (configModel.useBgImage) {
+					var image: string = configModel.backgroundImage;
+					if (image) {
+						image = image.replace(/\\/ig, '/');
+						image = 'url(\'' + image + '\')';
+					}
+					this.designBackgroundLayer.style.backgroundImage = image;
+				}
+				else {
+					this.designBackgroundLayer.style.backgroundImage = '';
+				}
+				this.designBackgroundLayer.style.opacity = (configModel.backgroundAlpha * 0.01) + '';
+				break;
+			case BackgroundType.Null:
+				this.designBackgroundLayer.style.backgroundColor = configModel.globalBackgroundColor;
+				var image: string = configModel.globalBackgroundImage;
+				if (image) {
+					image = image.replace(/\\/ig, '/');
+					image = 'url(\'' + image + '\')';
+				}
+				this.designBackgroundLayer.style.backgroundImage = image;
+				this.designBackgroundLayer.style.opacity = (configModel.globalBackgroundAlpha * 0.01) + '';
+				break;
+		}
+
 	}
 
 	private compileError_handler(msg: string): void {
@@ -542,6 +614,7 @@ export class ExmlView implements IExmlView {
 				setTimeout(() => {
 					this.attachExmlEditor(this._model, this.helper, runtimeApi);
 					runtimeApi.resumeOnceGlobal();
+					this.applyDesignConfig();
 				}, 50);
 			} else {
 				//TODO 如果没有内容肯定是编辑报错了，此时应该在正文显示点啥，比如显示错误信息？

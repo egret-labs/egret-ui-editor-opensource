@@ -19,6 +19,7 @@ import { INotificationService } from 'egret/platform/notification/common/notific
 import URI from 'egret/base/common/uri';
 import { isEqual } from 'egret/base/common/resources';
 import * as paths from 'egret/base/common/paths';
+import { deepClone } from 'egret/base/common/objects';
 
 /**
  * 新建文件夹
@@ -47,17 +48,19 @@ export class WingPropertyPanel extends InnerBtnWindow {
 	private skinDomItems: { group: AttributeItemGroup; button: IconButton; }[] = [];
 
 	private promptLabel: Label;
-
 	private disposables: IDisposable[] = [];
-
+	private cloneWingProperty: any;
+	private cloneExmlRoots: URI[] = [];
 
 
 	constructor(
-		private wingProperty: any,
+		wingProperty: any,
 		private projectModel: EgretProjectModel,
 		@INotificationService private notificationService: INotificationService
 	) {
 		super();
+		this.cloneWingProperty = deepClone(wingProperty);
+		this.cloneExmlRoots = [...this.projectModel.exmlRoot];
 		this.title = localize('wingPropertyPanel.constructor,title', 'EUI Project Setting');
 
 		// 设置窗体按钮
@@ -87,12 +90,17 @@ export class WingPropertyPanel extends InnerBtnWindow {
 	 * 按钮点击绑定事件
 	 */
 	private handleBtnClick(button: InnerButtonType): void {
-		const validate = validateProperty(this.wingProperty, this.projectModel.exmlRoot, this.projectModel.project.fsPath);
+		const validate = validateProperty(this.cloneWingProperty, this.cloneExmlRoots, this.projectModel.project.fsPath);
 		switch (button) {
 			// 确定按钮
 			case InnerButtonType.FIRST_BUTTON:
 				if (validate.isResExist && validate.isThemeExist && validate.isExmlRootExist) {
-					writeWingProperty(this.wingProperty, path.join(this.projectModel.project.fsPath, 'wingProperties.json'));
+					writeWingProperty(this.cloneWingProperty, path.join(this.projectModel.project.fsPath, 'wingProperties.json'));
+					this.projectModel.exmlRoot.splice(0, this.projectModel.exmlRoot.length);
+					for (let i = 0; i < this.cloneExmlRoots.length; i++) {
+						const element = this.cloneExmlRoots[i];
+						this.projectModel.exmlRoot.push(element);
+					}
 					this.projectModel.saveEgretProperties();
 					this.close();
 				}
@@ -201,9 +209,10 @@ export class WingPropertyPanel extends InnerBtnWindow {
 				if (filePaths.length === 1) {
 					temp = filePaths[0];
 					const relativerPath = this.normalizeAndTrimSep(path.relative(this.projectModel.project.fsPath, temp));
-					if (relativerPath.indexOf('..') === -1) {
+					if (relativerPath.indexOf('..') === -1 &&
+						paths.isEqualOrParent(paths.normalize(temp), paths.normalize(this.projectModel.project.fsPath))) {
 						this.themeInput.text = relativerPath;
-						this.wingProperty.theme = relativerPath;
+						this.cloneWingProperty.theme = relativerPath;
 						removeClass(this.themeInput.getElement(), 'error');
 						this.freshError();
 					}
@@ -231,16 +240,17 @@ export class WingPropertyPanel extends InnerBtnWindow {
 					const relativerPath = path.relative(this.projectModel.project.fsPath, temp);
 					//判断是否已经存在
 					if (!this.isResExist(temp)) {
-						if (relativerPath.indexOf('..') === -1) {
+						if (relativerPath.indexOf('..') === -1 &&
+							paths.isEqualOrParent(paths.normalize(temp), paths.normalize(this.projectModel.project.fsPath))) {
 							let folder = '';
 							if (relativerPath.split(path.sep).length > 1) {
-								folder = relativerPath.split(path.sep)[0] + path.sep;
+								folder = relativerPath.split(path.sep)[0] + path.posix.sep;
 							}
-							const resconfigs = this.wingProperty.resourcePlugin.configs;
-							const config = { configPath: this.normalizeAndTrimSep(relativerPath), relativePath: this.normalizeAndTrimSep(folder) };
+							const resconfigs = this.cloneWingProperty.resourcePlugin.configs;
+							const config = { configPath: this.normalizeAndTrimSep(relativerPath), relativePath: folder };
 							resconfigs.push(config);
 
-							this.wingProperty.resourcePlugin.configs = resconfigs.map(v => { return { configPath: this.normalizeAndTrimSep(v.configPath), relativePath: this.normalizeAndTrimSep(v.relativePath) }; });
+							this.cloneWingProperty.resourcePlugin.configs = resconfigs.map(v => { return { configPath: this.normalizeAndTrimSep(v.configPath), relativePath: v.relativePath }; });
 							this.getResItem(this.resListContainer, config, resconfigs.length);
 							this.freshError();
 						} else {
@@ -262,16 +272,16 @@ export class WingPropertyPanel extends InnerBtnWindow {
 				if (filePaths.length === 1) {
 					temp = filePaths[0];
 					let relativerPath = path.relative(this.projectModel.project.fsPath, temp);
-					if(relativerPath === ''){
+					if (relativerPath === '') {
 						relativerPath = '.';
 					}
 					//判断是否已经存在
 					if (!this.isExmlRootExist(temp)) {
-						if (relativerPath.indexOf('..') === -1) {
-							let exmlRoot = this.projectModel.exmlRoot;
-							exmlRoot.push(URI.file(relativerPath));
+						if (relativerPath.indexOf('..') === -1 &&
+							paths.isEqualOrParent(paths.normalize(temp), paths.normalize(this.projectModel.project.fsPath))) {
+							this.cloneExmlRoots.push(URI.file(relativerPath));
 
-							this.getSkinItem(this.skinListContainer, URI.file(relativerPath), exmlRoot.length);
+							this.getSkinItem(this.skinListContainer, URI.file(relativerPath), this.cloneExmlRoots.length);
 							this.freshError();
 						} else {
 							this.notificationService.error({ content: localize('wingPropertyPanel.themeClick.notExistCurrectProject', '{0} is not in the current project!', temp), duration: 5 });
@@ -284,20 +294,20 @@ export class WingPropertyPanel extends InnerBtnWindow {
 
 	// 刷新数据
 	private init(): void {
-		const cp = path.join(this.projectModel.project.fsPath, this.wingProperty.theme);
+		const cp = path.join(this.projectModel.project.fsPath, this.cloneWingProperty.theme);
 		// 如果文件不存在
-		if (!fs.existsSync(cp) || this.wingProperty.theme) {
+		if (!fs.existsSync(cp) || this.cloneWingProperty.theme) {
 			addClass(this.themeInput.getElement(), 'error');
 		}
-		if (this.wingProperty.theme) {
-			this.themeInput.text = this.wingProperty.theme;
+		if (this.cloneWingProperty.theme) {
+			this.themeInput.text = this.cloneWingProperty.theme;
 		}
 
-		this.wingProperty.resourcePlugin.configs.forEach((v, index) => {
+		this.cloneWingProperty.resourcePlugin.configs.forEach((v, index) => {
 			this.getResItem(this.resListContainer, v as any, index);
 		});
 
-		this.projectModel.exmlRoot.forEach((item, index) => {
+		this.cloneExmlRoots.forEach((item, index) => {
 			this.getSkinItem(this.skinListContainer, item, index);
 		});
 
@@ -305,7 +315,7 @@ export class WingPropertyPanel extends InnerBtnWindow {
 	}
 
 	private freshError(): void {
-		const errorObj = validateProperty(this.wingProperty, this.projectModel.exmlRoot, this.projectModel.project.fsPath);
+		const errorObj = validateProperty(this.cloneWingProperty, this.cloneExmlRoots, this.projectModel.project.fsPath);
 		removeClass(this.themeInput.getElement(), 'error');
 		// if (!errorObj.isResExist) {
 		// 	errors.push('资源配置文件不存在');
@@ -327,7 +337,7 @@ export class WingPropertyPanel extends InnerBtnWindow {
 	// 判断资源配置是否存在
 	private isResExist(_p): boolean {
 		let isExit = false;
-		this.wingProperty.resourcePlugin.configs.forEach(v => {
+		this.cloneWingProperty.resourcePlugin.configs.forEach(v => {
 			if (paths.isEqual(paths.normalize(path.join(this.projectModel.project.fsPath, v.configPath)), paths.normalize(_p))) {
 				isExit = true;
 			}
@@ -356,12 +366,12 @@ export class WingPropertyPanel extends InnerBtnWindow {
 		}
 
 		resBtn.onClick((e) => {
-			const resConfigs = this.wingProperty.resourcePlugin.configs;
+			const resConfigs = this.cloneWingProperty.resourcePlugin.configs;
 			resConfigs.forEach((element, index) => {
 				if (element['configPath'] === item.configPath && element['relativePath'] === item.relativePath) {
 					resConfigs.splice(index, 1);
 					// let wing = this.projectModel.getWingProperties();
-					this.wingProperty.resourcePlugin.configs = resConfigs.map(v => { return { configPath: v.configPath, relativePath: v.relativePath }; });
+					this.cloneWingProperty.resourcePlugin.configs = resConfigs.map(v => { return { configPath: v.configPath, relativePath: v.relativePath }; });
 					this.freshError();
 				}
 			});
@@ -413,8 +423,7 @@ export class WingPropertyPanel extends InnerBtnWindow {
 
 	private isExmlRootExist(_p): boolean {
 		let isExit = false;
-		const exmlRoot = this.projectModel.exmlRoot;
-		exmlRoot.forEach(v => {
+		this.cloneExmlRoots.forEach(v => {
 			if (paths.isEqual(paths.normalize(path.join(this.projectModel.project.fsPath, v.fsPath)), paths.normalize(_p))) {
 				isExit = true;
 			}
@@ -442,10 +451,9 @@ export class WingPropertyPanel extends InnerBtnWindow {
 		}
 
 		skinBtn.onClick((e) => {
-			const exmlRoot = this.projectModel.exmlRoot;
-			exmlRoot.forEach((element, index) => {
+			this.cloneExmlRoots.forEach((element, index) => {
 				if (isEqual(element, item)) {
-					exmlRoot.splice(index, 1);
+					this.cloneExmlRoots.splice(index, 1);
 					this.freshError();
 				}
 			});

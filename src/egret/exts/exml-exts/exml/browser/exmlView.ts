@@ -281,6 +281,10 @@ export class ExmlView implements IExmlView {
 		return this.exmlEditor.focusRectLayer.scale;
 	}
 
+	public refreshRectRender(): void {
+		this.exmlEditor.focusRectLayer.refresh();
+	}
+
 	private _subview: SubExmlView;
 	/**
 	 * 获取子视图
@@ -549,6 +553,11 @@ export class ExmlView implements IExmlView {
 	}
 
 	private updateDesignBackgroundLayer(): void {
+		if(this.getEditMode() === EditMode.PREVIEW) {
+			this.designBackgroundLayer.style.display = 'none';
+		} else {
+			this.designBackgroundLayer.style.display = 'block';
+		}
 		if (this.exmlEditor.focusRectLayer.egretContentHost) {
 			let m: Matrix = this.exmlEditor.focusRectLayer.egretContentHost.getTarget().matrix;
 			this.designBackgroundLayer.style.transform = 'matrix(' + m.a + ',' + m.b + ',' + m.c + ',' + m.d + ',' + m.tx + ',' + m.ty + ')';

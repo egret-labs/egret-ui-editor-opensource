@@ -945,14 +945,22 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 		return new FocusRectExt(this.container);
 	}
 	/**刷新焦点对象树 */
-	private refresh(): void {
+	public refresh(): void {
+		if (!this.exmlModel) {
+			return;
+		}
 		this.updateViewAdapter();
 		this.refreshPreview();
-		this.getRootFocusRect().targetNode = this.exmlModel.getRootNode();
+		if (this.rootFocusRect) {
+			this.rootFocusRect.targetNode = this.exmlModel.getRootNode();
+		}
 	}
 
 	/**刷新视图代理 */
 	private updateViewAdapter(): void {
+		if (!this.exmlModel) {
+			return;
+		}
 		this._scale = this.egretContentHost.getTarget().scaleX;
 		if (!Number.isFinite(this._scale)) {
 			this._scale = 1;
@@ -976,7 +984,6 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 		}
 		this.dispatchEvent(new Event(FocusRectLayerEvent.VIEWCHANGED, null));
 	}
-
 
 	/**获取某个焦点对象内部所有的焦点对象集合 */
 	public getAllChildFcousRect(v: FocusRectExt, result: Array<FocusRectExt>): void {

@@ -139,6 +139,7 @@ export class ResInfoArea {
 		dp.addItem({ 'label': ResType.TYPE_SHEET });
 		dp.addItem({ 'label': ResType.TYPE_SOUND });
 		dp.addItem({ 'label': ResType.TYPE_BIN });
+		dp.addItem({ 'label': ResType.TYPE_TTF });
 		this.typeList.dataProvider = dp;
 		this.typeList.selectedIndex = -1;
 		// this.typeList.top = -2;

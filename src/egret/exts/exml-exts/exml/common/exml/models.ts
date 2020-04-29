@@ -7,6 +7,7 @@ import { Namespace } from '../sax/Namespace';
 import { Event } from 'egret/base/common/event';
 import { HistoryInfo } from './exmlModel';
 import { IAnimationModel } from '../plugin/IAnimationModel';
+import { IWingNodeModel, IDesignConfig } from './designConfig';
 
 interface ExmlModelEvent {
 	target: IExmlModel;
@@ -109,8 +110,14 @@ export interface IExmlModel extends IInnerModel {
 	 * 编译警告
 	 */
 	readonly onCompileWarning: Event<string>;
-
-
+	/**
+	 * 设计配置变更，比如背景色更改
+	 */
+	readonly onDesignConfigChanged: Event<void>;
+	/**
+	 * 设计配置的背景设置变更，背景色、参考图等
+	 */
+	readonly onDesignBackgroundChanged: Event<void>;
 
 	/**
 	 * 临时数据存储
@@ -149,6 +156,8 @@ export interface IExmlModel extends IInnerModel {
 	 * @param value 
 	 */
 	setText(value: string): void;
+	/** XML Tags of text content in this model.  */
+	getContentTag(): sax.Tag;
 	/**
 	 * 主机组件完整类名
 	 */
@@ -506,7 +515,9 @@ export interface IExmlModel extends IInnerModel {
 	 * @param id 
 	 */
 	getValueByID(id): IValue;
+	getDesignConfig(): IDesignConfig;
 	getAnimationModel(): IAnimationModel;
+	getWingNodeModel(): IWingNodeModel;
 }
 
 /**

@@ -35,7 +35,7 @@ export function isEqual(first: uri, second: uri): boolean {
 	if (!first || !second) {
 		return false;
 	}
-	return first.toString().toLocaleLowerCase() === second.toString().toLocaleLowerCase();
+	return paths.isEqual(paths.normalize(first.toString().toLocaleLowerCase()), paths.normalize(second.toString().toLocaleLowerCase()));
 }
 
 /**

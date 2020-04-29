@@ -39,6 +39,9 @@
 .lockgroup-icon{	  
 	background-image: url(./light/lockgroup.svg);
 }
+.background-icon{	  
+	background-image: url(./light/background.svg);
+}
 
 
 .exml-editor-navigation{

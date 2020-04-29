@@ -1,6 +1,6 @@
 'use strict';
 
-import * as paths from 'path';
+import * as paths from 'egret/base/common/paths';
 import URI from 'egret/base/common/uri';
 import { createDecorator } from 'egret/platform/instantiation/common/instantiation';
 import { Event } from 'egret/base/common/event';
@@ -314,8 +314,12 @@ export function isParent(path: string, candidate: string): boolean {
 	path = paths.normalize(path).toLocaleLowerCase();
 	candidate = paths.normalize(candidate).toLocaleLowerCase();
 
-
-	return path.indexOf(candidate) === 0 && paths.dirname(path) != paths.dirname(candidate);
+	const value1 = paths.isEqualOrParent(path, candidate);
+	const value2 = paths.isEqual(path, candidate);
+	if(value1 && !value2){
+		return true;
+	}
+	return false;
 }
 /**
  * 得到索引

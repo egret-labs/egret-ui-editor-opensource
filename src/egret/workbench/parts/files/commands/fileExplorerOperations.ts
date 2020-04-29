@@ -37,7 +37,7 @@ export class CopyFileOperation implements IOperation {
 
 
 /**
- * 复制文件操作
+ * 粘贴文件操作
  */
 export class PasteFileOperation implements IOperation {
 	constructor(

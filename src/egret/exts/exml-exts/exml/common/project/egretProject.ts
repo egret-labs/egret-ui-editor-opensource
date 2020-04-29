@@ -5,7 +5,6 @@ import { EgretEngineInfo, engineInfo } from './egretSDK';
 import URI from 'egret/base/common/uri';
 import { INotificationService } from 'egret/platform/notification/common/notifications';
 
-
 /**
  * 项目数据层模块
  */
@@ -28,19 +27,19 @@ export class EgretProjectModel {
 	/**
 	 * 获取wingproperties路径
 	 */
-	public get wingPropertie(): URI {
+	public get wingPropertiesUri(): URI {
 		const fsPath = path.join(this.project.fsPath, 'wingProperties.json');
 		return URI.file(fsPath);
 	}
-	private get egretPropertie(): URI {
+	private get egretPropertiesUri(): URI {
 		const fsPath = path.join(this.project.fsPath, 'egretProperties.json');
 		return URI.file(fsPath);
 	}
-	private get index(): URI {
+	private get indexUri(): URI {
 		const fsPath = path.join(this.project.fsPath, 'index.html');
 		return URI.file(fsPath);
 	}
-	private get exmlPropertie(): URI {
+	private get exmlPropertiesUri(): URI {
 		const fsPath = path.join(this.project.fsPath, '.wing', 'exml.json');
 		return URI.file(fsPath);
 	}
@@ -54,7 +53,7 @@ export class EgretProjectModel {
 		if (!this.wingPropertiesParserd) {
 			this.wingPropertiesParserd = true;
 			try {
-				const wingPropertyStr: string = fs.readFileSync(this.wingPropertie.fsPath, { encoding: 'utf8' });
+				const wingPropertyStr: string = fs.readFileSync(this.wingPropertiesUri.fsPath, { encoding: 'utf8' });
 				this.wingProperties = JSON.parse(wingPropertyStr);
 			} catch (error) { }
 		}
@@ -66,8 +65,14 @@ export class EgretProjectModel {
 		if (!this.egretPropertiesParserd) {
 			this.egretPropertiesParserd = true;
 			try {
-				const egretPropertyStr: string = fs.readFileSync(this.egretPropertie.fsPath, { encoding: 'utf8' });
+				const egretPropertyStr: string = fs.readFileSync(this.egretPropertiesUri.fsPath, { encoding: 'utf8' });
 				this.egretProperties = JSON.parse(egretPropertyStr);
+				const exmlRoot = this.exmlRoot;
+				if (exmlRoot.length === 0) {
+					// 没有配置exmlRoot，写入默认值
+					this._exmlRoots.push(URI.file('resource/eui_skins'));
+					this.saveEgretProperties();
+				}
 			} catch (error) { }
 		}
 		return this.egretProperties;
@@ -78,15 +83,36 @@ export class EgretProjectModel {
 	 * @param wingProperies 
 	 */
 	public saveWingProperties() {
-		fs.writeFileSync(this.wingPropertie.fsPath, JSON.stringify(this.getWingProperties(), null, 2));
+		fs.writeFileSync(this.wingPropertiesUri.fsPath, JSON.stringify(this.getWingProperties(), null, 2));
 	}
+
+	public saveEgretProperties() {
+		if (!this.egretProperties.eui) {
+			this.egretProperties.eui = {};
+		}
+		let formatedExmlRoots: string[] = [];
+		for (let i = 0; i < this._exmlRoots.length; i++) {
+			const item = this._exmlRoots[i];
+			let skin = item.fsPath.replace(/\\/g, '/');
+			if (skin.startsWith('/')) {
+				skin = skin.slice(1);
+			}
+			if (skin.endsWith('/')) {
+				skin = skin.slice(0, skin.length - 1);
+			}
+			formatedExmlRoots.push(skin);
+		}
+		this.egretProperties.eui.exmlRoot = formatedExmlRoots;
+		fs.writeFileSync(this.egretPropertiesUri.fsPath, JSON.stringify(this.egretProperties, null, 2));
+	}
+
 	private exmlProperties: any = null;
 	private exmlPropertiesParserd: boolean = false;
 	private getExmlProperties(): any {
 		if (!this.exmlPropertiesParserd) {
 			this.exmlPropertiesParserd = true;
 			try {
-				const exmlPropertyStr: string = fs.readFileSync(this.exmlPropertie.fsPath, { encoding: 'utf8' });
+				const exmlPropertyStr: string = fs.readFileSync(this.exmlPropertiesUri.fsPath, { encoding: 'utf8' });
 				this.exmlProperties = JSON.parse(exmlPropertyStr);
 			} catch (error) { }
 			if (!this.exmlProperties) {
@@ -110,7 +136,7 @@ export class EgretProjectModel {
 			let contentWidth = 480;
 			let contentHeight = 800;
 			try {
-				const indexStr: string = fs.readFileSync(this.index.fsPath, { encoding: 'utf8' });
+				const indexStr: string = fs.readFileSync(this.indexUri.fsPath, { encoding: 'utf8' });
 				const scaleModelArr = indexStr.match(/data-scale-mode=(["'])(.*?)\1/);
 				if (scaleModelArr && scaleModelArr.length >= 3) {
 					scaleMode = scaleModelArr[2];
@@ -166,18 +192,18 @@ export class EgretProjectModel {
 				const configs: any[] = wingProperies['resourcePlugin']['configs'];
 				const resConfigs: IResourceConfigItem[] = [];
 				for (let i = 0; i < configs.length; i++) {
-					let url:string = configs[i]['configPath'];
-					let folder:string =  configs[i]['relativePath'];
-					url = url.replace(/\\/g,'/');
-					folder = folder.replace(/\\/g,'/');
-					let exist:boolean = false;
-					for(let j = 0;j<resConfigs.length;j++){
-						if(resConfigs[j].folder == folder && resConfigs[j].url == url){
+					let url: string = configs[i]['configPath'];
+					let folder: string = configs[i]['relativePath'];
+					url = url.replace(/\\/g, '/');
+					folder = folder.replace(/\\/g, '/');
+					let exist: boolean = false;
+					for (let j = 0; j < resConfigs.length; j++) {
+						if (resConfigs[j].folder == folder && resConfigs[j].url == url) {
 							exist = true;
 							break;
 						}
 					}
-					if(!exist){
+					if (!exist) {
 						resConfigs.push({
 							url: url,
 							folder: folder
@@ -241,9 +267,9 @@ export class EgretProjectModel {
 	/**
 	 * 得到配置的字体列表
 	 */
-	public get fonts():string[]{
+	public get fonts(): string[] {
 		const property = this.getWingProperties();
-		if(property && property['fonts']){
+		if (property && property['fonts']) {
 			return property['fonts'];
 		}
 		return null;
@@ -278,8 +304,17 @@ export class EgretProjectModel {
 		this.exmlPropertiesSaving = true;
 		setTimeout(() => {
 			this.exmlPropertiesSaving = false;
-			this.getExmlProperties();
-			fs.writeFileSync(this.exmlPropertie.fsPath, JSON.stringify(this.getExmlProperties(), null, 2));
+			const properties = this.getExmlProperties();
+			// 清理空数据
+			for (const key in properties) {
+				if (properties.hasOwnProperty(key)) {
+					const element = properties[key];
+					if(Object.keys(element).length === 0) {
+						delete properties[key];
+					}
+				}
+			}
+			fs.writeFileSync(this.exmlPropertiesUri.fsPath, JSON.stringify(properties, null, 2));
 		}, 100);
 	}
 
@@ -362,13 +397,13 @@ export class EgretProjectModel {
 			return false;
 		}
 		filePath = path.normalize(filePath);
-		filePath = filePath.replace(/\\/g,'/');
+		filePath = filePath.replace(/\\/g, '/');
 		filePath = filePath.toLocaleLowerCase();
 		for (let i = 0; i < this.resConfigs.length; i++) {
 			let curResConfigUrl = this.resConfigs[i].url;
-			curResConfigUrl = curResConfigUrl.replace(/\\/g,'/');
+			curResConfigUrl = curResConfigUrl.replace(/\\/g, '/');
 			curResConfigUrl = curResConfigUrl.toLocaleLowerCase();
-			if(filePath.indexOf(curResConfigUrl) !== -1){
+			if (filePath.indexOf(curResConfigUrl) !== -1) {
 				return true;
 			}
 		}

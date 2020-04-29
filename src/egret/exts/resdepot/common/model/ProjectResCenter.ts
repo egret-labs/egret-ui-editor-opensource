@@ -44,7 +44,7 @@ export class ProjectResCenter {
 			//项目配置有更新，重新读资源配置文件
 			if (this.projectModel && (change.type === FileChangeType.UPDATED)) {
 				//wingProperties.json的内容有变化
-				if (paths.normalize(this.projectModel.wingPropertie.fsPath) === paths.normalize(change.resource.fsPath)) {
+				if (paths.normalize(this.projectModel.wingPropertiesUri.fsPath) === paths.normalize(change.resource.fsPath)) {
 					this.update();
 					return;
 				}

@@ -5,7 +5,7 @@ import * as sax from '../sax/sax';
 import * as xmlTagUtil from '../sax/xml-tagUtils';
 import * as xmlStrUtil from '../sax/xml-strUtils';
 import { W_EUI, EUI } from '../project/parsers/core/commons';
-import { trim, startWith, unescapeHTMLEntity, endWith, escapeHTMLEntity } from '../utils/strings';
+import { trim, startWith, endWith, escapeHTMLEntity } from '../utils/strings';
 import { Namespace } from '../sax/Namespace';
 import { IObject, IValue, IArray, INode, isInstanceof, IContainer, ISingleChild, IClass, ILink, ISize, IScale9Grid, IViewStack, IScroller, TreeChangedEvent, TreeChangedKind, NodeAddedEvent, NodeRemovedEvent, NodeSelectChangedEvent, ViewStackIndexChangedEvent } from './treeNodes';
 import { IInstantiationService } from 'egret/platform/instantiation/common/instantiation';
@@ -18,6 +18,8 @@ import { setTags, getTags } from './nodeClipboard';
 import { ExmlModelCreaterEui } from '../factory/exmlCreaterEui';
 import { IAnimationModel } from '../plugin/IAnimationModel';
 import { AnimationModel } from '../plugin/animationModelImpl';
+import { WingNodeModel, DesignConfig } from './designConfigImpl';
+import { IWingNodeModel, IDesignConfig } from './designConfig';
 
 
 /**
@@ -745,21 +747,21 @@ export class ExmlModel implements IExmlModel {
 	public get onSelectedListChanged(): Event<SelectedListChangedEvent> {
 		return this._onSelectedListChanged.event;
 	}
-	readonly _onNodeSelectChanged: Emitter<NodeSelectChangedEvent>;
+	private _onNodeSelectChanged: Emitter<NodeSelectChangedEvent>;
 	/**
 	 * 单个节点选中状态改变事件
 	 */
 	public get onNodeSelectChanged(): Event<NodeSelectChangedEvent> {
 		return this._onNodeSelectChanged.event;
 	}
-	readonly _onViewStackIndexChanged: Emitter<ViewStackIndexChangedEvent>;
+	private _onViewStackIndexChanged: Emitter<ViewStackIndexChangedEvent>;
 	/**
 	 * 层级堆叠容器的选中项索引发生改变
 	 */
 	public get onViewStackIndexChanged(): Event<ViewStackIndexChangedEvent> {
 		return this._onViewStackIndexChanged.event;
 	}
-	readonly _onNodeRemoved: Emitter<NodeRemovedEvent>;
+	private _onNodeRemoved: Emitter<NodeRemovedEvent>;
 	/**
 	 * 可视节点移除事件
 	 */
@@ -767,19 +769,33 @@ export class ExmlModel implements IExmlModel {
 		return this._onNodeRemoved.event;
 	}
 
-	readonly _onNodeAdded: Emitter<NodeAddedEvent>;
+	private _onNodeAdded: Emitter<NodeAddedEvent>;
 	/**
 	 * 可视节点添加事件
 	 */
 	public get onNodeAdded(): Event<NodeAddedEvent> {
 		return this._onNodeAdded.event;
 	}
-	readonly _onTreeChanged: Emitter<TreeChangedEvent>;
+	private _onTreeChanged: Emitter<TreeChangedEvent>;
 	/**
 	 * 节点树发生改变事件,使用kind属性来区分发生改变的类型
 	 */
 	public get onTreeChanged(): Event<TreeChangedEvent> {
 		return this._onTreeChanged.event;
+	}
+	private _onDesignConfigChanged: Emitter<void>;
+	/**
+	 * 设计配置变更，比如背景色更改
+	 */
+	public get onDesignConfigChanged(): Event<void> {
+		return this._onDesignConfigChanged.event;
+	}
+	private _onDesignBackgroundChanged: Emitter<void>;
+	/**
+	 * 设计配置的背景设置变更，背景色、参考图等
+	 */
+	public get onDesignBackgroundChanged(): Event<void> {
+		return this._onDesignBackgroundChanged.event;
 	}
 
 
@@ -796,6 +812,8 @@ export class ExmlModel implements IExmlModel {
 	private _onCompileWarning: Emitter<string>;
 	private _onCompileError: Emitter<string>;
 	private _animationModel: AnimationModel;
+	private _wingNodeModel: WingNodeModel;
+	private _designConfig: DesignConfig;
 
 
 	constructor(
@@ -816,10 +834,22 @@ export class ExmlModel implements IExmlModel {
 		this._onNodeAdded = new Emitter<NodeAddedEvent>();
 		this._onTreeChanged = new Emitter<TreeChangedEvent>();
 		this._onViewStackIndexChanged = new Emitter<ViewStackIndexChangedEvent>();
+		this._onDesignConfigChanged = new Emitter<void>();
+		this._onDesignBackgroundChanged = new Emitter<void>();
 
 		this._temporaryData = new TemporaryData();
+		this._designConfig = this.instantiationService.createInstance(DesignConfig);
+		this._designConfig.init(this);
+		this._designConfig.onDesignConfigChanged(() => {
+			this._onDesignConfigChanged.fire();
+		});
+		this._designConfig.onDesignBackgroundChanged(() => {
+			this._onDesignBackgroundChanged.fire();
+		});
 		this._animationModel = new AnimationModel();
 		this._animationModel.init(this);
+		this._wingNodeModel = new WingNodeModel();
+		this._wingNodeModel.init(this);
 
 		this._exmlConfig = this.instantiationService.createInstance(ExmlModelConfig,
 			this.egretProjectService.exmlConfig, this._onCompileWarning, this._onCompileError);
@@ -1076,6 +1106,12 @@ export class ExmlModel implements IExmlModel {
 		this.refreshTree();
 	}
 
+	private _contentTag: sax.Tag;
+	/** XML Tags of text content in this model.  */
+	public getContentTag(): sax.Tag {
+		return this._contentTag;
+	}
+
 	private needRefreshTree: boolean = false;
 
 	private _states: string[] = [];
@@ -1220,7 +1256,8 @@ export class ExmlModel implements IExmlModel {
 		return this.getExmlConfig().ensureLoaded().then(() => {
 			var xml: sax.Tag = null;
 			if (this.getText()) {
-				var xml = xmlTagUtil.parse(this.getText(), false, true);
+				xml = xmlTagUtil.parse(this.getText(), false, true);
+				this._contentTag = xml;
 				if (xml.errors.length > 0) {
 					for (let i = 0; i < xml.errors.length; i++) {
 						//TODO 看看这个格式是否需要优化
@@ -3328,8 +3365,16 @@ export class ExmlModel implements IExmlModel {
 		return _generateID(name, -1);
 	}
 
+	public getDesignConfig(): IDesignConfig {
+		return this._designConfig;
+	}
+
 	public getAnimationModel(): IAnimationModel {
 		return this._animationModel;
+	}
+
+	public getWingNodeModel(): IWingNodeModel {
+		return this._wingNodeModel;
 	}
 }
 

@@ -10,7 +10,7 @@ enum MsgType {
 
 const INFO_COLOR = '#ffffff';
 const WARNING_COLOR = '#edc527';
-const ERROR_COLOR = '#ed2727';
+const ERROR_COLOR = '#ff7979';
 
 /**
  * 简单通知
@@ -60,7 +60,10 @@ export class SimpleNotificationService implements INotificationService {
 			}
 			this.toast.onHided = () => this.hided_handler();
 			const content = msg.msg.content;
-			const duration = msg.msg.duration ? msg.msg.duration * 1000 : 3 * 1000;
+			let duration = 5000;
+			if (typeof msg.msg.duration === 'number') {
+				duration = msg.msg.duration > 0 ? msg.msg.duration * 1000 : 0;
+			}
 			this.toast.show(content, duration);
 		}
 	}

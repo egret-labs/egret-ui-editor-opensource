@@ -21,5 +21,5 @@ export enum FileRootCommands {
 	/** 重新加载 */
 	RELOAD = 'reload',
 	/** 重新加载 */
-	INSTALL_SHELL_COMMAND = 'installShellCommand',
+	INSTALL_SHELL_COMMAND = 'installShellCommand'
 }

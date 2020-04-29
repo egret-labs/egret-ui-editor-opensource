@@ -175,6 +175,42 @@
 		"s": "Assets",
 		"t": "Assets"
 	},
+	"BackgroundSettingPanel.title": {
+		"s": "Background Setting",
+		"t": "Background Setting"
+	},
+	"BackgroundSettingPanel.button.current": {
+		"s": "Apply to current",
+		"t": "Apply to current"
+	},
+	"BackgroundSettingPanel.button.global": {
+		"s": "Apply to global",
+		"t": "Apply to global"
+	},
+	"BackgroundSettingPanel.button.addImage": {
+		"s": "Add",
+		"t": "Add"
+	},
+	"BackgroundSettingPanel.defaultBackground": {
+		"s": "Default Background",
+		"t": "Default Background"
+	},
+	"BackgroundSettingPanel.customBackground": {
+		"s": "Custom Background",
+		"t": "Custom Background"
+	},
+	"BackgroundSettingPanel.backgroundColor": {
+		"s": "Background Color",
+		"t": "Background Color"
+	},
+	"BackgroundSettingPanel.backgroundImage": {
+		"s": "Background Image",
+		"t": "Background Image"
+	},
+	"BackgroundSettingPanel.backgroundAlpha": {
+		"s": "Alpha:",
+		"t": "Alpha:"
+	},
 	"boundPart.render.anchorX": {
 		"s": "Anchor X:",
 		"t": "Anchor X:"
@@ -643,6 +679,10 @@
 		"s": "Rename",
 		"t": "Rename"
 	},
+	"fileController.initContextMenuGeneral.settings": {
+		"s": "EUI Project Setting",
+		"t": "EUI Project Setting"
+	},
 	"fileDragAndDrop2.handleExplorerDrop.confirmContinueMove": {
 		"s": "You are moving a file with unsaved changes. Do you want to continue?",
 		"t": "You are moving a file with unsaved changes. Do you want to continue?"
@@ -1072,16 +1112,16 @@
 		"t": "Create Folder"
 	},
 	"menus.setFileMenu.openFolder": {
-		"s": "Open Folder(&&P)",
-		"t": "Open Folder(&&P)"
+		"s": "Open Egret Project(&&P)",
+		"t": "Open Egret Project(&&P)"
 	},
 	"menus.setFileMenu.openFolderOpt": {
-		"s": "Open folder (project) operation",
-		"t": "Open folder (project) operation"
+		"s": "Open egret project operation",
+		"t": "Open egret project operation"
 	},
 	"menus.setFileMenu.openFolderTxt": {
-		"s": "Open Folder",
-		"t": "Open Folder"
+		"s": "Open Egret Project",
+		"t": "Open Egret Project"
 	},
 	"menus.setFileMenu.quit": {
 		"s": "Quit(&&X)",
@@ -1286,6 +1326,10 @@
 	"newExmlPanel.validate.widthblank": {
 		"s": "The width cannot be empty.",
 		"t": "The width cannot be empty."
+	},
+	"newExmlPanel.validate.pathInvalid": {
+		"s": "Please add this folder ({0}) as the root directory of the skin files in the EUI project settings.",
+		"t": "Please add this folder ({0}) as the root directory of the skin files in the EUI project settings."
 	},
 	"newFolderOperation.run.notExistParentFolder": {
 		"s": "There is no parent folder and cannot create a folder",
@@ -2080,8 +2124,8 @@
 		"t": "Open Folder"
 	},
 	"wingPropertyPanel.constructor,title": {
-		"s": "wingProperty.json Setting",
-		"t": "wingProperty.json Setting"
+		"s": "EUI Project Setting",
+		"t": "EUI Project Setting"
 	},
 	"wingPropertyPanel.render.browse": {
 		"s": "Browse",
@@ -2103,6 +2147,14 @@
 		"s": "Select add theme file",
 		"t": "Select add theme file"
 	},
+	"wingPropertyPanel.render.skin": {
+		"s": "Skin:",
+		"t": "Skin:"
+	},
+	"wingPropertyPanel.render.selectSkinRoot": {
+		"s": "Select Add skins root path",
+		"t": "Select Add skins root path"
+	},
 	"wingPropertyPanel.render.topic": {
 		"s": "Theme:",
 		"t": "Theme:"
@@ -2119,9 +2171,17 @@
 		"s": "Unable to find file {0}",
 		"t": "Unable to find file {0}"
 	},
+	"wingPropertyPanel.validateProperty.notExistFolder": {
+		"s": "Unable to find folder {0}",
+		"t": "Unable to find folder {0}"
+	},
 	"wingPropertyPanel.validateProperty.resourceFileNotExist": {
 		"s": "Need to set the resource configuration file",
 		"t": "Need to set the resource configuration file"
+	},
+	"wingPropertyPanel.validateProperty.skinRootNotExist": {
+		"s": "Need to set the skins root path",
+		"t": "Need to set the skins root path"
 	},
 	"workbench.initCommands.deleteSys": {
 		"s": "System delete command",

@@ -40,7 +40,7 @@ import { AnimationView } from '../parts/animation/electron-browser/views/animati
 import { IAnimationService } from 'egret/workbench/parts/animation/common/animation';
 import { AnimationService } from 'egret/workbench/parts/animation/common/animationService';
 import { ClosableTitleRenderFactory, DocumentPanelSerialize } from './boxlayoutRender';
-import { ipcRenderer } from 'electron';
+import { remote, ipcRenderer } from 'electron';
 import { IWindowClientService } from 'egret/platform/windows/common/window';
 import './media/workbench.css';
 import { IExplorerService } from '../parts/files/common/explorer';
@@ -96,7 +96,22 @@ export class Workbench implements IFocusablePart {
 		this.workspaceService.registerBoxlayout(this.boxContainer);
 		this.focusablePartCommandHelper = this.instantiationService.createInstance(FocusablePartCommandHelper);
 		this.initCommands();
+		this.updateWindowTitle();
 		ipcRenderer.on('egret:openFile', this.onOpenEditorHandler);
+	}
+
+	private updateWindowTitle(): void {
+		const window = remote.getCurrentWindow();
+		let projectName = '';
+		const workspace = this.workspaceService.getWorkspace();
+		if (workspace && workspace.uri) {
+			projectName = paths.basename(workspace.uri.fsPath);
+		}
+		if (projectName) {
+			window.setTitle(`${projectName} - Egret UI Editor`);
+		} else {
+			window.setTitle(`Egret UI Editor`);
+		}
 	}
 
 	private onOpenEditorHandler = (event: Electron.IpcRendererEvent, data: any): void => {

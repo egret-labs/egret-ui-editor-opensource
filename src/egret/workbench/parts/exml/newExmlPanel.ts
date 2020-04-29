@@ -4,7 +4,7 @@ import { InnerButtonType, IInnerWindow } from 'egret/platform/innerwindow/common
 import { IFileService } from '../../../platform/files/common/files';
 import { IWorkbenchEditorService } from 'egret/workbench/services/editor/common/ediors';
 import { Label } from '../../../base/browser/ui/labels';
-import { NumberInput } from 'egret/base/browser/ui/inputs';
+import { NumberInput, TextInput } from 'egret/base/browser/ui/inputs';
 import 'egret/base/browser/ui/media/labelContainer.css';
 import { remote } from 'electron';
 import * as path from 'path';
@@ -12,7 +12,6 @@ import { ExmlComponentPanel } from './ExmlComponentPanel';
 import TemplateTool from './TemplateTool';
 import URI from 'egret/base/common/uri';
 import { ExmlStat } from './ExmlComponentViewer';
-import { LabelContainer } from '../../../base/browser/ui/labelContainer_old';
 import { IEgretProjectService } from 'egret/exts/exml-exts/project';
 import { IExplorerService } from 'egret/workbench/parts/files/common/explorer';
 import { IWorkspaceService } from 'egret/platform/workspace/common/workspace';
@@ -20,7 +19,10 @@ import { IInstantiationService } from '../../../platform/instantiation/common/in
 import { localize } from '../../../base/localization/nls';
 import { INotificationService } from 'egret/platform/notification/common/notifications';
 import { trim } from 'egret/base/common/strings';
-import { writeWingProperty } from 'egret/exts/exml-exts/egretChecker';
+import { SystemButton } from 'egret/base/browser/ui/buttons';
+import { AttributeItemGroup } from 'egret/base/browser/ui/containers';
+import { addClass, removeClass } from 'egret/base/common/dom';
+import { isEqualOrParent, normalize } from 'egret/base/common/paths';
 
 //TODO 这个文件不应该放在这里，  应该放到Exml相关的文件夹里，和对应的命令放到一起
 /**
@@ -35,19 +37,23 @@ export class NewExmlPanel extends InnerBtnWindow {
 	private defaultPath: string;
 
 	// 路径
-	private pathContainer: LabelContainer;
+	private pathInput: TextInput;
+	private pathBtn: SystemButton;
 
 	// 名字
-	private nameContainer: LabelContainer;
+	private nameInput: TextInput;
 
 	// 主机组件
-	private comContainer: LabelContainer;
+	private comInput: TextInput;
+	private comBtn: SystemButton;
 
 	// 宽度
 	private widthTextInput: NumberInput;
 
 	// 高度
 	private heightTextInput: NumberInput;
+	private promptLabel: Label;
+	private pathIsValid: boolean = true;
 
 	// 主机组件
 	private stat: ExmlStat;
@@ -58,7 +64,6 @@ export class NewExmlPanel extends InnerBtnWindow {
 
 	constructor(
 		_euiHost: any,
-		private wingProperty: any,
 		@IFileService private fileService: IFileService,
 		@IExplorerService private explorerService: IExplorerService,
 		@IEgretProjectService private projectService: IEgretProjectService,
@@ -113,8 +118,8 @@ export class NewExmlPanel extends InnerBtnWindow {
 	 */
 	private registerListeners(): void {
 		// 监听按钮点击事件
-		const dispose = this.onButtonClick(e => this.handleBtnClick(e));
-		this.disposables.push(dispose);
+		this.disposables.push(this.onButtonClick(e => this.handleBtnClick(e)));
+		this.disposables.push(this.onActivated(e => this.handleActivated(e)));
 	}
 
 	private _euiHost: Array<any>;
@@ -145,11 +150,13 @@ export class NewExmlPanel extends InnerBtnWindow {
 	public open(ownerWindow?: IInnerWindow | 'root', modal?: boolean) {
 		super.open(ownerWindow, modal);
 		setTimeout(() => {
-			this.nameContainer.inputText.getElement().focus();
+			this.nameInput.focus();
 		}, 40);
 	}
 
-
+	private handleActivated(e: any): void {
+		this.pathValidation();
+	}
 
 	/**
 	 * 按钮点击绑定事件
@@ -176,48 +183,64 @@ export class NewExmlPanel extends InnerBtnWindow {
 	}
 
 
+	private container: HTMLElement;
 	/**
 	 * 重载父类方法，对窗体进行渲染
 	 */
 	public render(contentGroup: HTMLElement): void {
 		super.render(contentGroup);
+		this.container = contentGroup;
 
-		this.pathContainer = new LabelContainer(contentGroup);
-		this.pathContainer.inputText.readonly = true;
-		this.pathContainer.btnTxt = localize('newExmlPanel.createExml.browser', 'Browser');
-		this.pathContainer.labelWidth = '70px';
-		this.pathContainer.text = localize('newExmlPanel.createExml.path', 'Path:');
-		this.pathContainer.textInput = this.defaultPath || '';
-		this.pathContainer.inputText.prompt = localize('newExmlPanel.createExml.selectPath', 'Select Path');
+		contentGroup.style.display = 'flex';
+		contentGroup.style.flexDirection = 'column';
+		contentGroup.style.alignItems = 'stretch';
+		contentGroup.style.position = 'relative';
+		contentGroup.style.padding = '15px 15px 0 15px';
+		contentGroup.style.width = '480px';
 
+		const pathAttItemContainer = new AttributeItemGroup(contentGroup);
+		pathAttItemContainer.additionalVisible = true;
+		pathAttItemContainer.label = localize('newExmlPanel.createExml.path', 'Path:');
+		pathAttItemContainer.labelWidth = 70;
+		this.pathInput = new TextInput(pathAttItemContainer.getElement());
+		this.pathInput.readonly = true;
+		this.pathInput.text = this.defaultPath || '';
+		this.pathInput.prompt = localize('newExmlPanel.createExml.selectPath', 'Select Path');
+		this.pathBtn = new SystemButton(pathAttItemContainer.getAdditionalElement());
+		this.pathBtn.label = localize('newExmlPanel.createExml.browser', 'Browser');
 
-		this.nameContainer = new LabelContainer(contentGroup);
-		this.nameContainer.labelWidth = '70px';
-		this.nameContainer.setBtnBisibility(false);
-		this.nameContainer.text = localize('newExmlPanel.createExml.name', 'Name:');
-		this.nameContainer.inputText.prompt = localize('newExmlPanel.createExml.skinName', 'Skin Name');
-		this.nameContainer.inputText.getElement().addEventListener('keydown', e => {
+		const nameAttItemContainer = new AttributeItemGroup(contentGroup);
+		nameAttItemContainer.style.marginTop = '7px';
+		nameAttItemContainer.style.marginRight = '90px';
+		nameAttItemContainer.labelWidth = 70;
+		nameAttItemContainer.label = localize('newExmlPanel.createExml.name', 'Name:');
+		this.nameInput = new TextInput(nameAttItemContainer.getElement());
+		this.nameInput.prompt = localize('newExmlPanel.createExml.skinName', 'Skin Name');
+		this.nameInput.getElement().addEventListener('keydown', e => {
 			if (e.keyCode == 13) {
 				this.createExml();
 			}
 		});
 
-		this.comContainer = new LabelContainer(contentGroup);
-		this.comContainer.labelWidth = '70px';
-		this.comContainer.btnTxt = '浏览';
-		this.comContainer.text = localize('newExmlPanel.createExml.host', 'Host Component:');
-		this.comContainer.inputText.readonly = true;
-		this.comContainer.textInput = 'eui.Component';
-		this.comContainer.inputText.prompt = localize('newExmlPanel.createExml.comTitle', 'Select Host Component');
+		const comAttItemContainer = new AttributeItemGroup(contentGroup);
+		comAttItemContainer.additionalVisible = true;
+		comAttItemContainer.style.marginTop = '7px';
+		comAttItemContainer.labelWidth = 70;
+		comAttItemContainer.label = localize('newExmlPanel.createExml.host', 'Host Component:');
+		this.comInput = new TextInput(comAttItemContainer.getElement());
+		this.comInput.readonly = true;
+		this.comInput.text = 'eui.Component';
+		this.comInput.prompt = localize('newExmlPanel.createExml.comTitle', 'Select Host Component');
+		this.comBtn = new SystemButton(comAttItemContainer.getAdditionalElement());
+		this.comBtn.label = localize('newExmlPanel.createExml.browser', 'Browser');
 
 		const sub = document.createElement('div');
 		contentGroup.appendChild(sub);
 		sub.className = 'labelContainer';
 		sub.style.display = 'flex';
-		sub.style.width = '420px';
 		sub.style.flexDirection = 'row';
-		sub.style.marginLeft = '15px';
-		sub.style.marginRight = '15px';
+		sub.style.marginLeft = '0px';
+		sub.style.marginRight = '0px';
 
 		let widthLabel = new Label(sub);
 		let el = widthLabel.getElement();
@@ -229,12 +252,12 @@ export class NewExmlPanel extends InnerBtnWindow {
 		el.style.cursor = 'default';
 		el.style.flexShrink = '0';
 		el.style.fontSize = '13px';
+		el.style.marginRight = '10px';
 		widthLabel.text = localize('newExmlPanel.createExml.width', 'Width:');
 
 		const defaultSize = this.getDefaultSize();
 		this.widthTextInput = new NumberInput(sub);
 		let inel = this.widthTextInput.getElement();
-		inel.style.marginLeft = '10px';
 		inel.style.flexGrow = '1';
 		inel.style.display = 'flex';
 		inel.style.alignItems = 'center';
@@ -252,13 +275,13 @@ export class NewExmlPanel extends InnerBtnWindow {
 		el.style.cursor = 'default';
 		el.style.flexShrink = '0';
 		el.style.fontSize = '13px';
+		el.style.marginRight = '10px';
 		widthLabel.text = localize('newExmlPanel.createExml.height', 'Height:');
 
 		this.heightTextInput = new NumberInput(sub);
 		this.heightTextInput.minValue = 0;
 		this.heightTextInput.regulateStep = 1;
 		inel = this.heightTextInput.getElement();
-		inel.style.marginLeft = '10px';
 		inel.style.flexGrow = '1';
 		inel.style.display = 'flex';
 		inel.style.alignItems = 'center';
@@ -267,10 +290,34 @@ export class NewExmlPanel extends InnerBtnWindow {
 		this.initComponentEvent();
 	}
 
+	private addErrorLabel(): void {
+		this.promptLabel = new Label(this.container);
+		this.promptLabel.style.backgroundColor = '#8c0600';
+		this.promptLabel.style.borderRadius = '2px';
+		this.promptLabel.style.padding = '6px';
+		this.promptLabel.style.marginTop = '15px';
+		this.promptLabel.style.color = '#cbcbcb';
+		this.promptLabel.style.wordWrap = 'break-word';
+		this.promptLabel.fontSize = 12;
+		this.promptLabel.height = 20;
+	}
+
+	private freshError(): void {
+		this.promptLabel && this.promptLabel.dispose();
+		if (!this.pathIsValid) {
+			this.addErrorLabel();
+			const selectPath = path.join(this.projectPath, this.pathInput.text);
+			this.promptLabel.text = localize('newExmlPanel.validate.pathInvalid', 'Please add this folder ({0}) as the root directory of the skin files in the EUI project settings.', selectPath);
+			addClass(this.pathInput.getElement(), 'error');
+		} else {
+			removeClass(this.pathInput.getElement(), 'error');
+		}
+	}
+
 	private getDefaultSize(): { height: number; width: number } {
 		let height: number = 300;
 		let width: number = 400;
-		const design = this.wingProperty.design;
+		const design = this.projectService.projectModel.getExmlConfig('design');
 		if (design) {
 			if (typeof design.height !== 'undefined') {
 				height = design.height;
@@ -286,15 +333,12 @@ export class NewExmlPanel extends InnerBtnWindow {
 	}
 
 	private saveDefaultSize(height: number | string, width: number | string) {
-		if (!this.wingProperty.design) {
-			this.wingProperty.design = {};
-		}
-		if (this.wingProperty.design.height !== height ||
-			this.wingProperty.design.width !== width) {
-			this.wingProperty.design.height = height;
-			this.wingProperty.design.width = width;
-
-			writeWingProperty(this.wingProperty, path.join(this.projectService.projectModel.project.fsPath, path.sep, 'wingProperties.json'));
+		const design = this.projectService.projectModel.getExmlConfig('design');
+		if (design.height !== height ||
+			design.width !== width) {
+			design.height = height;
+			design.width = width;
+			this.projectService.projectModel.setExmlConfig('design', design);
 		}
 	}
 
@@ -302,22 +346,38 @@ export class NewExmlPanel extends InnerBtnWindow {
 	 * 初始化按钮事件
 	 */
 	private initComponentEvent(): void {
-		this.pathContainer.btnClick = () => remote.dialog.showOpenDialog({ properties: ['openDirectory'] }, (filePaths) => this.pathHandle(filePaths));
-		this.comContainer.btnClick = () => this.comHandle();
+		this.disposables.push(this.pathBtn.onClick(this.pathBrowser));
+		this.disposables.push(this.comBtn.onClick(this.comHandle));
 	}
 
+	private pathBrowser = () => {
+		remote.dialog.showOpenDialog({ defaultPath: this.projectPath, properties: ['openDirectory'] }, (filePaths) => this.pathHandle(filePaths));
+	}
 
 	/**
 	 * 弹出主机组件选择框
 	 */
 	private comHandle = () => {
-		const defaultHostName = this.comContainer.textInput;
+		const defaultHostName = this.comInput.text;
 		const exmlComponentPanel = this.instantiationService.createInstance(ExmlComponentPanel, this.euiHost, defaultHostName);
 		exmlComponentPanel.confirm = (v) => {
 			this.stat = v;
-			this.comContainer.textInput = v.data.className || '';
+			this.comInput.text = v.data.className || '';
 		};
 		exmlComponentPanel.open(null, true);
+	}
+
+	private pathValidation(): void {
+		this.pathIsValid = false;
+		const exmlRoots = this.projectService.projectModel.exmlRoot;
+		for (let i = 0; i < exmlRoots.length; i++) {
+			const element = exmlRoots[i];
+			if (isEqualOrParent(normalize(path.join(this.projectPath, this.pathInput.text)), normalize(path.join(this.projectPath, element.fsPath)))) {
+				this.pathIsValid = true;
+				break;
+			}
+		}
+		this.freshError();
 	}
 
 	/**
@@ -327,9 +387,13 @@ export class NewExmlPanel extends InnerBtnWindow {
 		let temp: string;
 		if (filePaths && filePaths.length === 1) {
 			temp = filePaths[0];
-			const relativerPath = path.relative(this.projectPath, temp);
+			let relativerPath = path.relative(this.projectPath, temp);
+			if (relativerPath === '') {
+				relativerPath = '.';
+			}
 			if (relativerPath.indexOf('..') === -1) {
-				this.pathContainer.textInput = relativerPath;
+				this.pathInput.text = relativerPath;
+				this.pathValidation();
 			}
 			else {
 				this.notificationService && this.notificationService.error({ content: localize('newExmlPanel.pathHandle.notExistCurrentProject', 'The selection path is not in the current project, please re-select.') });
@@ -351,8 +415,8 @@ export class NewExmlPanel extends InnerBtnWindow {
 		const state = host ? host.data.state : '';
 		const width = trim(this.widthTextInput.text);
 		const height = trim(this.heightTextInput.text);
-		const templateStr = TemplateTool.createEUIExmlSkin(state, width, height, trim(this.nameContainer.textInput));
-		const templateURI = URI.file(path.join(this.projectPath, path.sep, trim(this.pathContainer.textInput), path.sep, trim(this.nameContainer.textInput) + 'Skin.exml'));
+		const templateStr = TemplateTool.createEUIExmlSkin(state, width, height, trim(this.nameInput.text));
+		const templateURI = URI.file(path.join(this.projectPath, trim(this.pathInput.text), trim(this.nameInput.text) + 'Skin.exml'));
 		const isExist = await fileService.existsFile(templateURI);
 		if (!isExist) {
 			const stat = await fileService.createFile(templateURI, templateStr, true);
@@ -371,13 +435,16 @@ export class NewExmlPanel extends InnerBtnWindow {
  	 * 验证输入有效性
  	 */
 	public validate(): boolean {
-		if (this.pathContainer.textInput === '') {
+		if (!this.pathIsValid) {
+			return false;
+		}
+		if (this.pathInput.text === '') {
 			this.notificationService && this.notificationService.warn({ content: localize('newExmlPanel.validate.path', 'Please select the path.') });
 			return false;
-		} else if (trim(this.nameContainer.textInput) === '') {
+		} else if (trim(this.nameInput.text) === '') {
 			this.notificationService && this.notificationService.warn({ content: localize('newExmlPanel.validate.skinName', 'The skin name cannot be empty, please fill in the name.') });
 			return false;
-		} else if (this.comContainer.textInput === '') {
+		} else if (this.comInput.text === '') {
 			this.notificationService && this.notificationService.warn({ content: localize('newExmlPanel.validate.comblank', 'Please select the host component.') });
 			return false;
 		} else if (trim(this.widthTextInput.text) === '') {

@@ -24,9 +24,10 @@ export class ResLibData {
 	/**
 	 * load 资源 
 	 */
-	public loadRes = (): Promise<any> => {
+	public loadRes = async (): Promise<any> => {
 
 		if (this.egretProjectService && this.egretProjectService.projectModel) {
+			await this.egretProjectService.ensureLoaded();
 			const tasks = [];
 			const loadOneRes = (resconfig) => {
 

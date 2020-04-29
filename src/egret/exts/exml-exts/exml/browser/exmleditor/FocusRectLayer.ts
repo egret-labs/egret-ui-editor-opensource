@@ -61,7 +61,6 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 	public get onScaleChanged(): VSEvent<number> {
 		return this._onScaleChanged.event;
 	}
-
 	private container: HTMLElement;
 
 	//视图代理焦点对象，
@@ -78,6 +77,9 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 		this.viewAdapterFocusRect = new FocusRect(container, false);
 		this.viewAdapterFocusRect.render(container);
 		this.rootFocusRect = new FocusRectExt(container);
+		this.rootFocusRect.addEventListener(P9TTargetEvent.DISPLAYCHANGE, () => {
+			this.dispatchEvent(new Event(FocusRectLayerEvent.VIEWCHANGED, null));
+		}, this);
 		this.viewAdapterFocusRect.addFocusRect(this.rootFocusRect);
 		HtmlElementResizeHelper.watch(container);
 
@@ -917,15 +919,6 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 		}
 	}
 
-
-
-
-
-
-
-
-
-
 	private attachMouseEvent(): void {
 		document.addEventListener('mousemove', this.notifyMouseEvent, true);
 		document.addEventListener('mouseup', this.notifyMouseEvent, true);
@@ -952,14 +945,22 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 		return new FocusRectExt(this.container);
 	}
 	/**刷新焦点对象树 */
-	private refresh(): void {
+	public refresh(): void {
+		if (!this.exmlModel) {
+			return;
+		}
 		this.updateViewAdapter();
 		this.refreshPreview();
-		this.getRootFocusRect().targetNode = this.exmlModel.getRootNode();
+		if (this.rootFocusRect) {
+			this.rootFocusRect.targetNode = this.exmlModel.getRootNode();
+		}
 	}
 
 	/**刷新视图代理 */
 	private updateViewAdapter(): void {
+		if (!this.exmlModel) {
+			return;
+		}
 		this._scale = this.egretContentHost.getTarget().scaleX;
 		if (!Number.isFinite(this._scale)) {
 			this._scale = 1;
@@ -983,7 +984,6 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 		}
 		this.dispatchEvent(new Event(FocusRectLayerEvent.VIEWCHANGED, null));
 	}
-
 
 	/**获取某个焦点对象内部所有的焦点对象集合 */
 	public getAllChildFcousRect(v: FocusRectExt, result: Array<FocusRectExt>): void {

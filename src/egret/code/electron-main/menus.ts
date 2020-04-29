@@ -209,7 +209,7 @@ export class AppMenu extends MenuBase {
 	 * 文件菜单
 	 */
 	private setFileMenu(fileMenu: Electron.Menu): void {
-		const open = this.createMenuItem(mnemonicMenuLabel(localize('menus.setFileMenu.openFolder', 'Open Folder(&&P)')), 'CmdOrCtrl+O', RootCommands.OPEN_FOLDER, localize('menus.setFileMenu.openFolderTxt', 'Open Folder'), localize('menus.setFileMenu.openFolderOpt', 'Open folder (project) operation'));
+		const open = this.createMenuItem(mnemonicMenuLabel(localize('menus.setFileMenu.openFolder', 'Open Egret Project(&&P)')), 'CmdOrCtrl+O', RootCommands.OPEN_FOLDER, localize('menus.setFileMenu.openFolderTxt', 'Open Egret Project'), localize('menus.setFileMenu.openFolderOpt', 'Open egret project operation'));
 		const createFolder = this.createMenuItem(mnemonicMenuLabel(localize('menus.setFileMenu.newFolder', 'Create Folder(&&F)')), 'Shift+CmdOrCtrl+N', FileRootCommands.NEW_FOLDER, localize('menus.setFileMenu.newFolderTxt', 'Create Folder'), localize('menus.setFileMenu.newFolderOpt', 'Create a folder in the currently selected directory'));
 		const createExml = this.createMenuItem(mnemonicMenuLabel(localize('menus.setFileMenu.newExml', 'Create EXML Skin(&&N)')), 'CmdOrCtrl+N', FileRootCommands.NEW_EXML_FILE, localize('menus.setFileMenu.newExmlTxt', 'Create EXML Skin'), localize('menus.setFileMenu.newExmlOpt', 'Create a new Exml skin in the currently selected directory'));
 

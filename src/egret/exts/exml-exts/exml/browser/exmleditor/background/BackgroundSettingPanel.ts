@@ -171,7 +171,7 @@ export class BackgroundSettingPanel extends InnerBtnWindow {
 		this.contentGroup.appendChild(backColorContainer);
 
 		this.colorPicker.create(backColorContainer);
-		this.colorPicker.setColor(this.color);
+		this.colorPicker.setColor(!this.color ? null : this.color);
 		this.colorPicker.style.marginLeft = '6px';
 		this.colorPicker.onChanged(this.pickColorChangedHandler);
 		this.colorPicker.onSaved(this.pickColorChangedHandler);
@@ -331,7 +331,10 @@ export class BackgroundSettingPanel extends InnerBtnWindow {
 		// }
 		// this.model.getEditConfigModel().backgroundColor = str;
 
-		const v = value.toHEX().toString();
+		let v: string = '';
+		if (value) {
+			v = value.toHEXA().toString();
+		}
 		this.model.getDesignConfig().backgroundColor = v;
 		this.color = v;
 

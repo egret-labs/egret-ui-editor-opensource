@@ -26,6 +26,11 @@ export class ColorPicker implements IUIBase, IDisposable {
 	private _onDisplay: Emitter<void>;
 
 	constructor(container: HTMLElement | IUIBase = null) {
+
+		this.changed_handle = this.changed_handle.bind(this);
+		this.saved_handle = this.saved_handle.bind(this);
+		this.cancel_handle = this.cancel_handle.bind(this);
+		this.display_handler = this.display_handler.bind(this);
 		this.el = document.createElement('div');
 		this.content = document.createElement('div');
 		if (container) {
@@ -89,9 +94,10 @@ export class ColorPicker implements IUIBase, IDisposable {
 	 * @param element 
 	 */
 	protected initView(): void {
-		this.pickr = new Pickr({
+		this.pickr = Pickr.create({
 			el: this.content,
-			parent: document.body,
+			container: document.body,
+			default: null,
 			components: {
 				preview: true,
 				opacity: false,
@@ -110,23 +116,23 @@ export class ColorPicker implements IUIBase, IDisposable {
 			strings: {
 				save: localize('alert.button.confirm', 'Confirm'),
 				clear: localize('alert.button.clear', 'Clear'),
-			},
-			onChange: (h, i) => this.changed_handle(h, i),
-			onSave: (h, i) => this.saved_handle(h, i),
-			onCancel: (i) => this.cancel_handle(i),
-			onDisplay: (i) => this.display_handler(i)
+			}
 		});
-		addClass(this.pickr.getRoot().app, 'egret-picker');
+		this.pickr.on('change', this.changed_handle);
+		this.pickr.on('save', this.saved_handle);
+		this.pickr.on('cancel', this.cancel_handle);
+		this.pickr.on('show', this.display_handler);
+		addClass((this.pickr.getRoot() as any).app, 'egret-picker');
 		if (isMacintosh) {
-			addClass(this.pickr.getRoot().interaction.save, 'egret-button system mac active default');
-			addClass(this.pickr.getRoot().interaction.clear, 'egret-button system mac active');
+			addClass((this.pickr.getRoot() as any).interaction.save, 'egret-button system mac active default');
+			addClass((this.pickr.getRoot() as any).interaction.clear, 'egret-button system mac active');
 		} else {
-			addClass(this.pickr.getRoot().interaction.save, 'egret-button system win active default');
-			addClass(this.pickr.getRoot().interaction.clear, 'egret-button system win active');
+			addClass((this.pickr.getRoot() as any).interaction.save, 'egret-button system win active default');
+			addClass((this.pickr.getRoot() as any).interaction.clear, 'egret-button system win active');
 		}
 	}
 
-	private closed:boolean = true;
+	private closed: boolean = true;
 	private changed_handle(hsva: HSVaColor, instance: Pickr): void {
 		if (!this.settingColor && !this.closed) {
 			if (this._onChanged) {
@@ -142,6 +148,7 @@ export class ColorPicker implements IUIBase, IDisposable {
 				this._onSaved.fire(hsva);
 			}
 		}
+		this.pickr.hide();
 	}
 	private cancel_handle(instance: Pickr): void {
 		if (!this.settingColor && !this.closed) {

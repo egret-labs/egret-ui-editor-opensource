@@ -405,6 +405,7 @@ export class ExmlView implements IExmlView {
 		this.designBackgroundLayer.style.top = '0';
 		this.designBackgroundLayer.style.left = '0';
 		this.designBackgroundLayer.style.zIndex = '-2';
+		this.designBackgroundLayer.style.overflow = 'hidden';
 		this.designBackgroundLayer.style.backgroundRepeat = 'no-repeat';
 		this.designBackgroundLayer.style.backgroundSize = '100%';
 		this.designBackgroundLayer.style.transformOrigin = 'left top';
@@ -424,6 +425,7 @@ export class ExmlView implements IExmlView {
 		this._container.style.top = '0';
 		this._container.style.left = '0';
 		this._container.style.zIndex = '0';
+		this._container.style.overflow = 'hidden';
 
 		this._container.appendChild(this.backgroundLayer);
 		this._container.appendChild(this.designBackgroundLayer);

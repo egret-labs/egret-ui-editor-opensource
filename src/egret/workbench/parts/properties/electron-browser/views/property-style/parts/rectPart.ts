@@ -319,7 +319,7 @@ export class RectPart extends BasePart {
 		}
 		for(let i = 0;i<this.currentNodes.length;i++){
 			const node = this.currentNodes[i];
-			node.setInstanceValue('fillColor',toHexNumber(color.toHEX().toString()));
+			node.setInstanceValue('fillColor',toHexNumber(color.toHEXA().toString()));
 		}
 	}
 	private fillColorSaved_handler(color:HSVaColor):void{
@@ -329,8 +329,8 @@ export class RectPart extends BasePart {
 		for(let i = 0;i<this.currentNodes.length;i++){
 			const node = this.currentNodes[i];
 			if(color){
-				setPropertyStr(node,'fillColor',toHexString(color.toHEX().toString(),'0x'));
-				node.setInstanceValue('fillColor',toHexNumber(color.toHEX().toString()));
+				setPropertyStr(node,'fillColor',toHexString(color.toHEXA().toString(),'0x'));
+				node.setInstanceValue('fillColor',toHexNumber(color.toHEXA().toString()));
 			}else{
 				setPropertyStr(node,'fillColor','0xffffff');
 				setPropertyStr(node,'fillColor',null);
@@ -393,7 +393,7 @@ export class RectPart extends BasePart {
 		}
 		for(let i = 0;i<this.currentNodes.length;i++){
 			const node = this.currentNodes[i];
-			node.setInstanceValue('strokeColor',toHexNumber(color.toHEX().toString()));
+			node.setInstanceValue('strokeColor',toHexNumber(color.toHEXA().toString()));
 		}
 	}
 	private strokeColorSaved_handler(color:HSVaColor):void{
@@ -403,8 +403,8 @@ export class RectPart extends BasePart {
 		for(let i = 0;i<this.currentNodes.length;i++){
 			const node = this.currentNodes[i];
 			if(color){
-				setPropertyStr(node,'strokeColor',toHexString(color.toHEX().toString(),'0x'));
-				node.setInstanceValue('strokeColor',toHexNumber(color.toHEX().toString()));
+				setPropertyStr(node,'strokeColor',toHexString(color.toHEXA().toString(),'0x'));
+				node.setInstanceValue('strokeColor',toHexNumber(color.toHEXA().toString()));
 			}else{
 				setPropertyStr(node,'strokeColor','0xffffff');
 				setPropertyStr(node,'strokeColor',null);

@@ -475,7 +475,7 @@ export class PropertyAllPart implements IUIBase, IDisposable {
 		}
 		for (let i = 0; i < this.selectionNodes.length; i++) {
 			const node = this.selectionNodes[i];
-			node.setInstanceValue(prop.name, toHexNumber(color.toHEX().toString()));
+			node.setInstanceValue(prop.name, toHexNumber(color.toHEXA().toString()));
 		}
 	}
 
@@ -486,8 +486,8 @@ export class PropertyAllPart implements IUIBase, IDisposable {
 		for (let i = 0; i < this.selectionNodes.length; i++) {
 			const node = this.selectionNodes[i];
 			if (color) {
-				setPropertyStr(node, prop.name, toHexString(color.toHEX().toString(),'0x'));
-				node.setInstanceValue(prop.name, toHexNumber(color.toHEX().toString()));
+				setPropertyStr(node, prop.name, toHexString(color.toHEXA().toString(),'0x'));
+				node.setInstanceValue(prop.name, toHexNumber(color.toHEXA().toString()));
 			} else {
 				setPropertyStr(node, prop.name, '0xffffff');
 				setPropertyStr(node, prop.name, null);

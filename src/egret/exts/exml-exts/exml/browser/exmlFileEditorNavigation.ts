@@ -181,8 +181,8 @@ export class ExmlFileEditorNavigation {
 		this.deviceDataProvider.push({ label: 'Pixel 2', id: 'Pixel 2', data: { w: 411, h: 731 } });
 		this.deviceDataProvider.push({ label: 'Pixel 2 XL', id: 'Pixel 2 XL', data: { w: 411, h: 823 } });
 		this.deviceDataProvider.push({ label: 'iPhone 5/SE', id: 'iPhone 5/SE', data: { w: 320, h: 568 } });
-		this.deviceDataProvider.push({ label: 'iPhone 5/7/8', id: 'iPhone 5/7/8', data: { w: 375, h: 667 } });
-		this.deviceDataProvider.push({ label: 'iPhone 5/7/8 Plus', id: 'iPhone 5/7/8 Plus', data: { w: 414, h: 736 } });
+		this.deviceDataProvider.push({ label: 'iPhone 6/7/8', id: 'iPhone 6/7/8', data: { w: 375, h: 667 } });
+		this.deviceDataProvider.push({ label: 'iPhone 6/7/8 Plus', id: 'iPhone 6/7/8 Plus', data: { w: 414, h: 736 } });
 		this.deviceDataProvider.push({ label: 'iPhone X', id: 'iPhone X', data: { w: 375, h: 812 } });
 		this.deviceDataProvider.push({ label: 'iPad', id: 'iPad', data: { w: 768, h: 1024 } });
 		this.deviceDataProvider.push({ label: 'iPad Pro', id: 'iPad Pro', data: { w: 1024, h: 1366 } });

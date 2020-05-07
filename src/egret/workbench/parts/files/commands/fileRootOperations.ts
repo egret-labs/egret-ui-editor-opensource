@@ -56,8 +56,7 @@ export class NewExmlOperation implements IOperation {
 				const euiExmlConfig: EUIExmlConfig = this.projectService.exmlConfig as EUIExmlConfig;
 				if (euiExmlConfig) {
 					euiExmlConfig.getHosts().then(hosts => {
-						const projectProperties = this.projectService.projectModel.getWingProperties();
-						const newExmlPanel = this.instantiationService.createInstance(NewExmlPanel, hosts, projectProperties);
+						const newExmlPanel = this.instantiationService.createInstance(NewExmlPanel, hosts);
 						newExmlPanel.open('root', true);
 						newExmlPanel.onClosing(e => {
 							e.relativeWindow.dispose();

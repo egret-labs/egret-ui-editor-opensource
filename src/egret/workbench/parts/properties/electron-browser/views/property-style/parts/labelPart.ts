@@ -393,7 +393,7 @@ export class LabelPart extends BasePart {
 		}
 		for(let i = 0;i<this.currentNodes.length;i++){
 			const node = this.currentNodes[i];
-			node.setInstanceValue('textColor',toHexNumber(color.toHEX().toString()));
+			node.setInstanceValue('textColor',toHexNumber(color.toHEXA().toString()));
 		}
 	}
 	private colorSaved_handler(color:HSVaColor):void{
@@ -403,8 +403,8 @@ export class LabelPart extends BasePart {
 		for(let i = 0;i<this.currentNodes.length;i++){
 			const node = this.currentNodes[i];
 			if(color){
-				setPropertyStr(node,'textColor',toHexString(color.toHEX().toString(),'0x'));
-				node.setInstanceValue('textColor',toHexNumber(color.toHEX().toString()));
+				setPropertyStr(node,'textColor',toHexString(color.toHEXA().toString(),'0x'));
+				node.setInstanceValue('textColor',toHexNumber(color.toHEXA().toString()));
 			}else{
 				setPropertyStr(node,'textColor','0xffffff');
 				setPropertyStr(node,'textColor',null);

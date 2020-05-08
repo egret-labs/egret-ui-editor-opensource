@@ -105,6 +105,13 @@ export class ExplorerView extends PanelContentDom implements IModelRequirePart, 
 	}
 
 	/**
+	 * 获取根文件夹
+	 */
+	public getRoot(): URI {
+		return this.model.root.resource;
+	}
+
+	/**
 	 * 得到首个被选中的文件夹
 	 */
 	public getFirstSelectedFolder(): URI {

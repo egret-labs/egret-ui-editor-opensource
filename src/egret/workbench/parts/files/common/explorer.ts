@@ -14,7 +14,10 @@ export interface IExplorerService {
 	 * 得到当前选择的文件列表
 	 */
 	getFileSelection():FileStat[];
-
+	/**
+	 * 获取根文件夹
+	 */
+	getRoot(): URI;
 	/**
 	 * 得到首个被选中的文件夹
 	 */

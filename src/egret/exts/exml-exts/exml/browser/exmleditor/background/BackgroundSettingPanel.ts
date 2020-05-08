@@ -322,15 +322,6 @@ export class BackgroundSettingPanel extends InnerBtnWindow {
 
 	//背景色 coloricker的回调方法
 	private pickColorChangedHandler(value: HSVaColor) {
-		// this.color = v;
-		// var str: string = StringUtil.toColorString(this.color);
-		// str = str.replace('0x', '#');
-		// let index = str.indexOf('.');
-		// if (index !== -1) {
-		// 	str = str.substring(0, index);
-		// }
-		// this.model.getEditConfigModel().backgroundColor = str;
-
 		let v: string = '';
 		if (value) {
 			v = value.toHEXA().toString();

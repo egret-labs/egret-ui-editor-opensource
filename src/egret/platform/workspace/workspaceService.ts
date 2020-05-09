@@ -8,7 +8,7 @@ import { IEnvironmentService } from '../environment/common/environment';
  * 工作空间
  */
 export class WorkspaceService implements IWorkspaceService {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 
 	private readonly workspace: IWorkspace;
 	constructor(private environmentService: IEnvironmentService,

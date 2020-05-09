@@ -1,4 +1,4 @@
-import { createDecorator, ServiceIdentifier } from 'egret/platform/instantiation/common/instantiation';
+import { createDecorator } from 'egret/platform/instantiation/common/instantiation';
 import { IResourceInput, IEditorInput } from 'egret/editor/core/inputs';
 import { IEditorService, IEditor } from 'egret/editor/core/editors';
 import { Event } from 'egret/base/common/event';
@@ -9,7 +9,7 @@ export const IWorkbenchEditorService = createDecorator<IWorkbenchEditorService>(
  * 工作台编辑器服务，负责打开关闭激活编辑器等。
  */
 export interface IWorkbenchEditorService extends IEditorService {
-	_serviceBrand: ServiceIdentifier<any>;
+	_serviceBrand: undefined;
 	/**
 	 * 当前编辑改变事件
 	 */

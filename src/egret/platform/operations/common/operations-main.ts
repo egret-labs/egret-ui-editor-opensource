@@ -6,7 +6,7 @@ export const IOperationMainService = createDecorator<IOperationMainService>('ope
  * 主进程命令服务
  */
 export interface IOperationMainService {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 
 	/**
 	 * 快捷键绑定数据更新，需要重新绑定快捷键

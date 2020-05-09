@@ -56,7 +56,7 @@ export class EditorOpeningEvent implements IEditorOpeningEvent {
  * 编辑器的基础服务
  */
 export interface IEditorService {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 	/**
 	 * 打开一个编辑器
 	 * @param input 

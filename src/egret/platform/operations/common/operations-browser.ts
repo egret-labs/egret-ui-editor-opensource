@@ -7,7 +7,7 @@ export const IOperationBrowserService = createDecorator<IOperationBrowserService
  * 渲染进程命令服务
  */
 export interface IOperationBrowserService {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 
 	/**
 	 * 操作即将被执行

@@ -12,7 +12,7 @@ export abstract class BasePart implements IUIBase,IDisposable{
 	private container: HTMLElement;
 	protected toDisposes:IDisposable[];
 
-	constructor(container: HTMLElement | IUIBase = null) {
+	constructor(container: HTMLElement | IUIBase | null) {
 		this.el = document.createElement('div');
 		this.toDisposes = [];
 		if (container) {

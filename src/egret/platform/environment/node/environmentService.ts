@@ -14,7 +14,7 @@ import { ParsedArgs } from '../common/args';
  * 环境变量服务实例
  */
 export class EnvironmentService implements IEnvironmentService {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 
 	get args(): ParsedArgs {
 		return this._args;

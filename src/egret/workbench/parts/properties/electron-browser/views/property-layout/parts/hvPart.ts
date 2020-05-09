@@ -22,7 +22,7 @@ enum PropertyTypes {
  */
 export class HVPart extends BaseLayoutPart {
 
-	constructor(container: HTMLElement | IUIBase = null) {
+	constructor(container: HTMLElement | IUIBase | null) {
 		super(container);
 		this.initTypes(
 			PropertyTypes.GAP,

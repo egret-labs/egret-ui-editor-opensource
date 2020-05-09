@@ -84,7 +84,7 @@ export const IWindowClientService = createDecorator<IWindowClientService>('windo
  * 窗体服务
  */
 export interface IWindowClientService {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 	/**
 	 * 得到当前窗体的id
 	 */

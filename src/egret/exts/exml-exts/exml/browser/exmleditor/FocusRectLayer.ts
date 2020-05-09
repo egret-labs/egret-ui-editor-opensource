@@ -712,7 +712,7 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 				}
 				this.detachMouseEvent();
 				break;
-			case 'mousewheel':
+			case 'wheel':
 				let event: MouseWheelEvent = e;
 				if (event.ctrlKey) {
 					if (isMacintosh) {

@@ -64,7 +64,7 @@ export class ResPanel extends eui.TabPanel {
 	private _parentEditor: any;
 
 	public constructor(
-		parentEditor: any,
+		parentEditor,
 		@IFileService fileService: IFileService,
 		@IResEventService private resEventService: IResEventService,
 		@IEgretProjectService private egretProjectService: IEgretProjectService,

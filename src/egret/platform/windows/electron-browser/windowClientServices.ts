@@ -6,7 +6,7 @@ import { ipcRenderer as ipc } from 'electron';
  * 渲染进程当前窗体服务
  */
 export class WindowClientService implements IWindowClientService {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 
 
 	constructor(

@@ -20,7 +20,7 @@ import * as fileUtils from './fileUtils';
  * 文件服务
  */
 export class FileService implements IFileService {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 	private toDispose: IDisposable[];
 
 	private _onFileChanges: Emitter<FileChangesEvent>;

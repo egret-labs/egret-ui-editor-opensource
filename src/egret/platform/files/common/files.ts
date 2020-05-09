@@ -14,7 +14,7 @@ export const IFileService = createDecorator<IFileService>('fileService');
  * 文件服务接口
  */
 export interface IFileService {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 	/**
 	 * 监听文件改变，在指定工作空间下的任何文件的改变都会派发事件。
 	 */

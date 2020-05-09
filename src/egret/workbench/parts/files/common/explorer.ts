@@ -9,7 +9,8 @@ export const IExplorerService = createDecorator<IExplorerService>('explorerServi
  * 资源管理器服务
  */
 export interface IExplorerService {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
+	init(impl: IExplorerService): void;
 	/**
 	 * 得到当前选择的文件列表
 	 */

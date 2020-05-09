@@ -8,15 +8,13 @@ import { IconButton } from 'egret/base/browser/ui/buttons';
 import { ComboBox } from 'egret/base/browser/ui/comboboxs';
 import { INode } from 'egret/exts/exml-exts/exml/common/exml/treeNodes';
 import { IDropDownTextDataSource } from 'egret/base/browser/ui/dropdowns';
-
+import { Scale9WindowPanel } from 'egret/workbench/parts/properties_old/exml-prop/component/scale9window/Scale9WindowPanel';
 import '../../media/propertyView.css';
 import '../../media/propertyViewStyle.css';
-import { Scale9WindowPanel } from 'egret/workbench/parts/properties_old/exml-prop/component/scale9window/Scale9WindowPanel';
 /**
  * 原数据部分
  */
 export class SourcePart extends BasePart {
-
 	private currentNode: INode = null;
 	/**
 	 * 关联的属性发生了改变

@@ -83,7 +83,7 @@ class WindowInstance {
  */
 export class WindowsMainService implements IWindowsMainService {
 
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 
 	private dialogs: Dialogs;
 	private openedWindows: WindowInstance[] = [];

@@ -32,7 +32,7 @@ export const IEgretProjectService = createDecorator<IEgretProjectService>('egret
  * Egret项目服务
  */
 export interface IEgretProjectService {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 	/**
 	 * 得到项目数据层
 	 */
@@ -80,7 +80,7 @@ export interface IEgretProjectService {
  * Egret项目模块服务实现
  */
 class EgretProjectService implements IEgretProjectService {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 
 	//TODO 这个项目管理里还差一个资源RES模块，原本是写在EUIExmlService里的。
 	private _projectModel: EgretProjectModel;

@@ -8,7 +8,7 @@ export const IWorkspaceService = createDecorator<IWorkspaceService>('workspaceSe
  * 工作空间服务
  */
 export interface IWorkspaceService {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 	/**
 	 * 获取当前workspace
 	 */

@@ -15,7 +15,7 @@ import { ExmlFileEditor } from 'egret/exts/exml-exts/exml/browser/exmlFileEditor
 
 export class AnimationService implements IAnimationService {
 
-	public _serviceBrand: any;
+	public _serviceBrand: undefined;
 
 	private exmlModel: IExmlModel;
 

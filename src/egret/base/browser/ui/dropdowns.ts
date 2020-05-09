@@ -388,7 +388,7 @@ export abstract class DropDownBase<T extends IDropDownDataSourceBase> implements
 			document.addEventListener('mouseup', this.documentClick_handler);
 			document.addEventListener('mouseover', this.documentMouseOver_handler);
 			document.addEventListener('mousedown', this.documentDown_handler);
-			document.addEventListener('mousewheel', this.documentOther_handler);
+			document.addEventListener('wheel', this.documentOther_handler);
 		}, 10);
 	}
 
@@ -621,7 +621,7 @@ export abstract class DropDownBase<T extends IDropDownDataSourceBase> implements
 		document.removeEventListener('mouseup', this.documentClick_handler);
 		document.removeEventListener('mouseover', this.documentMouseOver_handler);
 		document.removeEventListener('mousedown', this.documentDown_handler);
-		document.removeEventListener('mousewheel', this.documentOther_handler);
+		document.removeEventListener('wheel', this.documentOther_handler);
 	}
 
 
@@ -776,7 +776,7 @@ export abstract class DropDownBase<T extends IDropDownDataSourceBase> implements
 		document.removeEventListener('mouseup', this.documentClick_handler);
 		document.removeEventListener('mouseover', this.documentMouseOver_handler);
 		document.removeEventListener('mousedown', this.documentDown_handler);
-		document.removeEventListener('mousewheel', this.documentOther_handler);
+		document.removeEventListener('wheel', this.documentOther_handler);
 		this.getLabelDisplay().getElement().removeEventListener('click', this.targetClick_handler);
 		this.el.remove();
 	}

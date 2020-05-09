@@ -8,7 +8,7 @@ import { INotificationService } from 'egret/platform/notification/common/notific
  * 生命周期管理服务
  */
 export class LifecycleService implements  ILifecycleService {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 
 	private readonly _onWillShutdown = new Emitter<ShutdownEvent>();
 	private readonly _onShutdown = new Emitter<boolean/** reload */>();

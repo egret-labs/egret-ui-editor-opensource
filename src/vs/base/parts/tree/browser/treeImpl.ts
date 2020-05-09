@@ -80,8 +80,11 @@ export class Tree implements _.ITree {
 	private readonly _onDispose = new Emitter<void>();
 	readonly onDidDispose: Event<void> = this._onDispose.event;
 
-	constructor(container: HTMLElement, configuration: _.ITreeConfiguration, options: _.ITreeOptions = {}) {
+	constructor(container: HTMLElement, configuration: _.ITreeConfiguration, options: _.ITreeOptions) {
 		this.container = container;
+		if (!options) {
+			options = {};
+		}
 		mixin(options, defaultStyles, false);
 
 		options.twistiePixels = typeof options.twistiePixels === 'number' ? options.twistiePixels : 32;

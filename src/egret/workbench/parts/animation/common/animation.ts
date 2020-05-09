@@ -23,7 +23,7 @@ export interface ClipboardItem {
 }
 
 export interface IAnimationService {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 
 	animation: IAnimationModel;
 

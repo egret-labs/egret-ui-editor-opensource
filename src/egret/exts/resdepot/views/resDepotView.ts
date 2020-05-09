@@ -41,7 +41,7 @@ export class ResDepotView extends eui.UILayer {
 
 		ShortcutManager.initialize(this.stage);
 		// const resInstantiationService = initResEventService(this.instantiationService);
-		this.resPanel = this.instantiationService.createInstance(ResPanel, this._parentEditor);
+		this.resPanel = this.instantiationService.createInstance(ResPanel as any, this._parentEditor);
 		this.addChild(this.resPanel);
 		if (this.model) {
 			this.refresh();

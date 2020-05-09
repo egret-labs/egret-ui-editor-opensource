@@ -113,7 +113,7 @@ export const IWindowsMainService = createDecorator<IWindowsMainService>('windows
  * 多窗口管理入口
  */
 export interface IWindowsMainService {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 	/**
 	 * 打开主窗体
 	 */

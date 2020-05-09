@@ -13,7 +13,7 @@ import './media/output.css';
  * 输出面板
  */
 export class OutputView extends PanelContentDom implements IOutputService, IModelRequirePart {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 
 	private outputContainer: HTMLDivElement;
 
@@ -23,13 +23,18 @@ export class OutputView extends PanelContentDom implements IOutputService, IMode
 
 	private _content: HTMLTextAreaElement;
 
-	constructor(@IInstantiationService instantiationService: IInstantiationService) {
+	constructor(@IInstantiationService instantiationService: IInstantiationService,
+		@IOutputService outpuService: IOutputService) {
 		super(instantiationService);
-		instantiationService.addService(IOutputService, this);
+		outpuService.init(this);
 	}
 	
 	setModel(exmlModel: IExmlModel) {
 
+	}
+
+	init(impl: IOutputService): void {
+		throw new Error("not supported");
 	}
 
 

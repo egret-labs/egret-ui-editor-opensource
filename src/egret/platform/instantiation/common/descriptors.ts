@@ -6,11 +6,13 @@ import * as instantiation from './instantiation';
  * 同步描述，包含构造函数和参数
  */
 export class SyncDescriptor<T> {
+
 	readonly ctor: any;
 	readonly staticArguments: any[];
-	constructor(ctor: new (...args: any[]) => T, ..._staticArguments: any[]) {
+
+	constructor(ctor: new (...args: any[]) => T, staticArguments: any[] = []) {
 		this.ctor = ctor;
-		this.staticArguments = _staticArguments;
+		this.staticArguments = staticArguments;
 	}
 }
 

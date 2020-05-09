@@ -17,7 +17,7 @@ const ERROR_COLOR = '#ff7979';
  */
 export class SimpleNotificationService implements INotificationService {
 
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 
 	private messages: { msg: IMessage, type: MsgType }[] = [];
 	private toast: Toast = new Toast();

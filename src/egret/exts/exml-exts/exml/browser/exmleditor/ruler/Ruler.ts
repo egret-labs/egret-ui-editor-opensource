@@ -21,7 +21,7 @@ export class Ruler implements IRender {
 		this.root = document.createElement('div');
 		this.root.style.minHeight = this.root.style.minWidth =
 			this.root.style.height = this.root.style.width = '0px';
-			
+
 		this.canvas = document.createElement('canvas');
 		this.root.appendChild(this.canvas);
 
@@ -32,13 +32,13 @@ export class Ruler implements IRender {
 	}
 	private rulerMotor: RulerMotor;
 	public container: HTMLElement;
-	private containerParent:HTMLElement;
+	private containerParent: HTMLElement;
 	private canvas: HTMLCanvasElement;
 	private mouseTag: HTMLElement;
 
 	public render(container: HTMLElement): void {
 		this.container = container;
-		this.containerParent=container.parentElement;
+		this.containerParent = container.parentElement;
 		HtmlElementResizeHelper.watch(this.container);
 		this.container.addEventListener('resize', this.updateDisplay);
 		this.container.appendChild(this.root);
@@ -61,17 +61,17 @@ export class Ruler implements IRender {
 
 
 	// 鼠标偏移量
-	private offset = {offsetX:2,offsetY:4};
+	private offset = { offsetX: 2, offsetY: 4 };
 	private documentEventHandle(e: MouseEvent): void {
 		let p: Point = MatrixUtil.globalToLocal(this.container, new Point(e.clientX, e.clientY));
 		switch (this.type) {
 			case Ruler.TYPE_HORIZONTAL:
-				this.mouseTag.style.left = p.x-this.offset.offsetX + 'px';
+				this.mouseTag.style.left = p.x - this.offset.offsetX + 'px';
 				this.mouseTag.style.top = '0px';
 				break;
 			case Ruler.TYPE_VERTICAL:
 				this.mouseTag.style.left = '0px';
-				this.mouseTag.style.top = p.y-this.offset.offsetY + 'px';
+				this.mouseTag.style.top = p.y - this.offset.offsetY + 'px';
 				break;
 		}
 	}
@@ -112,81 +112,85 @@ export class Ruler implements IRender {
 		context.fillStyle = "#888888";
 		switch (this.type) {
 			case Ruler.TYPE_HORIZONTAL:
-				// //绘制直线
-				context.moveTo(0, this.canvas.height);
-				context.lineTo(this.canvas.width, this.canvas.height);
-				//原点右侧刻度
-				let raseX: number = this.anchorPoint.x;
-				let finalX: number = Math.round(raseX) + 0.5;
-				context.moveTo(raseX, this.canvas.height);
-				let lineCount: number = 0;
-				while (raseX < this.canvas.width) {
-					if (lineCount % 10 === 0) {
-						context.moveTo(finalX, this.canvas.height - 1); context.lineTo(finalX, 3);
-						context.fillText((lineCount / 10 * valueGap).toString(), raseX + 2, 11);
+				{
+					// //绘制直线
+					context.moveTo(0, this.canvas.height);
+					context.lineTo(this.canvas.width, this.canvas.height);
+					//原点右侧刻度
+					let raseX: number = this.anchorPoint.x;
+					let finalX: number = Math.round(raseX) + 0.5;
+					context.moveTo(raseX, this.canvas.height);
+					let lineCount: number = 0;
+					while (raseX < this.canvas.width) {
+						if (lineCount % 10 === 0) {
+							context.moveTo(finalX, this.canvas.height - 1); context.lineTo(finalX, 3);
+							context.fillText((lineCount / 10 * valueGap).toString(), raseX + 2, 11);
+						}
+						else if (lineCount % 2 === 0) { context.moveTo(finalX, this.canvas.height - 1); context.lineTo(finalX, this.canvas.height - 6); }
+						else { context.moveTo(finalX, this.canvas.height - 1); context.lineTo(finalX, this.canvas.height - 4); }
+						raseX += markGap;
+						finalX = Math.round(raseX) + 0.5;
+						lineCount++;
 					}
-					else if (lineCount % 2 === 0) { context.moveTo(finalX, this.canvas.height - 1); context.lineTo(finalX, this.canvas.height - 6); }
-					else { context.moveTo(finalX, this.canvas.height - 1); context.lineTo(finalX, this.canvas.height - 4); }
-					raseX += markGap;
+					//原点左侧刻度
+					raseX = this.anchorPoint.x;
 					finalX = Math.round(raseX) + 0.5;
-					lineCount++;
-				}
-				//原点左侧刻度
-				raseX = this.anchorPoint.x;
-				finalX = Math.round(raseX) + 0.5;
-				context.moveTo(raseX, this.canvas.height);
-				lineCount = 0;
-				while (raseX > 0) {
-					if (lineCount % 10 === 0) {
-						context.moveTo(finalX, this.canvas.height - 1); context.lineTo(finalX, 3);
-						context.fillText((lineCount / 10 * valueGap).toString(), raseX + 2, 11);
+					context.moveTo(raseX, this.canvas.height);
+					lineCount = 0;
+					while (raseX > 0) {
+						if (lineCount % 10 === 0) {
+							context.moveTo(finalX, this.canvas.height - 1); context.lineTo(finalX, 3);
+							context.fillText((lineCount / 10 * valueGap).toString(), raseX + 2, 11);
+						}
+						else if (lineCount % 2 === 0) { context.moveTo(finalX, this.canvas.height); context.lineTo(finalX, this.canvas.height - 6); }
+						else { context.moveTo(finalX, this.canvas.height); context.lineTo(finalX, this.canvas.height - 4); }
+						raseX -= markGap;
+						finalX = Math.round(raseX) + 0.5;
+						lineCount++;
 					}
-					else if (lineCount % 2 === 0) { context.moveTo(finalX, this.canvas.height); context.lineTo(finalX, this.canvas.height - 6); }
-					else { context.moveTo(finalX, this.canvas.height); context.lineTo(finalX, this.canvas.height - 4); }
-					raseX -= markGap;
-					finalX = Math.round(raseX) + 0.5;
-					lineCount++;
 				}
 				break;
 			case Ruler.TYPE_VERTICAL:
-				//绘制直线
-				context.moveTo(this.canvas.width, 0);
-				context.lineTo(this.canvas.width, this.canvas.height);
-				//原点下侧刻度
-				let raseY: number = this.anchorPoint.y;
-				let finalY: number = Math.round(raseY) + 0.5;
-				lineCount = 0;
-				while (raseY < this.canvas.height) {
-					if (lineCount % 10 === 0) {
-						context.moveTo(this.canvas.width - 1, finalY); context.lineTo(3, finalY);
-						let text: string = (lineCount / 10 * valueGap).toString();
-						for (let i: number = 0; i < text.length; i++) {
-							context.fillText(text[i], 5, raseY + 11 + i * 11);
+				{
+					//绘制直线
+					context.moveTo(this.canvas.width, 0);
+					context.lineTo(this.canvas.width, this.canvas.height);
+					//原点下侧刻度
+					let raseY: number = this.anchorPoint.y;
+					let finalY: number = Math.round(raseY) + 0.5;
+					let lineCount = 0;
+					while (raseY < this.canvas.height) {
+						if (lineCount % 10 === 0) {
+							context.moveTo(this.canvas.width - 1, finalY); context.lineTo(3, finalY);
+							let text: string = (lineCount / 10 * valueGap).toString();
+							for (let i: number = 0; i < text.length; i++) {
+								context.fillText(text[i], 5, raseY + 11 + i * 11);
+							}
 						}
+						else if (lineCount % 2 === 0) { context.moveTo(this.canvas.width - 1, finalY); context.lineTo(this.canvas.width - 6, finalY); }
+						else { context.moveTo(this.canvas.width - 1, finalY); context.lineTo(this.canvas.width - 4, finalY); }
+						raseY += markGap;
+						finalY = Math.round(raseY) + 0.5;
+						lineCount++;
 					}
-					else if (lineCount % 2 === 0) { context.moveTo(this.canvas.width - 1, finalY); context.lineTo(this.canvas.width - 6, finalY); }
-					else { context.moveTo(this.canvas.width - 1, finalY); context.lineTo(this.canvas.width - 4, finalY); }
-					raseY += markGap;
+					//原点左侧刻度
+					raseY = this.anchorPoint.y;
 					finalY = Math.round(raseY) + 0.5;
-					lineCount++;
-				}
-				//原点左侧刻度
-				raseY = this.anchorPoint.y;
-				finalY = Math.round(raseY) + 0.5;
-				lineCount = 0;
-				while (raseY > 0) {
-					if (lineCount % 10 === 0) {
-						context.moveTo(this.canvas.width - 1, finalY); context.lineTo(3, finalY);
-						let text: string = (lineCount / 10 * valueGap).toString();
-						for (let i: number = 0; i < text.length; i++) {
-							context.fillText(text[i], 5, raseY + 11 + i * 11);
+					lineCount = 0;
+					while (raseY > 0) {
+						if (lineCount % 10 === 0) {
+							context.moveTo(this.canvas.width - 1, finalY); context.lineTo(3, finalY);
+							let text: string = (lineCount / 10 * valueGap).toString();
+							for (let i: number = 0; i < text.length; i++) {
+								context.fillText(text[i], 5, raseY + 11 + i * 11);
+							}
 						}
+						else if (lineCount % 2 === 0) { context.moveTo(this.canvas.width - 1, finalY); context.lineTo(this.canvas.width - 6, finalY); }
+						else { context.moveTo(this.canvas.width - 1, finalY); context.lineTo(this.canvas.width - 4, finalY); }
+						raseY -= markGap;
+						finalY = Math.round(raseY) + 0.5;
+						lineCount++;
 					}
-					else if (lineCount % 2 === 0) { context.moveTo(this.canvas.width - 1, finalY); context.lineTo(this.canvas.width - 6, finalY); }
-					else { context.moveTo(this.canvas.width - 1, finalY); context.lineTo(this.canvas.width - 4, finalY); }
-					raseY -= markGap;
-					finalY = Math.round(raseY) + 0.5;
-					lineCount++;
 				}
 				break;
 		}
@@ -200,11 +204,11 @@ export class Ruler implements IRender {
 		if (this._focusRectLayer) {
 			this._focusRectLayer.removeEventListener(FocusRectLayerEvent.VIEWCHANGED, this.focusRectlayerEventHandle, this);
 		}
-		if(this.container){
+		if (this.container) {
 			HtmlElementResizeHelper.unWatch(this.container);
 			this.container.removeEventListener('resize', this.updateDisplay);
 		}
-		if(this.containerParent){
+		if (this.containerParent) {
 			this.containerParent.removeEventListener('mousemove', this.documentEventHandle);
 		}
 		this.containerParent = null;

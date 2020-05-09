@@ -20,7 +20,7 @@ type CodeEditorInstance = {
 };
 
 export class CodeService implements ICodeService {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 
 	private instanceMap: { [editorId: string]: CodeEditorInstance } = {};
 	private contentAssistProcessor: EXMLContentAssistProcessor;

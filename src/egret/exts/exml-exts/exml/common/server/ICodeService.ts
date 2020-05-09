@@ -6,7 +6,7 @@ export const ICodeService = createDecorator<ICodeService>('codeService');
  * exml源码编辑服务
  */
 export interface ICodeService {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 	/**
 	 * 初始化
 	 */

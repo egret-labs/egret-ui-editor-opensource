@@ -17,7 +17,7 @@ import { IWindowClientService } from 'egret/platform/windows/common/window';
  * 工作空间编辑器服务
  */
 export class WorkbenchEditorService implements IWorkbenchEditorService {
-	public _serviceBrand: any;
+	public _serviceBrand: undefined;
 
 	private static CACHE: ResourceMap<IEditorInput> = new ResourceMap<IEditorInput>();
 

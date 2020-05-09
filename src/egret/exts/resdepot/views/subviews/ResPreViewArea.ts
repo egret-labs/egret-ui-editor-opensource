@@ -23,7 +23,7 @@ export class ResPreViewArea {
 	private previewGroup: eui.Group;
 	//当前的主题
 	private m_theme: string;
-	constructor(previewGroup,
+	constructor(previewGroup: eui.Group,
 		@IResEventService private resEventService: IResEventService,
 		@IEgretProjectService private egretProjectService: IEgretProjectService,
 		@IInstantiationService private instantiationService: IInstantiationService) {
@@ -253,7 +253,7 @@ export class ResPreViewArea {
 				imageObj.isSet = true;
 			}
 			const thisObj = this;
-			var window: Scale9WindowPanel = this.instantiationService.createInstance(Scale9WindowPanel, imageObj, (v) => {
+			var window: Scale9WindowPanel = this.instantiationService.createInstance(Scale9WindowPanel as any, imageObj, (v) => {
 				// 设置一个九宫格数据
 				scale9Grid = v;
 				if (thisObj.scale9_grid_editvo) {

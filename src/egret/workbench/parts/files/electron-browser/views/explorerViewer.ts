@@ -1048,7 +1048,7 @@ export class FileDragAndDrop2 extends DefaultDragAndDrop {
 			const promise = tree.expand(target).then(() => {
 				// Reuse duplicate action if user copies
 				if (isCopy) {
-					return this.instantiationService.createInstance(DuplicateFileOperation, source, target).run();
+					return this.instantiationService.createInstance(DuplicateFileOperation, source, target as FileStat).run();
 				}
 
 				if (!(target instanceof FileStat)) {

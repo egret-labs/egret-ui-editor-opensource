@@ -852,7 +852,7 @@ export class ExmlModel implements IExmlModel {
 		this._wingNodeModel.init(this);
 
 		this._exmlConfig = this.instantiationService.createInstance(ExmlModelConfig,
-			this.egretProjectService.exmlConfig, this._onCompileWarning, this._onCompileError);
+			this.egretProjectService.exmlConfig as any, this._onCompileWarning, this._onCompileError);
 
 		this.exmlParser = this.instantiationService.createInstance(ExmlTreeParser,
 			this);

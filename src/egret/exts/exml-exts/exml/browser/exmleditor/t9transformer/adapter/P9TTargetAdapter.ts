@@ -51,6 +51,9 @@ export class P9TTargetAdapter extends EventDispatcher implements IP9TTargetAdapt
 	}
 	public set enable(value:boolean){
 		this._enable = value;
+		if(!value) {
+			this.setCursor('');
+		}
 	}
 
 	private _transformer: P9Transformer;
@@ -962,6 +965,9 @@ export class P9TTargetAdapter extends EventDispatcher implements IP9TTargetAdapt
 		document.removeEventListener('mouseup', this.cursHandle);
 	}
 	private cursHandle(e: MouseEvent): void {
+		if(!this.enable){
+			return;
+		}
 		if (!this._renderPoint) {
 			return;
 		}

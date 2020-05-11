@@ -60,6 +60,11 @@ export class Toast {
 		}
 	}
 
+	public dispose(): void {
+		this.close();
+		this.container.remove();
+	}
+
 	private close = (): void => {
 		if(!this.isShow){
 			return;

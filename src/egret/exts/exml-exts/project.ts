@@ -14,16 +14,53 @@ import { EgretChecker } from './egretChecker';
 import { ensureLogin } from 'egret/platform/launcher/launcher';
 import { IWorkbenchEditorService } from 'egret/workbench/services/editor/common/ediors';
 import { Emitter, Event } from 'egret/base/common/event';
+import { Toast } from 'egret/workbench/services/notification/browser/toasts';
+import { addClass } from 'egret/base/common/dom';
+import { localize } from 'egret/base/localization/nls';
 
 /**
  * 初始化项目
  * @param instantiationService 
  */
-export function initProject(instantiationService: IInstantiationService): void {
+export function initProject(instantiationService: IInstantiationService, showLoading: boolean = false): void {
 	//将Egret项目作为服务加入到实例化服务中
 	const projectServiceImpl = instantiationService.createInstance(EgretProjectService);
 	instantiationService.addService(IEgretProjectService, projectServiceImpl);
-	projectServiceImpl.ensureLoaded();
+	if (showLoading) {
+		let loaded: boolean = false;
+		let toast: Toast;
+		const timeout = setTimeout(() => {
+			if (!loaded) {
+				toast = new Toast();
+				const loadingContainer = document.createElement('div');
+				addClass(loadingContainer, 'project-loading');
+				const loadingIcon = document.createElement('div');
+				addClass(loadingIcon, 'icon-loading');
+				const span = document.createElement('span');
+				span.innerText = localize('property.loading', 'Loading project');
+				loadingContainer.appendChild(loadingIcon);
+				loadingContainer.appendChild(span);
+				toast.show(loadingContainer, 2147483647);
+			}
+		}, 5000);
+		const hideToast = () => {
+			loaded = true;
+			clearTimeout(timeout);
+			if (toast) {
+				toast.dispose();
+				toast = null;
+			}
+		};
+		projectServiceImpl.ensureLoaded().then(() => {
+			return projectServiceImpl.exmlConfig.ensurePaserCenterInited();
+		}).then(() => {
+			hideToast();
+		}, (err) => {
+			hideToast();
+		});
+	} else {
+		projectServiceImpl.ensureLoaded();
+	}
 }
 
 

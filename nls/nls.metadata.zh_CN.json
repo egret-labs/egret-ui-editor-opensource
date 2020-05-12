@@ -1367,6 +1367,10 @@
 		"s": "Paste file failed: {0}",
 		"t": "粘贴文件失败:{0}"
 	},
+	"property.loading": {
+		"s": "Loading project",
+		"t": "正在载入项目"
+	},
 	"property.all.title.property": {
 		"s": "Property",
 		"t": "属性名"

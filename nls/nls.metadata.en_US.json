@@ -1367,6 +1367,10 @@
 		"s": "Paste file failed: {0}",
 		"t": "Paste file failed: {0}"
 	},
+	"property.loading": {
+		"s": "Loading project",
+		"t": "Loading project"
+	},
 	"property.all.title.property": {
 		"s": "Property",
 		"t": "Property"

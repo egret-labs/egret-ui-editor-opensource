@@ -11,6 +11,6 @@ import { initExmlModel } from './exml-exts/models';
 export function initExtensions(instantiationService:IInstantiationService):void{
 	/* -------- Exml --------  */
 	initExmlEditorExts();
-	initExmlProject(instantiationService);
+	initExmlProject(instantiationService, true);
 	initExmlModel(instantiationService);
 }

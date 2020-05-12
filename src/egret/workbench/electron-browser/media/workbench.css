@@ -48,6 +48,29 @@ input, button, select, optgroup, textarea {
 	transform: scale(0.9);
 }
 
+.project-loading {
+	display: flex;
+}
+
+.project-loading .icon-loading {
+    width: 16px;
+    height: 16px;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-right: 12px;
+	background: url(loading.svg);
+	animation: loading-rotation 1s infinite linear;;
+}
+
+@keyframes loading-rotation {
+	from {
+	  transform: rotate(0deg);
+	}
+	to {
+	  transform: rotate(359deg);
+	}
+  }
+
 /* exml 编辑界面单独处理 */
 .eui-black .document-group .tabbar-item-title{
 	margin-left: 17px !important;

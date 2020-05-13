@@ -46,6 +46,9 @@ import './media/workbench.css';
 import { IExplorerService } from '../parts/files/common/explorer';
 import URI from 'egret/base/common/uri';
 import * as paths from 'egret/base/common/paths';
+import { IOutputService } from '../parts/output/common/output';
+import { OutPutService } from '../parts/output/common/outputService';
+import { ExplorerService } from '../parts/files/common/explorerService';
 
 const WORKBENCH_GLOBAL_STORAGE = 'workbenchGlobalStorageKey';
 /**
@@ -287,11 +290,15 @@ export class Workbench implements IFocusablePart {
 	private initServices(): void {
 		// 剪贴板服务
 		this.serviceCollection.set(IClipboardService, new ClipboardService());
+		// 输出服务
+		this.serviceCollection.set(IOutputService,this.instantiationService.createInstance(OutPutService));
 		// 文件服务
 		this.fileService = this.instantiationService.createInstance(FileService, this.workspaceService.getWorkspace() ? this.workspaceService.getWorkspace().uri : null);
 		this.serviceCollection.set(IFileService, this.fileService);
 		// 文件数据模型服务
 		this.serviceCollection.set(IFileModelService, new SyncDescriptor(FileModelService));
+		// 资源管理器服务
+		this.serviceCollection.set(IExplorerService,this.instantiationService.createInstance(ExplorerService));
 		// 编辑器部分
 		this.editorPart = this.instantiationService.createInstance(EditorPart);
 		this.editorService = this.instantiationService.createInstance(WorkbenchEditorService, this.editorPart);

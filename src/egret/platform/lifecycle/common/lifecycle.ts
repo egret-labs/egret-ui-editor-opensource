@@ -23,7 +23,7 @@ export const ILifecycleService = createDecorator<ILifecycleService>('lifecycleSe
  * 生命周期管理服务
  */
 export interface ILifecycleService {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 	/**
 	 * 窗体即将关闭事件，可以被阻止
 	 */

@@ -9,12 +9,16 @@ export const IExplorerService = createDecorator<IExplorerService>('explorerServi
  * 资源管理器服务
  */
 export interface IExplorerService {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
+	init(impl: IExplorerService): void;
 	/**
 	 * 得到当前选择的文件列表
 	 */
 	getFileSelection():FileStat[];
-
+	/**
+	 * 获取根文件夹
+	 */
+	getRoot(): URI;
 	/**
 	 * 得到首个被选中的文件夹
 	 */

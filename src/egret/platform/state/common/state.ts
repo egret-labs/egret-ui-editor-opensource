@@ -7,7 +7,7 @@ export const IStateService = createDecorator<IStateService>('stateService');
  * 状态存储服务
  */
 export interface IStateService {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 	/**
 	 * 得到内容
 	 * @param key 

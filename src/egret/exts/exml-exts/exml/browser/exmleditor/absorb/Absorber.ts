@@ -97,85 +97,95 @@ export class Absorber {
 		}
 		switch (e.type) {
 			case P9TTargetAdapterEvent.BEGINTRANSFORM:
-				let mouseEvent: MouseEvent = e.data['mouseEvent'] as MouseEvent;
-				this.currentAdapter = e.targetAdapter as P9TTargetAdapter;
-				this.currentAdapter.makeStagePoint = this.makeStagePoint;
-				this.currentRender = e.data['render'];
-				this.targetAABB = this.focusRectLayer.getFocusRectBounds(this.currentAdapter.operateTarget as FocusRectExt);
-				this.targetAABBOffset = new Point(mouseEvent.clientX - this.targetAABB.x, mouseEvent.clientY - this.targetAABB.y);
-				let renderP = MatrixUtil.localToGlobal(this.currentAdapter.root, new Point(this.currentRender.x, this.currentRender.y));
-				this.renderOffset.x = mouseEvent.clientX - renderP.x;
-				this.renderOffset.y = mouseEvent.clientY - renderP.y;
+				{
+					let mouseEvent: MouseEvent = e.data['mouseEvent'] as MouseEvent;
+					this.currentAdapter = e.targetAdapter as P9TTargetAdapter;
+					this.currentAdapter.makeStagePoint = this.makeStagePoint;
+					this.currentRender = e.data['render'];
+					this.targetAABB = this.focusRectLayer.getFocusRectBounds(this.currentAdapter.operateTarget as FocusRectExt);
+					this.targetAABBOffset = new Point(mouseEvent.clientX - this.targetAABB.x, mouseEvent.clientY - this.targetAABB.y);
+					let renderP = MatrixUtil.localToGlobal(this.currentAdapter.root, new Point(this.currentRender.x, this.currentRender.y));
+					this.renderOffset.x = mouseEvent.clientX - renderP.x;
+					this.renderOffset.y = mouseEvent.clientY - renderP.y;
 
-				this.cacheMatrix = MatrixUtil.getMatrixToWindow(this.container);
-				this.cacheMatrix.invert();
+					this.cacheMatrix = MatrixUtil.getMatrixToWindow(this.container);
+					this.cacheMatrix.invert();
 
-				//基础线条
-				let baseLines: AbsorbLine[] = [];
-				this.lineProviderList.forEach(provider => {
-					baseLines = baseLines.concat(provider.getAbsorbLines());
-				});
-				//设置吸附器
-				this.absorbMotor.setUp(baseLines, 4);
+					//基础线条
+					let baseLines: AbsorbLine[] = [];
+					this.lineProviderList.forEach(provider => {
+						baseLines = baseLines.concat(provider.getAbsorbLines());
+					});
+					//设置吸附器
+					this.absorbMotor.setUp(baseLines, 4);
+				}
 				break;
 			case P9TTargetAdapterEvent.BEGINUPDATETRANSFORM:
-				// //整理吸附线条
-				let targetLines: AbsorbLine[] = [];
-				mouseEvent = e.data['mouseEvent'] as MouseEvent;
-				switch (this.currentOperateType) {
-					case P9TTargetAdapterSyncOperateDefine.LEFTBOTTOM:
-					case P9TTargetAdapterSyncOperateDefine.LEFTTOP:
-					case P9TTargetAdapterSyncOperateDefine.RIGHTBOTTOM:
-					case P9TTargetAdapterSyncOperateDefine.RIGHTTOP:
-						let line: AbsorbLine = new AbsorbLine(AbsorbLineType.HORIZONTAIL, mouseEvent.y - this.renderOffset.y);
-						line.detail = { xFrom: mouseEvent.x - this.renderOffset.x, xTo: mouseEvent.x - this.renderOffset.x };
-						targetLines.push(line);
-						line = new AbsorbLine(AbsorbLineType.VERTICAL, mouseEvent.x - this.renderOffset.x);
-						line.detail = { yFrom: mouseEvent.y - this.renderOffset.y, yTo: mouseEvent.y - this.renderOffset.y };
-						targetLines.push(line);
-						this.absorbResults = this.absorbMotor.absorb(targetLines);
-						break;
-					case P9TTargetAdapterSyncOperateDefine.MOVE:
-						let AABB = this.targetAABB;
-						AABB.x = mouseEvent.clientX - this.targetAABBOffset.x;
-						AABB.y = mouseEvent.clientY - this.targetAABBOffset.y;
+				{
+					// //整理吸附线条
+					let targetLines: AbsorbLine[] = [];
+					let mouseEvent = e.data['mouseEvent'] as MouseEvent;
+					switch (this.currentOperateType) {
+						case P9TTargetAdapterSyncOperateDefine.LEFTBOTTOM:
+						case P9TTargetAdapterSyncOperateDefine.LEFTTOP:
+						case P9TTargetAdapterSyncOperateDefine.RIGHTBOTTOM:
+						case P9TTargetAdapterSyncOperateDefine.RIGHTTOP:
+							{
+								let line: AbsorbLine = new AbsorbLine(AbsorbLineType.HORIZONTAIL, mouseEvent.y - this.renderOffset.y);
+								line.detail = { xFrom: mouseEvent.x - this.renderOffset.x, xTo: mouseEvent.x - this.renderOffset.x };
+								targetLines.push(line);
+								line = new AbsorbLine(AbsorbLineType.VERTICAL, mouseEvent.x - this.renderOffset.x);
+								line.detail = { yFrom: mouseEvent.y - this.renderOffset.y, yTo: mouseEvent.y - this.renderOffset.y };
+								targetLines.push(line);
+								this.absorbResults = this.absorbMotor.absorb(targetLines);
+							}
+							break;
+						case P9TTargetAdapterSyncOperateDefine.MOVE:
+							{
+								let AABB = this.targetAABB;
+								AABB.x = mouseEvent.clientX - this.targetAABBOffset.x;
+								AABB.y = mouseEvent.clientY - this.targetAABBOffset.y;
 
-						line = new AbsorbLine(AbsorbLineType.VERTICAL, AABB.x);
-						line.detail = { yFrom: AABB.y, yTo: AABB.y + AABB.height };
-						line['__offset'] = { x: mouseEvent.clientX - AABB.x };
-						targetLines.push(line);
-						line = new AbsorbLine(AbsorbLineType.VERTICAL, AABB.x + AABB.width / 2);
-						line.detail = { yFrom: AABB.y, yTo: AABB.y + AABB.height };
-						line['__offset'] = { x: mouseEvent.clientX - AABB.x - AABB.width / 2 };
-						targetLines.push(line);
-						line = new AbsorbLine(AbsorbLineType.VERTICAL, AABB.x + AABB.width);
-						line.detail = { yFrom: AABB.y, yTo: AABB.y + AABB.height };
-						line['__offset'] = { x: mouseEvent.clientX - AABB.x - AABB.width };
-						targetLines.push(line);
+								let line = new AbsorbLine(AbsorbLineType.VERTICAL, AABB.x);
+								line.detail = { yFrom: AABB.y, yTo: AABB.y + AABB.height };
+								line['__offset'] = { x: mouseEvent.clientX - AABB.x };
+								targetLines.push(line);
+								line = new AbsorbLine(AbsorbLineType.VERTICAL, AABB.x + AABB.width / 2);
+								line.detail = { yFrom: AABB.y, yTo: AABB.y + AABB.height };
+								line['__offset'] = { x: mouseEvent.clientX - AABB.x - AABB.width / 2 };
+								targetLines.push(line);
+								line = new AbsorbLine(AbsorbLineType.VERTICAL, AABB.x + AABB.width);
+								line.detail = { yFrom: AABB.y, yTo: AABB.y + AABB.height };
+								line['__offset'] = { x: mouseEvent.clientX - AABB.x - AABB.width };
+								targetLines.push(line);
 
-						line = new AbsorbLine(AbsorbLineType.HORIZONTAIL, AABB.y);
-						line.detail = { xFrom: AABB.x, xTo: AABB.x + AABB.width };
-						line['__offset'] = { y: mouseEvent.clientY - AABB.y };
-						targetLines.push(line);
-						line = new AbsorbLine(AbsorbLineType.HORIZONTAIL, AABB.y + AABB.height / 2);
-						line.detail = { xFrom: AABB.x, xTo: AABB.x + AABB.width };
-						line['__offset'] = { y: mouseEvent.clientY - AABB.y - AABB.height / 2 };
-						targetLines.push(line);
-						line = new AbsorbLine(AbsorbLineType.HORIZONTAIL, AABB.y + AABB.height);
-						line.detail = { xFrom: AABB.x, xTo: AABB.x + AABB.width };
-						line['__offset'] = { y: mouseEvent.clientY - AABB.y - AABB.height };
-						targetLines.push(line);
-						this.absorbResults = this.absorbMotor.absorb(targetLines);
-						break;
+								line = new AbsorbLine(AbsorbLineType.HORIZONTAIL, AABB.y);
+								line.detail = { xFrom: AABB.x, xTo: AABB.x + AABB.width };
+								line['__offset'] = { y: mouseEvent.clientY - AABB.y };
+								targetLines.push(line);
+								line = new AbsorbLine(AbsorbLineType.HORIZONTAIL, AABB.y + AABB.height / 2);
+								line.detail = { xFrom: AABB.x, xTo: AABB.x + AABB.width };
+								line['__offset'] = { y: mouseEvent.clientY - AABB.y - AABB.height / 2 };
+								targetLines.push(line);
+								line = new AbsorbLine(AbsorbLineType.HORIZONTAIL, AABB.y + AABB.height);
+								line.detail = { xFrom: AABB.x, xTo: AABB.x + AABB.width };
+								line['__offset'] = { y: mouseEvent.clientY - AABB.y - AABB.height };
+								targetLines.push(line);
+								this.absorbResults = this.absorbMotor.absorb(targetLines);
+							}
+							break;
+					}
+					this.drawLine();
 				}
-				this.drawLine();
 				break;
 			case P9TTargetAdapterEvent.ENDTRANSFORM:
-				this.absorbResults = null;
-				if (this.currentAdapter) {
-					this.currentAdapter.makeStagePoint = null;
+				{
+					this.absorbResults = null;
+					if (this.currentAdapter) {
+						this.currentAdapter.makeStagePoint = null;
+					}
+					this.drawLine();
 				}
-				this.drawLine();
 				break;
 		}
 	}
@@ -226,25 +236,29 @@ export class Absorber {
 			let obj2 = absorbResult.targetLine.detail;
 			switch (absorbResult.targetLine.type) {
 				case AbsorbLineType.HORIZONTAIL:
-					let minx = Math.min(obj.xFrom, obj2.xFrom);
-					let maxx = Math.max(obj.xTo, obj2.xTo);
-					let tmpP = this.cacheMatrix.transformPoint(minx, absorbResult.baseLine.value);
-					tmpP.x = Math.round(tmpP.x) + 0.5; tmpP.y = Math.round(tmpP.y) + 0.5;
-					pathValue += ('M' + tmpP.x + ' ' + tmpP.y + ' ');
-					tmpP = this.cacheMatrix.transformPoint(maxx, absorbResult.baseLine.value);
-					tmpP.x = Math.round(tmpP.x) + 0.5; tmpP.y = Math.round(tmpP.y) + 0.5;
-					pathValue += ('L' + tmpP.x + ' ' + tmpP.y);
+					{
+						let minx = Math.min(obj.xFrom, obj2.xFrom);
+						let maxx = Math.max(obj.xTo, obj2.xTo);
+						let tmpP = this.cacheMatrix.transformPoint(minx, absorbResult.baseLine.value);
+						tmpP.x = Math.round(tmpP.x) + 0.5; tmpP.y = Math.round(tmpP.y) + 0.5;
+						pathValue += ('M' + tmpP.x + ' ' + tmpP.y + ' ');
+						tmpP = this.cacheMatrix.transformPoint(maxx, absorbResult.baseLine.value);
+						tmpP.x = Math.round(tmpP.x) + 0.5; tmpP.y = Math.round(tmpP.y) + 0.5;
+						pathValue += ('L' + tmpP.x + ' ' + tmpP.y);
+					}
 					break;
 				case AbsorbLineType.VERTICAL:
-					obj2 = absorbResult.targetLine.detail;
-					let miny = Math.min(obj.yFrom, obj2.yFrom);
-					let maxy = Math.max(obj.yTo, obj2.yTo);
-					tmpP = this.cacheMatrix.transformPoint(absorbResult.baseLine.value, miny);
-					tmpP.x = Math.round(tmpP.x) + 0.5; tmpP.y = Math.round(tmpP.y) + 0.5;
-					pathValue += ('M' + tmpP.x + ' ' + tmpP.y + ' ');
-					tmpP = this.cacheMatrix.transformPoint(absorbResult.baseLine.value, maxy);
-					tmpP.x = Math.round(tmpP.x) + 0.5; tmpP.y = Math.round(tmpP.y) + 0.5;
-					pathValue += ('L' + tmpP.x + ' ' + tmpP.y);
+					{
+						obj2 = absorbResult.targetLine.detail;
+						let miny = Math.min(obj.yFrom, obj2.yFrom);
+						let maxy = Math.max(obj.yTo, obj2.yTo);
+						let tmpP = this.cacheMatrix.transformPoint(absorbResult.baseLine.value, miny);
+						tmpP.x = Math.round(tmpP.x) + 0.5; tmpP.y = Math.round(tmpP.y) + 0.5;
+						pathValue += ('M' + tmpP.x + ' ' + tmpP.y + ' ');
+						tmpP = this.cacheMatrix.transformPoint(absorbResult.baseLine.value, maxy);
+						tmpP.x = Math.round(tmpP.x) + 0.5; tmpP.y = Math.round(tmpP.y) + 0.5;
+						pathValue += ('L' + tmpP.x + ' ' + tmpP.y);
+					}
 					break;
 			}
 		});

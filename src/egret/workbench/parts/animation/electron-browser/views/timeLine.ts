@@ -362,7 +362,7 @@ export class TimeLineContainer {
 		const bodyContent = DOM.$('div');
 		bodyContent.style.position = 'relative';
 		this.body.appendChild(bodyContent);
-		bodyContent.addEventListener('mousewheel', (browserEvent: MouseWheelEvent) => {
+		bodyContent.addEventListener('wheel', (browserEvent: MouseWheelEvent) => {
 			this.onBodyContentWheel(browserEvent);
 		});
 		this.bodyContent = bodyContent;

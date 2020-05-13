@@ -54,12 +54,12 @@ export class PropertyStylePart extends PropertyBasePart{
 		this.owner.layout();
 	}
 
-	private sourcePart = null;
-	private skinPart = null;
-	private buttonSkinPart = null;
-	private labelPart = null;
-	private rectPart = null;
-	private bitmapLabelPart = null;
+	private sourcePart: SourcePart = null;
+	private skinPart: SkinPart = null;
+	private buttonSkinPart: ButtonSkinPart = null;
+	private labelPart: LabelPart = null;
+	private rectPart: RectPart = null;
+	private bitmapLabelPart: BitmapLabelPart = null;
 
 	private parts:BasePart[];
 

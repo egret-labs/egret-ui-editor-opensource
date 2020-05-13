@@ -13,7 +13,7 @@ export function initResEventService(instantiationService: IInstantiationService)
 export const IResEventService = createDecorator<IResEventService>('resEventService');
 
 export interface IResEventService {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 	addListen(type: string, listener: Function, thisObject?: any);
 	removeListen(type: string, listener: Function, thisObject?: any);
 	sendEvent(type: string, data?: any);
@@ -23,7 +23,7 @@ export interface IResEventService {
  * 全局事件监听器
  */
 class ResEventService implements IResEventService {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 	/** events-listeners map*/
 	private maps_listener: any = {};
 	/** events-thisobj map */

@@ -52,6 +52,12 @@ export class BrowserWindowEx implements IBrowserWindowEx {
 
 	protected initWindow(): void {
 		const state = this.getWindowState();
+		this.normalBounds = {
+			x: state.x,
+			y: state.y,
+			width: state.width,
+			height: state.height
+		};
 		const options: BrowserWindowConstructorOptions = {
 			backgroundColor: '#3b3b3b',
 			width: state.width,

@@ -33,7 +33,7 @@ export const IExmlModelServices = createDecorator<IExmlModelServices>('exmlModel
  * ExmlModel服务
  */
 export interface IExmlModelServices {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 	/**
 	 * 当前ExmlModel变化的时候派发事件
 	 */
@@ -58,7 +58,7 @@ export interface IExmlModelServices {
  * Egret项目模块服务实现
  */
 export class ExmlModelServices implements IExmlModelServices {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 	private currrentEditor: IEditor;
 	constructor(
 		@IWorkbenchEditorService private workbenchEditorService: IWorkbenchEditorService

@@ -1,7 +1,7 @@
 export class HtmlElementResizeHelper {
 
 	private static _watched: boolean = false;
-	private static _UseNative: boolean = true;
+	private static _UseNative: boolean = false;
 	public static get UseNative(): boolean {
 		return this._UseNative;
 	}

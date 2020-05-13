@@ -6,7 +6,7 @@ export const IEnvironmentService = createDecorator<IEnvironmentService>('environ
  * 环境变量服务
  */
 export interface IEnvironmentService {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 	/**
 	 * 参数
 	 */

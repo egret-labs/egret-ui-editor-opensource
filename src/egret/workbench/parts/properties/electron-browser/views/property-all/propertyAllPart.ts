@@ -26,7 +26,7 @@ export class PropertyAllPart implements IUIBase, IDisposable {
 
 	private _onChanged: Emitter<void>;
 
-	constructor(container: HTMLElement | IUIBase = null) {
+	constructor(container: HTMLElement | IUIBase | null) {
 		this.el = document.createElement('div');
 		this.table = document.createElement('table');
 		this._onChanged = new Emitter<void>();
@@ -190,103 +190,109 @@ export class PropertyAllPart implements IUIBase, IDisposable {
 	private createInput(prop: IProperty, container: HTMLElement, existInput: IUIBase): IUIBase {
 		switch (prop.type) {
 			case PropertyType.Boolean:
-				const combobox = existInput ? existInput as ComboBox : new ComboBox(container);
-				combobox.setDatas([
-					{ id: 'true', data: 'true' },
-					{ id: 'false', data: 'false' }
-				]);
-				if (prop.user != null && prop.user != '') {
-					combobox.setSelection(prop.user);
-				} else if (prop.default != null && prop.default != '') {
-					combobox.setSelection(null);
-					combobox.prompt = prop.default;
-				} else {
-					combobox.setSelection(null);
-					combobox.prompt = '-';
+				{
+					const combobox = existInput ? existInput as ComboBox : new ComboBox(container);
+					combobox.setDatas([
+						{ id: 'true', data: 'true' },
+						{ id: 'false', data: 'false' }
+					]);
+					if (prop.user != null && prop.user != '') {
+						combobox.setSelection(prop.user);
+					} else if (prop.default != null && prop.default != '') {
+						combobox.setSelection(null);
+						combobox.prompt = prop.default;
+					} else {
+						combobox.setSelection(null);
+						combobox.prompt = '-';
+					}
+					if (!existInput) {
+						this.inputDisposables.push(combobox);
+						this.inputDisposables.push(combobox.onSelectChanged(t => this.booleanChanged_handler(t.getSelection(), prop)));
+					}
+					return combobox;
 				}
-				if (!existInput) {
-					this.inputDisposables.push(combobox);
-					this.inputDisposables.push(combobox.onSelectChanged(t => this.booleanChanged_handler(t.getSelection(), prop)));
-				}
-				return combobox;
 			case PropertyType.Number:
-				let numberInput = existInput ? existInput as NumberInput : new NumberInput(container);
-				numberInput.supportPercent = false;
-				if (prop.minValue != null) {
-					numberInput.minValue = prop.minValue;
+				{
+					let numberInput = existInput ? existInput as NumberInput : new NumberInput(container);
+					numberInput.supportPercent = false;
+					if (prop.minValue != null) {
+						numberInput.minValue = prop.minValue;
+					}
+					if (prop.maxValue != null) {
+						numberInput.maxValue = prop.maxValue;
+					}
+					numberInput.regulateStep = prop.step;
+					if (prop.user != null && prop.user != '') {
+						numberInput.text = prop.user;
+					} else if (prop.default != null && prop.default != '') {
+						numberInput.text = null;
+						numberInput.prompt = prop.default;
+					} else {
+						numberInput.text = null;
+						numberInput.prompt = '-';
+					}
+					if (!existInput) {
+						this.inputDisposables.push(numberInput);
+						this.inputDisposables.push(numberInput.onValueChanging(e => {
+							this.numberChanging_handler(e ? Number.parseFloat(e) : null, prop);
+						}));
+						this.inputDisposables.push(numberInput.onValueChanged(e => {
+							this.numberChanged_handler(e ? Number.parseFloat(e) : null, prop);
+						}));
+					}
+					return numberInput;
 				}
-				if (prop.maxValue != null) {
-					numberInput.maxValue = prop.maxValue;
-				}
-				numberInput.regulateStep = prop.step;
-				if (prop.user != null && prop.user != '') {
-					numberInput.text = prop.user;
-				} else if (prop.default != null && prop.default != '') {
-					numberInput.text = null;
-					numberInput.prompt = prop.default;
-				} else {
-					numberInput.text = null;
-					numberInput.prompt = '-';
-				}
-				if (!existInput) {
-					this.inputDisposables.push(numberInput);
-					this.inputDisposables.push(numberInput.onValueChanging(e => {
-						this.numberChanging_handler(e ? Number.parseFloat(e) : null, prop);
-					}));
-					this.inputDisposables.push(numberInput.onValueChanged(e => {
-						this.numberChanged_handler(e ? Number.parseFloat(e) : null, prop);
-					}));
-				}
-				return numberInput;
 			case PropertyType.NumberWithPercent:
-				numberInput = existInput ? existInput as NumberInput : new NumberInput(container);
-				numberInput.supportPercent = true;
-				if (prop.minValue != null) {
-					numberInput.minValue = prop.minValue;
-				}
-				if (prop.maxValue != null) {
-					numberInput.maxValue = prop.maxValue;
-				}
-				numberInput.regulateStep = prop.step;
-				if (prop.user != null && prop.user != '') {
-					numberInput.text = prop.user;
-				} else if (prop.default != null && prop.default != '') {
-					numberInput.text = null;
-					numberInput.prompt = prop.default;
-				} else {
-					numberInput.text = null;
-					numberInput.prompt = '-';
-				}
-				if (!existInput) {
-					this.inputDisposables.push(numberInput);
-					this.inputDisposables.push(numberInput.onValueChanging(e => {
-						if (e) {
-							if (e.indexOf('%') != -1) {
-								const value = e;
-								this.numberPercentChanging_handler(value, prop);
+				{
+					let numberInput = existInput ? existInput as NumberInput : new NumberInput(container);
+					numberInput.supportPercent = true;
+					if (prop.minValue != null) {
+						numberInput.minValue = prop.minValue;
+					}
+					if (prop.maxValue != null) {
+						numberInput.maxValue = prop.maxValue;
+					}
+					numberInput.regulateStep = prop.step;
+					if (prop.user != null && prop.user != '') {
+						numberInput.text = prop.user;
+					} else if (prop.default != null && prop.default != '') {
+						numberInput.text = null;
+						numberInput.prompt = prop.default;
+					} else {
+						numberInput.text = null;
+						numberInput.prompt = '-';
+					}
+					if (!existInput) {
+						this.inputDisposables.push(numberInput);
+						this.inputDisposables.push(numberInput.onValueChanging(e => {
+							if (e) {
+								if (e.indexOf('%') != -1) {
+									const value = e;
+									this.numberPercentChanging_handler(value, prop);
+								} else {
+									const value = Number.parseFloat(e);
+									this.numberChanging_handler(value, prop);
+								}
 							} else {
-								const value = Number.parseFloat(e);
-								this.numberChanging_handler(value, prop);
+								this.numberChanging_handler(null, prop);
 							}
-						} else {
-							this.numberChanging_handler(null, prop);
-						}
-					}));
-					this.inputDisposables.push(numberInput.onValueChanged(e => {
-						if (e) {
-							if (e.indexOf('%') != -1) {
-								const value = e;
-								this.numberPercentChanged_handler(value, prop);
+						}));
+						this.inputDisposables.push(numberInput.onValueChanged(e => {
+							if (e) {
+								if (e.indexOf('%') != -1) {
+									const value = e;
+									this.numberPercentChanged_handler(value, prop);
+								} else {
+									const value = Number.parseFloat(e);
+									this.numberChanged_handler(value, prop);
+								}
 							} else {
-								const value = Number.parseFloat(e);
-								this.numberChanged_handler(value, prop);
+								this.numberChanged_handler(null, prop);
 							}
-						} else {
-							this.numberChanged_handler(null, prop);
-						}
-					}));
+						}));
+					}
+					return numberInput;
 				}
-				return numberInput;
 			case PropertyType.String:
 				if (prop.available && prop.available.length > 0) {
 					const combobox = existInput ? existInput as ComboBox : new ComboBox(container);
@@ -327,22 +333,24 @@ export class PropertyAllPart implements IUIBase, IDisposable {
 					return input;
 				}
 			case PropertyType.Color:
-				const colorPicker = existInput ? existInput as ColorPicker : new ColorPicker(container);
-				if (prop.user) {
-					colorPicker.setColor(toHexString(prop.user as any,'#'));
-				} else if (prop.default) {
-					colorPicker.setColor(toHexString(prop.default as any,'#'));
-				} else {
-					colorPicker.setColor(null);
+				{
+					const colorPicker = existInput ? existInput as ColorPicker : new ColorPicker(container);
+					if (prop.user) {
+						colorPicker.setColor(toHexString(prop.user as any, '#'));
+					} else if (prop.default) {
+						colorPicker.setColor(toHexString(prop.default as any, '#'));
+					} else {
+						colorPicker.setColor(null);
+					}
+					if (!existInput) {
+						this.inputDisposables.push(colorPicker);
+						this.inputDisposables.push(colorPicker.onDisplay(() => this.colorDisplay_handler(prop)));
+						this.inputDisposables.push(colorPicker.onChanged(e => this.colorChanged_handler(e, prop)));
+						this.inputDisposables.push(colorPicker.onSaved(e => this.colorSaved_handler(e, prop)));
+						this.inputDisposables.push(colorPicker.onCanceled(() => this.colorCanceled_handler(prop)));
+					}
+					return colorPicker;
 				}
-				if (!existInput) {
-					this.inputDisposables.push(colorPicker);
-					this.inputDisposables.push(colorPicker.onDisplay(() => this.colorDisplay_handler(prop)));
-					this.inputDisposables.push(colorPicker.onChanged(e => this.colorChanged_handler(e, prop)));
-					this.inputDisposables.push(colorPicker.onSaved(e => this.colorSaved_handler(e, prop)));
-					this.inputDisposables.push(colorPicker.onCanceled(() => this.colorCanceled_handler(prop)));
-				}
-				return colorPicker;
 			default:
 				return null;
 		}
@@ -486,7 +494,7 @@ export class PropertyAllPart implements IUIBase, IDisposable {
 		for (let i = 0; i < this.selectionNodes.length; i++) {
 			const node = this.selectionNodes[i];
 			if (color) {
-				setPropertyStr(node, prop.name, toHexString(color.toHEXA().toString(),'0x'));
+				setPropertyStr(node, prop.name, toHexString(color.toHEXA().toString(), '0x'));
 				node.setInstanceValue(prop.name, toHexNumber(color.toHEXA().toString()));
 			} else {
 				setPropertyStr(node, prop.name, '0xffffff');

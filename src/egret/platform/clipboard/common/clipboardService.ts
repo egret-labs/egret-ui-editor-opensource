@@ -8,7 +8,7 @@ export const IClipboardService = createDecorator<IClipboardService>('clipboardSe
  */
 export interface IClipboardService {
 
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 	/**
 	 * 写文本
 	 */

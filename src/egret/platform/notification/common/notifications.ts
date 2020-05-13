@@ -20,7 +20,7 @@ export interface IMessage {
  * 通知服务
  */
 export interface INotificationService {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 	/**
 	 * 报告 info 
 	 */

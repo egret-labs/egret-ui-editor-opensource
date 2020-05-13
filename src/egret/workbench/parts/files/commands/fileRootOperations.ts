@@ -56,7 +56,7 @@ export class NewExmlOperation implements IOperation {
 				const euiExmlConfig: EUIExmlConfig = this.projectService.exmlConfig as EUIExmlConfig;
 				if (euiExmlConfig) {
 					euiExmlConfig.getHosts().then(hosts => {
-						const newExmlPanel = this.instantiationService.createInstance(NewExmlPanel, hosts);
+						const newExmlPanel: NewExmlPanel = this.instantiationService.createInstance(NewExmlPanel as any, hosts);
 						newExmlPanel.open('root', true);
 						newExmlPanel.onClosing(e => {
 							e.relativeWindow.dispose();
@@ -236,12 +236,19 @@ export class RevealFileInOsOperation implements IOperation {
 	 * 运行
 	 */
 	public run(): Promise<any> {
+		let showPath: string = null;
 		const elements = this.explorerService.getFileSelection();
-		if (elements.length) {
-			elements.forEach(stat => {
-				const path: string = stat.resource.fsPath;
-				shell.showItemInFolder(path);
-			});
+		if (elements.length > 0) {
+			const stat = elements[0];
+			showPath = stat.resource.fsPath;
+		} else {
+			const root = this.explorerService.getRoot();
+			if(root) {
+				showPath = root.fsPath;
+			}
+		}
+		if(showPath){
+			shell.showItemInFolder(showPath);
 		} else {
 			this.notificationService.warn({ content: localize('revealFileInOsOperation.run.notSelectFile', 'There are currently no selected files and cannot be displayed in the System Explorer'), duration: 3 });
 		}
@@ -322,7 +329,14 @@ export class CopyFilePathOperation implements IOperation {
 	public run(): Promise<any> {
 		const elements = this.explorerService ? this.explorerService.getFileSelection() : [];
 		const lineDelimiter = isWindows ? '\r\n' : '\n';
-		const text = elements.map(element => element.resource.fsPath).join(lineDelimiter);
+		let text = elements.map(element => element.resource.fsPath).join(lineDelimiter);
+		// 选中了根目录
+		if (!text) {
+			const root = this.explorerService ? this.explorerService.getRoot() : null;
+			if (root) {
+				text = root.fsPath;
+			}
+		}
 		this.clipboardService.writeText(text);
 		return Promise.resolve(void 0);
 	}
@@ -441,7 +455,7 @@ export class SaveActiveOperation implements IOperation {
 	public async run(): Promise<any> {
 		const currentEditor = this.editorService.getActiveEditor();
 		if (currentEditor && currentEditor.input) {
-			if('syncModelData' in currentEditor){
+			if ('syncModelData' in currentEditor) {
 				await (currentEditor as IMultiPageEditor).syncModelData();
 			}
 			return this.fileModelService.save(currentEditor.input.getResource());
@@ -475,7 +489,7 @@ export class SaveAllOperation implements IOperation {
 		const editors = this.editorService.getOpenEditors();
 		for (let i = 0; i < editors.length; i++) {
 			const editor = editors[i];
-			if('syncModelData' in editor){
+			if ('syncModelData' in editor) {
 				await (editor as IMultiPageEditor).syncModelData();
 			}
 		}
@@ -589,7 +603,7 @@ export class InstallShellCommandOperation implements IOperation {
 				buttons: buttons,
 				cancelId: 1
 			};
-			this.windowService.showMessageBox(opts).then((result)=> {
+			this.windowService.showMessageBox(opts).then((result) => {
 				switch (result.button) {
 					case 0 /* OK */:
 						const command = 'osascript -e "do shell script \\"mkdir -p /usr/local/bin && ln -sf \'' + this.getSource() + '\' \'' + this.target + '\'\\" with administrator privileges"';

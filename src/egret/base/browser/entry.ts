@@ -225,7 +225,7 @@ export class ResHelper extends egret.EventDispatcher {
 	/**
 	 * 配置文件加载完成,开始预加载皮肤主题资源和preload资源组。
 	 */
-	private onConfigComplete_handler(event: RES.ResourceEvent): void {
+	private onConfigComplete_handler(event: any): void {
 		RES.removeEventListener(RES.ResourceEvent.CONFIG_COMPLETE, this.onConfigComplete_handler, this);
 		RES.addEventListener(RES.ResourceEvent.GROUP_COMPLETE, this.onResourceLoadComplete, this);
 		RES.addEventListener(RES.ResourceEvent.GROUP_LOAD_ERROR, this.onResourceLoadError, this);

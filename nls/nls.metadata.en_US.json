@@ -523,6 +523,26 @@
 		"s": "Design",
 		"t": "Design"
 	},
+	"exml.editor.deviceRotation": {
+		"s": "Landscape",
+		"t": "Landscape"
+	},
+	"exml.editor.grabTips": {
+		"s": "Hold the space bar to move",
+		"t": "Hold the space bar to move"
+	},
+	"exml.editor.refreshTips": {
+		"s": "Refresh",
+		"t": "Refresh"
+	},
+	"exml.editor.adsorbentTips": {
+		"s": "Adsorbent",
+		"t": "Adsorbent"
+	},
+	"exml.editor.backgroundTips": {
+		"s": "Background",
+		"t": "Background"
+	},
 	"exml.editor.animation": {
 		"s": "Animation",
 		"t": "Animation"
@@ -646,6 +666,10 @@
 	"explorerView.resourceManager": {
 		"s": "Explorer",
 		"t": "Explorer"
+	},
+	"explorerView.collapseAll": {
+		"s": "Collapse All",
+		"t": "Collapse All"
 	},
 	"fileController.initContextMenuGeneral.copy": {
 		"s": "Copy",
@@ -1366,6 +1390,10 @@
 	"pasteFileOperation.run.copyError": {
 		"s": "Paste file failed: {0}",
 		"t": "Paste file failed: {0}"
+	},
+	"property.loading": {
+		"s": "Loading project",
+		"t": "Loading project"
 	},
 	"property.all.title.property": {
 		"s": "Property",

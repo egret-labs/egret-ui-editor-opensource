@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"target": "es5",
+		"target": "es2017",
 		"watch": false,
 		"sourceMap": true,
 		"experimentalDecorators": true,

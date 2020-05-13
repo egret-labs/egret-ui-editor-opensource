@@ -29,7 +29,7 @@ export const ILifecycleService = createDecorator<ILifecycleService>('lifecycleSe
  * 主进程生命周期服务
  */
 export interface ILifecycleService {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 	/**
 	 * 程序退出之前
 	 */
@@ -75,7 +75,7 @@ export interface ILifecycleService {
  * 主进程生命周期管理
  */
 export class LifecycleService implements ILifecycleService {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 
 	private windowToCloseRequest: { [windowId: string]: boolean };
 	/** 已请求退出程序 */

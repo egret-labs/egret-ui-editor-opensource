@@ -151,7 +151,7 @@ export class FocusablePartCommandHelper {
 	private doExecuteOperation<D>(command: string, args: any[]): Promise<D> {
 		const operation: { new(): IOperation } = this.getOperation(command);
 		if (operation) {
-			const operationImpl = this.instantiationService.createInstance.apply(this.instantiationService, [operation].concat(args)) as IOperation;
+			const operationImpl: IOperation = this.instantiationService.createInstance.apply(this.instantiationService, [operation].concat(args) as any);
 			this._onWillExecuteCommand.fire({ command });
 			return operationImpl.run().then(result => {
 				dispose(operationImpl);

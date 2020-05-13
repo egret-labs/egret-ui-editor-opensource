@@ -35,7 +35,7 @@ enum PropertyTypes {
  */
 export class TilePart extends BaseLayoutPart {
 
-	constructor(container: HTMLElement | IUIBase = null) {
+	constructor(container: HTMLElement | IUIBase | null) {
 		super(container);
 		this.initTypes(
 			PropertyTypes.ORIENTATION,

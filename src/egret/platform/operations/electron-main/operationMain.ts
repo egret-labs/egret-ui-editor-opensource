@@ -14,7 +14,7 @@ const KEYBINDING_BROWSER = 'keybindingBrowser';
  * 操作服务，主进程使用
  */
 export class OperationMainService implements IOperationMainService {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 
 	/** ipc通信时间戳 */
 	private oneTimeListenerTokenGenerator: number;

@@ -26,7 +26,7 @@ export interface IStorage {
 export class StorageService implements IStorageService {
 
 	
-	public _serviceBrand: any;
+	public _serviceBrand: undefined;
 
 
 	/**

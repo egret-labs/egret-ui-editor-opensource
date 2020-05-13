@@ -122,7 +122,7 @@ export const IFileModelService = createDecorator<IFileModelService>(FILE_MODEL_S
  * 文件数据服务
  */
 export interface IFileModelService extends IDisposable {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 	/**
 	 * 模块管理器
 	 */

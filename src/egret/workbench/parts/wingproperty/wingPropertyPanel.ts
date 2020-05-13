@@ -54,7 +54,7 @@ export class WingPropertyPanel extends InnerBtnWindow {
 
 
 	constructor(
-		wingProperty: any,
+		wingProperty: {resourcePlugin?: any},
 		private projectModel: EgretProjectModel,
 		@INotificationService private notificationService: INotificationService
 	) {

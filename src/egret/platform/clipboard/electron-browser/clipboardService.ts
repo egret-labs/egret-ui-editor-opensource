@@ -12,7 +12,7 @@ export class ClipboardService implements IClipboardService {
 
 
 
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 	/**
 	 * 写文本
 	 * @param text 

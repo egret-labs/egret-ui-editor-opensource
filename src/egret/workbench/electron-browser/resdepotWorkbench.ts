@@ -31,10 +31,13 @@ import { initResEventService } from 'egret/exts/resdepot/events/ResEventService'
 import * as path from 'path';
 
 class EmptyOutputService implements IOutputService {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 	scrollLock: boolean;
 	append(output: string): void {
 
+	}
+	init(impl: IOutputService): void {
+		
 	}
 	clear(): void {
 

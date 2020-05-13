@@ -29,7 +29,7 @@ class HeaderRender implements boxlayout.IRender {
 export class PanelDom extends boxlayout.TabPanel implements IPanelDom, IDisposable {
 	private content: any;
 	private header: boxlayout.IRender;
-	constructor(id: string, title: string, content: any, icon: string = '', @IInstantiationService protected instantiationService: IInstantiationService) {
+	constructor(id: string, title: string, content: new (...args: any[]) => any, icon: string, @IInstantiationService protected instantiationService: IInstantiationService) {
 		super();
 		this.setId(id);
 		this.setTitle(title);

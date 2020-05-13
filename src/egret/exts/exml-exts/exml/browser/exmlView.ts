@@ -52,7 +52,7 @@ export class ExmlView implements IExmlView {
 	) {
 		this._onZoomChanged = new Emitter<number>();
 		this._onViewChanged = new Emitter<ExmlView>();
-		this._helper = this.instantiationService.createInstance(ExmlModelHelper, this);
+		this._helper = this.instantiationService.createInstance(ExmlModelHelper);
 		this.runtimeLayer = document.createElement('div');
 		this.runtimeLayer.setAttribute('className', 'runtime-layer');
 		this.exmlEditor = new ExmlEditor();
@@ -638,7 +638,7 @@ export class ExmlView implements IExmlView {
 		this.disableExmlEditorInteractive();
 	}
 	private disableExmlEditorInteractive(): void {
-		this.container.parentElement.removeEventListener('mousewheel', this.containerEventHandler);
+		this.container.parentElement.removeEventListener('wheel', this.containerEventHandler);
 		this.container.parentElement.removeEventListener('mousedown', this.containerEventHandler);
 		this.container.removeEventListener('dblclick', this.containerEventHandler);
 		this.exmlEditor.removeEventListener('onContextMenu', this.onContextMenu, this);
@@ -651,7 +651,7 @@ export class ExmlView implements IExmlView {
 	}
 	private enableExmlEditorInteractive(): void {
 		this.disableExmlEditorInteractive();
-		this.container.parentElement.addEventListener('mousewheel', this.containerEventHandler);
+		this.container.parentElement.addEventListener('wheel', this.containerEventHandler);
 		this.container.parentElement.addEventListener('mousedown', this.containerEventHandler);
 		this.container.addEventListener('dblclick', this.containerEventHandler);
 		this.exmlEditor.addEventListener('onContextMenu', this.onContextMenu, this);
@@ -672,7 +672,7 @@ export class ExmlView implements IExmlView {
 				}
 				break;
 			case 'mousedown':
-			case 'mousewheel':
+			case 'wheel':
 				this.exmlEditor.notifyMouseEvent(e);
 				break;
 		}

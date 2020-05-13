@@ -27,7 +27,7 @@ import { IWorkspaceService } from 'egret/platform/workspace/common/workspace';
  * 资源管理器面板
  */
 export class ExplorerView extends PanelContentDom implements IModelRequirePart, IExplorerService, IFocusablePart {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 
 	/** 控制是否在打开文件的时候自动选中资源管理器中的资源 */
 	private autoReveal: boolean;
@@ -47,14 +47,17 @@ export class ExplorerView extends PanelContentDom implements IModelRequirePart, 
 		@IWorkspaceService private workspaceService: IWorkspaceService,
 		@IWorkbenchEditorService private editorService: IWorkbenchEditorService,
 		@INotificationService private notificationService: INotificationService,
-		@IOperationBrowserService private operationService: IOperationBrowserService
+		@IOperationBrowserService private operationService: IOperationBrowserService,
+		@IExplorerService private explorerService: IExplorerService
 	) {
 		super(instantiationService);
-
+		this.explorerService.init(this);
 		this.autoReveal = true;
-		this.instantiationService.addService(IExplorerService, this);
 
 		this.focusablePartCommandHelper = this.instantiationService.createInstance(FocusablePartCommandHelper);
+	}
+	init(impl: IExplorerService): void {
+		throw new Error('not supported');
 	}
 
 	private owner: IPanel;
@@ -105,6 +108,13 @@ export class ExplorerView extends PanelContentDom implements IModelRequirePart, 
 	}
 
 	/**
+	 * 获取根文件夹
+	 */
+	public getRoot(): URI {
+		return this.model.root.resource;
+	}
+
+	/**
 	 * 得到首个被选中的文件夹
 	 */
 	public getFirstSelectedFolder(): URI {
@@ -152,14 +162,15 @@ export class ExplorerView extends PanelContentDom implements IModelRequirePart, 
 		icons.style.flexDirection = 'row';
 		container.appendChild(icons);
 
-		const cllapseDiv = document.createElement('div');
-		cllapseDiv.style.marginRight = '10px';
-		cllapseDiv.style.cursor = 'pointer';
-		cllapseDiv.className = 'explorer-action collapse-all';
-		cllapseDiv.addEventListener('click', () => {
+		const collapseDiv = document.createElement('div');
+		collapseDiv.title = localize('explorerView.collapseAll', 'Collapse All');
+		collapseDiv.style.marginRight = '10px';
+		collapseDiv.style.cursor = 'pointer';
+		collapseDiv.className = 'explorer-action collapse-all';
+		collapseDiv.addEventListener('click', () => {
 			this.collapseAll();
 		});
-		icons.appendChild(cllapseDiv);
+		icons.appendChild(collapseDiv);
 	}
 
 

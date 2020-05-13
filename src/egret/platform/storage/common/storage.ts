@@ -10,7 +10,7 @@ export const IStorageService = createDecorator<IStorageService>(ID);
  * 本地缓存服务
  */
 export interface IStorageService {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 
 	/**
 	 * 将给定键值下的字符串值存储到本地存储。

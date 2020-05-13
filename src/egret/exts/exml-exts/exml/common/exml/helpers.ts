@@ -15,8 +15,13 @@ import * as fs from 'fs';
 /**
  * ExmlModel工具
  */
-export class ExmlModelHelper implements IDisposable{
+export class ExmlModelHelper implements IDisposable {
+	/**
+	 *
+	 */
+	constructor() {
 
+	}
 	protected _model: IExmlModel;
 	/**
 	 * 当前视图的exml数据层
@@ -71,11 +76,11 @@ export class ExmlModelHelper implements IDisposable{
 
 		node = nodeList[0];
 
-		const minPos = coordinateTransfrom({x:0,y:0},node,groupNode.getParent());
+		const minPos = coordinateTransfrom({ x: 0, y: 0 }, node, groupNode.getParent());
 		for (i = 0; i < length; i++) {
 			node = nodeList[i];
-			var pos = coordinateTransfrom({x:0,y:0},node,groupNode.getParent());
-			if(pos){
+			var pos = coordinateTransfrom({ x: 0, y: 0 }, node, groupNode.getParent());
+			if (pos) {
 				if (minPos.x > pos.x) {
 					minPos.x = pos.x;
 				}
@@ -89,7 +94,7 @@ export class ExmlModelHelper implements IDisposable{
 		nodeList.sort(sortOnDepth);
 		for (i = 0; i < length; i++) {
 			node = nodeList[i];
-			pos = coordinateTransfrom({x:0,y:0},node,groupNode);
+			pos = coordinateTransfrom({ x: 0, y: 0 }, node, groupNode);
 			cleanRelatvieProps(node);
 			groupNode.addNode(node);
 			node.setNumber('x', Math.round(pos.x * 100) / 100);
@@ -120,8 +125,8 @@ export class ExmlModelHelper implements IDisposable{
 				const node: INode = groupNode.getNodeAt(index);
 				parentNode.addNodeAt(node, nodeIndex);
 				const pos = coordinateTransfrom({ x: 0, y: 0 }, node, parentNode);
-				node.setNumber('x', Math.round((pos.x + groupNode.getInstance().x)  * 100) / 100);
-				node.setNumber('y', Math.round((pos.y + groupNode.getInstance().y)* 100) / 100);
+				node.setNumber('x', Math.round((pos.x + groupNode.getInstance().x) * 100) / 100);
+				node.setNumber('y', Math.round((pos.y + groupNode.getInstance().y) * 100) / 100);
 				node.setSelected(true);
 			}
 			parentNode.removeNode(groupNode);
@@ -149,17 +154,17 @@ export class ExmlModelHelper implements IDisposable{
 	 * @param target 
 	 */
 	public select(target: INode | INode[]): void {
-		const selectedNodes=this._model.getSelectedNodes();
+		const selectedNodes = this._model.getSelectedNodes();
 		for (var i = 0; i < selectedNodes.length; i++) {
 			const node: INode = selectedNodes[i];
 			node.setSelected(false);
 		}
 		if (target) {
-			if(isArray(target)){
-				for(var i = 0;i<target.length;i++){
+			if (isArray(target)) {
+				for (var i = 0; i < target.length; i++) {
 					target[i].setSelected(true);
 				}
-			}else{
+			} else {
 				target.setSelected(true);
 			}
 		}
@@ -241,7 +246,7 @@ export class ExmlModelHelper implements IDisposable{
 			if (endWith(path.toLowerCase(), '.exml')) {
 				try {
 					//TODO 用fileservice改为异步
-					classXML = xmlTagUtil.parse(fs.readFileSync(path,{encoding:'utf8'}));
+					classXML = xmlTagUtil.parse(fs.readFileSync(path, { encoding: 'utf8' }));
 					if (classXML.attributes['class']) {
 						xmlTagUtil.deleteAttribute(classXML, 'class');
 					}
@@ -268,8 +273,8 @@ export class ExmlModelHelper implements IDisposable{
 	/**
 	 * 复制选中的节点到系统剪贴板
 	 */
-	public copyNodesToClipboard(): void{
-		if(!this.getModel()){
+	public copyNodesToClipboard(): void {
+		if (!this.getModel()) {
 			return;
 		}
 		this.getModel().copyNodesToClipboard();
@@ -278,8 +283,8 @@ export class ExmlModelHelper implements IDisposable{
 	/**
 	 * 剪切选中的节点到系统剪贴板
 	 */
-	public cutNodesToClipboard(): void{
-		if(!this.getModel()){
+	public cutNodesToClipboard(): void {
+		if (!this.getModel()) {
 			return;
 		}
 		this.getModel().cutNodesToClipboard();
@@ -287,8 +292,8 @@ export class ExmlModelHelper implements IDisposable{
 	/**
 	 * 粘贴系统剪贴板中的节点
 	 */
-	public pasteNodesFromClipboard(): void{
-		if(!this.getModel()){
+	public pasteNodesFromClipboard(): void {
+		if (!this.getModel()) {
 			return;
 		}
 		this.getModel().pasteNodesFromClipboard();
@@ -296,8 +301,8 @@ export class ExmlModelHelper implements IDisposable{
 	/**
 	 * 删除选中的节点,返回删除的节点列表。
 	 */
-	public removeSelectedNodes(): INode[]{
-		if(!this.getModel()){
+	public removeSelectedNodes(): INode[] {
+		if (!this.getModel()) {
 			return [];
 		}
 		return this.getModel().removeSelectedNodes();
@@ -305,8 +310,8 @@ export class ExmlModelHelper implements IDisposable{
 	/**
 	 * 复制节点的属性
 	 */
-	public copyNodeProperty():void{
-		if(!this.getModel()){
+	public copyNodeProperty(): void {
+		if (!this.getModel()) {
 			return;
 		}
 		if (this.getModel().getSelectedNodes().length > 0) {
@@ -316,8 +321,8 @@ export class ExmlModelHelper implements IDisposable{
 	/**
 	 * 粘贴节点位置
 	 */
-	public pasteNodePos():void{
-		if(!this.getModel()){
+	public pasteNodePos(): void {
+		if (!this.getModel()) {
 			return;
 		}
 		pastePosFromClipboard(this.getModel().getSelectedNodes());
@@ -325,8 +330,8 @@ export class ExmlModelHelper implements IDisposable{
 	/**
 	 * 粘贴节点尺寸
 	 */
-	public pasteNodeSize():void{
-		if(!this.getModel()){
+	public pasteNodeSize(): void {
+		if (!this.getModel()) {
 			return;
 		}
 		pasteSizeFromClipboard(this.getModel().getSelectedNodes());
@@ -334,8 +339,8 @@ export class ExmlModelHelper implements IDisposable{
 	/**
 	 * 粘贴节点约束条件
 	 */
-	public pasteNodeRestrict():void{
-		if(!this.getModel()){
+	public pasteNodeRestrict(): void {
+		if (!this.getModel()) {
 			return;
 		}
 		pasteRestrictFromClipboard(this.getModel().getSelectedNodes());
@@ -344,7 +349,7 @@ export class ExmlModelHelper implements IDisposable{
 	/**
 	 * 释放
 	 */
-	public dispose():void{
+	public dispose(): void {
 		this._model = null;
 	}
 }

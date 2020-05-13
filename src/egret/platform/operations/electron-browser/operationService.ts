@@ -53,7 +53,7 @@ function isSystemRols(command: string): boolean {
  * 操作服务
  */
 export class OperationBrowserService implements IOperationBrowserService {
-	_serviceBrand: any;
+	_serviceBrand: undefined;
 
 	private _onWillExecuteCommand: Emitter<IOperationEvent>;
 

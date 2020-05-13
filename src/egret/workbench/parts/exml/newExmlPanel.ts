@@ -99,7 +99,14 @@ export class NewExmlPanel extends InnerBtnWindow {
 			this.projectPath = this.projectService.projectModel.project.fsPath;
 		}
 
-		const defaultFolder = this.explorerService ? this.explorerService.getFirstSelectedFolder() : null;
+		let defaultFolder = this.explorerService ? this.explorerService.getFirstSelectedFolder() : null;
+		if (!defaultFolder) {
+			// 为指定文件夹，使用第一个exmlRoot
+			const exmlRoots = this.projectService.projectModel.exmlRoot;
+			if(exmlRoots && exmlRoots.length > 0) {
+				defaultFolder = exmlRoots[0];
+			}
+		}
 
 		this.defaultPath = '';
 		if (defaultFolder) {
@@ -391,7 +398,8 @@ export class NewExmlPanel extends InnerBtnWindow {
 			if (relativerPath === '') {
 				relativerPath = '.';
 			}
-			if (relativerPath.indexOf('..') === -1) {
+			if (relativerPath.indexOf('..') === -1  &&
+				isEqualOrParent(normalize(temp), normalize(this.projectService.projectModel.project.fsPath))) {
 				this.pathInput.text = relativerPath;
 				this.pathValidation();
 			}

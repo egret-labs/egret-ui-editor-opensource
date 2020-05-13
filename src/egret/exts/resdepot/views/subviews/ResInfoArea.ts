@@ -540,7 +540,7 @@ export class ResInfoArea {
 			return;
 		}
 		if (!this.subkeyMenu) {
-			this.subkeyMenu = this.instantiationService.createInstance(ResRightMenu, [ResRightMenu.LABELS.FRESH_SHEET], [ResRightMenu.IDS.FRESH_SHEET], null);
+			this.subkeyMenu = this.instantiationService.createInstance(ResRightMenu as any, [ResRightMenu.LABELS.FRESH_SHEET], [ResRightMenu.IDS.FRESH_SHEET], null);
 		}
 		this.subkeyMenu.data = this.curEditResVO;
 		this.subkeyMenu.rightMenu.display(this.subkeysEdit.stage, this.subkeysEdit.stage.mouseX, this.subkeysEdit.stage.mouseY);

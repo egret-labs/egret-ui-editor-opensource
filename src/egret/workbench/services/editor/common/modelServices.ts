@@ -18,7 +18,7 @@ import { MessageBoxOptions } from 'egret/platform/windows/common/windows';
  * model服务，服务于当前项目，内只一个model管理器
  */
 export class FileModelService implements IFileModelService {
-	public _serviceBrand: any;
+	public _serviceBrand: undefined;
 
 	private toUnbind: IDisposable[];
 	private _modelManager: FileEditorModelManager;

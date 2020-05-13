@@ -162,14 +162,15 @@ export class ExplorerView extends PanelContentDom implements IModelRequirePart, 
 		icons.style.flexDirection = 'row';
 		container.appendChild(icons);
 
-		const cllapseDiv = document.createElement('div');
-		cllapseDiv.style.marginRight = '10px';
-		cllapseDiv.style.cursor = 'pointer';
-		cllapseDiv.className = 'explorer-action collapse-all';
-		cllapseDiv.addEventListener('click', () => {
+		const collapseDiv = document.createElement('div');
+		collapseDiv.title = localize('explorerView.collapseAll', 'Collapse All');
+		collapseDiv.style.marginRight = '10px';
+		collapseDiv.style.cursor = 'pointer';
+		collapseDiv.className = 'explorer-action collapse-all';
+		collapseDiv.addEventListener('click', () => {
 			this.collapseAll();
 		});
-		icons.appendChild(cllapseDiv);
+		icons.appendChild(collapseDiv);
 	}
 
 

@@ -523,6 +523,26 @@
 		"s": "Design",
 		"t": "设计"
 	},
+	"exml.editor.deviceRotation": {
+		"s": "Landscape",
+		"t": "横屏"
+	},
+	"exml.editor.grabTips": {
+		"s": "Hold the space bar to move",
+		"t": "按住空格键移动"
+	},
+	"exml.editor.refreshTips": {
+		"s": "Refresh",
+		"t": "刷新"
+	},
+	"exml.editor.adsorbentTips": {
+		"s": "Adsorbent",
+		"t": "吸附"
+	},
+	"exml.editor.backgroundTips": {
+		"s": "Background",
+		"t": "背景"
+	},
 	"exml.editor.animation": {
 		"s": "Animation",
 		"t": "动画"
@@ -646,6 +666,10 @@
 	"explorerView.resourceManager": {
 		"s": "Explorer",
 		"t": "资源管理器"
+	},
+	"explorerView.collapseAll": {
+		"s": "Collapse All",
+		"t": "折叠所有"
 	},
 	"fileController.initContextMenuGeneral.copy": {
 		"s": "Copy",

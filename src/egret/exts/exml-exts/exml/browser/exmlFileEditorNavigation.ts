@@ -107,6 +107,7 @@ export class ExmlFileEditorNavigation {
 	private scaleSelect: Select;
 	private scaleDataProvider: SelectDataSource[] = [];
 	private fitContentButton: ToggleButton;
+	private deviceRotationButton: ToggleButton;
 
 	private funcContainer: HGroup;
 	private grabBtn: ToggleIconButton;
@@ -126,10 +127,10 @@ export class ExmlFileEditorNavigation {
 	 */
 	public get previewConfig(): PreviewConfig {
 		return {
-			screenWidth: this.deviceSelect.selection.data.w,
-			screenHeight: this.deviceSelect.selection.data.h,
+			screenWidth: this.deviceRotationButton.selected ? this.deviceSelect.selection.data.h : this.deviceSelect.selection.data.w,
+			screenHeight: this.deviceRotationButton.selected ? this.deviceSelect.selection.data.w : this.deviceSelect.selection.data.h,
 			screenScale: this.scaleSelect.selection.data,
-			fitContent: this.fitContentButton.selected
+			fitContent: this.fitContentButton.selected,
 		};
 	}
 
@@ -162,6 +163,7 @@ export class ExmlFileEditorNavigation {
 		this.modeTabbarChanged_handler(this.modeTabbar.selection);
 
 		this.refreshBtn = new IconButton(container);
+		this.refreshBtn.toolTip = localize('exml.editor.refreshTips', 'Refresh');
 		this.refreshBtn.iconClass = 'refresh-icon';
 		this.refreshBtn.style.marginLeft = '6px';
 		this.refreshBtn.onClick(e => this.refreshClick_handler());
@@ -187,7 +189,25 @@ export class ExmlFileEditorNavigation {
 		this.deviceDataProvider.push({ label: 'iPad', id: 'iPad', data: { w: 768, h: 1024 } });
 		this.deviceDataProvider.push({ label: 'iPad Pro', id: 'iPad Pro', data: { w: 1024, h: 1366 } });
 		this.deviceSelect.dataProvider = this.deviceDataProvider;
-		this.deviceSelect.onSelectedChanged(() => { this._onPreviewOptionChanged.fire(); });
+		this.deviceSelect.onSelectedChanged(() => {
+			if (this.deviceRotationButton) {
+				const selected = this.deviceSelect.selection.data;
+				if (selected.w === 0 && selected.h === 0) {
+					this.deviceRotationButton.style.display = 'none';
+					this.deviceRotationButton.selected = false;
+				} else {
+					this.deviceRotationButton.style.display = 'block';
+				}
+			}
+			this._onPreviewOptionChanged.fire();
+		});
+
+		this.deviceRotationButton = new ToggleButton(this.mobileFitContainer);
+		this.deviceRotationButton.style.marginLeft = '5px';
+		this.deviceRotationButton.style.display = 'none';
+		this.deviceRotationButton.label = localize('exml.editor.deviceRotation', 'landscape');
+		this.deviceRotationButton.selected = false;
+		this.deviceRotationButton.onSelectedChanged(e => { this._onPreviewOptionChanged.fire(); });
 
 		this.scaleSelect = new Select(this.mobileFitContainer);
 		this.scaleSelect.style.marginLeft = '5px';
@@ -209,6 +229,7 @@ export class ExmlFileEditorNavigation {
 		this.funcContainer.style.marginRight = '30px';
 
 		this.grabBtn = new ToggleIconButton(this.funcContainer);
+		this.grabBtn.toolTip = localize('exml.editor.grabTips', 'Hold the space bar to move');
 		this.grabBtn.iconClass = 'grab-icon';
 		this.grabBtn.onSelectedChanged(() => this._onGrabChanged.fire(this.grabBtn.selected));
 
@@ -217,11 +238,13 @@ export class ExmlFileEditorNavigation {
 		this.lockGroupBtn.onSelectedChanged(() => this._onLockGroupChanged.fire(this.lockGroupBtn.selected));
 
 		this.adsorbBtn = new ToggleIconButton(this.funcContainer);
+		this.adsorbBtn.toolTip = localize('exml.editor.adsorbentTips', 'Adsorbent');
 		this.adsorbBtn.iconClass = 'adsorb-icon';
 		this.adsorbBtn.style.marginLeft = '3px';
 		this.adsorbBtn.onSelectedChanged(() => this._onAdsortChanged.fire(this.adsorbBtn.selected));
-		
+
 		this.backgroundBtn = new IconButton(this.funcContainer);
+		this.backgroundBtn.toolTip = localize('exml.editor.backgroundTips', 'Background');
 		this.backgroundBtn.iconClass = 'background-icon';
 		this.backgroundBtn.style.marginLeft = '3px';
 		this.backgroundBtn.onClick(e => this.backgroundClick_handler());

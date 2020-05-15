@@ -497,6 +497,7 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 		}
 	}
 
+	private altKeydown: boolean = false;
 	/**
 	 * 通知键盘事件
 	 * @param e 
@@ -504,18 +505,24 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 	public notifyKeyboardEvent(e: KeyboardEvent): void {
 		if (e.type == 'keydown') {
 			if (e.keyCode == Keyboard.ALTERNATE) {
-				this.navigation.lockGroup = !this.navigation.lockGroup;
-				this.exmlView.lockGroup = this.navigation.lockGroup;
-				this.exmlView.promptLockGroupTips();
+				if (!this.altKeydown) {
+					this.altKeydown = true;
+					this.navigation.lockGroup = !this.navigation.lockGroup;
+					this.exmlView.lockGroup = this.navigation.lockGroup;
+					this.exmlView.promptLockGroupTips();
+				}
 			}
 			if (this.exmlView) {
 				this.exmlView.notifyKeyboardEvent(e);
 			}
 		} else {
 			if (e.keyCode == Keyboard.ALTERNATE) {
-				this.navigation.lockGroup = !this.navigation.lockGroup;
-				this.exmlView.lockGroup = this.navigation.lockGroup;
-				this.exmlView.promptLockGroupTips();
+				if (this.altKeydown) {
+					this.altKeydown = false;
+					this.navigation.lockGroup = !this.navigation.lockGroup;
+					this.exmlView.lockGroup = this.navigation.lockGroup;
+					this.exmlView.promptLockGroupTips();
+				}
 			}
 			if (this.exmlView) {
 				this.exmlView.notifyKeyboardEvent(e);

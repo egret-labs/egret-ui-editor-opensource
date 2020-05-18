@@ -1,6 +1,6 @@
 import { IInstantiationService } from 'egret/platform/instantiation/common/instantiation';
 import { Tree } from 'vs/base/parts/tree/browser/treeImpl';
-import { ITreeConfiguration } from 'vs/base/parts/tree/browser/tree';
+import { ITreeConfiguration, ISelectionEvent } from 'vs/base/parts/tree/browser/tree';
 import { ResLibData } from 'egret/workbench/parts/assets/material/common/ResLibData';
 import { TreeNodeBase, TreeParentNode } from 'egret/workbench/parts/assets/material/common/TreeModel';
 import { ResInfoVO } from 'egret/workbench/parts/assets/material/common/ResInfoVO';
@@ -102,7 +102,7 @@ export class AssetsView extends PanelContentDom implements IModelRequirePart, IF
 	}
 
 	// 点击事件
-	displayFun = (stat: TreeNodeBase) => {
+	private displayFun = (stat: TreeNodeBase) => {
 		const resvo: ResInfoVO = stat['resvo'];
 
 		if (!resvo) {
@@ -176,7 +176,7 @@ export class AssetsView extends PanelContentDom implements IModelRequirePart, IF
 		this.matTreeModel = this.instantiationService.createInstance(MatTreeModel);
 		const dataSource = this.instantiationService.createInstance(MaterialDataSource);
 		const renderer = this.instantiationService.createInstance(MaterialRenderer);
-		const controller = this.instantiationService.createInstance(MaterialController, this.displayFun);
+		const controller = this.instantiationService.createInstance(MaterialController);
 		const dnd = this.instantiationService.createInstance(MaterialDragAndDrop);
 		const sorter = this.instantiationService.createInstance(MaterialSorter);
 		this.treeFilter = this.instantiationService.createInstance(MaterialFilter);
@@ -190,6 +190,7 @@ export class AssetsView extends PanelContentDom implements IModelRequirePart, IF
 		};
 
 		this.assetsViewer = this.instantiationService.createInstance(Tree, this.treeContainer, treeConfiguration, {});
+		this.assetsViewer.onDidChangeSelection(this.selectionChange, this);
 		this.assetsViewer.getHTMLElement().style.position = 'absolute';
 		this.create();
 		setTimeout(() => {
@@ -197,6 +198,12 @@ export class AssetsView extends PanelContentDom implements IModelRequirePart, IF
 				this.assetsViewer.layout();
 			}
 		}, 1);
+	}
+
+	private selectionChange(e: ISelectionEvent): void {
+		if(e.selection && e.selection.length > 0) {
+			this.displayFun(e.selection[0]);
+		}
 	}
 
 	private create() {

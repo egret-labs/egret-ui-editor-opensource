@@ -347,14 +347,8 @@ export class MaterialRenderer implements IRenderer {
 export class MaterialController extends DefaultController implements IController {
 	private previousSelectionRangeStop: FileStat;
 
-	/**
-	 * 单击预览
-	 */
-	public displayFun: Function;
-
-	constructor(_dispalyFun: Function, @IWorkbenchEditorService private editorService: IWorkbenchEditorService) {
+	constructor(@IWorkbenchEditorService private editorService: IWorkbenchEditorService) {
 		super({ clickBehavior: ClickBehavior.ON_MOUSE_UP, keyboardSupport: true, openMode: OpenMode.SINGLE_CLICK });
-		this.displayFun = _dispalyFun;
 	}
 
 	/**
@@ -435,8 +429,6 @@ export class MaterialController extends DefaultController implements IController
 			// if (!stat.isDirectory && (isDoubleClick || this.openOnSingleClick)) {
 			// 	this.openEditor(stat);
 			// }
-
-			this.displayFun && this.displayFun(stat);
 		}
 		return true;
 	}

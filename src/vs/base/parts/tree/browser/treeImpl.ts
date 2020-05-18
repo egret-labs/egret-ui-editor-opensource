@@ -49,7 +49,7 @@ export class TreeContext implements _.ITreeContext {
 }
 
 const defaultStyles: _.ITreeStyles = {
-	listFocusBackground: Color.fromHex('#3595ff'),
+	listFocusBackground: new Color(new RGBA(53, 149, 255, 0.24)),
 	listActiveSelectionBackground: Color.fromHex('#3595ff'),
 	listActiveSelectionForeground: Color.fromHex('#ffffff'),
 	listFocusAndSelectionBackground: Color.fromHex('#3595ff'),

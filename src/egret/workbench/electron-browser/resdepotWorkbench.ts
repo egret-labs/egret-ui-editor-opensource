@@ -24,7 +24,7 @@ import { initResEditorExts } from 'egret/exts/resdepot/resdepot.contribution';
 import { DefaultResBoxLayoutTemplate } from './template';
 import { IWindowConfiguration } from 'egret/platform/windows/common/window';
 import URI from 'egret/base/common/uri';
-import { initProject } from 'egret/exts/exml-exts/project';
+import { initProject } from 'egret/exts/exml-exts/projectService';
 import { ResEditorPart } from 'egret/editor/common/parts/resEditorPart';
 import { IOutputService } from '../parts/output/common/output';
 import { initResEventService } from 'egret/exts/resdepot/events/ResEventService';

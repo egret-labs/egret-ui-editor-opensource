@@ -1,6 +1,6 @@
 import { IInstantiationService } from 'egret/platform/instantiation/common/instantiation';
 import { initEditorExts as initExmlEditorExts } from './exml-exts/editor';
-import { initProject as initExmlProject } from './exml-exts/project';
+import { initProject as initExmlProject } from './exml-exts/projectService';
 import { initExmlModel } from './exml-exts/models';
 
 

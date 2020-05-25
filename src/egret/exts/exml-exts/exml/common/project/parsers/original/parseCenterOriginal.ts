@@ -1,6 +1,6 @@
 import { Emitter, Event } from 'egret/base/common/event';
 import { IInstantiationService } from 'egret/platform/instantiation/common/instantiation';
-import { IFileService, FileChangesEvent, FileChangeType } from 'egret/platform/files/common/files';
+import { IFileService, FileChangesEvent, FileChangeType, IFileChange } from 'egret/platform/files/common/files';
 import { IWorkspaceService } from 'egret/platform/workspace/common/workspace';
 import { ClassChangedEvent, IParseCenter, ClassChangedType } from '../parser';
 import { isTs, isExml } from '../core/commons';
@@ -74,8 +74,11 @@ export class ParseCenterOriginal implements IParseCenter {
 	}
 
 	private fileChanged_handler(e: FileChangesEvent) {
-		for (let i = 0; i < e.changes.length; i++) {
-			const change = e.changes[i];
+		this.onFileChanged(e.changes);
+	}
+
+	public onFileChanged(changes: IFileChange[]): Promise<void> { 
+		for (const change of changes) {
 			if (change.type == FileChangeType.ADDED) {
 				this.addFile(change.resource);
 			} else if (change.type == FileChangeType.DELETED) {
@@ -84,6 +87,19 @@ export class ParseCenterOriginal implements IParseCenter {
 				this.updateFile(change.resource);
 			}
 		}
+		let changeType: ClassChangedType = 'mix';
+		if (changes.length === 1) {
+			const item = changes[0];
+			if (isTs(item.resource)) {
+				changeType = 'ts';
+			} else if (isExml(item.resource)) {
+				changeType = 'exml';
+			}
+		}
+		if (changes.length > 0) {
+			this.doFilesChanged(changeType);
+		}
+		return Promise.resolve(void 0);
 	}
 
 	private initProperty(propertiesPath: string): Promise<any> {
@@ -210,20 +226,9 @@ export class ParseCenterOriginal implements IParseCenter {
 		} else if (type === 'exml') {
 			this.exmlFileChanged = true;
 		}
-		if (this.doFilesChangedStamp) {
-			clearTimeout(this.doFilesChangedStamp);
-		}
-		this.doFilesChangedStamp = setTimeout(() => {
-			this.doFilesChanged(type);
-		}, 100);
 	}
 
-	private doFilesChangedStamp = null;
 	private doFilesChanged(type: ClassChangedType): void {
-		if (this.doFilesChangedStamp) {
-			clearTimeout(this.doFilesChangedStamp);
-			this.doFilesChangedStamp = null;
-		}
 		if (this.tsFileChanged) {
 			this.tsParser.fileChanged(this.tsAdds, this.tsModifies, this.tsDelete);
 			this.tsAdds = [];

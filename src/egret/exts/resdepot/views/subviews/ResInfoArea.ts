@@ -184,13 +184,18 @@ export class ResInfoArea {
 		}, 1000);
 		// this.urlEdit.height = 30;
 		// this.urlEdit.left = this.urlEdit.right = 0;
-		this.urlEdit.text = '';
+		// this.urlEdit.text = '';
 		// this.urlEdit.$inputEnabled = true;
 		// this.urlEdit.multiline = true;
 		// this.urlEdit.wordWrap = true;
 		this.urlEdit.addEventListener(egret.Event.CHANGE, this.onEditTextChange, this);
 		// this.urlEdit.addEventListener(egret.Event.FOCUS_OUT, this.onEditTextFocusOut, this);
 		// this.urlEdit.addEventListener(egret.KeyboardEvent.KEY_DOWN, this.onEditTextKeyDown, this);
+		const urlTextDisplay = this.urlEdit.textDisplay;
+		urlTextDisplay.addEventListener(egret.Event.RESIZE, () => {
+			urlTextDisplay.height = urlTextDisplay.numLines * (urlTextDisplay.$getLineHeight() + urlTextDisplay.lineSpacing) + 8;
+		}, this);
+		this.setUrlValue('');
 
 		var otherParamGroup: eui.Group = new eui.Group();
 		otherParamGroup.bottom = 10;
@@ -242,13 +247,19 @@ export class ResInfoArea {
 		// this.subkeysEdit.enabled = false;
 		// this.subkeysEdit.bottom = 3;
 		subkyesGroup.addChild(this.subkeysEdit);
-		this.subkeysEdit.text = '';
 		this.subkeysEdit.addEventListener(egret.Event.CHANGE, this.onEditTextChange, this);
 		// this.subkeysEdit.addEventListener(egret.Event.FOCUS_OUT, this.onEditTextFocusOut, this);
 		// this.subkeysEdit.addEventListener(egret.KeyboardEvent.KEY_DOWN, this.onEditTextKeyDown, this);
 		this.subkeysEdit.addEventListener(egret.MouseEvent.RIGHT_MOUSE_DOWN, this.onSubkeyRightMouseDown, this);
 		this.subkeysEdit.touchEnabled = true;
+		const subkeysTextDisplay = this.subkeysEdit.textDisplay;
+		subkeysTextDisplay.addEventListener(egret.Event.RESIZE, () => {
+			subkeysTextDisplay.height = subkeysTextDisplay.numLines * (subkeysTextDisplay.$getLineHeight() + subkeysTextDisplay.lineSpacing) + 8;
+		}, this);
+		this.subkeysEdit.textDisplay.multiline = true;
+		this.subkeysEdit.textDisplay.wordWrap = true;
 		this.subkeysEdit.touchChildren = false;
+		this.setSubkeysValue('');
 
 		this.setErrorElementInfo(this.subkeysError);
 		this.subkeysEdit.addChild(this.subkeysError);
@@ -259,6 +270,18 @@ export class ResInfoArea {
 		this.setEnabled(false);
 
 		this.addGlobalEvents();
+	}
+
+	private setSubkeysValue(value: string): void {
+		this.subkeysEdit.text = value;
+		const textDisplay = this.subkeysEdit.textDisplay;
+		textDisplay.height = textDisplay.numLines * (textDisplay.$getLineHeight() + textDisplay.lineSpacing) + 8;
+	}
+
+	private setUrlValue(value: string): void {
+		this.urlEdit.text = value;
+		const textDisplay = this.urlEdit.textDisplay;
+		textDisplay.height = textDisplay.numLines * (textDisplay.$getLineHeight() + textDisplay.lineSpacing) + 8;
 	}
 
 	private addGlobalEvents() {
@@ -344,10 +367,10 @@ export class ResInfoArea {
 			}
 			this.typeList.visible = true;
 			this.setTypeListSelect(this.curEditResVO.type);
-			this.urlEdit.text = this.curEditResVO.showUrl;
+			this.setUrlValue(this.curEditResVO.showUrl);
 			this.onGlobUpdateScale9(this.curEditResVO);
 			if (leaf.type === ResType.TYPE_SHEET) {
-				this.subkeysEdit.text = 'sheet';//todo  show all child
+				this.setSubkeysValue('sheet');//todo  show all child
 			}
 		} else if (node instanceof TreeParentNode) {
 			let p: TreeParentNode = node;
@@ -378,7 +401,7 @@ export class ResInfoArea {
 		}
 		this.typeList.visible = true;
 		this.setTypeListSelect(resvo.type);
-		this.urlEdit.text = resvo.showUrl;
+		this.setUrlValue(resvo.showUrl);
 		this.onGlobUpdateScale9(resvo);
 	}
 
@@ -409,9 +432,9 @@ export class ResInfoArea {
 			for (let i: number = 0; i < resvo.subList.length; i++) {
 				subNameArr.push(resvo.subList[i].name);
 			}
-			this.subkeysEdit.text = subNameArr.join(',');
+			this.setSubkeysValue(subNameArr.join(','));
 		} else {
-			this.subkeysEdit.text = '';
+			this.setSubkeysValue('');
 		}
 	}
 	/** 更新9切数据 */
@@ -458,8 +481,8 @@ export class ResInfoArea {
 			this.nameEdit.text = '';
 			this.otherParamEdit.text = '';
 		}
-		this.urlEdit.text = '';
-		this.subkeysEdit.text = '';
+		this.setUrlValue('');
+		this.setSubkeysValue('');
 		this.typeList.selectedIndex = -1;
 		this.typeList.visible = false;
 

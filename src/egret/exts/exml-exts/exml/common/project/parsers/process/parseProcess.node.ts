@@ -10,18 +10,21 @@ import * as fs from 'fs';
 import { isIgnore } from '../core/ignores';
 import { ClassChangedType } from '../parser';
 import * as fileUtils from 'egret/workbench/services/files/fileUtils';
+import { isEqual, isEqualOrParent, normalize } from 'egret/base/common/paths';
 
 class ParserProcess extends NodeProcess implements IParserProcess {
 	private tsParser: TsParser;
 	protected exmlParser: ExmlParser;
 
 	private properties: any = {};
+	private currentParsedFolders: string[] = [];
 
 	/**
 	 * 初始化
 	 * @param propertiesPath 
 	 */
-	public initProcess(propertiesPath: string, uiLib: string, workspace: string): Promise<void> {
+	public initProcess(propertiesPath: string, uiLib: string, workspace: string, parseFolders: string[]): Promise<void> {
+		this.currentParsedFolders = parseFolders;
 		return this.initProperty(propertiesPath).then(propertiesMap => {
 			this.properties = propertiesMap;
 			this.tsParser = new TsParser();
@@ -30,14 +33,31 @@ class ParserProcess extends NodeProcess implements IParserProcess {
 			} else {
 				this.exmlParser = new GUIParser(URI.file(workspace));
 			}
-			return this.select(workspace, ['.exml', '.ts'], null, ['node_modules', '.git', '.DS_Store']).then(fileStats => {
-				for (let i = 0; i < fileStats.length; i++) {
-					this.addFile(fileStats[i].resource);
-				}
+			let tasks: Promise<ISelectedStat[]>[] = [];
+			for (const item of parseFolders) {
+				tasks.push(this.getFiles(item));
+			}
+			return Promise.all(tasks).then((result) => {
+				result.forEach(fileStats => {
+					for (const stat of fileStats) {
+						this.addFile(stat.resource);
+					}
+				});
 				this.doFilesChanged('mix');
 				console.log('ParserProcess Inited');
 			});
+			// return this.select(workspace, ['.exml', '.ts'], null, ['node_modules', '.git', '.DS_Store']).then(fileStats => {
+			// 	for (let i = 0; i < fileStats.length; i++) {
+			// 		this.addFile(fileStats[i].resource);
+			// 	}
+			// 	this.doFilesChanged('mix');
+			// 	console.log('ParserProcess Inited');
+			// });
 		});
+	}
+
+	private getFiles(folder: string): Promise<ISelectedStat[]> {
+		return this.select(folder, ['.exml', '.ts'], null, ['node_modules', '.git', '.DS_Store']);
 	}
 
 	/**
@@ -50,13 +70,63 @@ class ParserProcess extends NodeProcess implements IParserProcess {
 		return fileUtils.select(URI.file(filePath), exts, onSelected, ignores);
 	}
 
+	// 可能增加或移除同一个文件夹多次，此处只考虑增加的文件夹，对于移除的则不做处理
+	public changeParseFolders(folders: string[]): Promise<void> {
+		let newFolders: string[] = [];
+		for (const item of folders) {
+			if (!this.isFolderParsed(item)) {
+				newFolders.push(item);
+			}
+		}
+		if (newFolders.length > 0) {
+			this.currentParsedFolders.push(...newFolders);
+			let tasks: Promise<ISelectedStat[]>[] = [];
+			for (const item of newFolders) {
+				console.log('new parsed folder', item);
+				tasks.push(this.getFiles(item));
+			}
+			return Promise.all(tasks).then((result) => {
+				result.forEach(fileStats => {
+					for (const stat of fileStats) {
+						this.addFile(stat.resource);
+					}
+				});
+				this.doFilesChanged('mix');
+			});
+		}
+	}
+
+	private isFolderParsed(folder: string): boolean {
+		for (const item of this.currentParsedFolders) {
+			if (isEqual(normalize(folder), normalize(item))) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private shouldSkip(file: URI): boolean {
+		for (const item of this.currentParsedFolders) {
+			if (isEqualOrParent(normalize(file.fsPath), normalize(item))) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	/**
 	 * 文件改变
 	 * @param changes 
 	 */
 	public onFileChanged(changes: IFileChange[]): Promise<void> {
-		for (let i = 0; i < changes.length; i++) {
-			const change = changes[i];
+		let actualChanges: IFileChange[] = [];
+		for (const change of changes) {
+			if(this.shouldSkip(change.resource)) {
+				continue;
+			}
+			actualChanges.push(change);
+		}
+		for (const change of actualChanges) {
 			if (change.type == FileChangeType.ADDED) {
 				this.addFile(change.resource);
 			} else if (change.type == FileChangeType.DELETED) {
@@ -66,15 +136,15 @@ class ParserProcess extends NodeProcess implements IParserProcess {
 			}
 		}
 		let changeType: ClassChangedType = 'mix';
-		if (changes.length === 0) {
-			const item = changes[0];
+		if (actualChanges.length === 1) {
+			const item = actualChanges[0];
 			if (isTs(item.resource)) {
 				changeType = 'ts';
 			} else if (isExml(item.resource)) {
 				changeType = 'exml';
 			}
 		}
-		if (changes.length > 0) {
+		if (actualChanges.length > 0) {
 			this.doFilesChanged(changeType);
 		}
 		return Promise.resolve(void 0);
@@ -194,21 +264,15 @@ class ParserProcess extends NodeProcess implements IParserProcess {
 	private tsFileChanged: boolean = false;
 	private exmlFileChanged: boolean = false;
 
-	private fileChangedFlag: boolean = false;
 	private fileChanged(type: ClassChangedType): void {
 		if (type === 'ts') {
 			this.tsFileChanged = true;
 		} else if (type === 'exml') {
 			this.exmlFileChanged = true;
 		}
-		if (this.fileChangedFlag) {
-			return;
-		}
-		this.fileChangedFlag = true;
 	}
 
 	private doFilesChanged(type: ClassChangedType): void {
-		this.fileChangedFlag = false;
 		if (this.tsFileChanged) {
 			this.tsParser.fileChanged(this.tsAdds, this.tsModifies, this.tsDelete);
 			this.tsAdds = [];

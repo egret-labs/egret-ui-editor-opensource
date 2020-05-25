@@ -6,6 +6,10 @@ import { ClassNode } from '../../syntaxNodes';
 import { IParserProcess } from './parseProcess';
 import { createChildProcess } from 'egret/base/parts/ipc/node/ipcserver.cp';
 import { IDisposable, dispose } from 'egret/base/common/lifecycle';
+import { IEgretProjectService } from 'egret/exts/exml-exts/project';
+import * as path from 'path';
+import * as ts from 'typescript';
+import { isArray } from 'egret/base/common/types';
 
 /**
  * Ts解析中心，worker版本
@@ -18,12 +22,15 @@ export class ParseCenterProcess implements IParseCenter {
 		private propertiesPath: string,
 		private uiLib: 'eui' | 'gui',
 		@IFileService private fileService: IFileService,
+		@IEgretProjectService private projectService: IEgretProjectService,
 		@IWorkspaceService private workspaceService: IWorkspaceService
 	) {
 		this._onClassChanges = new Emitter<ClassChangedEvent>();
 		this.childProcess = createChildProcess<IParserProcess>('egret/exts/exml-exts/exml/common/project/parsers/process/parseProcess.node.js',
 			(messageId, data) => this.receive_handler(messageId, data));
 		this.disposables.push(this.fileService.onFileChanges(e => this.fileChanged_handler(e)));
+		this.disposables.push(this.projectService.onTsConfigChanged(e => this.ConfigChanged_handler()));
+		this.disposables.push(this.projectService.onProjectConfigChanged(e => this.ConfigChanged_handler()));
 	}
 
 
@@ -50,7 +57,45 @@ export class ParseCenterProcess implements IParseCenter {
 		const propertiesPath = this.propertiesPath;
 		const uiLib = this.uiLib;
 		const workspace = this.workspaceService.getWorkspace().uri.fsPath;
-		return this.childProcess.initProcess(propertiesPath, uiLib, workspace);
+		return this.childProcess.initProcess(propertiesPath, uiLib, workspace, this.getParseFolders());
+	}
+
+	private getParseFolders(): string[] {
+		let folders: string[] = [];
+		const workspace = this.workspaceService.getWorkspace().uri.fsPath;
+		try {
+			const tsConfigFile = path.join(workspace, '/tsconfig.json');
+			const tsConfig = ts.readConfigFile(tsConfigFile, ts.sys.readFile);
+			if(tsConfig.error){
+				throw tsConfig.error;
+			}
+			const include = tsConfig.config['include'];
+			if(include && isArray(include)) {
+				for (const element of include) {
+					folders.push(path.join(workspace, element));
+				}
+			} else {
+				folders.push(path.join(workspace, 'src'));
+				folders.push(path.join(workspace, 'libs'));
+			}
+		} catch (error) {
+			console.error(error);
+		}
+		const exmlRoot = this.projectService.projectModel.exmlRoot;
+		for (const element of exmlRoot) {
+			folders.push(path.join(workspace, element.fsPath));
+		}
+		return [... new Set(folders)];
+	}
+
+	private ConfigChanged_handler(): void {
+		if (this.childProcess) {
+			this.init().then(() => {
+				if (this.childProcess) {
+					this.childProcess.changeParseFolders(this.getParseFolders());
+				}
+			});
+		}
 	}
 
 	private fileChanged_handler(e: FileChangesEvent): void {

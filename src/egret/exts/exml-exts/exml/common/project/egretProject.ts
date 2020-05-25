@@ -4,6 +4,7 @@ import * as fs from 'fs';
 import { EgretEngineInfo, engineInfo } from './egretSDK';
 import URI from 'egret/base/common/uri';
 import { INotificationService } from 'egret/platform/notification/common/notifications';
+import { isEqual } from 'egret/base/common/resources';
 
 /**
  * 项目数据层模块
@@ -359,13 +360,13 @@ export class EgretProjectModel {
 	 */
 	public needRefreshProject(filePath: string): boolean {
 		//检查到如果是egretProperties文件发生了变化，则将已解析的标识设置为false
-		const fileName: string = path.basename(filePath).toLocaleLowerCase();
-		if (fileName === 'egretproperties.json') {
+		const fileUri = URI.file(filePath);
+		if(isEqual(fileUri, this.egretPropertiesUri)) {
 			this.egretPropertiesParserd = false;
 			this._exmlRoots = null;
 			return true;
 		}
-		if (fileName === 'wingproperties.json') {
+		if(isEqual(fileUri, this.wingPropertiesUri)) {
 			this.wingPropertiesParserd = false;
 			return true;
 		}
@@ -382,7 +383,9 @@ export class EgretProjectModel {
 		if (path.extname(filePath).toLowerCase() !== '.json') {
 			return false;
 		}
-		if (path.normalize(filePath).indexOf(path.normalize(this.theme.fsPath)) !== -1) {
+		const fileUri = URI.file(filePath);
+		const themeUri = URI.file(path.join(this._project.fsPath, this.theme.fsPath));
+		if(isEqual(fileUri, themeUri)) {
 			return true;
 		}
 		return false;
@@ -396,14 +399,10 @@ export class EgretProjectModel {
 		if (path.extname(filePath).toLowerCase() !== '.json') {
 			return false;
 		}
-		filePath = path.normalize(filePath);
-		filePath = filePath.replace(/\\/g, '/');
-		filePath = filePath.toLocaleLowerCase();
+		const fileUri = URI.file(filePath);
 		for (let i = 0; i < this.resConfigs.length; i++) {
-			let curResConfigUrl = this.resConfigs[i].url;
-			curResConfigUrl = curResConfigUrl.replace(/\\/g, '/');
-			curResConfigUrl = curResConfigUrl.toLocaleLowerCase();
-			if (filePath.indexOf(curResConfigUrl) !== -1) {
+			const configUri = URI.file(path.join(this._project.fsPath, this.resConfigs[i].url));
+			if(isEqual(fileUri, configUri)) {
 				return true;
 			}
 		}

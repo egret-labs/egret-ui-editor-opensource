@@ -315,6 +315,7 @@ export class EgretProjectModel {
 					}
 				}
 			}
+			fs.mkdirSync(path.dirname(this.exmlPropertiesUri.fsPath), { recursive: true});
 			fs.writeFileSync(this.exmlPropertiesUri.fsPath, JSON.stringify(properties, null, 2));
 		}, 100);
 	}

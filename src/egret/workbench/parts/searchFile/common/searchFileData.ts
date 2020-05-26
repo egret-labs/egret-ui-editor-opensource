@@ -1,7 +1,7 @@
 import { ExmlFileStat } from './searchFileModel';
-import { IFileService } from 'egret/platform/files/common/files';
 import { IWorkspaceService } from 'egret/platform/workspace/common/workspace';
-import { first } from 'egret/base/common/arrays';
+import { IEgretProjectService } from 'egret/exts/exml-exts/project';
+import * as path from 'path';
 
 
 /**
@@ -11,68 +11,39 @@ export class SearchFileData {
 
 	private workspacePath:string = '';
 	constructor(
-		@IFileService private fileService: IFileService,
+		@IEgretProjectService private projectService: IEgretProjectService,
 		@IWorkspaceService private workspaceService: IWorkspaceService
 	) {
 		if(this.workspaceService.getWorkspace()){
 			this.workspacePath = this.workspaceService.getWorkspace().uri.fsPath;
 		}
 	}
+
 	/**
 	 * 得到根节点
 	 */
-	public getRoot(): Promise<ExmlFileStat> {
-		return new Promise<ExmlFileStat>((resolve, reject) => {
-			const root = new ExmlFileStat();
-			this.fileService.select(this.workspaceService.getWorkspace().uri, ['.exml'],null,['node_modules','.git','.DS_Store']).then(results => {
-				const numSum = results.length;
-				let numParserd = 0;
-				const checkComplete = ()=>{
-					if(numParserd == numSum){
-						resolve(root);
-					}
-				};
-				results.forEach(fileStat => {
-					const exmlFileStat = new ExmlFileStat();
-					exmlFileStat.fileName = fileStat.name;
-					exmlFileStat.resource = fileStat.resource;
-					exmlFileStat.parent = root;
-					let targetPath = fileStat.resource.fsPath;
-					if(targetPath.indexOf(this.workspacePath) == 0){
-						targetPath = targetPath.slice(this.workspacePath.length);
-					}
-					exmlFileStat.path = targetPath;
-
-					this.fileService.resolveContent(exmlFileStat.resource, 'utf8').then(content => {
-						const className = this.getClassNameByContent(content.value);
-						exmlFileStat.className = className;
-						root.children.push(exmlFileStat);
-						numParserd++;
-						checkComplete();
-					}, error => {
-						root.children.push(exmlFileStat);
-						numParserd++;
-						checkComplete();
-					});
-				});
-			});
-		});
-	}
-
-	private getClassNameByContent(content: string): string {
-		let firstNode = '';
-		const startIndex = content.indexOf('<e:Skin');
-		if(startIndex != -1){
-			const endIndex = content.indexOf('>',startIndex);
-			firstNode = content.slice(startIndex,endIndex+1);
-		}
-		if(firstNode){
-			const tmpArr = firstNode.match(/class=.*?['|"](.*?)['|"]/);
-			if(tmpArr && tmpArr.length >= 2){
-				const className = tmpArr[1];
-				return className;
+	public async getRoot(): Promise<ExmlFileStat> {
+		await this.projectService.ensureLoaded();
+		await this.projectService.exmlConfig.ensurePaserCenterInited();
+		const root = new ExmlFileStat();
+		const exmlConfig = this.projectService.exmlConfig;
+		const skins = exmlConfig.getSkinNames();
+		for (const skin of skins) {
+			const url = exmlConfig.getExmlUri(skin);
+			if(url) {
+				const exmlFileStat = new ExmlFileStat();
+				exmlFileStat.fileName = path.basename(url.fsPath);
+				exmlFileStat.resource = url;
+				exmlFileStat.parent = root;
+				let targetPath = url.fsPath;
+				if(targetPath.indexOf(this.workspacePath) == 0){
+					targetPath = targetPath.slice(this.workspacePath.length);
+				}
+				exmlFileStat.path = targetPath;
+				exmlFileStat.className = skin;
+				root.children.push(exmlFileStat);
 			}
 		}
-		return '';
+		return root;
 	}
 }

@@ -53,13 +53,3 @@
 	background-color: #303030;
 	border: 1px solid #252525;
 }
-.search-file-panel .monaco-tree .monaco-tree-rows {
-	background-color: rgba(255,255,255,0); 
-}
-.search-file-panel .monaco-tree .monaco-tree-rows > .monaco-tree-row.selected {
-	background-color: #052d4b !important;
-}
-.search-file-panel .monaco-tree .monaco-tree-rows > .monaco-tree-row:hover:not(.selected),
-.search-file-panel .monaco-tree .monaco-tree-rows > .monaco-tree-row:hover:not(.highlighted):not(.selected):not(.focused) {
-    background-color: rgba(255,255,255,0.05) !important;
-}

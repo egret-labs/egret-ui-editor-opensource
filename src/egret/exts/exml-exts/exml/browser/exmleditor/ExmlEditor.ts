@@ -41,14 +41,23 @@ export class ExmlEditor extends EventDispatcher {
 
 	private updateEdiable(): void {
 		if (this.editable) {
+			if (this.focusRectLayer) {
+				this.focusRectLayer.show();
+			}
+		} else {
+			if (this.focusRectLayer) {
+				this.focusRectLayer.hide();
+			}
+		}
+	}
+
+	private onFocusRectLayerVisibleChanged(visible: boolean): void {
+		if (visible) {
 			if (this.absorbContainer) {
 				this.absorbContainer.style.visibility = "";
 			}
 			if (this.transformContainer) {
 				this.transformContainer.style.visibility = "";
-			}
-			if (this.focusRectLayer) {
-				this.focusRectLayer.show();
 			}
 		} else {
 			if (this.absorbContainer) {
@@ -56,9 +65,6 @@ export class ExmlEditor extends EventDispatcher {
 			}
 			if (this.transformContainer) {
 				this.transformContainer.style.visibility = "hidden";
-			}
-			if (this.focusRectLayer) {
-				this.focusRectLayer.hide();
 			}
 		}
 	}
@@ -112,6 +118,7 @@ export class ExmlEditor extends EventDispatcher {
 		this.focusRectContainer.addEventListener('resize', this.focusRectContainerSizeChange);
 		//添加节点映射层
 		this.focusRectLayer = new FocusRectLayer();
+		this.focusRectLayer.onVisibleChanged(this.onFocusRectLayerVisibleChanged, this);
 		this.focusRectLayer.render(this.focusRectContainer);
 		//操作层
 		this.operateLayer = new OperateLayer();

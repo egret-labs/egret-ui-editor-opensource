@@ -48,6 +48,7 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 	private egretSprite;
 
 	private _onScaleChanged: Emitter<number>;
+	private _onVisibleChanged: Emitter<boolean>;
 
 	/**
 	 * egretContentHost:舞台内容承载对象，此对象紧接于stage，
@@ -56,11 +57,16 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 	constructor() {
 		super();
 		this._onScaleChanged = new Emitter<number>();
+		this._onVisibleChanged = new Emitter<boolean>();
 	}
 
 	public get onScaleChanged(): VSEvent<number> {
 		return this._onScaleChanged.event;
 	}
+	public get onVisibleChanged(): VSEvent<boolean> {
+		return this._onVisibleChanged.event;
+	}
+	private _isVisible: boolean = true;
 	private container: HTMLElement;
 
 	//视图代理焦点对象，
@@ -96,17 +102,34 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 	}
 
 	public hide(): void {
-		if (this.viewAdapterFocusRect) {
-			this.viewAdapterFocusRect.hide();
+		if (this._isVisible) {
+			this._isVisible = false;
+			this.toggleVisible();
 		}
 	}
 
 	public show(): void {
-		if (this.viewAdapterFocusRect) {
-			this.viewAdapterFocusRect.show();
+		if (!this._isVisible) {
+			this._isVisible = true;
+			this.toggleVisible();
 		}
 	}
 
+	private toggleVisible(): void {
+		const visible = (!this.dragEnabled && this._isVisible);
+		if (visible) {
+			if (this.viewAdapterFocusRect) {
+				this.viewAdapterFocusRect.show();
+			}
+			this.opacity = 1;
+		} else {
+			this.opacity = 0;
+			if (this.viewAdapterFocusRect) {
+				this.viewAdapterFocusRect.hide();
+			}
+		}
+		this._onVisibleChanged.fire(visible);
+	}
 
 	private exmlModel: IExmlModel;
 	private exmlModelHelper: ExmlModelHelper;
@@ -386,6 +409,9 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 		if (!this.exmlModel || !this.exmlModel.getRootElement()) {
 			return;
 		}
+		if (this.previewed) {
+			return;
+		}
 		var rootElement = this.exmlModel.getRootElement();
 		this.rootElementExplicitWidthCache = rootElement.explicitWidth;
 		this.rootElementExplicitHeightCache = rootElement.explicitHeight;
@@ -467,9 +493,8 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 		TweenLite.killTweensOf(this.previewMask);
 		TweenLite.killTweensOf(this.stageShadowDisplay);
 
-
 		if (tween) {
-			TweenLite.to(this, duration, { opacity: 0 });
+			// TweenLite.to(this, duration, { opacity: 0 });
 			TweenLite.to(rootElement, duration, {
 				width: stageDisplaySize.stageWidth,
 				height: stageDisplaySize.stageHeight,
@@ -504,7 +529,6 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 				}
 			})
 		} else {
-			this.opacity = 0;
 			rootElement.width = stageDisplaySize.stageWidth;
 			rootElement.height = stageDisplaySize.stageHeight;
 			rootElement.x = offsetX;
@@ -545,18 +569,20 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 	 * 失活预览模式
 	 */
 	public disablePreview(tween: boolean = false, duration: number = 0.3): void {
+		if (!this.previewed) {
+			return;
+		}
 		this.previewed = false;
 		if (!this.exmlModel || !this.exmlModel.getRootElement() || !this.egretSprite) {
 			return;
 		}
 		var rootElement = this.exmlModel.getRootElement();
 
-
 		TweenLite.killTweensOf(rootElement);
 		TweenLite.killTweensOf(this.previewMask);
 		TweenLite.killTweensOf(this.stageShadowDisplay);
 		if (tween) {
-			TweenLite.to(this, duration, { opacity: 1 });
+			// TweenLite.to(this, duration, { opacity: 1 });
 			TweenLite.to(rootElement, duration, {
 				width: this.rootElementWidthCache,
 				height: this.rootElementHeightCache,
@@ -596,7 +622,6 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 				}
 			})
 		} else {
-			this.opacity = 1;
 			this.egretSprite.mask = null;
 			rootElement.width = this.rootElementExplicitWidthCache;
 			rootElement.height = this.rootElementExplicitHeightCache;
@@ -688,7 +713,10 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 		this.egretContentHost.setProperty(to.x, to.y, to.scale, to.scale, tween, duration);
 	}
 	public notifyKeyboradEvent(e: KeyboardEvent): void {
-		this.dispatchEvent(new Event(FocusRectLayerEvent.USER_KEYBOARDEVENT, e));
+		const visible = (!this.dragEnabled && this._isVisible);
+		if (visible) {
+			this.dispatchEvent(new Event(FocusRectLayerEvent.USER_KEYBOARDEVENT, e));
+		}
 	}
 
 	public notifyMouseEvent = (e) => {
@@ -742,6 +770,7 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 		if (this._dragEnabled != value) {
 			this._dragEnabled = value;
 			this.updateCursor();
+			this.toggleVisible();
 		}
 	}
 
@@ -1278,6 +1307,7 @@ export class FocusRect extends EventDispatcher implements IRender {
 	private border: HTMLElement;
 	protected ownerLayer: HTMLElement;
 	protected rectRender: RectRender;
+	private drawFocusRect: boolean = true;
 	private drawBorder: boolean = false;
 	constructor(ownerLayer: HTMLElement, drawBorder: boolean = true) {
 		super();
@@ -1310,11 +1340,26 @@ export class FocusRect extends EventDispatcher implements IRender {
 		// }
 	}
 	public hide(): void {
-		this.root.style.visibility = 'hidden';
+		if (this.drawFocusRect) {
+			this.root.style.visibility = 'hidden';
+			this.drawFocusRect = false;
+			const childList = this.getChildFocusRects();
+			for (const item of childList) {
+				item.hide();
+			}
+		}
 	}
 
 	public show(): void {
-		this.root.style.visibility = '';
+		if (!this.drawFocusRect) {
+			this.drawFocusRect = true;
+			const childList = this.getChildFocusRects();
+			for (const item of childList) {
+				item.show();
+			}
+			this.refreshDisplay();
+			this.root.style.visibility = '';
+		}
 	}
 
 	private _targetNode: INode;
@@ -1328,7 +1373,7 @@ export class FocusRect extends EventDispatcher implements IRender {
 	protected setTargetNode(v: INode): void {
 		this._targetNode = v;
 		//移除所有焦点矩形
-		this.removeAllFocusRects();
+		// this.removeAllFocusRects();
 		//刷新
 		this.registToUpdateDisplay();
 		//生成子集
@@ -1399,20 +1444,20 @@ export class FocusRect extends EventDispatcher implements IRender {
 	/**添加一个foucusRect对象
 	 * 此方法可以自动调整对象的焦点对象的显示层级
 	 */
-	public addFocusRect(v: FocusRect) {
+	public addFocusRect(v: FocusRect, index: number = undefined) {
 		v.removeFromParentFocusRect();
 		this.childfocusRects.push(v);
-		if (!v.targetNode) {
-			v.render(this.root);
-		} else {
-			try {
+		try {
+			if (index === undefined && v.targetNode) {
 				let node = v.targetNode as INode;
-				var index: number = node.getParent().getNodeIndex(node);
+				const i: number = node.getParent().getNodeIndex(node);
+				v.render(this.root, i);
+			} else {
 				v.render(this.root, index);
 			}
-			catch (e) {
-				v.render(this.root);
-			}
+		}
+		catch (e) {
+			v.render(this.root);
 		}
 		v.parentFocusRect = this;
 	}
@@ -1441,14 +1486,53 @@ export class FocusRect extends EventDispatcher implements IRender {
 	}
 	//生成子焦点对像
 	private makeChildFocusRects(v: any) {
+		// if (v && v instanceof EContainer) {
+		// 	let numberChildren = v.getNumChildren();
+		// 	for (let i = 0; i < numberChildren; i++) {
+		// 		var fr: FocusRect = this.getFocusRectInstance();
+		// 		fr.targetNode = v.getNodeAt(i);
+		// 		this.addFocusRect(fr);
+		// 	}
+		// }
 		if (v && v instanceof EContainer) {
+			let currentRects: FocusRect[] = [];
 			let numberChildren = v.getNumChildren();
 			for (let i = 0; i < numberChildren; i++) {
-				var fr: FocusRect = this.getFocusRectInstance();
-				fr.targetNode = v.getNodeAt(i);
-				this.addFocusRect(fr);
+				const targetNode = v.getNodeAt(i);
+				let fr = this.getChildFocusRect(targetNode);
+				if (!fr) {
+					fr = this.getFocusRectInstance();
+					fr.targetNode = targetNode;
+					this.addFocusRect(fr, i);
+				} else {
+					fr.root.style.zIndex = i.toString();
+				}
+				currentRects.push(fr);
+			}
+			// 移除多余的focusrect
+			for (let j = 0; j < this.childfocusRects.length; j++) {
+				const old = this.childfocusRects[j];
+				let exist: boolean = false;
+				for (const item of currentRects) {
+					if (item.targetNode === old.targetNode) {
+						exist = true;
+						break;
+					}
+				}
+				if (!exist) {
+					this.removeFocusRect(old);
+					j--;
+				}
 			}
 		}
+	}
+	private getChildFocusRect(node: INode): FocusRect | null {
+		for (const item of this.childfocusRects) {
+			if (item.targetNode === node) {
+				return item;
+			}
+		}
+		return null;
 	}
 	protected getFocusRectInstance(): FocusRect {
 		return new FocusRect(this.ownerLayer);
@@ -1471,6 +1555,9 @@ export class FocusRect extends EventDispatcher implements IRender {
 	private cacheMatrix: Matrix;
 	/**刷新展现形态 */
 	protected refreshDisplay(): void {
+		if (!this.drawFocusRect) {
+			return;
+		}
 		if (!this.targetNode) {
 			this.visible = false;
 			return;
@@ -1504,6 +1591,9 @@ export class FocusRect extends EventDispatcher implements IRender {
 	}
 
 	public refreshRectRender(): void {
+		if (!this.drawFocusRect) {
+			return;
+		}
 		var childList = this.getChildFocusRects();
 		for (var i = 0; i < childList.length; i++) {
 			childList[i].refreshRectRender();

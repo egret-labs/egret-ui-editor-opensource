@@ -363,19 +363,12 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 		} else {
 			this.codeViewContainer.style.display = 'none';
 			this.exmlRootContainer.style.display = 'flex';
-			// let shouldRefresh: boolean = false;
-			// if (this._currentMode === EditMode.CODE) {
-			// 	shouldRefresh = this._isCodeDirty;
-			// }
 			if (this.codeView) {
 				await this.codeView.setActive(false);
 			}
-			// const model = await this.getModel();
-			this.exmlView.refreshRectRender();
-			// if (shouldRefresh) {
-			// 	const model = await this.getModel();
-			// 	model.getModel().refreshTree();
-			// }
+			if (this._currentMode === EditMode.CODE) {
+				this.exmlView.refreshRectRender();
+			}
 			this.exmlView.setEditMode(mode, this.navigation.previewConfig);
 		}
 		this.refreshAnimationState(mode === EditMode.ANIMATION);

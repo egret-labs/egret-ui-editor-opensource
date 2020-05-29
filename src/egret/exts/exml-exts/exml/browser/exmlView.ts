@@ -28,6 +28,8 @@ import { IDesignConfig } from '../common/exml/designConfig';
 import { BackgroundType } from '../common/exml/designConfigImpl';
 import { Matrix } from './exmleditor/data/Matrix';
 import { FocusRectLayerEvent } from './exmleditor/FocusRectLayer';
+import { IAnimationService } from 'egret/workbench/parts/animation/common/animation';
+import { IAnimationModel } from '../common/plugin/IAnimationModel';
 
 
 /**
@@ -39,6 +41,8 @@ export class ExmlView implements IExmlView {
 	private runtimeLayer: HTMLElement;
 	exmlEditor: ExmlEditor;
 
+
+	private animationDisposables: IDisposable[] = [];
 	private _onZoomChanged: Emitter<number>;
 	private _onViewChanged: Emitter<ExmlView>;
 
@@ -48,13 +52,16 @@ export class ExmlView implements IExmlView {
 		@IEgretProjectService protected egretProjectService: IEgretProjectService,
 		@IEditorService protected editorService: IEditorService,
 		@IOutputService protected outputService: IOutputService,
-		@IClipboardService protected clipboardService: IClipboardService
+		@IClipboardService protected clipboardService: IClipboardService,
+		@IAnimationService protected animationService: IAnimationService
 	) {
 		this._onZoomChanged = new Emitter<number>();
 		this._onViewChanged = new Emitter<ExmlView>();
 		this._helper = this.instantiationService.createInstance(ExmlModelHelper);
 		this.runtimeLayer = document.createElement('div');
 		this.runtimeLayer.setAttribute('className', 'runtime-layer');
+		this.animationDisposables.push(this.animationService.onDidAnimationChange(this.onAnimationChanged, this));
+		this.animationDisposables.push(this.animationService.getViewModel().onDidPlayingChange(this.onAnimationPlayingChanged, this));
 		this.exmlEditor = new ExmlEditor();
 		this.initView();
 		this.initContextMenuGeneral();
@@ -180,9 +187,44 @@ export class ExmlView implements IExmlView {
 		}
 	}
 
+	private onAnimationChanged(animation: IAnimationModel): void {
+		if (this._model && this._model.getAnimationModel() === animation) {
+			if (!this.animationService.getViewModel().getPlaying()) {
+				this.showFocusRects();
+			}
+		}
+	}
+
+	private onAnimationPlayingChanged(play: boolean): void {
+		if (this._model && this._model.getAnimationModel() === this.animationService.animation) {
+			if (play) {
+				this.hideFocusRects();
+			} else {
+				this.showFocusRects();
+			}
+		}
+	}
+
+	private hideFocusRects(): void {
+		this.exmlEditor.editable = false;
+		this.disableExmlEditorInteractive();
+	}
+
+	private showFocusRects(): void {
+		if (this.getEditMode() !== EditMode.PREVIEW) {
+			this.exmlEditor.editable = true;
+			this.enableExmlEditorInteractive();
+		}
+	}
+
+	private timeOut: any;
 	private designViewInfoCache: { x: number, y: number, scale: number } = null;
 	private modeToDesign(): void {
-		this.exmlEditor.editable = true;
+		// 动画结束后再启用编辑
+		this.timeOut = setTimeout(() => {
+			this.timeOut = null;
+			this.exmlEditor.editable = true;
+		}, 300);
 		this.editLayer.style.pointerEvents = '';
 		this.runtime.getRuntime().then(api => {
 			api.runtimeRootContainer.touchEnabled = false;
@@ -192,6 +234,7 @@ export class ExmlView implements IExmlView {
 			if (this.exmlEditor.focusRectLayer) {
 				this.exmlEditor.focusRectLayer.disablePreview(true);
 				this.exmlEditor.focusRectLayer.setViewTo(this.designViewInfoCache, true);
+				this.designViewInfoCache = null;
 				// this.exmlEditor.focusRectLayer.removeMask(true);
 			}
 		}
@@ -200,6 +243,7 @@ export class ExmlView implements IExmlView {
 	}
 
 	private modeToPreview(previewOption?: PreviewConfig): void {
+		clearTimeout(this.timeOut);
 		this.exmlEditor.editable = false;
 		this.editLayer.style.pointerEvents = 'none';
 		this.removeSubView();
@@ -207,9 +251,10 @@ export class ExmlView implements IExmlView {
 			api.runtimeRootContainer.touchEnabled = true;
 			api.runtimeRootContainer.touchChildren = true;
 		});
-		this.designViewInfoCache = null;
 		if (this.exmlEditor.focusRectLayer) {
-			this.designViewInfoCache = this.exmlEditor.focusRectLayer.getViewInfo();
+			if (!this.designViewInfoCache) {
+				this.designViewInfoCache = this.exmlEditor.focusRectLayer.getViewInfo();
+			}
 			this.refreshPreview(previewOption, true);
 		}
 		this.disableExmlEditorInteractive();
@@ -555,7 +600,7 @@ export class ExmlView implements IExmlView {
 	}
 
 	private updateDesignBackgroundLayer(): void {
-		if(this.getEditMode() === EditMode.PREVIEW) {
+		if (this.getEditMode() === EditMode.PREVIEW) {
 			this.designBackgroundLayer.style.display = 'none';
 		} else {
 			this.designBackgroundLayer.style.display = 'block';
@@ -1013,6 +1058,7 @@ export class ExmlView implements IExmlView {
 		}
 		this.disposed = true;
 		this.detachExmlEditor();
+		dispose(this.animationDisposables);
 		dispose(this.modelDisposables);
 		dispose(this._subview);
 		dispose(this._helper);
@@ -1039,9 +1085,10 @@ export class SubExmlView extends ExmlView implements IExmlView {
 		@IEgretProjectService protected egretProjectService: IEgretProjectService,
 		@IEditorService protected editorService: IEditorService,
 		@IOutputService protected outputService: IOutputService,
-		@IClipboardService protected clipboardService: IClipboardService
+		@IClipboardService protected clipboardService: IClipboardService,
+		@IAnimationService protected animationService: IAnimationService
 	) {
-		super(rootContainer, instantiationService, egretProjectService, editorService, outputService, clipboardService);
+		super(rootContainer, instantiationService, egretProjectService, editorService, outputService, clipboardService, animationService);
 		this.initView();
 		this.instalView();
 		if (this.parentView.focused) {

@@ -91,6 +91,16 @@ export class OperationBrowserService implements IOperationBrowserService {
 			Mousetrap.bindGlobal('ctrl+a', (e, combo) => {
 				this.executeCommand(SystemCommands.SELECT_ALL);
 			});
+			// 修复 https://github.com/egret-labs/egret-ui-editor-opensource/issues/67
+			document.addEventListener('keydown', (e) => {
+				if (!(e.target instanceof HTMLInputElement) &&
+					!(e.target instanceof HTMLTextAreaElement)) {
+					if (e.ctrlKey && e.key === 'z') {
+						e.preventDefault();
+						this.doExecuteCommand(SystemCommands.UNDO, [], false);
+					}
+				}
+			});
 		}
 	}
 

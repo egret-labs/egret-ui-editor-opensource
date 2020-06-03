@@ -34,12 +34,49 @@ export class TransformLayer {
 		}
 	}
 
+	private _focused: boolean = false;
+	/**
+	 * 焦点进入
+	 */
+	public doFocusIn(): void {
+		this._focused = true;
+		if(this._spaceDown) {		
+			this._spaceDown = false;
+			this.dragEnabled_handler();
+		}
+		this.addWindowKeyBordEvent();
+	}
+	/**
+	 * 焦点移出
+	 */
+	public doFocusOut(): void {
+		this._focused = false;
+		this.removeWindowKeyBordEvent();
+	}
+
 	private container: HTMLElement;
 	public render(container: HTMLElement): void {
 		this.container = container;
-		window.addEventListener('keydown', this.keyDown_handler)
-		window.addEventListener('keyup', this.keyUp_handler)
+		this.addWindowKeyBordEvent();
 		this.operateLayer.render(container);
+	}
+	
+	private _WindowEvent: boolean = false;
+	private addWindowKeyBordEvent(): void {
+		if (this._focused &&
+			!this._WindowEvent) {
+			this._WindowEvent = true;
+			window.addEventListener('keydown', this.keyDown_handler);
+			window.addEventListener('keyup', this.keyUp_handler);
+		}
+	}
+
+	private removeWindowKeyBordEvent(): void {
+		if (this._WindowEvent) {
+			this._WindowEvent = false;
+			window.removeEventListener('keydown', this.keyDown_handler);
+			window.removeEventListener('keyup', this.keyUp_handler);
+		}
 	}
 
 	private keyDown_handler(e: KeyboardEvent): void {
@@ -72,8 +109,7 @@ export class TransformLayer {
 
 	public dispose(): void {
 		this.operateLayer = null;
-		window.removeEventListener('keydown', this.keyDown_handler)
-		window.removeEventListener('keyup', this.keyUp_handler)
+		this.removeWindowKeyBordEvent();
 		//移除所有标签
 		for (let i: number = this.container.children.length - 1; i >= 0; i--) {
 			this.container.removeChild(this.container.children[i]);

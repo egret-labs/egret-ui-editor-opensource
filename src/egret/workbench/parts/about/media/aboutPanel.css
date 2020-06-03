@@ -1,5 +1,5 @@
-* {
-    font-family: "Microsoft YaHei", PingFangSC-Regular, Arial, Helvetica, sans-serif !important;
+html {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Noto Sans", "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", "Source Han Sans SC", "Source Han Sans CN", "Source Han Sans", sans-serif;
     font-size: 12px;
 }
 

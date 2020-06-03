@@ -36,6 +36,7 @@ export class BaseTextEditor implements IDisposable {
 		this.editor = monaco.editor.create(container, {
 			value: '',
 			language: language,
+			fontFamily: 'Consolas, "Courier New", monospace',
 			contextmenu: true,
 			minimap: { enabled: false },
 			theme: 'vs-dark'

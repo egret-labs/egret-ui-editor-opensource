@@ -755,7 +755,9 @@ export class FileFilter implements IFilter {
 		) {
 			for (let i = 0; i < exmlRoots.length; i++) {
 				const curExmlRoot = paths.normalize(path.join(this.workspaceService.getWorkspace().uri.fsPath, exmlRoots[i].fsPath));
-				const result = paths.isEqualOrParent(paths.normalize(stat.resource.fsPath), curExmlRoot);
+				const cur = paths.normalize(stat.resource.fsPath);
+				// 当前目录为exmlRoot本身、父节点、子节点时均应该可见
+				const result = (paths.isEqualOrParent(cur, curExmlRoot) || paths.isEqualOrParent(curExmlRoot, cur));
 				if (result) {
 					return true;
 				}

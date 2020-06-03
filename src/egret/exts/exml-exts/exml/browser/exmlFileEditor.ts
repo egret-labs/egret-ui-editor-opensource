@@ -119,14 +119,17 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 	public getEditorId(): string {
 		return ExmlFileEditor.ID;
 	}
+	private _focused: boolean = false;
 	/**
 	 * 焦点进入
 	 */
 	public doFocusIn(): void {
 		super.doFocusIn();
+		this._focused = true;
 		if (this.exmlView) {
 			this.exmlView.doFosusIn();
 		}
+		this.addContainerKeyBordEvent();
 		this.refreshAnimationState(this._currentMode === EditMode.ANIMATION);
 	}
 	/**
@@ -134,9 +137,11 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 	 */
 	public doFocusOut(): void {
 		super.doFocusOut();
+		this._focused = false;
 		if (this.exmlView) {
 			this.exmlView.doFosusOut();
 		}
+		this.removeContainerKeyBordEvent();
 	}
 	/**
 	 * 窗体关闭
@@ -275,7 +280,9 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 		this.codeViewContainer = document.createElement('div');
 		this.codeViewContainer.style.width = '100%';
 		this.codeViewContainer.style.height = '100%';
-		this.codeViewContainer.style.position = 'relative';
+		this.codeViewContainer.style.position = 'absolute';
+		this.codeViewContainer.style.top = '0px';
+		this.codeViewContainer.style.left = '0px';
 		this.codeViewContainer.setAttribute('className', 'codeview-container-root');
 		this.codeView = this.instantiationService.createInstance(CodeView, this);
 
@@ -354,14 +361,17 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 
 	private async updateEditMode(mode: EditMode): Promise<void> {
 		if (mode === EditMode.CODE) {
-			this.codeViewContainer.style.display = 'block';
+			// 使用visibility替换display=none来修复 https://github.com/egret-labs/egret-ui-editor-opensource/issues/66
+			this.codeViewContainer.style.visibility = 'visible';
+			this.codeViewContainer.style.zIndex = 'auto';
 			this.exmlRootContainer.style.display = 'none';
 			if (this.codeView) {
 				await this.codeView.setActive(true);
 				this.codeView.doResize();
 			}
 		} else {
-			this.codeViewContainer.style.display = 'none';
+			this.codeViewContainer.style.visibility = 'hidden';
+			this.codeViewContainer.style.zIndex = '-1';
 			this.exmlRootContainer.style.display = 'flex';
 			if (this.codeView) {
 				await this.codeView.setActive(false);
@@ -462,6 +472,7 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 	public renderContent(container: HTMLElement): void {
 		super.renderContent(container);
 		this._container = container;
+
 		const editorContainer = document.createElement('div');
 		editorContainer.style.width = '100%';
 		editorContainer.style.height = '100%';
@@ -470,13 +481,38 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 		container.appendChild(editorContainer);
 
 		editorContainer.appendChild(this.navigationContainer);
+		const multipartContainer = document.createElement('div');
+		multipartContainer.style.width = '100%';
+		multipartContainer.style.height = '100%';
+		multipartContainer.style.position = 'relative';
+		editorContainer.appendChild(multipartContainer);
+
 		this.exmlRootContainer.appendChild(this.exmlViewContainer);
 		this.exmlRootContainer.appendChild(this.stateBarContainer);
-		editorContainer.appendChild(this.exmlRootContainer);
-		editorContainer.appendChild(this.codeViewContainer);
+		multipartContainer.appendChild(this.exmlRootContainer);
+		multipartContainer.appendChild(this.codeViewContainer);
 
-		container.addEventListener('keydown', this.keydown_handler);
-		container.addEventListener('keyup', this.keyup_handler);
+		this.addContainerKeyBordEvent();
+	}
+
+	private _ContainerEvent: boolean = false;
+	private addContainerKeyBordEvent(): void {
+		if (this._focused &&
+			!this._ContainerEvent &&
+			this._container) {
+			this._ContainerEvent = true;
+			this._container.addEventListener('keydown', this.keydown_handler);
+			this._container.addEventListener('keyup', this.keyup_handler);
+		}
+	}
+
+	private removeContainerKeyBordEvent(): void {
+		if (this._ContainerEvent &&
+			this._container) {
+			this._ContainerEvent = false;
+			this._container.removeEventListener('keydown', this.keydown_handler);
+			this._container.removeEventListener('keyup', this.keyup_handler);
+		}
 	}
 
 	private keydown_handler(e: KeyboardEvent): void {
@@ -594,10 +630,7 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 		super.dispose();
 		this.operationService.unregisterFocusablePart(this);
 		dispose(this.exmlView);
-		if (this._container) {
-			this._container.removeEventListener('keydown', this.keydown_handler);
-			this._container.removeEventListener('keyup', this.keyup_handler);
-		}
+		this.removeContainerKeyBordEvent();
 		this._container = null;
 	}
 

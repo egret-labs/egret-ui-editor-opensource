@@ -948,13 +948,20 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 		}
 	}
 
+	private _mouseEvent: boolean = false;
 	private attachMouseEvent(): void {
-		document.addEventListener('mousemove', this.notifyMouseEvent, true);
-		document.addEventListener('mouseup', this.notifyMouseEvent, true);
+		if (!this._mouseEvent) {
+			this._mouseEvent = true;
+			document.addEventListener('mousemove', this.notifyMouseEvent, true);
+			document.addEventListener('mouseup', this.notifyMouseEvent, true);
+		}
 	}
 	private detachMouseEvent(): void {
-		document.removeEventListener('mousemove', this.notifyMouseEvent, true);
-		document.removeEventListener('mouseup', this.notifyMouseEvent, true);
+		if (this._mouseEvent) {
+			this._mouseEvent = false;
+			document.removeEventListener('mousemove', this.notifyMouseEvent, true);
+			document.removeEventListener('mouseup', this.notifyMouseEvent, true);
+		}
 	}
 	/**根据一个Node来获取对应的焦点对象 */
 	private getFocusRectWidthNode(v: INode): FocusRectExt {

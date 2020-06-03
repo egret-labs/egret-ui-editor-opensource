@@ -376,6 +376,7 @@ export class ExmlView implements IExmlView {
 	 */
 	public doFosusIn(): void {
 		this._focused = true;
+		this.exmlEditor.doFocusIn();
 		if (this.runtime) {
 			this.runtime.getRuntime().then(api => {
 				api.resumeGlobal();
@@ -392,6 +393,7 @@ export class ExmlView implements IExmlView {
 	 */
 	public doFosusOut(): void {
 		this._focused = false;
+		this.exmlEditor.doFocusOut();
 		if (this.runtime) {
 			this.runtime.getRuntime().then(api => {
 				api.pauseGlobal();

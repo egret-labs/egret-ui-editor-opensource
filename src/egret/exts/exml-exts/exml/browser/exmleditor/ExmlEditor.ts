@@ -39,6 +39,23 @@ export class ExmlEditor extends EventDispatcher {
 		this.updateEdiable();
 	}
 
+	/**
+	 * 焦点进入
+	 */
+	public doFocusIn(): void {
+		if(this.transformLayer) {
+			this.transformLayer.doFocusIn();
+		}
+	}
+	/**
+	 * 焦点移出
+	 */
+	public doFocusOut(): void {
+		if(this.transformLayer) {
+			this.transformLayer.doFocusOut();
+		}
+	}
+
 	private updateEdiable(): void {
 		if (this.editable) {
 			if (this.focusRectLayer) {

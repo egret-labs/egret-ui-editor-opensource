@@ -121,6 +121,9 @@ export class EditorPart implements IEditorPart, IFocusablePart {
 
 	private editorFocusChanged_handler(e: boxlayout.BoxLayoutEvent): void {
 		const editor = e.data as BaseEditor;
+		if(this._activeEditor && this._activeEditor === editor) {
+			return;
+		}
 		if (this.getActiveEditor()) {
 			this.getActiveEditor().doFocusOut();
 		}
@@ -173,6 +176,7 @@ export class EditorPart implements IEditorPart, IFocusablePart {
 		}
 		const panel = activeGroup.selectedPanel;
 		if (panel instanceof BaseEditor) {
+			this._activeEditor = panel;
 			return panel;
 		}
 		return null;

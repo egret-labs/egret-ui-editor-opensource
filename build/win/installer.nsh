@@ -68,9 +68,9 @@ Var /GLOBAL euiPath
 section "install"
     ; set Path
 	StrCpy $euiPath "$INSTDIR\resources\app\bin"
-	${StrContains} $0 $euiPath $oldPath
+	${StrContains} $0 ";$euiPath;" ";$oldPath;"
     ${If} $0 == ""
-    	WriteRegExpandStr HKCU Environment Path "$oldPath$euiPath;"
+    	WriteRegExpandStr HKCU Environment Path "$oldPath;$euiPath"
 		; https://stackoverflow.com/questions/47029132/set-environment-path-in-nsi-file-without-system-reboot
 		SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" /TIMEOUT=5000
     ${EndIf}

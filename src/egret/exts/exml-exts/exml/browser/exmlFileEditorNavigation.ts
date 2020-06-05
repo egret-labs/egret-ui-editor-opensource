@@ -18,6 +18,7 @@ export class ExmlFileEditorNavigation {
 	private _onEditModeChanged: Emitter<EditMode>;
 	private _onPreviewOptionChanged: Emitter<void>;
 	private _onRefreshClick: Emitter<void>;
+	private _onDataBindingClick: Emitter<void>;
 	private _onBackgroundClick: Emitter<void>;
 	private _onZoomInClick: Emitter<void>;
 	private _onZoomOutClick: Emitter<void>;
@@ -42,6 +43,7 @@ export class ExmlFileEditorNavigation {
 		this._onGrabChanged = new Emitter<boolean>();
 		this._onLockGroupChanged = new Emitter<boolean>();
 		this._onAdsortChanged = new Emitter<boolean>();
+		this._onDataBindingClick = new Emitter<void>();
 		this._onBackgroundClick = new Emitter<void>();
 
 		this.container = container;
@@ -61,6 +63,10 @@ export class ExmlFileEditorNavigation {
 	/** 刷新按钮点击 */
 	public get onRefreshClick(): Event<void> {
 		return this._onRefreshClick.event;
+	}
+	/** 绑定测试数据按钮点击 */
+	public get onDataBindingClick(): Event<void> {
+		return this._onDataBindingClick.event;
 	}
 	/** 参考图按钮点击 */
 	public get onBackgroundClick(): Event<void> {
@@ -113,6 +119,7 @@ export class ExmlFileEditorNavigation {
 	private grabBtn: ToggleIconButton;
 	private lockGroupBtn: ToggleIconButton;
 	private adsorbBtn: ToggleIconButton;
+	private dataBindingBtn: IconButton;
 	private backgroundBtn: IconButton;
 
 
@@ -242,6 +249,12 @@ export class ExmlFileEditorNavigation {
 		this.adsorbBtn.iconClass = 'adsorb-icon';
 		this.adsorbBtn.style.marginLeft = '3px';
 		this.adsorbBtn.onSelectedChanged(() => this._onAdsortChanged.fire(this.adsorbBtn.selected));
+
+		this.dataBindingBtn = new IconButton(this.funcContainer);
+		this.dataBindingBtn.toolTip = localize('exml.editor.dataBindingTips', 'Binding test data');
+		this.dataBindingBtn.iconClass = 'databinding-icon';
+		this.dataBindingBtn.style.marginLeft = '3px';
+		this.dataBindingBtn.onClick(e => this.dataBindingClick_handler());
 
 		this.backgroundBtn = new IconButton(this.funcContainer);
 		this.backgroundBtn.toolTip = localize('exml.editor.backgroundTips', 'Background');
@@ -373,6 +386,10 @@ export class ExmlFileEditorNavigation {
 
 	private refreshClick_handler(): void {
 		this._onRefreshClick.fire(void 0);
+	}
+
+	private dataBindingClick_handler(): void {
+		this._onDataBindingClick.fire();
 	}
 
 	private backgroundClick_handler(): void {

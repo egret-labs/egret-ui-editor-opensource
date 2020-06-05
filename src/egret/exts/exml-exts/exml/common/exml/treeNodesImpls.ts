@@ -12,6 +12,7 @@ import { Event, Emitter } from 'egret/base/common/event';
 import { IDisposable } from 'egret/base/common/lifecycle';
 import { getScale9Grid } from '../utils/scale9Grids';
 import { HashObject } from './common';
+import { DataBindingUtil } from 'egret/workbench/parts/properties_old/util/DataBindingUtil';
 
 
 /**
@@ -963,25 +964,24 @@ export class EObject extends EValue implements IObject {
 			}
 
 			if (formatValue !== undefined) {
-				// if (typeof formatValue === 'string') {
-				// 	formatValue = unescape(formatValue);
-				// }
+				if (typeof formatValue === 'string') {
+					formatValue = unescape(formatValue);
+				}
 				if (value instanceof ELink) {
 					//数据绑定测试数据的替换处理
-					//TODO 数据绑定支持
-					// let configModel = this.getExmlModel().getEditConfigModel();
-					// let finalValue = DataBindingUtil.getFinalValueAfterReplaceByBindingData(value.toString(), configModel);
-					// if (finalValue.isReplacedByTestData) {
-					// 	this.setInstanceValue(key, finalValue.value);
-					// }
-					// else {
-					this.setInstanceValue(key, formatValue);
-					// }
+					let configModel = this.getExmlModel().getDesignConfig();
+					let finalValue = DataBindingUtil.getFinalValueAfterReplaceByBindingData(value.toString(), configModel);
+					if (finalValue.isReplacedByTestData) {
+						this.setInstanceValue(key, finalValue.value);
+					}
+					else {
+						this.setInstanceValue(key, formatValue);
+					}
 				}
-				// else if (typeof formatValue === 'string') {
-				// 	let configModel = this.getExmlModel().getEditConfigModel();
-				// 	this.setInstanceValue(key, DataBindingUtil.getFinalValueAfterReplaceByBindingData(formatValue, configModel).value);
-				// }
+				else if (typeof formatValue === 'string') {
+					let configModel = this.getExmlModel().getDesignConfig();
+					this.setInstanceValue(key, DataBindingUtil.getFinalValueAfterReplaceByBindingData(formatValue, configModel).value);
+				}
 				else {
 					this.setInstanceValue(key, formatValue);
 				}

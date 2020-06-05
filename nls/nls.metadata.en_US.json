@@ -67,6 +67,10 @@
 		"s": "Reset",
 		"t": "Reset"
 	},
+	"alert.button.save": {
+		"s": "Save",
+		"t": "Save"
+	},
 	"alert.button.saveAll": {
 		"s": "Save All",
 		"t": "Save All"
@@ -399,6 +403,34 @@
 		"s": "Start Status:",
 		"t": "Start Status:"
 	},
+	"DataBindingPanel.title": {
+		"s": "Binding test data settings",
+		"t": "Binding test data settings"
+	},
+	"DataBindingPanel.initTab.current": {
+		"s": "Current file data",
+		"t": "Current file data"
+	},
+	"DataBindingPanel.initTab.all": {
+		"s": "Global data",
+		"t": "Global data"
+	},
+	"DataBindingEditor.header.key": {
+		"s": "Key",
+		"t": "Key"
+	},
+	"DataBindingEditor.header.value": {
+		"s": "Value",
+		"t": "Value"
+	},
+	"DataBindingEditor.validation.keyEmpty": {
+		"s": "Key cannot be empty",
+		"t": "Key cannot be empty"
+	},
+	"DataBindingEditor.validation.keyExist": {
+		"s": "Key cannot be repeated",
+		"t": "Key cannot be repeated"
+	},
 	"deleteFileOperation.run.canResetThem": {
 		"s": "You can restore from the Trash.",
 		"t": "You can restore from the Trash."
@@ -542,6 +574,10 @@
 	"exml.editor.backgroundTips": {
 		"s": "Background",
 		"t": "Background"
+	},
+	"exml.editor.dataBindingTips": {
+		"s": "Binding test data",
+		"t": "Binding test data"
 	},
 	"exml.editor.animation": {
 		"s": "Animation",

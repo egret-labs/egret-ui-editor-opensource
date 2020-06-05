@@ -67,6 +67,10 @@
 		"s": "Reset",
 		"t": "还原"
 	},
+	"alert.button.save": {
+		"s": "Save",
+		"t": "保存"
+	},
 	"alert.button.saveAll": {
 		"s": "Save All",
 		"t": "保存全部"
@@ -399,6 +403,34 @@
 		"s": "Start Status:",
 		"t": "初始状态:"
 	},
+	"DataBindingPanel.title": {
+		"s": "Binding test data settings",
+		"t": "设置绑定测试数据"
+	},
+	"DataBindingPanel.initTab.current": {
+		"s": "Current file data",
+		"t": "当前文件数据"
+	},
+	"DataBindingPanel.initTab.all": {
+		"s": "Global data",
+		"t": "全局数据"
+	},
+	"DataBindingEditor.header.key": {
+		"s": "Key",
+		"t": "Key"
+	},
+	"DataBindingEditor.header.value": {
+		"s": "Value",
+		"t": "Value"
+	},
+	"DataBindingEditor.validation.keyEmpty": {
+		"s": "Key cannot be empty",
+		"t": "key不能为空"
+	},
+	"DataBindingEditor.validation.keyExist": {
+		"s": "Key cannot be repeated",
+		"t": "key不能重复"
+	},
 	"deleteFileOperation.run.canResetThem": {
 		"s": "You can restore from the Trash.",
 		"t": "你可以从回收站中恢复他们"
@@ -542,6 +574,10 @@
 	"exml.editor.backgroundTips": {
 		"s": "Background",
 		"t": "背景"
+	},
+	"exml.editor.dataBindingTips": {
+		"s": "Binding test data",
+		"t": "绑定测试数据"
 	},
 	"exml.editor.animation": {
 		"s": "Animation",

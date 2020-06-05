@@ -229,7 +229,7 @@ export class Tabbar implements IUIBase, IDisposable {
 
 	public set selectedIndex(value: number) {
 		if (this._selectedIndex != value) {
-			this.updateItemSelectedByIndex(this._selectedIndex, false);
+			this.updateItemSelectedByIndex(value, false);
 		}
 	}
 

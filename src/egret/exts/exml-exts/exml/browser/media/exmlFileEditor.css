@@ -39,6 +39,9 @@
 .lockgroup-icon{	  
 	background-image: url(./light/lockgroup.svg);
 }
+.databinding-icon{	  
+	background-image: url(./light/databinding.svg);
+}
 .background-icon{	  
 	background-image: url(./light/background.svg);
 }
@@ -50,4 +53,42 @@
 	align-items: center;
 	padding-left: 6px;
 	padding-right: 6px;
+}
+
+.databinding-data-container .delete-data {
+	background-image: url(./light/delete.svg);
+}
+
+.databingding-editor-root {
+	height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.databinding-panel .add-data {
+	background-image: url(./light/add.svg);
+}
+
+.databinding-header {
+	display: flex;
+	margin-bottom: 12px;
+	margin-right: 12px;
+    margin-top: 12px;
+    background: #333333;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    font-weight: bold;
+}
+
+.databinding-header-value {
+	width: 100%;
+	padding-left: 6px;
+	user-select: none;
+	cursor: default;
+}
+
+.databinding-item {
+	display: flex;
+    margin-bottom: 6px;
 }

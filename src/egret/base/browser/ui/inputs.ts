@@ -39,6 +39,7 @@ export class TextInput implements IUIBase, IDisposable {
 
 	protected _onValueChanging: Emitter<string>;
 	protected _onValueChanged: Emitter<string>;
+	protected _onFocusChanged: Emitter<boolean>;
 	/**
 	 * 输入过程中内容过滤
 	 */
@@ -81,6 +82,7 @@ export class TextInput implements IUIBase, IDisposable {
 
 		this._onValueChanging = new Emitter<string>();
 		this._onValueChanged = new Emitter<string>();
+		this._onFocusChanged = new Emitter<boolean>();
 
 		if (validationOptions) {
 			this.validation = validationOptions.validation;
@@ -132,6 +134,10 @@ export class TextInput implements IUIBase, IDisposable {
 	 */
 	public get onValueChanged(): Event<string> {
 		return this._onValueChanged.event;
+	}
+
+	public get onFocusChanged(): Event<boolean> {
+		return this._onFocusChanged.event;
 	}
 
 	private _prompt: string = '';
@@ -198,12 +204,14 @@ export class TextInput implements IUIBase, IDisposable {
 		dom.addClass(this.container, 'synthetic-focus');
 		this._showMessage();
 		this.onFocus();
+		this._onFocusChanged.fire(true);
 	}
 
 	private blur_handler(): void {
 		dom.removeClass(this.container, 'synthetic-focus');
 		this._hideMessage();
 		this.onBlur();
+		this._onFocusChanged.fire(false);
 	}
 
 	protected onFocus(): void {

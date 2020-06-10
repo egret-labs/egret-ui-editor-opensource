@@ -55,3 +55,41 @@
 .property-container .egret-attribute-item-group .contentGroup.property-animation-ease {
 	display: flex;
 }
+
+.dataprovider-editor-root {
+	height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.delete-property {
+	opacity: 0;
+	pointer-events: none;
+}
+
+.dataprovider-item-header:hover .delete-property {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+.dataprovider-data-item .dataprovider-delete-item {
+	display: none;    
+	height: 24px;
+    width: 24px;
+    position: absolute;
+    z-index: 1;
+    background-color: #565656;
+    border-radius: 2px;
+}
+
+.dataprovider-data-item .dataprovider-delete-item.hidden {
+	display: none;
+}
+
+.dataprovider-data-item:hover .dataprovider-delete-item {
+	display: block;
+}
+
+.dataprovider-data-item:hover .dataprovider-delete-item.hidden {
+	display: none;
+}

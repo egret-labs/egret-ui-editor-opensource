@@ -1,7 +1,7 @@
 import * as dom from 'egret/base/common/dom';
 import { DomScrollableElement } from 'vs/base/browser/ui/scrollbar/scrollableElement';
 import { ScrollbarVisibility } from 'vs/base/common/scrollable';
-import { TextInput, IMessage } from 'egret/base/browser/ui/inputs';
+import { TextInput } from 'egret/base/browser/ui/inputs';
 import { localize } from 'egret/base/localization/nls';
 import { IconButton } from 'egret/base/browser/ui/buttons';
 import { deepClone } from 'egret/base/common/objects';
@@ -121,7 +121,9 @@ export class DataBindingEditor {
 			verticalScrollbarSize: 6
 		});
 
-		this.root.appendChild(this.scrollbar.getDomNode());
+		const scrollbarDom = this.scrollbar.getDomNode();
+		scrollbarDom.style.height = '100%';
+		this.root.appendChild(scrollbarDom);
 	}
 
 	private dataMaps: Map<IBindingData, TextInput> = new Map<IBindingData, TextInput>();
@@ -164,6 +166,7 @@ export class DataBindingEditor {
 		deleteBtn.onClick((e) => {
 			root.remove();
 			this.deleteItem(item);
+			this.scrollbar.scanDomNode();
 		});
 
 		this.dataMaps.set(item, keyInput);

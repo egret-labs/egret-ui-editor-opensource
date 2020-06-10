@@ -12,8 +12,10 @@ import { IUIBase } from 'egret/base/browser/ui/common';
 import { IDropDownTextDataSource } from 'egret/base/browser/ui/dropdowns';
 import { W_EUI } from 'egret/exts/exml-exts/exml/common/project/parsers/core/commons';
 import { getSameKeyValue, UserValue, DefaultValue } from '../../../common/properties';
+import { SystemButton, IconButton } from 'egret/base/browser/ui/buttons';
 
 import '../media/propertyView.css';
+import { DataProviderPanel } from '../property-dataProvider/dataProviderPanel';
 
 enum PropertyTypes {
 	ID = 'id',
@@ -359,6 +361,9 @@ export class PropertyGeneralPart extends PropertyBasePart {
 	//不透明度属性
 	private alphaAttribute: AttributeItemGroup;
 	private alphaInput: NumberInput;
+	//数据源
+	private dataProviderAttribute: AttributeItemGroup;
+	private dataProvicerButton: IconButton;
 
 
 	/**
@@ -465,6 +470,16 @@ export class PropertyGeneralPart extends PropertyBasePart {
 		this.toDisposes.push(this.alphaInput.onValueChanged(e => this.alphaChanged_handler(e)));
 		this.initAttributeStyle(this.alphaAttribute);
 		this.registerAttribute(this.alphaAttribute, this.alphaInput, PropertyTypes.ALPHA);
+
+		// 数据源
+		this.dataProviderAttribute = new AttributeItemGroup(container);
+		this.dataProviderAttribute.label = localize('property.general.dataProvicer', 'Data Source:');
+		this.dataProvicerButton = new IconButton(this.dataProviderAttribute);
+		this.dataProvicerButton.toolTip = localize('property.general.editDataProvicer', 'Edit data Source');
+		this.dataProvicerButton.iconClass = 'data-source';
+		this.toDisposes.push(this.dataProvicerButton.onClick(this.dataProvider_click, this));
+		this.initAttributeStyle(this.dataProviderAttribute);
+		this.registerAttribute(this.dataProviderAttribute, this.dataProvicerButton, PropertyTypes.DATA_PROVIDER);
 
 	}
 
@@ -626,6 +641,15 @@ export class PropertyGeneralPart extends PropertyBasePart {
 
 	private alphaChanged_handler(value: string): void {
 		this.setPropertyNumberByLabel('alpha',value ?  Number.parseFloat(value) : null);
+	}
+
+	private dataProvider_click(): void {
+		const nodes: INode[] = this.model.getSelectedNodes();
+		if (!nodes || nodes.length == 0) {
+			return;
+		}
+		var window = new DataProviderPanel(this.model, nodes[0]);
+		window.open('root', true);
 	}
 
 	private setPropertyStrByLabel(key:string,value:string):void{

@@ -244,6 +244,8 @@ class InnerWindowManager {
 			window.setOwnerWindow(this.currentActivateWindow);
 		} else if (ownerWindow == 'root') {
 			window.setOwnerWindow(this._rootLayer);
+		} else {
+			window.setOwnerWindow(ownerWindow);
 		}
 
 		const owner: _IInnerWindow = <any>window.ownerWindow as _IInnerWindow;

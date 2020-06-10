@@ -431,6 +431,30 @@
 		"s": "Key cannot be repeated",
 		"t": "key不能重复"
 	},
+	"DataProviderPanel.title": {
+		"s": "Edit data source",
+		"t": "编辑数据源"
+	},
+	"DataProviderPanel.addAttribute": {
+		"s": "Add Attribute",
+		"t": "添加属性"
+	},
+	"DataProviderPanel.addItem": {
+		"s": "Add Item Data",
+		"t": "添加数据"
+	},
+	"DataProviderPanel.newAttribute.title": {
+		"s": "Add Attribute",
+		"t": "添加属性"
+	},
+	"DataProviderPanel.newAttribute.name": {
+		"s": "Attribute Name:",
+		"t": "属性名:"
+	},
+	"DataProviderPanel.validation.attributeNotValid": {
+		"s": "Attribute name cannot start with a number",
+		"t": "属性名不能以数字开头"
+	},
 	"deleteFileOperation.run.canResetThem": {
 		"s": "You can restore from the Trash.",
 		"t": "你可以从回收站中恢复他们"
@@ -1486,6 +1510,14 @@
 	"property.general.touchEnabled": {
 		"s": "Touch Enable:",
 		"t": "自身触碰:"
+	},
+	"property.general.dataProvicer": {
+		"s": "Data Source:",
+		"t": "数据源:"
+	},
+	"property.general.editDataProvicer": {
+		"s": "Edit data Source",
+		"t": "编辑数据源"
 	},
 	"property.layout.hv.gap": {
 		"s": "Gap:",

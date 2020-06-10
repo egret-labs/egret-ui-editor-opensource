@@ -2,6 +2,18 @@
     background-image: url('light/scale_9_grid.svg');
 }
 
+.data-source {
+	background-image: url('light/datasource.svg');
+}
+
+.delete-property {
+	background-image: url('light/close.svg');
+}
+
+.delete-item {
+	background-image: url('light/close.svg');
+}
+
 /* font */
 .font_bold {
     background-image: url('light/C_Bold_md.png');

@@ -2,12 +2,6 @@ import { InnerBtnWindow } from 'egret/platform/innerwindow/browser/innerWindow';
 import { localize } from 'egret/base/localization/nls';
 import { IExmlModel } from '../../../common/exml/models';
 import { IDesignConfig } from '../../../common/exml/designConfig';
-import { BackgroundType } from '../../../common/exml/designConfigImpl';
-import { remote } from 'electron';
-import { isMacintosh } from 'egret/base/common/platform';
-import { NumberInput } from 'egret/base/browser/ui/inputs';
-import { AttributeItemGroup } from 'egret/base/browser/ui/containers';
-import { SystemButton } from 'egret/base/browser/ui/buttons';
 import { IDisposable, dispose } from 'egret/base/common/lifecycle';
 import { InnerButtonType } from 'egret/platform/innerwindow/common/innerWindows';
 import { Tabbar } from 'egret/base/browser/ui/tabbars';
@@ -72,14 +66,14 @@ export class DataBindingPanel extends InnerBtnWindow {
 	public render(contentGroup: HTMLElement): void {
 		super.render(contentGroup);
 		contentGroup.style.width = '560px';
-		contentGroup.style.height = '400px'
+		contentGroup.style.height = '400px';
 		contentGroup.style.padding = '12px';
 		contentGroup.style.paddingRight = '0px';
 		contentGroup.style.display = 'flex';
 		contentGroup.style.flexDirection = 'column';
 
 		const header = document.createElement('div');
-		addClass(header, 'databinding-panel')
+		addClass(header, 'databinding-panel');
 		header.style.display = 'flex';
 		contentGroup.appendChild(header);
 
@@ -97,7 +91,7 @@ export class DataBindingPanel extends InnerBtnWindow {
 		addBtn.onClick(this.addItem, this);
 
 		const editorContainer = document.createElement('div');
-		addClass(editorContainer, 'databinding-content')
+		addClass(editorContainer, 'databinding-content');
 		editorContainer.style.height = '100%';
 		editorContainer.style.overflow = 'hidden';
 		contentGroup.appendChild(editorContainer);

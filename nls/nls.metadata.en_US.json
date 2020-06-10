@@ -431,6 +431,30 @@
 		"s": "Key cannot be repeated",
 		"t": "Key cannot be repeated"
 	},
+	"DataProviderPanel.title": {
+		"s": "Edit data source",
+		"t": "Edit data source"
+	},
+	"DataProviderPanel.addAttribute": {
+		"s": "Add Attribute",
+		"t": "Add Attribute"
+	},
+	"DataProviderPanel.addItem": {
+		"s": "Add Item Data",
+		"t": "Add Item Data"
+	},
+	"DataProviderPanel.newAttribute.title": {
+		"s": "Add Attribute",
+		"t": "Add Attribute"
+	},
+	"DataProviderPanel.newAttribute.name": {
+		"s": "Attribute Name:",
+		"t": "Attribute Name:"
+	},
+	"DataProviderPanel.validation.attributeNotValid": {
+		"s": "Attribute name cannot start with a number",
+		"t": "Attribute name cannot start with a number"
+	},
 	"deleteFileOperation.run.canResetThem": {
 		"s": "You can restore from the Trash.",
 		"t": "You can restore from the Trash."
@@ -1486,6 +1510,14 @@
 	"property.general.touchEnabled": {
 		"s": "Touch Enable:",
 		"t": "Touch Enable:"
+	},
+	"property.general.dataProvicer": {
+		"s": "Data Source:",
+		"t": "Data Source:"
+	},
+	"property.general.editDataProvicer": {
+		"s": "Edit data Source",
+		"t": "Edit data Source"
 	},
 	"property.layout.hv.gap": {
 		"s": "Gap:",

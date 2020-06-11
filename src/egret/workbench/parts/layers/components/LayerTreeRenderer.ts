@@ -122,7 +122,7 @@ export class LayerTreeRenderer implements IRenderer {
 			visible = visibleProp.getInstance();
 		}
 
-		this.refreshInvisible(visible, templateData.root);
+		this.refreshInvisible(visible, templateData.container);
 		templateData.optionItem.context = { element: element, optionItem: templateData.optionItem, root: templateData.container };
 		this.renderOptions(templateData.optionItem, element);
 	}

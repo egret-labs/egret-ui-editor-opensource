@@ -351,6 +351,24 @@ export class PropertyAllPart implements IUIBase, IDisposable {
 					}
 					return colorPicker;
 				}
+			case PropertyType.Any:
+				{
+					const input = existInput ? existInput as TextInput : new TextInput(container);
+					if (prop.user != null) {
+						input.text = prop.user;
+					} else if (prop.default != null) {
+						input.text = null;
+						input.prompt = prop.default;
+					} else {
+						input.text = null;
+						input.prompt = '-';
+					}
+					if (!existInput) {
+						this.inputDisposables.push(input);
+						this.inputDisposables.push(input.onValueChanged(e => this.anyChanged_handler(e, prop)));
+					}
+					return input;
+				}
 			default:
 				return null;
 		}
@@ -440,6 +458,20 @@ export class PropertyAllPart implements IUIBase, IDisposable {
 				node.setProperty(prop.name, null);
 			} else {
 				node.setString(prop.name, value);
+			}
+		}
+	}
+
+	private anyChanged_handler(value: string, prop: IProperty): void {
+		if (!this.selectionNodes) {
+			return;
+		}
+		for (let i = 0; i < this.selectionNodes.length; i++) {
+			const node = this.selectionNodes[i];
+			if (!value) {
+				this.model.setPropertyByString(node, prop.name, null);
+			} else {
+				this.model.setPropertyByString(node, prop.name, value);
 			}
 		}
 	}

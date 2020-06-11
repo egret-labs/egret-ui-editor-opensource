@@ -45,48 +45,50 @@ export class SkinPart extends BasePart {
 		) {
 			this.currentNode = node;
 			this.show();
-			if(this.model.getExmlConfig().isInstance(node.getInstance(), 'eui.DataGroup')){
+			if (this.model.getExmlConfig().isInstance(node.getInstance(), 'eui.DataGroup')) {
 				this.hasItemSkin = true;
-			}else{
+			} else {
 				this.hasItemSkin = false;
 			}
 
 			this.getSkinList().then(datas => {
 				this.skinCombobox.setDatas(datas);
-				let skinNameValue:IClass | IValue = null;
-				let skinNameDefault:any = null;
-				if(this.model.getExmlConfig().isInstance(node.getInstance(), 'eui.DataGroup')){
+				let skinNameValue: IClass | IValue = null;
+				let skinNameDefault: any = null;
+				if (this.model.getExmlConfig().isInstance(node.getInstance(), 'eui.DataGroup')) {
 					skinNameValue = node.getProperty('itemRendererSkinName') as IClass;
 					skinNameDefault = node.getInstance()['itemRendererSkinName'];
-				}else{
+				} else {
 					skinNameValue = node.getProperty('skinName') as IClass;
 					skinNameDefault = node.getInstance()['skinName'];
 				}
 
-				let skinNameValueUser:string = '';
-				if(skinNameValue && isInstanceof(skinNameValue,'eui.IClass') && !(skinNameValue as IClass).getIsInner()){
-					skinNameValueUser = (skinNameValue as IClass).getClassName();
-				}else if(skinNameValue && isInstanceof(skinNameValue,'eui.IValue')){
+				let skinNameValueUser: string = '';
+				if (skinNameValue && isInstanceof(skinNameValue, 'eui.IClass')) {
+					if (!(skinNameValue as IClass).getIsInner()) {
+						skinNameValueUser = (skinNameValue as IClass).getClassName();
+					}
+				} else if (skinNameValue && isInstanceof(skinNameValue, 'eui.IValue')) {
 					skinNameValueUser = skinNameValue.getInstance() as string;
 				}
-				let skinNameValueDefault:string = '';
-				if(typeof skinNameDefault == 'string'){
+				let skinNameValueDefault: string = '';
+				if (typeof skinNameDefault == 'string') {
 					skinNameValueDefault = skinNameDefault;
-				}else if(typeof skinNameDefault == 'function'){
-					skinNameValueDefault = skinNameValueDefault['name'];
-				}else{
+				} else if (typeof skinNameDefault == 'function') {
+					skinNameValueDefault = skinNameDefault['name'];
+				} else {
 					//TODO
 					console.log('皮肤获取失败');
 				}
 				this.skinCombobox.prompt = skinNameValueDefault;
 
-				if(skinNameValueUser){
+				if (skinNameValueUser) {
 					this.skinCombobox.setSelection(skinNameValueUser);
-				}else{
+				} else {
 					this.skinCombobox.setSelection('');
 				}
 			});
-		}else{
+		} else {
 			return;
 		}
 

@@ -1,4 +1,4 @@
-import { IObject, INode, isInstanceof } from 'egret/exts/exml-exts/exml/common/exml/treeNodes';
+import { IObject, INode, isInstanceof, IValue } from 'egret/exts/exml-exts/exml/common/exml/treeNodes';
 import { IExmlModel } from 'egret/exts/exml-exts/exml/common/exml/models';
 import { getSameKeyValue } from './properties';
 
@@ -29,11 +29,11 @@ export interface IProperty {
 	/** 可用的值 */
 	available: string[];
 	/** 最小值 */
-	minValue:number;
+	minValue: number;
 	/** 最大值 */
-	maxValue:number;
+	maxValue: number;
 	/** 步数 */
-	step:number;
+	step: number;
 }
 
 /**
@@ -89,24 +89,24 @@ function getPropertyList(className: string, node: IObject, model: IExmlModel): {
 			let value = p.value;
 			if (value == 'null') {
 				value = '';
-			}else if(value == '""'){
+			} else if (value == '""') {
 				value = '';
-			}else if(value = '\'\''){
+			} else if (value = '\'\'') {
 				value = '';
 			}
-			if(!value && node.getInstance()){
-				value = node.getInstance()[p.name];
-				if(value != null){
-					value = value.toString();
+			if (!value && node.getInstance()) {
+				const instanceValue = node.getInstance()[p.name];
+				if (instanceValue != null) {
+					value = instanceValue.toString();
 				}
 			}
-			let minValue:number = null;
-			let maxValue:number = null;
-			let step:number = 0.1;
+			let minValue: number = null;
+			let maxValue: number = null;
+			let step: number = 0.1;
 			let type: PropertyType = PropertyType.Any;
 			if (percentSupportProps.indexOf(p.name) != -1) {
 				type = PropertyType.NumberWithPercent;
-				if(!value){
+				if (!value) {
 					value = 'NaN';
 				}
 			} else if (colorPropertyList.indexOf(p.name) != -1) {
@@ -116,17 +116,17 @@ function getPropertyList(className: string, node: IObject, model: IExmlModel): {
 					type = PropertyType.String;
 				} else if (p.type == 'number') {
 					type = PropertyType.Number;
-					if(!value){
+					if (!value) {
 						value = '0';
 					}
-					if(p.name == 'alpha'){
+					if (p.name == 'alpha') {
 						minValue = 0;
 						maxValue = 1;
 						step = 0.01;
 					}
 				} else if (p.type == 'boolean') {
 					type = PropertyType.Boolean;
-					if(!value){
+					if (!value) {
 						value = 'false';
 					}
 				}
@@ -137,24 +137,32 @@ function getPropertyList(className: string, node: IObject, model: IExmlModel): {
 				default: value,
 				type: type,
 				available: p.available,
-				minValue:minValue,
-				maxValue:maxValue,
-				step:step
+				minValue: minValue,
+				maxValue: maxValue,
+				step: step
 			};
-			if (type != PropertyType.Any) {
-				const valueUser = node.getProperty(p.name);
-				let value: string = '';
-				if (valueUser) {
-					if (isInstanceof(valueUser, 'eui.ILink')) {
-						value = valueUser.toString();
+			let userValue: string = '';
+			const valueUser = node.getProperty(p.name);
+			if (valueUser) {
+				if (isInstanceof(valueUser, 'eui.ILink')) {
+					userValue = valueUser.toString();
+				} else {
+					const uvalue = valueUser.getInstance();
+					if (p.type === 'egret.Rectangle') {
+						if (typeof valueUser === 'string') {
+							userValue = valueUser;
+						} else {
+							userValue = `${uvalue['x']},${uvalue['y']},${uvalue['width']},${uvalue['height']}`;
+						}
 					} else {
-						value = valueUser.getInstance();
-						value = value.toString();
+						userValue = uvalue.toString();
 					}
 				}
-				prop.user = value;
-				propertyMap[prop.name] = prop;
 			}
+			if (userValue) {
+				prop.user = userValue;
+			}
+			propertyMap[prop.name] = prop;
 		}
 	});
 	return propertyMap;

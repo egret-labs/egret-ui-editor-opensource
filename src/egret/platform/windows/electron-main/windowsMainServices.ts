@@ -10,7 +10,7 @@ import { isMacintosh } from 'egret/base/common/platform';
 import { normalizeNFC } from 'egret/base/common/strings';
 import * as fs from 'fs';
 import { IStateService } from '../../state/common/state';
-import { dirname, normalize, isEqualOrParent } from '../../../base/common/paths';
+import { dirname, normalize, isEqual } from '../../../base/common/paths';
 import { localize } from '../../../base/localization/nls';
 import { ResdepotWindow } from './resdepotWindow';
 import URI from 'egret/base/common/uri';
@@ -95,7 +95,7 @@ export class WindowsMainService implements IWindowsMainService {
 		@IStateService private stateService: IStateService
 	) {
 		this.dialogs = new Dialogs(environmentService, stateService, this);
-		this.openMainWindow(this.getWindowOptions());
+		this.openMainWindow(this.getFistOpenWindowOptions());
 		this.registerListeners();
 	}
 	private registerListeners(): void {
@@ -127,7 +127,7 @@ export class WindowsMainService implements IWindowsMainService {
 		});
 	}
 
-	private getWindowOptions(): IOpenBrowserWindowOptions {
+	private getFistOpenWindowOptions(): IOpenBrowserWindowOptions {
 		const lastOpenedFolder: string = this.stateService.getItem<string>(LAST_OPNED_FOLDER, '');
 		const euiProject = getEUIProject(this.environmentService.args);
 		if (!euiProject.folderPath) {
@@ -146,6 +146,7 @@ export class WindowsMainService implements IWindowsMainService {
 	 */
 	public open(options: IOpenBrowserWindowOptions, fromMainWindowId?: number): void {
 		if (!options.folderPath) {
+			// folderPath 为null说明是通过不带参数的code命令或鼠标点击打开的，此时应该打开一个空实例
 			const emptyInstance = this.getEmptyWindowInstance();
 			if (emptyInstance) {
 				emptyInstance.mainWindow.focus();
@@ -381,7 +382,9 @@ export class WindowsMainService implements IWindowsMainService {
 				}
 			} else if (value instanceof URI) {
 				if (instance.openedFolderUri) {
-					if (isEqualOrParent(normalize(value.fsPath), normalize(instance.openedFolderUri.fsPath))) {
+					// https://github.com/egret-labs/egret-ui-editor-opensource/issues/75
+					// 只有当完全相等的时候才算匹配成功
+					if (isEqual(normalize(value.fsPath), normalize(instance.openedFolderUri.fsPath))) {
 						return instance;
 					}
 				}

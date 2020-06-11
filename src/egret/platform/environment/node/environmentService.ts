@@ -139,10 +139,8 @@ export function getEUIProject(args: ParsedArgs): { folderPath: string | null, fi
 	let targetToOpen: string = null;
 	if (folder) {
 		const project = getEUIProjectPath(folder);
-		if (project) {
-			targetToOpen = project.folderPath;
-			targetFile = project.file;
-		}
+		targetToOpen = project.folderPath;
+		targetFile = project.file;
 	}
 	return {
 		folderPath: targetToOpen,

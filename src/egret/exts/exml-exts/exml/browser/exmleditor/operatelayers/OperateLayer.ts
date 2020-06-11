@@ -184,6 +184,11 @@ export class OperateLayer {
 		this.p9tTargetAdapterList.forEach(adapter => {
 			adapter.enable = value;
 		});
+		if(!value){
+			window.removeEventListener("mousemove", this.mouseEventHandle, true);
+			window.removeEventListener("mouseup", this.mouseEventHandle);
+			this.stopRangeSelect();
+		}
 	}
 
 	private rangeSelectMode: boolean = false;//是否正在进行区域性选取
@@ -201,6 +206,7 @@ export class OperateLayer {
 		}
 		switch (e.type) {
 			case 'mousedown':
+				this.stopRangeSelect();
 				this.multiSelectTag = false;
 				if (e.ctrlKey || e.metaKey || e.shiftKey) {
 					this.multiSelectTag = true;

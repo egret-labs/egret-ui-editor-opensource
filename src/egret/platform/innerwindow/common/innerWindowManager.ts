@@ -1,6 +1,6 @@
 import { _IInnerWindow, _IInnerWindowRoot, IInnerWindow, IInnerWindowRoot, _IInnerWindowCore } from './innerWindows';
 import { isInDOM, watchResizeChange } from '../../../base/common/dom';
-import { remote } from 'electron';
+import { Emitter, Event } from 'egret/base/common/event';
 
 export interface IInnerWindowConstructor {
 	new(...params: any[]): IInnerWindow;
@@ -184,10 +184,12 @@ class RootLayer implements _IInnerWindowRoot {
 class InnerWindowManager {
 
 	private _rootLayer: RootLayer;
+	private _windowChanged: Emitter<void>;
 	constructor() {
 		this.keydown_handler = this.keydown_handler.bind(this);
 
 		this._rootLayer = new RootLayer();
+		this._windowChanged = new Emitter<void>();
 
 		document.addEventListener('keydown', this.keydown_handler);
 	}
@@ -210,6 +212,12 @@ class InnerWindowManager {
 		}
 	}
 
+	/**
+	 * 窗口变更事件，在窗口打开和关闭时触发
+	 */
+	public get WindowChanged(): Event<void> {
+		return this._windowChanged.event;
+	}
 
 	/**
 	 * 根节点
@@ -258,6 +266,7 @@ class InnerWindowManager {
 			owner.enableModal();
 		}
 		this.activate(window);
+		this._windowChanged.fire();
 	}
 
 	/**
@@ -304,6 +313,7 @@ class InnerWindowManager {
 			if (nextActiveWindow && !(nextActiveWindow instanceof RootLayer)) {
 				this.activate(nextActiveWindow);
 			}
+			this._windowChanged.fire();
 		});
 	}
 
@@ -315,24 +325,12 @@ class InnerWindowManager {
 		}
 		return this._rootLayer;
 	}
-	private activateFlag: boolean = false;
-	private activateLaters: (_IInnerWindow | _IInnerWindowRoot)[] = [];
 	/**
 	 * 激活一个窗体
 	 * @param window 
 	 */
 	public activate(window: _IInnerWindow | _IInnerWindowRoot): void {
-		this.activateLaters.push(window);
-		if (this.activateFlag) {
-			return;
-		}
-		this.activateFlag = true;
-		setTimeout(() => {
-			this.activateFlag = false;
-			const firstWindow = this.activateLaters.shift();
-			this.activateLaters.length = 0;
-			this._currentActivateWindow = this.doActivate(firstWindow);
-		}, 1);
+		this._currentActivateWindow = this.doActivate(window);
 	}
 
 	public tryActive(windowType: IInnerWindowConstructor): boolean {

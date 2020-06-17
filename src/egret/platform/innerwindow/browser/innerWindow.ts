@@ -3,7 +3,6 @@ import { Event, Emitter } from 'egret/base/common/event';
 import { innerWindowManager } from '../common/innerWindowManager';
 import { addClass, removeClass, invalidateReisizeCheck } from 'egret/base/common/dom';
 import { dispose, IDisposable } from 'egret/base/common/lifecycle';
-
 import '!style-loader!css-loader!./media/innerWindows.css';
 import { SystemButton, ButtonBase } from '../../../base/browser/ui/buttons';
 import { localize } from '../../../base/localization/nls';
@@ -115,7 +114,7 @@ class InnerWindowCls implements _IInnerWindow {
 		this.verticalCenter = true;
 		this.horizontalCenter = true;
 
-		this.title = localize('innerWindow.title','Title');
+		this.title = localize('innerWindow.title', 'Title');
 		// this.backgroundColor = '#ffffff';
 	}
 
@@ -176,9 +175,9 @@ class InnerWindowCls implements _IInnerWindow {
 			addClass(this.headerContainer, 'win');
 		}
 		contianer.appendChild(this.headerContainer);
-		if(!this.titleBarVisible){
+		if (!this.titleBarVisible) {
 			this.headerContainer.hidden = true;
-		}else{
+		} else {
 			this.headerContainer.hidden = false;
 		}
 
@@ -188,7 +187,7 @@ class InnerWindowCls implements _IInnerWindow {
 		this.titleDisplay.innerText = this.title;
 		this.headerContainer.appendChild(this.titleDisplay);
 		this.titleDisplay.addEventListener('mousedown', this.titleBarMouseDown_handler);
-		
+
 
 
 		this.headerCloseButton = document.createElement('div');
@@ -259,6 +258,8 @@ class InnerWindowCls implements _IInnerWindow {
 	}
 	private windowMouseDown_handler(e: MouseEvent): void {
 		innerWindowManager.activate(this);
+		// 在窗口内点击，停止向父级派发mousedown事件
+		e.stopPropagation();
 	}
 
 	/**
@@ -536,18 +537,18 @@ class InnerWindowCls implements _IInnerWindow {
 	/**
 	 * 标题栏显示
 	 */
-	private _titleBarVisible:boolean = true;
-	public get titleBarVisible():boolean{
+	private _titleBarVisible: boolean = true;
+	public get titleBarVisible(): boolean {
 		return this._titleBarVisible;
 	}
-	public set titleBarVisible(value:boolean){
-		if(this._titleBarVisible != value){
+	public set titleBarVisible(value: boolean) {
+		if (this._titleBarVisible != value) {
 			this.doSetTitleBarVisible(value);
 		}
 	}
 	protected doSetTitleBarVisible(value: boolean): void {
 		this._titleBarVisible = value;
-		if(this.headerContainer){
+		if (this.headerContainer) {
 			this.headerContainer.hidden = !this._titleBarVisible;
 		}
 	}

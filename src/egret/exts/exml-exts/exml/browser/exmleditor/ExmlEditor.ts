@@ -128,7 +128,7 @@ export class ExmlEditor extends EventDispatcher {
 	private backgroundContainer: HTMLElement;
 	private runtime: IRuntimeAPI;
 
-	public init(container: HTMLElement, backgroundContainer: HTMLElement, rootContianer: IExmlViewContainer, clipboardService: IClipboardService): void {
+	public init(container: HTMLElement, backgroundContainer: HTMLElement, rootContianer: IExmlViewContainer, hRulerContainer: HTMLElement, vRulerContainer: HTMLElement, clipboardService: IClipboardService): void {
 		this.container = container;
 		this.backgroundContainer = backgroundContainer;
 		this.initView();
@@ -157,10 +157,10 @@ export class ExmlEditor extends EventDispatcher {
 		this.adsorber.enabled = false;//默认不开启吸附
 		//构建标尺
 		this.hRuler = new Ruler(Ruler.TYPE_HORIZONTAL);
-		this.hRuler.render(this.hRulerContainer);
+		this.hRuler.render(hRulerContainer);
 		this.hRuler.focusRectLayer = this.focusRectLayer;
 		this.vRuler = new Ruler(Ruler.TYPE_VERTICAL);
-		this.vRuler.render(this.vRulerContainer);
+		this.vRuler.render(vRulerContainer);
 		this.vRuler.focusRectLayer = this.focusRectLayer;
 		//构建网格
 		this.pixGrid = new PixGrid();
@@ -280,8 +280,6 @@ export class ExmlEditor extends EventDispatcher {
 
 	private gridContainer: HTMLElement;
 	private absorbContainer: HTMLElement;
-	private hRulerContainer: HTMLElement;
-	private vRulerContainer: HTMLElement;
 	private focusRectContainer: HTMLElement;
 	public transformContainer: HTMLElement;
 	private initView(): void {
@@ -304,13 +302,6 @@ export class ExmlEditor extends EventDispatcher {
 		this.container.appendChild(this.absorbContainer);
 		this.setStyle(this.absorbContainer, '100%', '100%', false);
 
-		this.hRulerContainer = document.createElement('div');
-		this.container.appendChild(this.hRulerContainer);
-		this.setStyle(this.hRulerContainer, '100%', '20px');
-
-		this.vRulerContainer = document.createElement('div');
-		this.container.appendChild(this.vRulerContainer);
-		this.setStyle(this.vRulerContainer, '20px');
 		this.updateEdiable();
 	}
 	private setStyle(element: HTMLElement, width?: string, heigth?: string, pointerEvents: boolean = true): void {

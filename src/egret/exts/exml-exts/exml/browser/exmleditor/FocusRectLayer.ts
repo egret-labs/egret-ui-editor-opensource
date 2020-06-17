@@ -141,6 +141,8 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 		this.runtime = runtime;
 		this.insertEgretContentAdapter();
 		this.attachEventListener();
+		// model变更，重新缓存exml大小
+		this.caclulateElementSize();
 		this.refresh();
 	}
 	/**获取所有选中的焦点矩形 */
@@ -283,10 +285,10 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 	}
 
 	public get viewHeight(): number {
-		return this.container.parentElement.parentElement.clientHeight - 60;
+		return this.container.clientHeight;
 	}
 	public get viewWidth(): number {
-		return this.container.parentElement.parentElement.clientWidth - 60;
+		return this.container.clientWidth;
 	}
 
 	/**适配 */
@@ -295,6 +297,11 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 			var curScale = this.scale;
 			let stageHeight: number = this.runtime.runtimeRootContainer.contentHeight;
 			let stageWidth: number = this.runtime.runtimeRootContainer.contentWidth;
+			if(this.previewed){
+				// 预览模式下使用屏幕尺寸代替舞台尺寸
+				stageHeight = this.screenHeightCache;
+				stageWidth = this.screenWidthCache;
+			}
 
 			if (isNaN(scale)) {
 				//如果舞台尺寸大于视图尺寸则需要进行一下缩放
@@ -312,11 +319,11 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 			if (toCenter) {
 				stageHeight *= curScale;
 				stageWidth *= curScale;
-				this.movePoint.x = (this.viewWidth - stageWidth) / 2 + 40;
-				this.movePoint.y = (this.viewHeight - stageHeight) / 2 + 40;
+				this.movePoint.x = (this.viewWidth - stageWidth) / 2;
+				this.movePoint.y = (this.viewHeight - stageHeight) / 2;
 				this.egretContentHost.setProperty(
-					(this.viewWidth - stageWidth) / 2 + 40,
-					(this.viewHeight - stageHeight) / 2 + 40,
+					(this.viewWidth - stageWidth) / 2,
+					(this.viewHeight - stageHeight) / 2,
 					curScale,
 					curScale, tween);
 			} else {
@@ -365,8 +372,8 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 			stageHeight *= curScale;
 			stageWidth *= curScale;
 			this.egretContentHost.setProperty(
-				(this.viewWidth - stageWidth) / 2 + 40,
-				(this.viewHeight - stageHeight) / 2 + 40,
+				(this.viewWidth - stageWidth) / 2,
+				(this.viewHeight - stageHeight) / 2,
 				curScale,
 				curScale, tween);
 		}
@@ -393,6 +400,14 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 	private rootElementExplicitHeightCache = 0;
 	private rootElementWidthCache = 0;
 	private rootElementHeightCache = 0;
+
+	private caclulateElementSize(): void {
+		const rootElement = this.exmlModel.getRootElement();
+		this.rootElementExplicitWidthCache = rootElement.explicitWidth;
+		this.rootElementExplicitHeightCache = rootElement.explicitHeight;
+		this.rootElementWidthCache = rootElement.width;
+		this.rootElementHeightCache = rootElement.height;
+	}
 	/**
 	 * 激活预览模式
 	 * @param autoContent 是否自动适应内容大小
@@ -412,11 +427,7 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 		if (this.previewed) {
 			return;
 		}
-		var rootElement = this.exmlModel.getRootElement();
-		this.rootElementExplicitWidthCache = rootElement.explicitWidth;
-		this.rootElementExplicitHeightCache = rootElement.explicitHeight;
-		this.rootElementWidthCache = rootElement.width;
-		this.rootElementHeightCache = rootElement.height;
+		this.caclulateElementSize();
 
 		this.adjustPreview(autoContent, contentWidth, contentHeight, screenWidth, screenHeight, scaleMode, scale, tween, duration);
 	}
@@ -559,8 +570,8 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 		stageHeight *= screenScale;
 		stageWidth *= screenScale;
 		this.egretContentHost.setProperty(
-			(this.viewWidth - stageWidth) / 2 + 40,
-			(this.viewHeight - stageHeight) / 2 + 40,
+			(this.viewWidth - stageWidth) / 2,
+			(this.viewHeight - stageHeight) / 2,
 			screenScale,
 			screenScale, true);
 

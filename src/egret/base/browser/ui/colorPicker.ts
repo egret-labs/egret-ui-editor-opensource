@@ -82,22 +82,22 @@ export class ColorPicker implements IUIBase, IDisposable {
 	/**
 	 * 创建
 	 */
-	public create(container: HTMLElement | IUIBase): void {
+	public create(container: HTMLElement | IUIBase, defaultColor?: string): void {
 		this.container = getTargetElement(container);
 		this.container.appendChild(this.el);
 		this.el.appendChild(this.content);
-		this.initView();
+		this.initView(defaultColor);
 	}
 
 	/**
 	 * 初始化内容
 	 * @param element 
 	 */
-	protected initView(): void {
+	protected initView(defaultColor?: string): void {
 		this.pickr = Pickr.create({
 			el: this.content,
 			container: document.body,
-			default: null,
+			default: defaultColor ?? null,
 			components: {
 				preview: true,
 				opacity: false,

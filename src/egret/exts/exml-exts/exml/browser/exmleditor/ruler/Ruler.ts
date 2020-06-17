@@ -19,9 +19,6 @@ export class Ruler implements IRender {
 		this.rulerMotor = new RulerMotor();
 
 		this.root = document.createElement('div');
-		this.root.style.minHeight = this.root.style.minWidth =
-			this.root.style.height = this.root.style.width = '0px';
-
 		this.canvas = document.createElement('canvas');
 		this.root.appendChild(this.canvas);
 

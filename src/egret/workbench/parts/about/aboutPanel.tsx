@@ -51,7 +51,6 @@ export class AboutPanel extends InnerWindow {
 	 */
 	public open(ownerWindow?: IInnerWindow | 'root', modal?: boolean) {
 		super.open(ownerWindow, modal);
-		(this as any).doDeactivate();
 	}
 
 
@@ -64,6 +63,8 @@ export class AboutPanel extends InnerWindow {
 	 */
 	public render(contentGroup: HTMLElement): void {
 		super.render(contentGroup);
+		contentGroup.style.minWidth = '400px';
+		contentGroup.style.minHeight = '460px';
 
 		let divContent = (<div className='aboutPage' style={{ marginBottom: 40 }}>
 			<div className='top'>

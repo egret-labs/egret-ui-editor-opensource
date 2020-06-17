@@ -6,7 +6,7 @@ import { BaseEditor } from '../../browser/baseEditor';
 import { EditorRegistry, IEditorDescriptor } from 'egret/editor/editorRegistry';
 import { IInstantiationService } from 'egret/platform/instantiation/common/instantiation';
 import { ConfirmResult } from 'egret/workbench/services/editor/common/models';
-import { dispose } from 'egret/base/common/lifecycle';
+import { dispose, IDisposable } from 'egret/base/common/lifecycle';
 import { IStorageService, StorageScope } from 'egret/platform/storage/common/storage';
 import { IFocusablePart } from 'egret/platform/operations/common/operations';
 import URI from 'egret/base/common/uri';
@@ -14,6 +14,7 @@ import { IOperationBrowserService } from '../../../platform/operations/common/op
 import { SystemCommands } from '../../../platform/operations/commands/systemCommands';
 import { localize } from '../../../base/localization/nls';
 import { IWorkspaceService } from 'egret/platform/workspace/common/workspace';
+import { innerWindowManager } from 'egret/platform/innerwindow/common/innerWindowManager';
 
 const OPEN_EDITORS_STORAGE = 'openEditorsStorageKey';
 
@@ -23,6 +24,7 @@ const OPEN_EDITORS_STORAGE = 'openEditorsStorageKey';
 export class EditorPart implements IEditorPart, IFocusablePart {
 	private _onEditorsChanged: Emitter<void>;
 	private _onEditorOpening: Emitter<IEditorOpeningEvent>;
+	private toDispose: IDisposable[] = [];
 
 	constructor(
 		@IInstantiationService protected instantiationService: IInstantiationService,
@@ -30,13 +32,10 @@ export class EditorPart implements IEditorPart, IFocusablePart {
 		@IOperationBrowserService protected operationService: IOperationBrowserService,
 		@IWorkspaceService protected workspaceService: IWorkspaceService,
 	) {
-		this.windowFocus_handler = this.windowFocus_handler.bind(this);
-		this.windowBlur_handler = this.windowBlur_handler.bind(this);
 		//events
 		this._onEditorsChanged = new Emitter<void>();
 		this._onEditorOpening = new Emitter<IEditorOpeningEvent>();
-		window.addEventListener('focus', this.windowFocus_handler);
-		window.addEventListener('blur', this.windowBlur_handler);
+		this.toDispose.push(innerWindowManager.WindowChanged(this.innerWindowChanged, this));
 
 		this.initCommands();
 	}
@@ -82,14 +81,16 @@ export class EditorPart implements IEditorPart, IFocusablePart {
 		].indexOf(command as SystemCommands) != -1;
 	}
 
-	private windowFocus_handler(): void {
-		if (this.getActiveEditor()) {
-			this.getActiveEditor().doFocusIn();
-		}
-	}
-	private windowBlur_handler(): void {
-		if (this.getActiveEditor()) {
-			this.getActiveEditor().doFocusOut();
+	private innerWindowChanged(): void {
+		// 根节点表示当前没有内置窗口
+		if (innerWindowManager.currentActivateWindow === innerWindowManager.rootWindow) {
+			if (this.getActiveEditor()) {
+				this.getActiveEditor().doFocusIn();
+			}
+		} else {
+			if (this.getActiveEditor()) {
+				this.getActiveEditor().doFocusOut();
+			}
 		}
 	}
 
@@ -121,7 +122,7 @@ export class EditorPart implements IEditorPart, IFocusablePart {
 
 	private editorFocusChanged_handler(e: boxlayout.BoxLayoutEvent): void {
 		const editor = e.data as BaseEditor;
-		if(this._activeEditor && this._activeEditor === editor) {
+		if (this._activeEditor && this._activeEditor === editor) {
 			return;
 		}
 		if (this.getActiveEditor()) {
@@ -440,6 +441,7 @@ export class EditorPart implements IEditorPart, IFocusablePart {
 	 * 关闭
 	 */
 	public shutdown(): void {
+		dispose(this.toDispose);
 		const documentLayout = this.documentGroup.layout.getLayoutConfig();
 		const layoutConfigStr = JSON.stringify(documentLayout);
 		this.storageService.store(OPEN_EDITORS_STORAGE, layoutConfigStr, StorageScope.WORKSPACE);

@@ -224,6 +224,7 @@ export class ExmlView implements IExmlView {
 		this.timeOut = setTimeout(() => {
 			this.timeOut = null;
 			this.exmlEditor.editable = true;
+			this.designBackgroundLayer.style.display = 'block';
 		}, 300);
 		this.editLayer.style.pointerEvents = '';
 		this.runtime.getRuntime().then(api => {
@@ -246,6 +247,7 @@ export class ExmlView implements IExmlView {
 		clearTimeout(this.timeOut);
 		this.exmlEditor.editable = false;
 		this.editLayer.style.pointerEvents = 'none';
+		this.designBackgroundLayer.style.display = 'none';
 		this.removeSubView();
 		this.runtime.getRuntime().then(api => {
 			api.runtimeRootContainer.touchEnabled = true;
@@ -276,10 +278,9 @@ export class ExmlView implements IExmlView {
 			} else {
 			}
 			if (screenWidth <= 0 || screenHeight <= 0) {
-				if (this.container) {
-					screenWidth = this.container.clientWidth;
-					screenHeight = this.container.clientHeight;
-					screenScale = 1;
+				if (this.editorContent) {
+					screenWidth = this.editorContent.clientWidth;
+					screenHeight = this.editorContent.clientHeight;
 				}
 			}
 			setTimeout(() => {
@@ -409,6 +410,9 @@ export class ExmlView implements IExmlView {
 	private designBackgroundLayer: HTMLElement;
 	private editLayer: HTMLElement;
 	private _container: HTMLElement;
+	private editorContent: HTMLElement;
+	private hRulerContainer: HTMLElement;
+	private vRulerContainer: HTMLElement;
 	/**
 	 * 得到核心容器
 	 */
@@ -459,10 +463,39 @@ export class ExmlView implements IExmlView {
 		this.designBackgroundLayer.style.backgroundSize = 'cover';
 
 		this.editLayer = document.createElement('div');
+		this.editLayer.className = 'editor-layer';
+		this.editLayer.style.position = 'relative';
+		this.editLayer.style.display = 'flex';
 		this.editLayer.style.width = '100%';
 		this.editLayer.style.height = '100%';
 		this.editLayer.style.top = '0';
 		this.editLayer.style.left = '0';
+
+		this.vRulerContainer = document.createElement('div');
+		this.vRulerContainer.style.position = 'relative';
+		this.vRulerContainer.style.height = '100%';
+		this.vRulerContainer.style.width = '20px';
+		this.editLayer.appendChild(this.vRulerContainer);
+
+		const rightPanel = document.createElement('div');
+		rightPanel.style.display = 'flex';
+		rightPanel.style.flexDirection = 'column';
+		rightPanel.style.width = '100%';
+		rightPanel.style.height = '100%';
+
+		this.hRulerContainer = document.createElement('div');
+		this.hRulerContainer.style.position = 'relative';
+		this.hRulerContainer.style.width = '100%';
+		this.hRulerContainer.style.height = '20px';
+		rightPanel.appendChild(this.hRulerContainer);
+
+		this.editorContent = document.createElement('div');
+		this.editorContent.style.position = 'relative';
+		this.editorContent.style.height = '100%';
+		this.editorContent.style.width = '100%';
+		this.editorContent.style.flexGrow = '1';
+		rightPanel.appendChild(this.editorContent);
+		this.editLayer.appendChild(rightPanel);
 
 		this._container = document.createElement('div');
 		this._container.setAttribute('className', 'exmlview-container');
@@ -474,14 +507,14 @@ export class ExmlView implements IExmlView {
 		this._container.style.zIndex = '0';
 		this._container.style.overflow = 'hidden';
 
-		this._container.appendChild(this.backgroundLayer);
-		this._container.appendChild(this.designBackgroundLayer);
-		this._container.appendChild(this.runtimeLayer);
+		this.editorContent.appendChild(this.backgroundLayer);
+		this.editorContent.appendChild(this.designBackgroundLayer);
+		this.editorContent.appendChild(this.runtimeLayer);
 		this._container.appendChild(this.editLayer);
 
 		this.rootContainer.addExmlView(this);
 
-		this.exmlEditor.init(this.editLayer, this.backgroundLayer, this.rootContainer, this.clipboardService);
+		this.exmlEditor.init(this.editorContent, this.backgroundLayer, this.rootContainer, this.hRulerContainer, this.vRulerContainer, this.clipboardService);
 		this.exmlEditor.focusRectLayer.onScaleChanged(scale => { this._onZoomChanged.fire(scale); });
 		this.exmlEditor.focusRectLayer.addEventListener(FocusRectLayerEvent.VIEWCHANGED, () => { this.updateDesignBackgroundLayer(); }, this);
 		this.refreshRuntime();
@@ -602,11 +635,6 @@ export class ExmlView implements IExmlView {
 	}
 
 	private updateDesignBackgroundLayer(): void {
-		if (this.getEditMode() === EditMode.PREVIEW) {
-			this.designBackgroundLayer.style.display = 'none';
-		} else {
-			this.designBackgroundLayer.style.display = 'block';
-		}
 		if (this.exmlEditor.focusRectLayer.egretContentHost) {
 			let m: Matrix = this.exmlEditor.focusRectLayer.egretContentHost.getTarget().matrix;
 			this.designBackgroundLayer.style.transform = 'matrix(' + m.a + ',' + m.b + ',' + m.c + ',' + m.d + ',' + m.tx + ',' + m.ty + ')';

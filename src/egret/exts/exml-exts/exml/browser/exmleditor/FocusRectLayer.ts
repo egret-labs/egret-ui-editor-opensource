@@ -122,8 +122,10 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 				this.viewAdapterFocusRect.show();
 			}
 			this.opacity = 1;
+			this.container.style.pointerEvents = '';
 		} else {
 			this.opacity = 0;
+			this.container.style.pointerEvents = 'none';
 			if (this.viewAdapterFocusRect) {
 				this.viewAdapterFocusRect.hide();
 			}

@@ -365,7 +365,8 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 		if (mode === EditMode.CODE) {
 			// 使用visibility替换display=none来修复 https://github.com/egret-labs/egret-ui-editor-opensource/issues/66
 			this.codeViewContainer.style.visibility = 'visible';
-			this.codeViewContainer.style.zIndex = 'auto';
+			this.codeViewContainer.style.zIndex = '';
+			this.codeViewContainer.style.pointerEvents = '';
 			this.exmlRootContainer.style.display = 'none';
 			if (this.codeView) {
 				await this.codeView.setActive(true);
@@ -374,6 +375,7 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 		} else {
 			this.codeViewContainer.style.visibility = 'hidden';
 			this.codeViewContainer.style.zIndex = '-1';
+			this.codeViewContainer.style.pointerEvents = 'none';
 			this.exmlRootContainer.style.display = 'flex';
 			if (this.codeView) {
 				await this.codeView.setActive(false);

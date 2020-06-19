@@ -226,7 +226,7 @@ export class ExmlView implements IExmlView {
 			this.exmlEditor.editable = true;
 			this.designBackgroundLayer.style.display = 'block';
 		}, 300);
-		this.editLayer.style.pointerEvents = '';
+		this.runtimeLayer.style.zIndex = '-1';
 		this.runtime.getRuntime().then(api => {
 			api.runtimeRootContainer.touchEnabled = false;
 			api.runtimeRootContainer.touchChildren = false;
@@ -246,7 +246,7 @@ export class ExmlView implements IExmlView {
 	private modeToPreview(previewOption?: PreviewConfig): void {
 		clearTimeout(this.timeOut);
 		this.exmlEditor.editable = false;
-		this.editLayer.style.pointerEvents = 'none';
+		this.runtimeLayer.style.zIndex = '';
 		this.designBackgroundLayer.style.display = 'none';
 		this.removeSubView();
 		this.runtime.getRuntime().then(api => {

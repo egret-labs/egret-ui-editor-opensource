@@ -45,13 +45,13 @@ export class P9TTargetAdapter extends EventDispatcher implements IP9TTargetAdapt
 		this._setOpRenderForPoint(P9TPointNameDefine.TACK, new TackRender());
 	}
 
-	private _enable:boolean = true;
-	public get enable():boolean{
+	private _enable: boolean = true;
+	public get enable(): boolean {
 		return this._enable;
 	}
-	public set enable(value:boolean){
+	public set enable(value: boolean) {
 		this._enable = value;
-		if(!value) {
+		if (!value) {
 			this.setCursor('');
 		}
 	}
@@ -508,20 +508,20 @@ export class P9TTargetAdapter extends EventDispatcher implements IP9TTargetAdapt
 		this.tackP.x = minx + (maxx - minx) / 2;
 		this.tackP.y = miny + (maxy - miny) / 2;
 		//绘制线条
-		
-		var p1 = {x:this.ltopP.x,y:this.ltopP.y};
-		var p2 = {x:this.rtopP.x,y:this.rtopP.y};
-		var p3 = {x:this.rbottomP.x,y:this.rbottomP.y};
-		var p4 = {x:this.lbottomP.x,y:this.lbottomP.y};
+
+		var p1 = { x: this.ltopP.x, y: this.ltopP.y };
+		var p2 = { x: this.rtopP.x, y: this.rtopP.y };
+		var p3 = { x: this.rbottomP.x, y: this.rbottomP.y };
+		var p4 = { x: this.lbottomP.x, y: this.lbottomP.y };
 		p1.x = Math.round(p1.x); p1.y = Math.round(p1.y);
 		p2.x = Math.round(p2.x); p2.y = Math.round(p2.y);
 		p3.x = Math.round(p3.x); p3.y = Math.round(p3.y);
 		p4.x = Math.round(p4.x); p4.y = Math.round(p4.y);
 
 		var points = [];
-		points.push(p1,p2,p3,p4);
-		
-		var outerPoints = expandPolygon(points,-0.5);
+		points.push(p1, p2, p3, p4);
+
+		var outerPoints = expandPolygon(points, -0.5);
 		var pointsStr: string = '';
 		pointsStr += outerPoints[0].x + ',' + outerPoints[0].y + ' ';
 		pointsStr += outerPoints[1].x + ',' + outerPoints[1].y + ' ';
@@ -553,147 +553,157 @@ export class P9TTargetAdapter extends EventDispatcher implements IP9TTargetAdapt
 	private oldStageY: number;
 	private shiftKey: boolean = false;
 	private mouseHandle(e: MouseEvent): void {
-		if(!this.enable){
+		if (!this.enable) {
 			return;
 		}
 		switch (e.type) {
 			case 'mousedown':
-				if (e.button === 0) {
-					this.currentOperateItem = this.getOneOperateItemWidthPoint(e.clientX, e.clientY);
-					if (this.currentOperateItem && this.p9transformer.readyToTransform()) {
-						this.operateMode = this.getOperateMode(this.currentOperateItem, e.clientX, e.clientY);
-						var key: string;
-						switch (this.currentOperateItem) {
-							case this.topP: key = P9TTargetAdapterSyncOperateDefine.TOP; break;
-							case this.leftP: key = P9TTargetAdapterSyncOperateDefine.LEFT; break;
-							case this.rightP: key = P9TTargetAdapterSyncOperateDefine.RIGHT; break;
-							case this.bottomP: key = P9TTargetAdapterSyncOperateDefine.BOTTOM; break;
-							case this.ltopP: key = P9TTargetAdapterSyncOperateDefine.LEFTTOP; break;
-							case this.lbottomP: key = P9TTargetAdapterSyncOperateDefine.LEFTBOTTOM; break;
-							case this.rtopP: key = P9TTargetAdapterSyncOperateDefine.RIGHTTOP; break;
-							case this.rbottomP: key = P9TTargetAdapterSyncOperateDefine.RIGHTBOTTOM; break;
-							case this.moveP:
-							case this.tackP: key = P9TTargetAdapterSyncOperateDefine.MOVE; break;
-							case this.anchorP: key = P9TTargetAdapterSyncOperateDefine.ANCHOR; break;
-						}
-						if (this.operateMode === 'rotation') {
-							key = P9TTargetAdapterSyncOperateDefine.ROTATION;
-						}
-						this.currentOperateKey = key;
+				{
+					if (e.button === 0) {
+						this.currentOperateItem = this.getOneOperateItemWidthPoint(e.clientX, e.clientY);
+						if (this.currentOperateItem && this.p9transformer.readyToTransform()) {
+							this.operateMode = this.getOperateMode(this.currentOperateItem, e.clientX, e.clientY);
+							var key: string;
+							switch (this.currentOperateItem) {
+								case this.topP: key = P9TTargetAdapterSyncOperateDefine.TOP; break;
+								case this.leftP: key = P9TTargetAdapterSyncOperateDefine.LEFT; break;
+								case this.rightP: key = P9TTargetAdapterSyncOperateDefine.RIGHT; break;
+								case this.bottomP: key = P9TTargetAdapterSyncOperateDefine.BOTTOM; break;
+								case this.ltopP: key = P9TTargetAdapterSyncOperateDefine.LEFTTOP; break;
+								case this.lbottomP: key = P9TTargetAdapterSyncOperateDefine.LEFTBOTTOM; break;
+								case this.rtopP: key = P9TTargetAdapterSyncOperateDefine.RIGHTTOP; break;
+								case this.rbottomP: key = P9TTargetAdapterSyncOperateDefine.RIGHTBOTTOM; break;
+								case this.moveP:
+								case this.tackP: key = P9TTargetAdapterSyncOperateDefine.MOVE; break;
+								case this.anchorP: key = P9TTargetAdapterSyncOperateDefine.ANCHOR; break;
+							}
+							if (this.operateMode === 'rotation') {
+								key = P9TTargetAdapterSyncOperateDefine.ROTATION;
+							}
+							this.currentOperateKey = key;
 
-						this.oldStageX = e.clientX;
-						this.oldStageY = e.clientY;
-						this.shiftKey = e.shiftKey;
-						this.attachWindowMouseEvent();
-						this.onTransformBegin();
+							this.oldStageX = e.clientX;
+							this.oldStageY = e.clientY;
+							this.shiftKey = e.shiftKey;
+							this.attachWindowMouseEvent();
+							this.onTransformBegin();
 
-						if (this.currentOperateKey) {
-							P9TTargetAdapterEventContext.dispatchEvent(new P9TTargetAdapterEvent(
-								P9TTargetAdapterEvent.BEGINTRANSFORM,
-								this,
-								{
-									key: this.currentOperateKey,
-									shiftKey: this.shiftKey,
-									render: this.currentOperateItem,
-									mouseEvent: e
-								}
-							));
-						}
-
-					}
-				}
-
-				break;
-			case 'mousemove':
-				switch (this.operateMode) {
-					case 'simple':
-						var m: Matrix = this.getStageToParentMatrix();
-						//在执行变换过程中某些特殊情况导致目标对象被移除，这里做一下判断，如果取不到矩阵直接退出此次变换周期。
-						if (!m) {
-							this.detachWindowMouseEvent();
-							this.onTransformEnd();
 							if (this.currentOperateKey) {
 								P9TTargetAdapterEventContext.dispatchEvent(new P9TTargetAdapterEvent(
-									P9TTargetAdapterEvent.ENDTRANSFORM,
+									P9TTargetAdapterEvent.BEGINTRANSFORM,
 									this,
 									{
 										key: this.currentOperateKey,
+										shiftKey: this.shiftKey,
+										render: this.currentOperateItem,
 										mouseEvent: e
-									}));
+									}
+								));
 							}
-							return;
-						}
-						m = m.clone();
-						m.invert();
-						var oldPT: Point = new Point(this.oldStageX, this.oldStageY);
-						var newPT: Point = new Point(e.clientX, e.clientY);
-						if (this.currentOperateKey) {
-							P9TTargetAdapterEventContext.dispatchEvent(new P9TTargetAdapterEvent(
-								P9TTargetAdapterEvent.BEGINUPDATETRANSFORM,
-								this,
-								{
-									key: this.currentOperateKey,
-									mouseEvent: e
-								}));
-						}
-						if (this.makeStagePoint) {
-							newPT = this.makeStagePoint(newPT);
-						}
-						var restrictP = this.restrictStagePoint(oldPT, newPT);
-						oldPT = m.transformPoint(oldPT.x, oldPT.y);
-						newPT = m.transformPoint(restrictP.x, restrictP.y);
-						//
-						this.transformNormal(newPT.x - oldPT.x, newPT.y - oldPT.y, this.shiftKey);
-						this.onTransformUpdate();
 
-						if (this.currentOperateKey) {
-							P9TTargetAdapterEventContext.dispatchEvent(new P9TTargetAdapterEvent(
-								P9TTargetAdapterEvent.UPDATETRANSFORM,
-								this,
-								{
-									key: this.currentOperateKey,
-									oldStageX: this.oldStageX, oldStageY: this.oldStageY,
-									newStageX: restrictP.x, newStageY: restrictP.y,
-									mouseEvent: e
-								}));
 						}
-						break;
-					case 'rotation':
-						var A: Point = MatrixUtil.globalToLocal(this.anchorP.root, new Point(this.oldStageX, this.oldStageY));
-						var B: Point = MatrixUtil.globalToLocal(this.anchorP.root, new Point(e.clientX, e.clientY));
-						var rotationNum: number = RadiusUtil.calculateIncludedRadius(A, B);
-						this._transformer.transformRotation(-rotationNum, this.shiftKey);
-						this.onTransformUpdate();
+					}
+				}
+				break;
+			case 'mousemove':
+				{
+					// https://github.com/egret-labs/egret-ui-editor-opensource/issues/79
+					// 当某些情况比如右键后再点击左键，虽然鼠标位置没有变化但会触发mousemove事件, 示例：http://jsfiddle.net/9onhpgt6/6/
+					// 当移动距离为1时不处理
+					if (Math.abs(e.clientX - this.oldStageX) > 1 ||
+						Math.abs(e.clientY - this.oldStageY) > 1) {
+						switch (this.operateMode) {
+							case 'simple':
+								var m: Matrix = this.getStageToParentMatrix();
+								//在执行变换过程中某些特殊情况导致目标对象被移除，这里做一下判断，如果取不到矩阵直接退出此次变换周期。
+								if (!m) {
+									this.detachWindowMouseEvent();
+									this.onTransformEnd();
+									if (this.currentOperateKey) {
+										P9TTargetAdapterEventContext.dispatchEvent(new P9TTargetAdapterEvent(
+											P9TTargetAdapterEvent.ENDTRANSFORM,
+											this,
+											{
+												key: this.currentOperateKey,
+												mouseEvent: e
+											}));
+									}
+									return;
+								}
+								m = m.clone();
+								m.invert();
+								var oldPT: Point = new Point(this.oldStageX, this.oldStageY);
+								var newPT: Point = new Point(e.clientX, e.clientY);
+								if (this.currentOperateKey) {
+									P9TTargetAdapterEventContext.dispatchEvent(new P9TTargetAdapterEvent(
+										P9TTargetAdapterEvent.BEGINUPDATETRANSFORM,
+										this,
+										{
+											key: this.currentOperateKey,
+											mouseEvent: e
+										}));
+								}
+								if (this.makeStagePoint) {
+									newPT = this.makeStagePoint(newPT);
+								}
+								var restrictP = this.restrictStagePoint(oldPT, newPT);
+								oldPT = m.transformPoint(oldPT.x, oldPT.y);
+								newPT = m.transformPoint(restrictP.x, restrictP.y);
+								//
+								this.transformNormal(newPT.x - oldPT.x, newPT.y - oldPT.y, this.shiftKey);
+								this.onTransformUpdate();
 
-						if (this.currentOperateKey) {
-							P9TTargetAdapterEventContext.dispatchEvent(new P9TTargetAdapterEvent(
-								P9TTargetAdapterEvent.UPDATETRANSFORM,
-								this,
-								{
-									key: this.currentOperateKey,
-									vrotation: -rotationNum,
-									restrict: this.shiftKey,
-									mouseEvent: e
-								}));
+								if (this.currentOperateKey) {
+									P9TTargetAdapterEventContext.dispatchEvent(new P9TTargetAdapterEvent(
+										P9TTargetAdapterEvent.UPDATETRANSFORM,
+										this,
+										{
+											key: this.currentOperateKey,
+											oldStageX: this.oldStageX, oldStageY: this.oldStageY,
+											newStageX: restrictP.x, newStageY: restrictP.y,
+											mouseEvent: e
+										}));
+								}
+								break;
+							case 'rotation':
+								var A: Point = MatrixUtil.globalToLocal(this.anchorP.root, new Point(this.oldStageX, this.oldStageY));
+								var B: Point = MatrixUtil.globalToLocal(this.anchorP.root, new Point(e.clientX, e.clientY));
+								var rotationNum: number = RadiusUtil.calculateIncludedRadius(A, B);
+								this._transformer.transformRotation(-rotationNum, this.shiftKey);
+								this.onTransformUpdate();
+
+								if (this.currentOperateKey) {
+									P9TTargetAdapterEventContext.dispatchEvent(new P9TTargetAdapterEvent(
+										P9TTargetAdapterEvent.UPDATETRANSFORM,
+										this,
+										{
+											key: this.currentOperateKey,
+											vrotation: -rotationNum,
+											restrict: this.shiftKey,
+											mouseEvent: e
+										}));
+								}
+
+								break;
 						}
-
-						break;
+					}
 				}
 				break;
 			case 'mouseup':
-				this.detachWindowMouseEvent();
-				this.onTransformEnd();
+				{
+					this.detachWindowMouseEvent();
+					this.onTransformEnd();
 
-				if (this.currentOperateKey) {
-					P9TTargetAdapterEventContext.dispatchEvent(new P9TTargetAdapterEvent(
-						P9TTargetAdapterEvent.ENDTRANSFORM,
-						this,
-						{
-							key: this.currentOperateKey,
-							mouseEvent: e
-						}));
+					if (this.currentOperateKey) {
+						P9TTargetAdapterEventContext.dispatchEvent(new P9TTargetAdapterEvent(
+							P9TTargetAdapterEvent.ENDTRANSFORM,
+							this,
+							{
+								key: this.currentOperateKey,
+								mouseEvent: e
+							}));
+					}
 				}
-
 				break;
 		}
 	}
@@ -920,9 +930,9 @@ export class P9TTargetAdapter extends EventDispatcher implements IP9TTargetAdapt
 		P9TTargetAdapterEventContext.dispatchEvent(new P9TTargetAdapterEvent(
 			P9TTargetAdapterEvent.ENDTRANSFORM,
 			this, {
-				key: P9TTargetAdapterSyncOperateDefine.MOVE,
-				tag: 'keyboard'
-			}));
+			key: P9TTargetAdapterSyncOperateDefine.MOVE,
+			tag: 'keyboard'
+		}));
 	}
 	/**根据一个鼠标事件启动一个变换*/
 	public beginTransformWithMouseEvent(e: MouseEvent): void {
@@ -939,9 +949,9 @@ export class P9TTargetAdapter extends EventDispatcher implements IP9TTargetAdapt
 			P9TTargetAdapterEventContext.dispatchEvent(new P9TTargetAdapterEvent(
 				P9TTargetAdapterEvent.ENDTRANSFORM,
 				this, {
-					key: P9TTargetAdapterSyncOperateDefine.MOVE,
-					tag: tag
-				}));
+				key: P9TTargetAdapterSyncOperateDefine.MOVE,
+				tag: tag
+			}));
 		}
 	}
 	/////////////////////////////////////////////////////////////////////////////
@@ -965,7 +975,7 @@ export class P9TTargetAdapter extends EventDispatcher implements IP9TTargetAdapt
 		document.removeEventListener('mouseup', this.cursHandle);
 	}
 	private cursHandle(e: MouseEvent): void {
-		if(!this.enable){
+		if (!this.enable) {
 			return;
 		}
 		if (!this._renderPoint) {

@@ -184,7 +184,7 @@ export class OperateLayer {
 		this.p9tTargetAdapterList.forEach(adapter => {
 			adapter.enable = value;
 		});
-		if(!value){
+		if (!value) {
 			window.removeEventListener("mousemove", this.mouseEventHandle, true);
 			window.removeEventListener("mouseup", this.mouseEventHandle);
 			this.stopRangeSelect();
@@ -201,57 +201,59 @@ export class OperateLayer {
 			return;
 		}
 
-		if (e.button != 0) {
+		if (e.button !== 0) {
 			return;
 		}
 		switch (e.type) {
 			case 'mousedown':
-				this.stopRangeSelect();
-				this.multiSelectTag = false;
-				if (e.ctrlKey || e.metaKey || e.shiftKey) {
-					this.multiSelectTag = true;
-				}
-				this.rangeSelectMode = false;
-				this.cacheStartP = new Point(e.clientX, e.clientY);
-				if (!this.needDoSelect(e)) {
-					return;
-				}
-				window.addEventListener("mouseup", this.mouseEventHandle);
-				if (this.needRangeSelect(e)) {
-					window.addEventListener("mousemove", this.mouseEventHandle, true);
-				}
-				if (this.rangeSelectMode) {
-
-
+				{
+					this.stopRangeSelect();
+					this.multiSelectTag = false;
+					if (e.ctrlKey || e.metaKey || e.shiftKey) {
+						this.multiSelectTag = true;
+					}
+					this.rangeSelectMode = false;
+					this.cacheStartP = new Point(e.clientX, e.clientY);
+					if (!this.needDoSelect(e)) {
+						return;
+					}
+					window.addEventListener("mouseup", this.mouseEventHandle);
+					if (this.needRangeSelect(e)) {
+						window.addEventListener("mousemove", this.mouseEventHandle, true);
+					}
 				}
 				break;
 			case 'mousemove':
-				//如果进行了区选操作则终止事件的传递，以免下面的变换框响应鼠标事件
-				e.stopImmediatePropagation();
-				e.preventDefault();
-				if (!this.rangeSelectMode) {
-					if (Math.abs(this.cacheStartP.x - e.clientX) > 2 || Math.abs(this.cacheStartP.y - e.clientY) > 2) {
-						this.rangeSelectMode = true;
-						this.beginRangeSelect(e);
+				{
+					//如果进行了区选操作则终止事件的传递，以免下面的变换框响应鼠标事件
+					e.stopImmediatePropagation();
+					e.preventDefault();
+					if (!this.rangeSelectMode) {
+						if (Math.abs(this.cacheStartP.x - e.clientX) > 2 || Math.abs(this.cacheStartP.y - e.clientY) > 2) {
+							this.rangeSelectMode = true;
+							this.beginRangeSelect(e);
+							this.doRangeSelect(e);
+							this.drawRange();
+						}
+					}
+					else {
 						this.doRangeSelect(e);
 						this.drawRange();
 					}
 				}
-				else {
-					this.doRangeSelect(e);
-					this.drawRange();
-				}
 				break;
 			case 'mouseup':
-				window.removeEventListener("mousemove", this.mouseEventHandle, true);
-				window.removeEventListener("mouseup", this.mouseEventHandle);
-				if (this.rangeSelectMode) {
-					this.stopRangeSelect();
-				}
-				else {
-					//没有产生区域选择则会产生两种行为，原地点击和拖动，原地点击需要重新选择目标
-					if (Math.abs(this.cacheStartP.x - e.clientX) < 2 && Math.abs(this.cacheStartP.y - e.clientY) < 2) {
-						this.beginPointSelect(e);
+				{
+					window.removeEventListener("mousemove", this.mouseEventHandle, true);
+					window.removeEventListener("mouseup", this.mouseEventHandle);
+					if (this.rangeSelectMode) {
+						this.stopRangeSelect();
+					}
+					else {
+						//没有产生区域选择则会产生两种行为，原地点击和拖动，原地点击需要重新选择目标
+						if (Math.abs(this.cacheStartP.x - e.clientX) < 2 && Math.abs(this.cacheStartP.y - e.clientY) < 2) {
+							this.beginPointSelect(e);
+						}
 					}
 				}
 				break;

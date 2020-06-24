@@ -292,12 +292,12 @@ export class FileController extends DefaultController implements IController, ID
 			this.addContextMenuItemGeneral({ label: localize('fileController.initContextMenuGeneral.openInResourceManager', 'Reveal in System Explorer'), id: ContextMenuId.REVEAL_IN_OS });
 		}
 		this.addContextMenuSeparator();
-		this.addContextMenuItemGeneral({ label: localize('fileController.initContextMenuGeneral.copy', 'Copy'), id: ContextMenuId.COPY });
-		this.addContextMenuItemGeneral({ label: localize('fileController.initContextMenuGeneral.paste', 'Paste'), id: ContextMenuId.PASTE });
+		this.addContextMenuItemGeneral({ label: localize('fileController.initContextMenuGeneral.copy', 'Copy'), id: ContextMenuId.COPY, accelerator: 'CmdOrCtrl+C' });
+		this.addContextMenuItemGeneral({ label: localize('fileController.initContextMenuGeneral.paste', 'Paste'), id: ContextMenuId.PASTE, accelerator: 'CmdOrCtrl+V' });
 		this.addContextMenuItemGeneral({ label: localize('fileController.initContextMenuGeneral.copyPath', 'Copy Path'), id: ContextMenuId.COPY_PATH });
 		this.addContextMenuSeparator();
 		this.addContextMenuItemGeneral({ label: localize('fileController.initContextMenuGeneral.rename', 'Rename'), id: ContextMenuId.RENAME });
-		this.addContextMenuItemGeneral({ label: localize('system.delete', 'Delete'), id: ContextMenuId.DELETE });
+		this.addContextMenuItemGeneral({ label: localize('system.delete', 'Delete'), id: ContextMenuId.DELETE, accelerator: 'Delete' });
 		this.addContextMenuSeparator();
 		this.addContextMenuItemGeneral({ label: localize('fileController.initContextMenuGeneral.settings', 'EUI Project Setting'), id: ContextMenuId.SETTINGS });
 	}

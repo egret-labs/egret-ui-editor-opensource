@@ -805,13 +805,13 @@ export class ExmlView implements IExmlView {
 	 * 添加一般的上下文菜单
 	 */
 	private initContextMenuGeneral(): void {
-		this.addContextMenuItemGeneral({ label: localize('exmlView.initContextMenuGeneral.copy', 'Copy'), id: SystemCommands.COPY });
-		this.addContextMenuItemGeneral({ label: localize('exmlView.initContextMenuGeneral.cut', 'Cut'), id: SystemCommands.CUT });
-		this.addContextMenuItemGeneral({ label: localize('exmlView.initContextMenuGeneral.paste', 'Paste'), id: SystemCommands.PASTE });
-		this.addContextMenuItemGeneral({ label: localize('system.delete', 'Delete'), id: SystemCommands.DELETE });
+		this.addContextMenuItemGeneral({ label: localize('exmlView.initContextMenuGeneral.copy', 'Copy'), id: SystemCommands.COPY, accelerator: 'CmdOrCtrl+C' });
+		this.addContextMenuItemGeneral({ label: localize('exmlView.initContextMenuGeneral.cut', 'Cut'), id: SystemCommands.CUT, accelerator: 'CmdOrCtrl+X' });
+		this.addContextMenuItemGeneral({ label: localize('exmlView.initContextMenuGeneral.paste', 'Paste'), id: SystemCommands.PASTE, accelerator: 'CmdOrCtrl+V' });
+		this.addContextMenuItemGeneral({ label: localize('system.delete', 'Delete'), id: SystemCommands.DELETE, accelerator: 'Delete' });
 		this.addContextMenuSeparator();
-		this.addContextMenuItemGeneral({ label: localize('exmlView.initContextMenuGeneral.group', 'Group'), id: EuiCommands.GROUP });
-		this.addContextMenuItemGeneral({ label: localize('exmlView.initContextMenuGeneral.upgroup', 'Ungroup'), id: EuiCommands.UNGROUP });
+		this.addContextMenuItemGeneral({ label: localize('exmlView.initContextMenuGeneral.group', 'Group'), id: EuiCommands.GROUP, accelerator: 'CmdOrCtrl+G' });
+		this.addContextMenuItemGeneral({ label: localize('exmlView.initContextMenuGeneral.upgroup', 'Ungroup'), id: EuiCommands.UNGROUP, accelerator: 'CmdOrCtrl+U' });
 		this.addContextMenuSeparator();
 		this.addContextMenuItemGeneral({ label: localize('exmlView.initContextMenuGeneral.copyProperty', 'Copy Property'), id: EuiCommands.COPY_PROPERTY });
 		this.addContextMenuItemGeneral({ label: localize('exmlView.initContextMenuGeneral.pastePos', 'Paste Pos'), id: EuiCommands.PASTE_POS });

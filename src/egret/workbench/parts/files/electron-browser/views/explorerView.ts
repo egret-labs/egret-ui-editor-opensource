@@ -21,6 +21,8 @@ import { localize } from 'egret/base/localization/nls';
 import { voluationToStyle } from 'egret/base/common/dom';
 import { IWorkbenchEditorService } from 'egret/workbench/services/editor/common/ediors';
 import { IWorkspaceService } from 'egret/platform/workspace/common/workspace';
+import { SystemCommands } from 'egret/platform/operations/commands/systemCommands';
+import { FileRootCommands } from '../../commands/fileRootCommands';
 
 
 /**
@@ -86,6 +88,9 @@ export class ExplorerView extends PanelContentDom implements IModelRequirePart, 
 	 * @param command 要运行的命令
 	 */
 	public executeCommand<T>(command: string, ...args): Promise<any> {
+		if(command === SystemCommands.DELETE) {
+			return this.operationService.executeCommand(FileRootCommands.DELETE_FILE);
+		}
 		return this.focusablePartCommandHelper.executeOperation(command, args);
 	}
 
@@ -94,6 +99,9 @@ export class ExplorerView extends PanelContentDom implements IModelRequirePart, 
 	 * @param command 需要判断的命令
 	 */
 	public hasCommand(command: string): boolean {
+		if(command === SystemCommands.DELETE) {
+			return true;
+		}
 		return this.focusablePartCommandHelper.hasCommand(command);
 	}
 

@@ -29,7 +29,7 @@ enum PropertyTypes {
 export class SizePosPart extends BasePart {
 
 	private currentNodes: INode[] = null;
-	private skinNodes:INode[] = null;
+	private skinNodes: INode[] = null;
 	/**
 	 * 关联的属性发生了改变
 	 * @param nodes 
@@ -42,14 +42,14 @@ export class SizePosPart extends BasePart {
 		}
 
 		const targetNodes: INode[] = [];
-		const targetSkinNodes:INode[] = [];
+		const targetSkinNodes: INode[] = [];
 		for (let i = 0; i < nodes.length; i++) {
 			const node = nodes[i];
 			const className = this.model.getExmlConfig().getClassNameById(node.getName(), node.getNs());
 			//Skin的getInstance()会被解析成Group，但是Skin不能设置布局
 			if (className !== 'eui.Skin') {
 				targetNodes.push(node);
-			}else{
+			} else {
 				targetSkinNodes.push(node);
 			}
 		}
@@ -61,7 +61,7 @@ export class SizePosPart extends BasePart {
 		this.skinNodes = targetSkinNodes;
 
 
-		if(targetNodes.length > 0){
+		if (targetNodes.length > 0) {
 			let keyValue: {
 				[type: string]: {
 					user: UserValue;
@@ -94,7 +94,7 @@ export class SizePosPart extends BasePart {
 			this.scaleGroup.style.display = null;
 			this.compMap[PropertyTypes.HEIGHT]['supportPercent'] = true;
 			this.compMap[PropertyTypes.WIDTH]['supportPercent'] = true;
-		}else if(targetSkinNodes.length > 0){
+		} else if (targetSkinNodes.length > 0) {
 			this.compMap[PropertyTypes.HEIGHT]['supportPercent'] = false;
 			this.compMap[PropertyTypes.WIDTH]['supportPercent'] = false;
 			let keyValue: {
@@ -202,27 +202,44 @@ export class SizePosPart extends BasePart {
 		attribute.labelWidth = 60;
 		const input = new NumberInput(attribute);
 		input.style.maxWidth = '50px';
-		input.regulateStep = 0.1;
+		input.regulateStep = this.getStep(type);
 		input.supportPercent = supportPercent;
 		this.toDisposes.push(input.onValueChanging(e => {
-			let value:string|number = null;
-			if(supportPercent){
+			let value: string | number = null;
+			if (supportPercent) {
 				value = e;
-			}else if(e){
-				value =  Number.parseFloat(e);
+			} else if (e) {
+				value = Number.parseFloat(e);
 			}
 			this.numberChanging_handler(type, value, supportPercent);
 		}));
 		this.toDisposes.push(input.onValueChanged(e => {
-			let value:string|number = null;
-			if(supportPercent){
+			let value: string | number = null;
+			if (supportPercent) {
 				value = e;
-			}else if(e){
-				value =  Number.parseFloat(e);
+			} else if (e) {
+				value = Number.parseFloat(e);
 			}
 			this.numberhanged_handler(type, value, supportPercent);
 		}));
 		this.compMap[type] = input;
+	}
+
+	private getStep(property: PropertyTypes): number {
+		switch (property) {
+			case PropertyTypes.X:
+			case PropertyTypes.Y:
+			case PropertyTypes.HEIGHT:
+			case PropertyTypes.WIDTH:
+			case PropertyTypes.ANCHOR_OFFSET_X:
+			case PropertyTypes.ANCHOR_OFFSET_Y:
+				return 1;
+			case PropertyTypes.SCALE_X:
+			case PropertyTypes.SCALE_Y:
+				return 0.1;
+			default:
+				return 0.1;
+		}
 	}
 
 	private initAttributeStyle(attribute: AttributeItemGroup): void {
@@ -234,33 +251,33 @@ export class SizePosPart extends BasePart {
 		if (!this.currentNodes) {
 			return;
 		}
-		if(supportPercent){
+		if (supportPercent) {
 			let prop: PropertyTypes | string = type;
-			if(type == PropertyTypes.WIDTH && judgePercent(value)){
+			if (type == PropertyTypes.WIDTH && judgePercent(value)) {
 				prop = 'percentWidth';
-			}else if(type == PropertyTypes.HEIGHT && judgePercent(value)){
+			} else if (type == PropertyTypes.HEIGHT && judgePercent(value)) {
 				prop = 'percentHeight';
 			}
 			value = Number.parseFloat(value as string);
 			for (let i = 0; i < this.currentNodes.length; i++) {
 				const node = this.currentNodes[i];
-				node.setInstanceValue(prop,value);
+				node.setInstanceValue(prop, value);
 			}
 
 			for (let i = 0; i < this.skinNodes.length; i++) {
 				const node = this.skinNodes[i];
-				node.setInstanceValue(prop,value);
+				node.setInstanceValue(prop, value);
 			}
 
-			
-		}else{
+
+		} else {
 			for (let i = 0; i < this.currentNodes.length; i++) {
 				const node = this.currentNodes[i];
-				node.setInstanceValue(type,value);
+				node.setInstanceValue(type, value);
 			}
 			for (let i = 0; i < this.skinNodes.length; i++) {
 				const node = this.skinNodes[i];
-				node.setInstanceValue(type,value);
+				node.setInstanceValue(type, value);
 			}
 		}
 	}

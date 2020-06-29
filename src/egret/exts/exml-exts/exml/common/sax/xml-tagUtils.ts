@@ -213,12 +213,14 @@ export function parse(xmlString, throwError = true, messageWithPos = true): sax.
 
 	saxparser.ontext = function (text) {
 		if (!object || !text) { return; }
-		object.text = (object.text || '') + text;
+		// 移除空行
+		const currentText = text.trim();
+		object.text = (object.text || '') + currentText;
 
 		const textNode = {
 			start: saxparser.startTextPosition,
-			end: saxparser.startTextPosition + text.length,
-			name: text,
+			end: saxparser.startTextPosition + currentText.length,
+			name: currentText,
 			nodeType: sax.Type.Text,
 		};
 		object.textNodes = object.textNodes || [];

@@ -738,8 +738,6 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 			case 'mousedown':
 				if (e.button == 0) {
 					this.mouseDownHandler(e);//left
-				} else if (e.button == 1) {
-					this.middleMouseDownHandler(e);//middle
 				}
 				break;
 			case 'mousemove':
@@ -748,8 +746,6 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 			case 'mouseup':
 				if (e.button == 0) {
 					this.mouseUpHandler(e);//left
-				} else if (e.button == 1) {
-					this.middleMouseUpHandler(e);//middle
 				}
 				this.detachMouseEvent();
 				break;
@@ -807,9 +803,6 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 			this.startMove(event);
 		}
 	}
-	private middleMouseDownHandler(event: MouseEvent): void {
-		this.startMove(event);
-	}
 	private moving: boolean = false;
 	private startMove(event: MouseEvent): void {
 		this.attachMouseEvent();
@@ -836,9 +829,6 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 	private mouseUpHandler(event: MouseEvent): void {
 		this.stopMove(event);
 
-	}
-	private middleMouseUpHandler(event: MouseEvent): void {
-		this.stopMove(event);
 	}
 	private stopMove(event: MouseEvent): void {
 		event.preventDefault();

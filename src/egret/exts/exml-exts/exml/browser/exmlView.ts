@@ -636,12 +636,12 @@ export class ExmlView implements IExmlView {
 
 	private updateDesignBackgroundLayer(): void {
 		if (this.exmlEditor.focusRectLayer.egretContentHost) {
-			let m: Matrix = this.exmlEditor.focusRectLayer.egretContentHost.getTarget().matrix;
+			const rootTarget = this.exmlEditor.focusRectLayer.egretContentHost.getTarget();
+			this.designBackgroundLayer.style.width = rootTarget.width + 'px';
+			this.designBackgroundLayer.style.height = rootTarget.height + 'px';
+			let m: Matrix = rootTarget.matrix;
 			this.designBackgroundLayer.style.transform = 'matrix(' + m.a + ',' + m.b + ',' + m.c + ',' + m.d + ',' + m.tx + ',' + m.ty + ')';
 		}
-		const rootFocusRect = this.exmlEditor.focusRectLayer.getRootFocusRect();
-		this.designBackgroundLayer.style.width = rootFocusRect.width + 'px';
-		this.designBackgroundLayer.style.height = rootFocusRect.height + 'px';
 	}
 
 	private applyDesignConfig(): void {
@@ -710,24 +710,25 @@ export class ExmlView implements IExmlView {
 	}
 	protected detachExmlEditor(): void {
 		this.exmlEditor.dispose();
+		this.container.parentElement.removeEventListener('wheel', this.containerEventHandler);
+		this.container.parentElement.removeEventListener('mousedown', this.containerEventHandler);
 		this.disableExmlEditorInteractive();
 	}
 	private disableExmlEditorInteractive(): void {
-		this.container.parentElement.removeEventListener('wheel', this.containerEventHandler);
-		this.container.parentElement.removeEventListener('mousedown', this.containerEventHandler);
 		this.container.removeEventListener('dblclick', this.containerEventHandler);
 		this.exmlEditor.removeEventListener('onContextMenu', this.onContextMenu, this);
 	}
 	protected attachExmlEditor(model: IExmlModel, helper: ExmlModelHelper, runtimeApi: IRuntimeAPI): void {
 		this.exmlEditor.setup(model, helper, runtimeApi);
 		if (this.getEditMode() == EditMode.DESIGN) {
+			// 将wheel和mousedown事件从enableExmlEditorInteractive方法中提出来，以确保预览模式下可以移动和缩放
+			this.container.parentElement.addEventListener('wheel', this.containerEventHandler);
+			this.container.parentElement.addEventListener('mousedown', this.containerEventHandler);
 			this.enableExmlEditorInteractive();
 		}
 	}
 	private enableExmlEditorInteractive(): void {
 		this.disableExmlEditorInteractive();
-		this.container.parentElement.addEventListener('wheel', this.containerEventHandler);
-		this.container.parentElement.addEventListener('mousedown', this.containerEventHandler);
 		this.container.addEventListener('dblclick', this.containerEventHandler);
 		this.exmlEditor.addEventListener('onContextMenu', this.onContextMenu, this);
 	}

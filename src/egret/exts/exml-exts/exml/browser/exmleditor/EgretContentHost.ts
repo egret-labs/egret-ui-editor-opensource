@@ -54,7 +54,7 @@ export class EgretContentHost extends EventDispatcher {
 		this.propertyCache.scaleX = scaleX;
 		this.propertyCache.scaleY = scaleY;
 		if (scaleX == 0 || scaleY == 0) {
-			//console.log("敲你妈")
+			//console.log("")
 		}
 
 		TweenLite.killTweensOf(this.target);

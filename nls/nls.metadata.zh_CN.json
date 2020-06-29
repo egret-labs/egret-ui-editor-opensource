@@ -1043,6 +1043,10 @@
 		"s": "Please wait...",
 		"t": "请稍后..."
 	},
+	"materialView.contextMenu.copyResName": {
+		"s": "Copy Resource Name",
+		"t": "复制资源名"
+	},
 	"menus.getPreferencesMenu.euiConfigure": {
 		"s": "EUI Project Setting(&&P)",
 		"t": "EUI 项目设置(&&P)"

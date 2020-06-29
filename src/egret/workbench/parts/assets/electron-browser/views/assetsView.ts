@@ -119,8 +119,8 @@ export class AssetsView extends PanelContentDom implements IModelRequirePart, IF
 				psn = {
 					'background-size': null,
 					'background-position': `-${svo.sheetData.x}px -${svo.sheetData.y}px`,
-					'width': `${svo.sheetData.sourceW}px`,
-					'height': `${svo.sheetData.sourceH}px`,
+					'width': `${svo.sheetData.w}px`,
+					'height': `${svo.sheetData.h}px`,
 					'flex-grow': '0',
 					'flex-shrink': '0',
 				};
@@ -138,6 +138,7 @@ export class AssetsView extends PanelContentDom implements IModelRequirePart, IF
 				};
 			}
 			ibg = resvo.locolUrl.replace('.json', '.png');
+			ibg = ibg.replace('.sheet', '.png');
 		} else if (resvo.type === ResType.TYPE_IMAGE) {
 			ibg = resvo.locolUrl;
 			psn = {

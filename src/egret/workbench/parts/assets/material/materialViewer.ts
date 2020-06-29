@@ -18,6 +18,8 @@ import { IClipboardService } from 'egret/platform/clipboard/common/clipboardServ
 import { IDisposable } from 'vs/base/common/lifecycle';
 import { dispose } from 'egret/base/common/lifecycle';
 import { matchesFuzzy } from 'egret/base/common/filters';
+import { localize } from 'egret/base/localization/nls';
+import { MenuItemConstructorOptions, remote, MenuItem, Menu, clipboard } from 'electron';
 
 /**
  * 资源面板数据源
@@ -278,16 +280,17 @@ export class MaterialRenderer implements IRenderer {
 					const sd = stat['sheetVo'].sheetData as ISheet;
 					templateData.image.style.backgroundPositionX = `-${sd.x}px`;
 					templateData.image.style.backgroundPositionY = `-${sd.y}px`;
-					templateData.image.style.width = `${sd.sourceW}px`;
-					templateData.image.style.height = `${sd.sourceH}px`;
+					templateData.image.style.width = `${sd.w}px`;
+					templateData.image.style.height = `${sd.h}px`;
 					templateData.image.style.position = 'absolute';
-					const scale = Math.min(20 / sd.sourceW, 20 / sd.sourceH, 1);
-					templateData.image.style.transform = `matrix(${scale},0,0,${scale},${(20 - sd.sourceW) / 2},${(20 - sd.sourceH) / 2})`;
+					const scale = Math.min(20 / sd.w, 20 / sd.h, 1);
+					templateData.image.style.transform = `matrix(${scale},0,0,${scale},${(20 - sd.w) / 2},${(20 - sd.h) / 2})`;
 				}
 				else {
 					templateData.image.style.backgroundSize = '20px 20px';
 				}
 				ibg = resvo.locolUrl.replace('.json', '.png');
+				ibg = ibg.replace('.sheet', '.png');
 
 			}
 			else {
@@ -338,17 +341,19 @@ export class MaterialRenderer implements IRenderer {
 	}
 }
 
-
-
+enum ContextMenuId {
+	COPY_RES_NAME = 'copyResName',
+}
 
 /**
  * 处理用户交互
  */
 export class MaterialController extends DefaultController implements IController {
-	private previousSelectionRangeStop: FileStat;
+	private previousSelectionRangeStop: TreeNodeBase;
 
 	constructor(@IWorkbenchEditorService private editorService: IWorkbenchEditorService) {
 		super({ clickBehavior: ClickBehavior.ON_MOUSE_UP, keyboardSupport: true, openMode: OpenMode.SINGLE_CLICK });
+		this.initContextMenuGeneral();
 	}
 
 	/**
@@ -358,7 +363,7 @@ export class MaterialController extends DefaultController implements IController
 	 * @param event 
 	 * @param origin 
 	 */
-	protected onLeftClick(tree: Tree, stat: FileStat | Model, event: IMouseEvent, origin: string = 'mouse'): boolean {
+	protected onLeftClick(tree: Tree, stat: TreeNodeBase | Model, event: IMouseEvent, origin: string = 'mouse'): boolean {
 		const payload = { origin: origin };
 		const isDoubleClick = (origin === 'mouse' && event.detail === 2);
 		// Handle Highlight Mode
@@ -434,12 +439,72 @@ export class MaterialController extends DefaultController implements IController
 	}
 
 	/**
-	 * 打开编辑器
-	 * @param stat 
+	 * 添加一般的上下文菜单
 	 */
-	public openEditor(stat: FileStat): void {
-		if (stat && !stat.isDirectory) {
-			this.editorService.openEditor({ resource: stat.resource });
+	private initContextMenuGeneral(): void {
+		this.addContextMenuItemGeneral({ label: localize('materialView.contextMenu.copyResName', 'Copy Resource Name'), id: ContextMenuId.COPY_RES_NAME });
+	}
+
+	private contextMenuItemsGeneral: { type: 'separator' | 'normal', option: MenuItemConstructorOptions, item: MenuItem }[] = [];
+
+	/**
+	 * 在上下文菜单中添加一个项目
+	 * @param option 
+	 */
+	private addContextMenuItemGeneral(option: MenuItemConstructorOptions): void {
+		option.click = (item, win) => {
+			this.contextMenuGeneralSelected_handler(option.id as ContextMenuId);
+		};
+		const item = new remote.MenuItem(option);
+		this.contextMenuItemsGeneral.push({
+			type: 'normal',
+			option: option,
+			item: item
+		});
+	}
+
+	/**
+	 * 上下文菜单被选择
+	 * @param itemId 
+	 */
+	private contextMenuGeneralSelected_handler(action: ContextMenuId): void {
+		switch (action) {
+			case ContextMenuId.COPY_RES_NAME:
+				this.copyResName();
+				break;
+			default:
+				break;
+		}
+	}
+
+	/**
+	 * 创建上下文菜单
+	 */
+	private createContextMenu(): Menu {
+		const menu = new remote.Menu();
+		for (let i = 0; i < this.contextMenuItemsGeneral.length; i++) {
+			menu.append(this.contextMenuItemsGeneral[i].item);
+		}
+		return menu;
+	}
+
+	private selectedItem: TreeNodeBase = null;
+	private copyResName(): void {
+		// 目前只复制资源名，不复制文件夹名
+		if (this.selectedItem) {
+			if (this.selectedItem instanceof TreeLeafNode) {
+				let leaf: TreeLeafNode = this.selectedItem;
+				if (leaf.resvo.type === ResType.TYPE_SHEET) {
+						clipboard.writeText(leaf.resvo.name + '.' + leaf.label);
+				} else {
+					clipboard.writeText(leaf.resvo.name);
+				}
+			} else if (this.selectedItem instanceof TreeParentNode) {
+				let node: TreeParentNode = this.selectedItem;
+				if (node.type === ResType.TYPE_SHEET) {
+					clipboard.writeText(node.label);
+				}
+			}
 		}
 	}
 
@@ -450,7 +515,26 @@ export class MaterialController extends DefaultController implements IController
 	 * @param stat 
 	 * @param event 
 	 */
-	public onContextMenu(tree: ITree, stat: FileStat | Model, event: ContextMenuEvent): boolean {
+	public onContextMenu(tree: ITree, stat: TreeNodeBase | Model, event: ContextMenuEvent): boolean {
+		if (stat instanceof Model) {
+			return true;
+		}
+		let creat: boolean;
+		if (stat instanceof TreeLeafNode) {
+			creat = true;
+		} else if (stat instanceof TreeParentNode && stat.type === ResType.TYPE_SHEET) {
+			creat = true;
+		}
+		if (creat) {
+			tree.setFocus(stat);
+			this.selectedItem = stat;
+
+			setTimeout(() => {
+				this.createContextMenu().popup({
+					window: remote.getCurrentWindow()
+				});
+			}, 10);
+		}
 		return true;
 	}
 }

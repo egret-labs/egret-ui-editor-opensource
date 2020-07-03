@@ -78,6 +78,7 @@ export class TextInput implements IUIBase, IDisposable {
 		this.keydown_handler = this.keydown_handler.bind(this);
 		this.focus_handler = this.focus_handler.bind(this);
 		this.blur_handler = this.blur_handler.bind(this);
+		this.dorp_handler = this.dorp_handler.bind(this);
 		this.inputElement = document.createElement('input');
 
 		this._onValueChanging = new Emitter<string>();
@@ -175,11 +176,23 @@ export class TextInput implements IUIBase, IDisposable {
 		this.inputElement.addEventListener('keydown', this.keydown_handler);
 		this.inputElement.addEventListener('focus', this.focus_handler);
 		this.inputElement.addEventListener('blur', this.blur_handler);
+		if (this.container) {
+			this.container.addEventListener('drop', this.dorp_handler);
+		}
 	}
 
 	private textChanging_handler(): void {
+		this.processTextChanging(this.text);
+	}
+	private textChanged_handler(): void {
+		this.processTextChanged(this.text);
+	}
+
+	private processTextChanging(text: string): void {
 		if (this.onChangingFilter) {
-			this.text = this.onChangingFilter(this.text);
+			this.text = this.onChangingFilter(text);
+		} else {
+			this.text = text;
 		}
 		this.validate();
 
@@ -188,9 +201,12 @@ export class TextInput implements IUIBase, IDisposable {
 		}
 		this._onValueChanging.fire(this.text);
 	}
-	private textChanged_handler(): void {
+
+	private processTextChanged(text: string): void {
 		if (this.onChangedFilter) {
-			this.text = this.onChangedFilter(this.text);
+			this.text = this.onChangedFilter(text);
+		} else {
+			this.text = text;
 		}
 		this._onValueChanged.fire(this.text);
 	}
@@ -212,6 +228,17 @@ export class TextInput implements IUIBase, IDisposable {
 		this._hideMessage();
 		this.onBlur();
 		this._onFocusChanged.fire(false);
+	}
+
+	private dorp_handler(e: DragEvent): void {
+		let data = e.dataTransfer.getData('text');
+		if (!data) {
+			return;
+		}
+		if (this.text !== data) {
+			this.processTextChanging(data);
+			this.processTextChanged(this.text);
+		}
 	}
 
 	protected onFocus(): void {
@@ -430,6 +457,9 @@ export class TextInput implements IUIBase, IDisposable {
 		this.inputElement.removeEventListener('keydown', this.keydown_handler);
 		this.inputElement.removeEventListener('focus', this.focus_handler);
 		this.inputElement.removeEventListener('blur', this.blur_handler);
+		if (this.container) {
+			this.container.removeEventListener('drop', this.dorp_handler);
+		}
 		this.container = null;
 	}
 }

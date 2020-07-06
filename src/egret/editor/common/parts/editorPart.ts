@@ -15,6 +15,7 @@ import { SystemCommands } from '../../../platform/operations/commands/systemComm
 import { localize } from '../../../base/localization/nls';
 import { IWorkspaceService } from 'egret/platform/workspace/common/workspace';
 import { innerWindowManager } from 'egret/platform/innerwindow/common/innerWindowManager';
+import { EditMode } from 'egret/exts/exml-exts/exml/browser/commons';
 
 const OPEN_EDITORS_STORAGE = 'openEditorsStorageKey';
 
@@ -59,6 +60,11 @@ export class EditorPart implements IEditorPart, IFocusablePart {
 	public executeCommand<T>(command: string, ...args): Promise<any> {
 		const currentEditor = this.getActiveEditor();
 		if (currentEditor) {
+			if('EditMode' in currentEditor){
+				if((currentEditor as IMultiPageEditor).EditMode === EditMode.CODE){
+					return Promise.resolve(void 0);
+				}
+			}
 			return currentEditor.getModel().then(model => {
 				if (command == SystemCommands.REDO) {
 					return model.redo();

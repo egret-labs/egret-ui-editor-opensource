@@ -75,6 +75,7 @@ export interface IMultiPageEditor {
 	 * 同步各个子编辑器的数据
 	 */
 	syncModelData(): Promise<void>;
+	readonly EditMode: string;
 }
 
 /**

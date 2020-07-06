@@ -224,6 +224,10 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 	private _currentMode: EditMode = EditMode.DESIGN;
 	private _model: IExmlFileEditorModel;
 
+	public get EditMode(): string {
+		return this._currentMode;
+	}
+
 	private resolveModelPromise: Promise<IExmlFileEditorModel>;
 	private resolveModelPromiseResolve: (value?: IExmlFileEditorModel | PromiseLike<IExmlFileEditorModel>) => void;
 	/**

@@ -46,7 +46,15 @@ export class CodeEditor extends BaseTextEditor {
 			await this.syncText();
 			this.updateSelectedNodeBySelection();
 		} else {
+			if (this._isActive && this.exmlFileModel && this.textChanged()) {
+				this.editor.executeEdits('edit exml code', [{
+					range: this.editor.getModel().getFullModelRange(),
+					text: this.exmlFileModel.getModel().getText(),
+					forceMoveMarkers: true
+				}]);
+			}
 			this.updateSelectionBySelectedNode();
+			this.editor.focus();
 		}
 	}
 
@@ -60,7 +68,7 @@ export class CodeEditor extends BaseTextEditor {
 	}
 
 	public async syncText(): Promise<void> {
-		if (this.isDirty && this.exmlFileModel) {
+		if (this.textChanged() && this.exmlFileModel) {
 			const model = this.exmlFileModel.getModel();
 			if (model) {
 				await model.insertText(this.getText(), 0, 2147483647, true, true);
@@ -96,7 +104,10 @@ export class CodeEditor extends BaseTextEditor {
 	}
 
 	private textChanged_handler(e: TextChangedEvent): void {
-		if (this.textChanged()) {
+		// 修复 https://github.com/egret-labs/egret-ui-editor-opensource/issues/90
+		// 只在编辑源码时更新，频繁全量更新会占用大量内存
+		// TODO 避免更新整个文件，只更新修改的部分
+		if (this._isActive && this.textChanged()) {
 			this.editor.executeEdits('edit exml code', [{
 				range: this.editor.getModel().getFullModelRange(),
 				text: e.target.getText(),

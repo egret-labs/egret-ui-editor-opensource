@@ -20,7 +20,6 @@ import { RES_EDITOR_ID } from '../common/consts/ResType';
 import { StateChange } from 'egret/editor/core/models';
 import { IOperationBrowserService } from 'egret/platform/operations/common/operations-browser';
 import { FileRootCommands } from 'egret/workbench/parts/files/commands/fileRootCommands';
-const ResEditorType = 1;
 
 export class ResEditor extends BaseEditor implements IMultiPageEditor {
 	/**
@@ -152,6 +151,10 @@ export class ResEditor extends BaseEditor implements IMultiPageEditor {
 
 	private _isCodeDirty: boolean;
 	private _currentMode: ResEditorMode = ResEditorMode.Design;
+	public get EditMode(): string {
+		return this._currentMode;
+	}
+	
 	private navigationContainer: HTMLElement;
 	private exmlRootContainer: HTMLElement;
 	private exmlViewContainer: HTMLElement;

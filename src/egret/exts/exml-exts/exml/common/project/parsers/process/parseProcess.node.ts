@@ -118,7 +118,7 @@ class ParserProcess extends NodeProcess implements IParserProcess {
 	 * 文件改变
 	 * @param changes 
 	 */
-	public onFileChanged(changes: IFileChange[]): Promise<void> {
+	public async onFileChanged(changes: IFileChange[]): Promise<void> {
 		let actualChanges: IFileChange[] = [];
 		for (const change of changes) {
 			if(this.shouldSkip(change.resource)) {
@@ -128,7 +128,10 @@ class ParserProcess extends NodeProcess implements IParserProcess {
 		}
 		for (const change of actualChanges) {
 			if (change.type == FileChangeType.ADDED) {
-				this.addFile(change.resource);
+				const fileStats = await this.getFiles(change.resource.fsPath);
+				for (const stat of fileStats) {
+					this.addFile(stat.resource);
+				}
 			} else if (change.type == FileChangeType.DELETED) {
 				this.deleteFile(change.resource);
 			} else if (change.type == FileChangeType.UPDATED) {
@@ -185,7 +188,7 @@ class ParserProcess extends NodeProcess implements IParserProcess {
 			return;
 		}
 		if (isTs(resource)) {
-			var index = this.tsModifies.indexOf(resource.fsPath);
+			let index = this.tsModifies.indexOf(resource.fsPath);
 			if (index !== -1) {
 				this.tsModifies.splice(index, 1);
 			}
@@ -199,7 +202,7 @@ class ParserProcess extends NodeProcess implements IParserProcess {
 			}
 			this.fileChanged('ts');
 		} else if (isExml(resource)) {
-			var index = this.exmlModifies.indexOf(resource.fsPath);
+			let index = this.exmlModifies.indexOf(resource.fsPath);
 			if (index !== -1) {
 				this.exmlModifies.splice(index, 1);
 			}
@@ -216,7 +219,7 @@ class ParserProcess extends NodeProcess implements IParserProcess {
 	}
 	private deleteFile(resource: URI): void {
 		if (isTs(resource)) {
-			var index = this.tsModifies.indexOf(resource.fsPath);
+			let index = this.tsModifies.indexOf(resource.fsPath);
 			if (index !== -1) {
 				this.tsModifies.splice(index, 1);
 			}
@@ -230,7 +233,7 @@ class ParserProcess extends NodeProcess implements IParserProcess {
 			}
 			this.fileChanged('ts');
 		} else if (isExml(resource)) {
-			var index = this.exmlModifies.indexOf(resource.fsPath);
+			let index = this.exmlModifies.indexOf(resource.fsPath);
 			if (index !== -1) {
 				this.exmlModifies.splice(index, 1);
 			}
@@ -243,17 +246,29 @@ class ParserProcess extends NodeProcess implements IParserProcess {
 				this.exmlDelete.push(resource.fsPath);
 			}
 			this.fileChanged('exml');
+		} else {
+			// 可能删除的是文件夹，同时通知ts和exml解析器删除
+			let index = this.tsDelete.indexOf(resource.fsPath);
+			if (index === -1) {
+				this.tsDelete.push(resource.fsPath);
+			}
+			this.fileChanged('ts');
+			index = this.exmlDelete.indexOf(resource.fsPath);
+			if (index === -1) {
+				this.exmlDelete.push(resource.fsPath);
+			}
+			this.fileChanged('exml');
 		}
 	}
 	private updateFile(resource: URI): void {
 		if (isTs(resource)) {
-			var index = this.tsModifies.indexOf(resource.fsPath);
+			let index = this.tsModifies.indexOf(resource.fsPath);
 			if (index === -1) {
 				this.tsModifies.push(resource.fsPath);
 			}
 			this.fileChanged('ts');
 		} else if (isExml(resource)) {
-			var index = this.exmlModifies.indexOf(resource.fsPath);
+			let index = this.exmlModifies.indexOf(resource.fsPath);
 			if (index === -1) {
 				this.exmlModifies.push(resource.fsPath);
 			}

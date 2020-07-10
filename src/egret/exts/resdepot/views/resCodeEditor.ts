@@ -35,6 +35,11 @@ export class ResCodeEditor extends BaseTextEditor {
 		await super.setActive(active);
 		if (!active) {
 			await this.syncText();
+		} else {
+			if (this._isActive && this.textChanged()) {
+				this.executeEdits(this.resFileModel.getValue());
+			}
+			this.editor.focus();
 		}
 	}
 
@@ -47,8 +52,7 @@ export class ResCodeEditor extends BaseTextEditor {
 	}
 
 	public syncText(): Promise<void> {
-		if (this.isContentChanged && this.resFileModel) {
-			this._isContentChanged = false;
+		if (this.textChanged() && this.resFileModel) {
 			return this.resFileModel.updateValue(this.getText()).catch((err)=> {
 				console.log(err);
 			});
@@ -80,7 +84,7 @@ export class ResCodeEditor extends BaseTextEditor {
 			this.resetState();
 		}
 		if (e === StateChange.CONTENT_CHANGE) {
-			if (this.textChanged()) {
+			if (this._isActive && this.textChanged()) {
 				this.executeEdits(this.resFileModel.getValue());
 			}
 		}

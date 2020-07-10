@@ -170,7 +170,9 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 	 * 同步各个子编辑器的数据
 	 */
 	public async syncModelData(): Promise<void> {
-		await this.codeView.syncModelData();
+		if (this._currentMode === EditMode.CODE) {
+			await this.codeView.syncModelData();
+		}
 		if (this._model) {
 			this._model.updateDirty();
 		}
@@ -468,7 +470,7 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 		} else {
 			exmlModel = this._model.getModel();
 		}
-		if(!exmlModel.getContentTag()){
+		if (!exmlModel.getContentTag()) {
 			return;
 		}
 		var window = this.instantiationService.createInstance(BackgroundSettingPanel, exmlModel);
@@ -483,7 +485,7 @@ export class ExmlFileEditor extends BaseEditor implements IExmlViewContainer, IC
 		} else {
 			exmlModel = this._model.getModel();
 		}
-		if(!exmlModel.getContentTag()){
+		if (!exmlModel.getContentTag()) {
 			return;
 		}
 		var window = this.instantiationService.createInstance(DataBindingPanel, exmlModel);

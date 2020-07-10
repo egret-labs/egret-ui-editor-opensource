@@ -4,6 +4,7 @@ import { ClassNode, Prop } from '../../syntaxNodes';
 import { TempClassData } from './commons';
 import { isIgnore } from './ignores';
 import { IDisposable } from 'egret/base/common/lifecycle';
+import { isEqualOrParent, normalize } from 'egret/base/common/paths';
 
 const _inEgret = [
 	'/libs/modules/egret/',
@@ -133,22 +134,27 @@ export class TsParser implements IDisposable {
 		if (!this.files) {
 			this.files = Object.create(null);
 		}
-		for (var i = 0; i < cPaths.length; i++) {
+		for (let i = 0; i < cPaths.length; i++) {
 			if (this.files[cPaths[i]]) {
 				this.files[cPaths[i]].version++;
 			} else {
 				this.files[cPaths[i]] = { version: 0 };
 			}
 		}
-		for (var i = 0; i < mPaths.length; i++) {
+		for (let i = 0; i < mPaths.length; i++) {
 			if (this.files[mPaths[i]]) {
 				this.files[mPaths[i]].version++;
 			} else {
 				this.files[mPaths[i]] = { version: 0 };
 			}
 		}
-		for (var i = 0; i < dPaths.length; i++) {
-			delete this.files[dPaths[i]];
+		// delete
+		for (const key in this.files) {
+			for (const dp of dPaths) {
+				if (isEqualOrParent(normalize(key), normalize(dp))) {
+					delete this.files[key];
+				}
+			}
 		}
 		if (!this.servicesHost) {
 			this.servicesHost = {
@@ -222,7 +228,7 @@ export class TsParser implements IDisposable {
 			this.isExport(node, checker)
 		) {
 			const nodeType = checker.getTypeAtLocation(node);
-			var symbol = nodeType.getSymbol();
+			const symbol = nodeType.getSymbol();
 			const className = getFullyQualifiedName(symbol, checker);
 			const baseTypes = checker.getBaseTypes(<ts.InterfaceType>nodeType);
 			const implementedTypes = getImplementedInterfaces(nodeType, checker);
@@ -267,8 +273,9 @@ export class TsParser implements IDisposable {
 						return;
 					}
 					let type: string = '';
+					let initializer: ts.Expression;
 					if (prop.valueDeclaration && (<ts.VariableDeclaration>prop.valueDeclaration).initializer) {
-						var initializer = (<ts.VariableDeclaration>prop.valueDeclaration).initializer;
+						initializer = (<ts.VariableDeclaration>prop.valueDeclaration).initializer;
 					}
 					let defaultValue = '';
 					const propType = checker.getTypeAtLocation(prop.declarations[0]);
@@ -294,7 +301,7 @@ export class TsParser implements IDisposable {
 							defaultValue = '0';
 						}
 					} else {
-						var symbol = propType.getSymbol();
+						const symbol = propType.getSymbol();
 						if (symbol) {
 							type = getFullyQualifiedName(symbol, checker);
 						} else {

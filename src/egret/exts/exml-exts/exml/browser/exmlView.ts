@@ -636,10 +636,10 @@ export class ExmlView implements IExmlView {
 
 	private updateDesignBackgroundLayer(): void {
 		if (this.exmlEditor.focusRectLayer.egretContentHost) {
+			this.designBackgroundLayer.style.width = this.exmlEditor.focusRectLayer.stageWidth + 'px';
+			this.designBackgroundLayer.style.height = this.exmlEditor.focusRectLayer.stageHeight + 'px';
 			const rootTarget = this.exmlEditor.focusRectLayer.egretContentHost.getTarget();
-			this.designBackgroundLayer.style.width = rootTarget.width + 'px';
-			this.designBackgroundLayer.style.height = rootTarget.height + 'px';
-			let m: Matrix = rootTarget.matrix;
+			const m: Matrix = rootTarget.matrix;
 			this.designBackgroundLayer.style.transform = 'matrix(' + m.a + ',' + m.b + ',' + m.c + ',' + m.d + ',' + m.tx + ',' + m.ty + ')';
 		}
 	}

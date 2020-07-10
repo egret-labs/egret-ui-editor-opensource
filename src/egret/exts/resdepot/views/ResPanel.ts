@@ -761,27 +761,9 @@ export class ResPanel extends eui.TabPanel {
 			this.preResContent = resDataJson;
 			this.contentChange_Not_Fresh_This_Time = true;//在resdepot里的操作不立刻刷新
 
-
-			var codeEditor = this.getCodeEditor();
-			if (codeEditor) {
-				// codeEditor.executeEdits('edit res code', [{
-				// 	identifier: null,
-				// 	range: this._editorModel.getEditableRange(),//this._editorModel.getFullModelRange(),
-				// 	text: resDataJson,
-				// 	forceMoveMarkers: true
-				// }]);
-				codeEditor.executeEdits(resDataJson);
-				codeEditor.pushUndoStop();
-
-			} else {
-				// this.messageService.show(2, {
-				// 	message: localize('jsonException', "Json text modification exception"),
-				// 	actions: [
-				// 		CloseAction
-				// 	]
-				// });
+			this._editorModel.updateValue(resDataJson).catch(()=> {
 				Alert.show(localize('res.editor.jsonException', 'Json text modification exception'));
-			}
+			});
 		}
 		// this._version = this._editorModel.getVersionId();
 	}

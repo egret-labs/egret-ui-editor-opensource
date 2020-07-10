@@ -66,7 +66,9 @@ export class ResEditor extends BaseEditor implements IMultiPageEditor {
 	 * 同步各个子编辑器的数据
 	 */
 	public async syncModelData(): Promise<void> {
-		await this.codeView.syncText();
+		if (this._currentMode === ResEditorMode.Code) {
+			await this.codeView.syncText();
+		}
 		if (this._model) {
 			this._model.updateDirty();
 		}
@@ -154,7 +156,7 @@ export class ResEditor extends BaseEditor implements IMultiPageEditor {
 	public get EditMode(): string {
 		return this._currentMode;
 	}
-	
+
 	private navigationContainer: HTMLElement;
 	private exmlRootContainer: HTMLElement;
 	private exmlViewContainer: HTMLElement;

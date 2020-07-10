@@ -7,6 +7,9 @@ import { INotificationService } from 'egret/platform/notification/common/notific
 import { IInstantiationService } from 'egret/platform/instantiation/common/instantiation';
 import { ResModel } from '../common/model/ResModel';
 import { ResFileHelper } from '../common/utils/ResFileHelper';
+import { ResInfoVO } from '../common/model/ResInfoVO';
+import { GroupInfoVO } from '../common/model/GroupInfoVO';
+import { deepClone } from 'egret/base/common/objects';
 
 
 /**
@@ -40,7 +43,7 @@ export class ResFileEditorModel extends FileEditorModel {
 		const model = this.getModel() as ResModel;
 		return ResFileHelper.exportJson(model.resList, model.groupList);
 	}
-
+	
 	public updateValue(value: string): Promise<void> {
 		return this.doUpdateModel(value, this.getModel() as ResModel).then(model => {
 			this._model = model;

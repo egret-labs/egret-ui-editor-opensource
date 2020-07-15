@@ -4,6 +4,7 @@ import { XMLDocument } from '../../common/core/XMLDocument';
 import { EXMLContentAssistProcessor } from '../contentassist/EXMLContentAssistProcessor';
 import { IEgretProjectService } from 'egret/exts/exml-exts/project';
 import { dispose } from 'egret/base/common/lifecycle';
+import { XMLFormatUtil } from '../contentassist/XMLFormat';
 
 export function initCodeService(instantiationService: IInstantiationService): void {
 	const codeServiceImpl = instantiationService.createInstance(CodeService);
@@ -33,12 +34,13 @@ export class CodeService implements ICodeService {
 		this.egretProjectService.ensureLoaded().then(() => {
 			this.contentAssistProcessor.init(this.egretProjectService.projectModel, this.egretProjectService.exmlConfig);
 			this.registerCompletionItemProvider();
+			this.registerFormattingProvider();
 		});
 	}
 
 	private registerCompletionItemProvider(): void {
 		monaco.languages.registerCompletionItemProvider('xml', {
-			triggerCharacters: [':', '<', '\'', '\'', ' ', '.', '/'],
+			triggerCharacters: [':', '<', '\'', '\"', ' ', '.', '/'],
 			provideCompletionItems: (model, position, context, token) => {
 				if (!this.contentAssistProcessor.inited) {
 					return {
@@ -60,6 +62,59 @@ export class CodeService implements ICodeService {
 				}
 			}
 		});
+	}
+
+	private registerFormattingProvider(): void {
+		monaco.languages.registerDocumentFormattingEditProvider('xml', {
+			provideDocumentFormattingEdits: (model, options, token) => {
+				try {
+					const xmlDoc = this.getInstance(model.uri).doc;
+					return this.format(xmlDoc, options);
+				} catch (e) {
+					return [];
+				}
+			}
+		});
+		monaco.languages.registerDocumentRangeFormattingEditProvider('xml', {
+			provideDocumentRangeFormattingEdits: (model, rang, options, token) => {
+				try {
+					const xmlDoc = this.getInstance(model.uri).doc;
+					return this.format(xmlDoc, options, rang);
+				} catch (e) {
+					return [];
+				}
+			}
+		});
+	}
+
+	private format(xmlDocument: XMLDocument, options: monaco.languages.FormattingOptions, range?: monaco.Range): monaco.languages.TextEdit[] {
+		const tabSize = options.tabSize;
+		const insertSpaces = options.insertSpaces;
+		const text: string = xmlDocument.getText();
+
+		let start = 0;
+		let end = text.length;
+		if (range) {
+			start = xmlDocument.offsetAt(range.getStartPosition());
+			end = xmlDocument.offsetAt(range.getEndPosition());
+		}
+
+		let lineBreak: string = '\n';
+		if (text.indexOf('\r\n') !== -1) {
+			lineBreak = '\r\n';
+		} else if (text.indexOf('\n') !== -1) {
+			lineBreak = '\n';
+		} else if (text.indexOf('\r') !== -1) {
+			lineBreak = '\n';
+		}
+		const result = XMLFormatUtil.format(text, start, end, !insertSpaces, insertSpaces ? tabSize : 1, 120, false, true, lineBreak);
+		const formatedStart: number = result.formatedStart;
+		const formatedEnd: number = result.formatedEnd;
+		const textEdit: monaco.languages.TextEdit = {
+			text: result.formatedText,
+			range: monaco.Range.fromPositions(xmlDocument.positionAt(formatedStart), xmlDocument.positionAt(formatedEnd))
+		};
+		return [textEdit];
 	}
 
 	private registerCommand(editor: monaco.editor.IStandaloneCodeEditor): void {

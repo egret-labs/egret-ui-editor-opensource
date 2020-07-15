@@ -13,7 +13,6 @@ import { IEgretProjectService } from 'egret/exts/exml-exts/project';
 import { IWorkspaceService } from 'egret/platform/workspace/common/workspace';
 import { BaseEditor } from 'egret/editor/browser/baseEditor';
 import { ResFileEditorModel } from './resEditorModel';
-// import { initResEventService } from '../events/ResEventService';
 
 /**
  * 资源编辑器
@@ -40,20 +39,11 @@ export class ResDepotView extends eui.UILayer {
 		super.createChildren();
 
 		ShortcutManager.initialize(this.stage);
-		// const resInstantiationService = initResEventService(this.instantiationService);
 		this.resPanel = this.instantiationService.createInstance(ResPanel as any, this._parentEditor);
 		this.addChild(this.resPanel);
 		if (this.model) {
 			this.refresh();
 		}
-		// resInstantiationService.invokeFunction(accessor => {
-		// 	const resInstantiationService = accessor.get(IInstantiationService);
-		// 	this.resPanel = resInstantiationService.createInstance(ResPanel, this._parentEditor);
-		// 	this.addChild(this.resPanel);
-		// 	if (this.model) {
-		// 		this.refresh();
-		// 	}
-		// });
 	}
 
 	createover(e: eui.UIEvent): void {

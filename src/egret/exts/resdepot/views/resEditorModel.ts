@@ -7,9 +7,6 @@ import { INotificationService } from 'egret/platform/notification/common/notific
 import { IInstantiationService } from 'egret/platform/instantiation/common/instantiation';
 import { ResModel } from '../common/model/ResModel';
 import { ResFileHelper } from '../common/utils/ResFileHelper';
-import { ResInfoVO } from '../common/model/ResInfoVO';
-import { GroupInfoVO } from '../common/model/GroupInfoVO';
-import { deepClone } from 'egret/base/common/objects';
 
 
 /**

@@ -170,15 +170,15 @@ export class SkinPart extends BasePart {
 
 		if (this.model.getExmlConfig().isInstance(this.currentNode.getInstance(), 'eui.DataGroup')) {
 			if (!value) {
-				this.currentNode.setProperty('itemRendererSkinName', null);
+				this.currentNode.setClass('itemRendererSkinName', null);
 			} else {
-				this.currentNode.setString('itemRendererSkinName', value.id);
+				this.currentNode.setClass('itemRendererSkinName', value.id);
 			}
 		} else if (this.model.getExmlConfig().isInstance(this.currentNode.getInstance(), 'eui.Component')) {
 			if (!value) {
-				this.currentNode.setProperty('skinName', null);
+				this.currentNode.setClass('skinName', null);
 			} else {
-				this.currentNode.setString('skinName', value.id);
+				this.currentNode.setClass('skinName', value.id);
 			}
 		}
 	}

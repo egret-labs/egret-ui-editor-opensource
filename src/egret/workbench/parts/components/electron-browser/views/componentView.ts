@@ -1,6 +1,6 @@
 import { IInstantiationService } from 'egret/platform/instantiation/common/instantiation';
 import { Tree } from 'vs/base/parts/tree/browser/treeImpl';
-import { ComponentDataSource, ComponentRenderer, ComponentController, ComponentDragAndDrop, ComponentFilter } from './componentViewer';
+import { ComponentDataSource, ComponentRenderer, ComponentController, ComponentDragAndDrop, ComponentFilter, ComponentSorter } from './componentViewer';
 import { ITreeConfiguration } from 'vs/base/parts/tree/browser/tree';
 import { IEgretProjectService } from 'egret/exts/exml-exts/project';
 import { ComponentSourceDataCreater } from './componentData';
@@ -101,13 +101,15 @@ export class ComponentView extends PanelContentDom implements IModelRequirePart 
 		const dataSource = this.instantiationService.createInstance(ComponentDataSource);
 		const renderer = this.instantiationService.createInstance(ComponentRenderer);
 		const controller = this.instantiationService.createInstance(ComponentController);
-		const dnd = this.instantiationService.createInstance(ComponentDragAndDrop);
+		const dnd = this.instantiationService.createInstance(ComponentDragAndDrop);	
+		const sorter = this.instantiationService.createInstance(ComponentSorter);
 		this.treeFilter = this.instantiationService.createInstance(ComponentFilter);
 		const treeConfiguration: ITreeConfiguration = {
 			dataSource: dataSource,
 			renderer: renderer,
 			controller: controller,
 			dnd: dnd,
+			sorter: sorter,
 			filter: this.treeFilter
 		};
 		this.componentViewer = this.instantiationService.createInstance(Tree, this.treeContainer, treeConfiguration, {});

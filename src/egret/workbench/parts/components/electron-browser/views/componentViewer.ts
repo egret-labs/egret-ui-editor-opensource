@@ -1,4 +1,4 @@
-import { IDataSource, ITree, IRenderer, IController, IDragAndDrop, IDragOverReaction, ContextMenuEvent, IFilter } from 'vs/base/parts/tree/browser/tree';
+import { IDataSource, ITree, IRenderer, IController, IDragAndDrop, IDragOverReaction, ContextMenuEvent, IFilter, ISorter } from 'vs/base/parts/tree/browser/tree';
 import { ComponentStat } from '../../common/componentModel';
 import * as DOM from 'vs/base/browser/dom';
 import { DefaultController, ClickBehavior, OpenMode } from 'vs/base/parts/tree/browser/treeDefaults';
@@ -123,9 +123,9 @@ export class ComponentRenderer implements IRenderer {
 			image: DOM.append(container, DOM.$('div')),
 			textSpan: DOM.append(container, DOM.$('span'))
 		};
-		addClass(template.iconSpan,'iconSpan');
-		addClass(template.image,'component-icon');
-		addClass(template.textSpan,'component-label');
+		addClass(template.iconSpan, 'iconSpan');
+		addClass(template.image, 'component-icon');
+		addClass(template.textSpan, 'component-label');
 		addClass(container, 'component-item-container');
 		return template;
 	}
@@ -141,9 +141,9 @@ export class ComponentRenderer implements IRenderer {
 
 		templateData.image.className = 'component-icon';
 		if (stat.isFolder) {
-			addClass(templateData.image,'componentPanelFolder');
+			addClass(templateData.image, 'componentPanelFolder');
 		} else {
-			addClass(templateData.image,'componentPanelSpanItem');
+			addClass(templateData.image, 'componentPanelSpanItem');
 			if (!stat.isCustom) {
 				templateData.image.classList.add(stat.name);
 			}
@@ -350,5 +350,45 @@ export class ComponentFilter implements IFilter {
 			return true;
 		}
 		return this.search(tree, stat, this.filterText);
+	}
+}
+
+/**
+ * 组件排序
+ */
+export class ComponentSorter implements ISorter {
+
+	private folderIds: string[] = ['custom', 'component', 'container'];
+	constructor(
+	) {
+
+	}
+	/**
+	 * 比较排序
+	 * @param tree 
+	 * @param statA 
+	 * @param statB 
+	 */
+	public compare(tree: ITree, statA: ComponentStat, statB: ComponentStat): number {
+		if (!statA) {
+			return -1;
+		}
+		if (!statB) {
+			return 1;
+		}
+		// 文件夹不排序，按添加先后顺序
+		if (this.folderIds.includes(statA.id) ||
+			this.folderIds.includes(statB.id)) {
+			return 0;
+		}
+
+		const oneName = statA.name.toLowerCase();
+		const otherName = statB.name.toLowerCase();
+
+		if (oneName !== otherName) {
+			return oneName < otherName ? -1 : 1;
+		}
+
+		return 0;
 	}
 }

@@ -3,7 +3,7 @@ import { Matrix } from '../../data/Matrix';
 import { IRender } from '../../IRender';
 /**
  */
-export interface IP9TTarget extends IEventDispatcher,IRender {
+export interface IP9TTarget extends IEventDispatcher {
 	localX: number;
 	localY: number;
 	width: number;
@@ -23,4 +23,8 @@ export interface IP9TTarget extends IEventDispatcher,IRender {
 	canSetAnchor:boolean;
 	getMatrix(): Matrix;
 	getStageToParentMatrix(): Matrix;
+}
+
+export interface IP9TTargetRender extends IP9TTarget, IRender {
+
 }

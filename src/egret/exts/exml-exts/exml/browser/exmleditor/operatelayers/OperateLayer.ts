@@ -325,13 +325,19 @@ export class OperateLayer {
 		//筛选
 		let tmpP: Point = new Point();
 		for (let i: number = 0; i < rects.length; i++) {
-			tmpP.x = v.clientX; tmpP.y = v.clientY;
-			tmpP = MatrixUtil.globalToLocal(rects[i].root, tmpP);
-			if (tmpP.x < 0 || tmpP.y < 0 || tmpP.x > rects[i].width || tmpP.y > rects[i].height) {
+			const item = rects[i];
+			tmpP.x = v.clientX; 
+			tmpP.y = v.clientY;
+			let matrix = item.getMatrix();
+			matrix.concat(item.RootMatrix);
+			matrix.concat(MatrixUtil.getMatrixToWindow(item.container));
+			matrix.invert();
+			tmpP = matrix.transformPoint(tmpP.x, tmpP.y);
+			if (tmpP.x < 0 || tmpP.y < 0 || tmpP.x > item.width || tmpP.y > item.height) {
 				continue;
 			}
-			if (rects[i].canSelect) {
-				return rects[i];
+			if (item.canSelect) {
+				return item;
 			}
 		}
 		return null;

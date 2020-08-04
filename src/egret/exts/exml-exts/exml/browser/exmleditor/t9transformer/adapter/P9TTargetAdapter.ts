@@ -1,7 +1,7 @@
 import { IP9TTargetAdapter } from './../interfaces/IP9TTargetAdapter';
 import { DefaultP9TPRender } from './render/DefaultP9TPRender';
 import { P9Transformer } from './../P9Transformer';
-import { IP9TTarget } from './../interfaces/IP9TTarget';
+import { IP9TTargetRender, IP9TTarget } from './../interfaces/IP9TTarget';
 import { IP9TPointRenderFactory } from './interfaces/IP9TPointRenderFactory';
 import { P9TTargetAdapterSyncOperateDefine } from './P9TTargetAdapterSyncOperateDefine';
 // import { P9TUtil } from './../util/P9TUtil';
@@ -22,6 +22,7 @@ import { Point } from '../../data/Point';
 import { Rectangle } from '../../data/Rectangle';
 import { Keyboard } from '../../data/Keyboard';
 import { Point2D, expandPolygon, fitPixel } from '../../utils/polygonUtils';
+import { FocusRectExt } from '../../FocusRectLayer';
 /**
  */
 export class P9TTargetAdapter extends EventDispatcher implements IP9TTargetAdapter {
@@ -232,7 +233,7 @@ export class P9TTargetAdapter extends EventDispatcher implements IP9TTargetAdapt
 		return MatrixUtil.getMatrixForIP9TTarget(this);
 	}
 	public getStageToParentMatrix(): Matrix {
-		let matrix: Matrix = MatrixUtil.getMatrixToWindow(this.operateTarget['container']);
+		let matrix: Matrix = MatrixUtil.getMatrixToWindow(this.container);
 		return matrix;
 	}
 	private targetDisplayChange(e: P9TTargetEvent): void {
@@ -453,7 +454,7 @@ export class P9TTargetAdapter extends EventDispatcher implements IP9TTargetAdapt
 		if (!this.root) {
 			return;
 		}
-		if (!this.operateTarget || !this.operateTarget.container) {
+		if (!this.operateTarget) {
 			return;
 		}
 		var tmpOP: IP9TPointRender;
@@ -461,9 +462,11 @@ export class P9TTargetAdapter extends EventDispatcher implements IP9TTargetAdapt
 		this.points = this.p9transformer.refreshPoints();
 
 		let targetGlobalMatix: Matrix = this.getMatrix();
-		targetGlobalMatix.concat(MatrixUtil.getMatrixToWindow(this.operateTarget.container));
-		let rootLocalMatrix: Matrix = MatrixUtil.getMatrixToWindow(this.root);
-		rootLocalMatrix.invert();
+		const target = this.operateTarget as FocusRectExt;
+		if(target.parentFocusRect){
+			targetGlobalMatix.concat(target.parentFocusRect.getAbsoluteMatrix());
+		}
+		targetGlobalMatix.concat(target.RootMatrix);
 		let minx: number = Number.MAX_VALUE;
 		let maxx: number = Number.MIN_VALUE;
 		let miny: number = Number.MAX_VALUE;
@@ -484,7 +487,6 @@ export class P9TTargetAdapter extends EventDispatcher implements IP9TTargetAdapt
 			tmpP.x = p.x;
 			tmpP.y = p.y;
 			tmpP = targetGlobalMatix.transformPoint(tmpP.x, tmpP.y);
-			tmpP = rootLocalMatrix.transformPoint(tmpP.x, tmpP.y);
 
 			minx = Math.min(minx, tmpP.x);
 			maxx = Math.max(maxx, tmpP.x);

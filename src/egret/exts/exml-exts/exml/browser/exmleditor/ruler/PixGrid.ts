@@ -20,7 +20,7 @@ export class PixGrid implements IAbosrbLineProvider, IRender {
 	public render(container: HTMLElement): void {
 		this.container = container;
 		HtmlElementResizeHelper.watch(this.container);
-		this.container.addEventListener('resize', this.updateDisplay);
+		this.container.addEventListener('resize', this.containerSizeHanlder);
 
 		this.container.appendChild(this.root);
 	}
@@ -84,19 +84,26 @@ export class PixGrid implements IAbosrbLineProvider, IRender {
 		}
 		return [];
 	}
+
+	private containerSizeHanlder = ():void => {
+		//更新canvas的尺寸
+		this.root.width = this.container.offsetWidth;
+		this.root.height = this.container.offsetHeight;
+		this.updateDisplay();
+	}
 	private anchorPoint: Point = new Point();
 	private focusRectlayerEventHandle(): void {
-		let p: Point = MatrixUtil.localToGlobal(this._focusRectLayer.getRootFocusRect().root, new Point(0, 0));
-		this.anchorPoint = MatrixUtil.globalToLocal(this.container, p);
+		const rootRectExt = this._focusRectLayer.getRootFocusRect();
+		let targetGlobalMatix = rootRectExt.getMatrix();
+		targetGlobalMatix.concat(rootRectExt.RootMatrix);
+		this.anchorPoint = targetGlobalMatix.transformPoint(0, 0);
 		this.rulerMotor.scale = this._focusRectLayer.scale;
 		this.updateDisplay();
 	}
 	private updateDisplay(): void {
-		//更新canvas的尺寸
-		this.root.width = this.container.offsetWidth;
-		this.root.height = this.container.offsetHeight;
 		this.root.style.backgroundColor = 'rgba(0,0,0,0.2)'
 		let context = this.root.getContext('2d');
+		context.clearRect(0, 0, this.root.width, this.root.height);
 		//绘制网格线
 		if (isNaN(this._explicityGridSize)) {
 			this.drawLine(context, 'rgba(68,68,68,0.2)', this.rulerMotor.currentMarkLength / 5);

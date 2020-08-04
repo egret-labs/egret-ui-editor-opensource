@@ -26,6 +26,8 @@ export class Ruler implements IRender {
 		this.root.appendChild(this.mouseTag);
 		this.mouseTag.style.backgroundColor = '#0d62af';
 		this.mouseTag.style.position = 'absolute';
+		this.mouseTag.style.top = '0px';
+		this.mouseTag.style.left = '0px';
 	}
 	private rulerMotor: RulerMotor;
 	public container: HTMLElement;
@@ -37,7 +39,7 @@ export class Ruler implements IRender {
 		this.container = container;
 		this.containerParent = container.parentElement;
 		HtmlElementResizeHelper.watch(this.container);
-		this.container.addEventListener('resize', this.updateDisplay);
+		this.container.addEventListener('resize', this.containerSizeHanlder);
 		this.container.appendChild(this.root);
 		this.updateMouseTag();
 		this.containerParent.addEventListener('mousemove', this.documentEventHandle);
@@ -48,10 +50,28 @@ export class Ruler implements IRender {
 		this._focusRectLayer.addEventListener(FocusRectLayerEvent.VIEWCHANGED, this.focusRectlayerEventHandle, this);
 		this.focusRectlayerEventHandle();
 	}
+
+	private containerSizeHanlder = (): void => {
+		//更新canvas的尺寸
+		this.canvas.width = this.container.offsetWidth;
+		this.canvas.height = this.container.offsetHeight;
+		this.updateMouseTag();
+		this.updateDisplay();
+	}
+
 	private anchorPoint: Point = new Point();
 	private focusRectlayerEventHandle(): void {
-		let p: Point = MatrixUtil.localToGlobal(this._focusRectLayer.getRootFocusRect().root, new Point(0, 0));
-		this.anchorPoint = MatrixUtil.globalToLocal(this.container, p);
+		const rootRectExt = this._focusRectLayer.getRootFocusRect();
+		let targetGlobalMatix = rootRectExt.getMatrix();
+		targetGlobalMatix.concat(rootRectExt.RootMatrix);
+		this.anchorPoint = targetGlobalMatix.transformPoint(0, 0);
+		switch (this.type) {
+			case Ruler.TYPE_HORIZONTAL:
+				break;
+			case Ruler.TYPE_VERTICAL:
+				this.anchorPoint.y += 20;
+				break;
+		}
 		this.rulerMotor.scale = this._focusRectLayer.scale;
 		this.updateDisplay();
 	}
@@ -63,12 +83,10 @@ export class Ruler implements IRender {
 		let p: Point = MatrixUtil.globalToLocal(this.container, new Point(e.clientX, e.clientY));
 		switch (this.type) {
 			case Ruler.TYPE_HORIZONTAL:
-				this.mouseTag.style.left = p.x - this.offset.offsetX + 'px';
-				this.mouseTag.style.top = '0px';
+				this.mouseTag.style.transform = `translate(${p.x - this.offset.offsetX}px, 0px)`;
 				break;
 			case Ruler.TYPE_VERTICAL:
-				this.mouseTag.style.left = '0px';
-				this.mouseTag.style.top = p.y - this.offset.offsetY + 'px';
+				this.mouseTag.style.transform = `translate(0px, ${p.y - this.offset.offsetY}px)`;
 				break;
 		}
 	}
@@ -85,14 +103,11 @@ export class Ruler implements IRender {
 		}
 	}
 	private updateDisplay(): void {
-		//更新canvas的尺寸
-		this.canvas.width = this.container.offsetWidth;
-		this.canvas.height = this.container.offsetHeight;
 		let valueGap: number = this.rulerMotor.currentMarkNum;
 		let markGap: number = this.rulerMotor.currentMarkLength / 10;
-		this.updateMouseTag();
 
 		let context = this.canvas.getContext('2d');
+		context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 		//绘制背景
 		context.fillStyle = "#2d2d2e";
 		context.fillRect(0, 0, this.canvas.width, this.canvas.height);

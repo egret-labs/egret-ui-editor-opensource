@@ -1,5 +1,5 @@
 import { Event, EventDispatcher } from './EventDispatcher';
-import { IP9TTarget } from './t9transformer/interfaces/IP9TTarget';
+import { IP9TTargetRender, IP9TTarget } from './t9transformer/interfaces/IP9TTarget';
 import { MatrixUtil } from './t9transformer/util/MatrixUtil';
 import { P9TTargetEvent } from './t9transformer/events/P9TTargetEvent';
 import { EgretContentHost, EgretContentHostEvent } from './EgretContentHost';
@@ -9,7 +9,6 @@ import { AbsorbLine, AbsorbLineType } from "./absorb/AbsorbLine";
 import { Matrix } from './data/Matrix';
 import { Rectangle } from './data/Rectangle';
 import { Point } from './data/Point';
-import { IRender } from './IRender';
 import { IRuntimeAPI } from '../../runtime/runtime';
 import { IDisposable } from 'vs/base/common/lifecycle';
 import { NodeAddedEvent, NodeRemovedEvent, INode, IValue } from '../../common/exml/treeNodes';
@@ -20,6 +19,7 @@ import { TweenLite } from "gsap";
 import { Point2D, expandPolygon } from './utils/polygonUtils';
 import { isMacintosh } from 'egret/base/common/platform';
 import { Emitter, Event as VSEvent } from 'egret/base/common/event';
+import { pointInRect } from 'egret/base/common/numbers';
 
 
 
@@ -69,10 +69,10 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 	private _isVisible: boolean = true;
 	private container: HTMLElement;
 
-	//视图代理焦点对象，
-	private viewAdapterFocusRect: FocusRect;
 	//根焦点对象
 	private rootFocusRect: FocusRectExt;
+	private canvasRect: HTMLCanvasElement;
+	private context2d: CanvasRenderingContext2D;
 
 	private stageShadowDisplay: ShadowDisplay;
 	public render(container: HTMLElement): void {
@@ -80,18 +80,37 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 		this.container = container;
 		this.container.style.opacity = this._opacity + '';
 
-		this.viewAdapterFocusRect = new FocusRect(container, false);
-		this.viewAdapterFocusRect.render(container);
-		this.rootFocusRect = new FocusRectExt(container);
+		this.canvasRect = document.createElement('canvas');
+		this.canvasRect.getContext("2d").imageSmoothingEnabled = false;
+		this.canvasRect.style.transformOrigin = 'left top';
+		this.canvasRect.style.position = 'absolute';
+		this.canvasRect.style.left = '0px;'
+		this.canvasRect.style.top = '0px';
+		this.canvasRect.style.imageRendering = 'pixelated';
+		this.container.appendChild(this.canvasRect);
+		this.context2d = this.canvasRect.getContext('2d');
+		this.rootFocusRect = new FocusRectExt(this.canvasRect, this.context2d, this.drawRect);
 		this.rootFocusRect.addEventListener(P9TTargetEvent.DISPLAYCHANGE, () => {
+			this.refreshRectRender();
 			this.dispatchEvent(new Event(FocusRectLayerEvent.VIEWCHANGED, null));
 		}, this);
-		this.viewAdapterFocusRect.addFocusRect(this.rootFocusRect);
 		HtmlElementResizeHelper.watch(container);
+		this.container.addEventListener('resize', this.ContainerSizeChange);
 
 
 		this.stageShadowDisplay = new ShadowDisplay();
 		this.stageShadowDisplay.render(this.container);
+		this.updateCanvasRectSize();
+	}
+
+	private ContainerSizeChange = () => {
+		this.updateCanvasRectSize();
+		this.refreshRectRender();
+	}
+
+	private updateCanvasRectSize(): void {
+		this.canvasRect.width = this.container.clientWidth;
+		this.canvasRect.height = this.container.clientHeight;
 	}
 
 	/**
@@ -118,16 +137,17 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 	private toggleVisible(): void {
 		const visible = (!this.dragEnabled && this._isVisible);
 		if (visible) {
-			if (this.viewAdapterFocusRect) {
-				this.viewAdapterFocusRect.show();
+			if (this.rootFocusRect) {
+				this.rootFocusRect.show();
 			}
+			this.refreshRectRender();
 			this.opacity = 1;
 			this.container.style.pointerEvents = '';
 		} else {
 			this.opacity = 0;
 			this.container.style.pointerEvents = 'none';
-			if (this.viewAdapterFocusRect) {
-				this.viewAdapterFocusRect.hide();
+			if (this.rootFocusRect) {
+				this.rootFocusRect.hide();
 			}
 		}
 		this._onVisibleChanged.fire(visible);
@@ -299,7 +319,7 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 			var curScale = this.scale;
 			let stageHeight: number = this.runtime.runtimeRootContainer.contentHeight;
 			let stageWidth: number = this.runtime.runtimeRootContainer.contentWidth;
-			if(this.previewed){
+			if (this.previewed) {
 				// 预览模式下使用屏幕尺寸代替舞台尺寸
 				stageHeight = this.screenHeightCache;
 				stageWidth = this.screenWidthCache;
@@ -812,7 +832,6 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 		this.targetStartPos.y = event.clientY - this.egretContentHost.getTarget().y;
 		this.mousePos.x = event.clientX;
 		this.mousePos.y = event.clientY;
-		// this.stopEase();
 		this.moving = true;
 		this.updateCursor();
 	}
@@ -833,7 +852,6 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 	private stopMove(event: MouseEvent): void {
 		event.preventDefault();
 		event.stopPropagation();
-		// this.startEase();
 		this.moving = false;
 		this.updateCursor();
 	}
@@ -864,7 +882,6 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 		this.setViewTo({ x: this.movePoint.x, y: this.movePoint.y, scale: targetScale }, true, 0.1)
 	}
 	private gesturePan_handler(event: MouseWheelEvent): void {
-		// this.stopEase();
 		var offsetX = event.deltaX / 2;
 		var offsetY = event.deltaY / 2;
 		this.movePoint.x -= offsetX;
@@ -892,52 +909,6 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 
 		this.setViewTo({ x: Math.round(this.movePoint.x), y: Math.round(this.movePoint.y), scale: targetScale }, true, 0.1)
 	}
-
-	// private easeTimeoutFlag = null
-	// private easeIntervalFlag = null
-	// private startEase(): void {
-	// 	if (this.easeIntervalFlag) {
-	// 		clearInterval(this.easeIntervalFlag);
-	// 		this.easeIntervalFlag = null;
-	// 	}
-	// 	if (this.easeTimeoutFlag) {
-	// 		clearTimeout(this.easeTimeoutFlag);
-	// 		this.easeTimeoutFlag = null;
-	// 	}
-	// 	this.easeTimeoutFlag = setTimeout(() => {
-	// 		this.easeIntervalFlag = setInterval(() => this.doEase(), 1000 / 60);
-	// 	}, 1000 / 60);
-	// }
-	// private stopEase(): void {
-	// 	if (this.easeIntervalFlag) {
-	// 		clearInterval(this.easeIntervalFlag);
-	// 		this.easeIntervalFlag = null;
-	// 	}
-	// 	if (this.easeTimeoutFlag) {
-	// 		clearTimeout(this.easeTimeoutFlag);
-	// 		this.easeTimeoutFlag = null;
-	// 	}
-	// }
-
-	// private doEase(): void {
-	// 	if (this.speed.x == 0 && this.speed.y == 0) {
-	// 		return;
-	// 	}
-	// 	this.speed.x = this.speed.x / 1.10;
-	// 	this.speed.y = this.speed.y / 1.10;
-	// 	if (this.speed.y <= 0.1 && this.speed.y >= -0.1) {
-	// 		this.speed.y = 0;
-	// 	}
-	// 	if (this.speed.x <= 0.1 && this.speed.x >= -0.1) {
-	// 		this.speed.x = 0;
-	// 	}
-	// 	this.movePoint.x += this.speed.x;
-	// 	this.movePoint.y += this.speed.y;
-	// 	this.updateTargetPos();
-	// 	if (this.speed.x == 0 && this.speed.y == 0) {
-	// 		this.stopEase();
-	// 	}
-	// }
 
 	private updateCursor(): void {
 		if (this.dragEnabled || this.moving) {
@@ -981,7 +952,7 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 
 	/**获取一个焦点对象 */
 	private getOneFocusRect(): FocusRectExt {
-		return new FocusRectExt(this.container);
+		return new FocusRectExt(this.container, this.canvasRect.getContext('2d'), this.drawRect);
 	}
 	/**刷新焦点对象树 */
 	public refresh(): void {
@@ -995,33 +966,48 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 		}
 	}
 
+	private _rootMatrix: Matrix = new Matrix(1, 0, 0, 1, 0, 0);
 	/**刷新视图代理 */
 	private updateViewAdapter(): void {
 		if (!this.exmlModel) {
 			return;
 		}
-		this._scale = this.egretContentHost.getTarget().scaleX;
+		const targetObj = this.egretContentHost.getTarget();
+		this._scale = targetObj.scaleX;
 		if (!Number.isFinite(this._scale)) {
 			this._scale = 1;
 		}
 		this._onScaleChanged.fire(this._scale);
 
-		let m: Matrix = this.egretContentHost.getTarget().matrix;
-		this.viewAdapterFocusRect.root.style.transform = 'matrix(' + m.a + ',' + m.b + ',' + m.c + ',' + m.d + ',' + m.tx + ',' + m.ty + ')';
+		let m: Matrix = targetObj.matrix;
+		this._rootMatrix = m.clone();
+		if (this.rootFocusRect) {
+			this.rootFocusRect.RootMatrix = this._rootMatrix;
+		}
 		if (this.previewMask) {
 			this.stageShadowDisplay.x = m.tx;
 			this.stageShadowDisplay.y = m.ty;
 			this.stageShadowDisplay.width = this.previewMask.width * this.scale;
 			this.stageShadowDisplay.height = this.previewMask.height * this.scale;
 		}
-		//TODO 这里刷新所有的显示框
-		if (this.viewAdapterFocusRect) {
-			this.viewAdapterFocusRect.refreshRectRender();
-		}
+		this.refreshRectRender();
+		this.dispatchEvent(new Event(FocusRectLayerEvent.VIEWCHANGED, null));
+	}
+
+	private refreshRectRender(): void {
 		if (this.rootFocusRect) {
 			this.rootFocusRect.refreshRectRender();
 		}
-		this.dispatchEvent(new Event(FocusRectLayerEvent.VIEWCHANGED, null));
+		this.drawRect();
+	}
+
+	private drawRect = (): void => {
+		this.context2d.resetTransform();
+		this.context2d.clearRect(0, 0, this.canvasRect.width, this.canvasRect.height);
+		this.context2d.setTransform(this._rootMatrix.a, 0, 0, this._rootMatrix.d, 0, 0);
+		if (this.rootFocusRect) {
+			this.rootFocusRect.draw();
+		}
 	}
 
 	/**获取某个焦点对象内部所有的焦点对象集合 */
@@ -1064,11 +1050,13 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 	}
 	/**获取焦点举行的AABB框 */
 	public getFocusRectBounds(target: FocusRect): Rectangle {
-		let globalMatrix: Matrix = MatrixUtil.getMatrixToWindow(target.root);
+		let globalMatrix: Matrix = target.getAbsoluteMatrix();
+		globalMatrix.concat(target.RootMatrix);
+		globalMatrix.concat(MatrixUtil.getMatrixToWindow(this.canvasRect));
 		var p1: Point = globalMatrix.transformPoint(0, 0);
-		var p2: Point = globalMatrix.transformPoint(target.root.offsetWidth, 0);
-		var p3: Point = globalMatrix.transformPoint(target.root.offsetWidth, target.root.offsetHeight);
-		var p4: Point = globalMatrix.transformPoint(0, target.root.offsetHeight);
+		var p2: Point = globalMatrix.transformPoint(target.Width, 0);
+		var p3: Point = globalMatrix.transformPoint(target.Width, target.Height);
+		var p4: Point = globalMatrix.transformPoint(0, target.Height);
 		var minx: number = p1.x;
 		var maxx: number = p1.x;
 		var miny: number = p1.y;
@@ -1213,6 +1201,7 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 		}
 
 		HtmlElementResizeHelper.unWatch(this.container);
+		this.container.removeEventListener('resize', this.ContainerSizeChange);
 	}
 }
 
@@ -1222,40 +1211,7 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class RectRender {
-	private svg: SVGSVGElement;
-	private line1: SVGPolylineElement;
-	private line2: SVGPolylineElement
-	private svgContainer: HTMLElement;
-	constructor() {
-		let ns = 'http://www.w3.org/2000/svg';
-		this.svg = document.createElementNS(ns, 'svg') as SVGSVGElement;
-		this.svg.style.pointerEvents = 'none';
-		this.svg.style.width = '100%';
-		this.svg.style.height = '100%';
-		this.line1 = document.createElementNS(ns, 'polygon') as SVGPolylineElement;
-		this.line1.style.pointerEvents = 'none';
-		this.line1.style.fill = 'none';
-		this.line1.style.stroke = '#000000';
-		this.line1.style.strokeWidth = '1';
-		this.svg.appendChild(this.line1);
-		this.line2 = document.createElementNS(ns, 'polygon') as SVGPolylineElement;
-		this.line2.style.pointerEvents = 'none';
-		this.line2.style.fill = 'none';
-		this.line2.style.stroke = '#ffffff';
-		this.line2.style.strokeWidth = '1';
-		// this.line2.style.strokeDasharray = '6,6';
-		this.svg.appendChild(this.line2);
-
-		this.svgContainer = document.createElement('div');
-		this.svgContainer.style.width = '100%';
-		this.svgContainer.style.height = '100%';
-		this.svgContainer.style.top = '0';
-		this.svgContainer.style.left = '0';
-		this.svgContainer.style.position = 'absolute';
-		this.svgContainer.style.overflow = 'hidden';
-		this.svgContainer.style.pointerEvents = 'none';
-		this.svgContainer.appendChild(this.svg);
-		this.svgContainer.style.opacity = '0.5';
+	constructor(private context2d: CanvasRenderingContext2D) {
 	}
 
 	private _visible: boolean = true;
@@ -1264,45 +1220,43 @@ class RectRender {
 	}
 	public set visible(value: boolean) {
 		this._visible = value;
-		if (value) {
-			this.svgContainer.style.display = null;
-		} else {
-			this.svgContainer.style.display = 'none';
+	}
+
+	public draw(p1: Point, p2: Point, p3: Point, p4: Point): void {
+		if (!this.context2d ||
+			!this._visible) {
+			return;
 		}
-	}
-
-	public render(container: HTMLElement): void {
-		container.appendChild(this.svgContainer);
-	}
-
-	public draw(p1: { x: number, y: number }, p2: { x: number, y: number }, p3: { x: number, y: number }, p4: { x: number, y: number }): void {
-		p1.x = Math.round(p1.x); p1.y = Math.round(p1.y);
-		p2.x = Math.round(p2.x); p2.y = Math.round(p2.y);
-		p3.x = Math.round(p3.x); p3.y = Math.round(p3.y);
-		p4.x = Math.round(p4.x); p4.y = Math.round(p4.y);
 
 		var points: Point2D[] = [];
 		points.push(p1, p2, p3, p4);
 
-		var outerPoints = expandPolygon(points, -0.5);
-		var pointsStr: string = '';
-		pointsStr += outerPoints[0].x + ',' + outerPoints[0].y + ' ';
-		pointsStr += outerPoints[1].x + ',' + outerPoints[1].y + ' ';
-		pointsStr += outerPoints[2].x + ',' + outerPoints[2].y + ' ';
-		pointsStr += outerPoints[3].x + ',' + outerPoints[3].y + ' ';
-		this.line1.setAttribute('points', pointsStr);
+		// const lineWidth = Math.min(1, 1 / this.context2d.getTransform().a);
+		const lineWidth = 1 / this.context2d.getTransform().a;
+		this.context2d.lineWidth = lineWidth;
+		const lineOffset = lineWidth / 2;
+		var outerPoints = expandPolygon(points, -lineOffset);
+		this.context2d.strokeStyle = 'rgba(0,0,0,0.5)';
+		this.context2d.beginPath();
+		for (const point of outerPoints) {
+			this.context2d.lineTo(point.x, point.y);
+		}
+		this.context2d.closePath();
+		this.context2d.stroke();
 
-		var innerPoints = expandPolygon(points, 0.5);
-		var pointsStr: string = '';
-		pointsStr += innerPoints[0].x + ',' + innerPoints[0].y + ' ';
-		pointsStr += innerPoints[1].x + ',' + innerPoints[1].y + ' ';
-		pointsStr += innerPoints[2].x + ',' + innerPoints[2].y + ' ';
-		pointsStr += innerPoints[3].x + ',' + innerPoints[3].y + ' ';
-		this.line2.setAttribute('points', pointsStr);
+		var innerPoints = expandPolygon(points, lineOffset);
+		this.context2d.strokeStyle = 'rgba(255,255,255,0.5)';
+		this.context2d.beginPath();
+		for (const point of innerPoints) {
+			this.context2d.lineTo(point.x, point.y);
+		}
+
+		this.context2d.closePath();
+		this.context2d.stroke();
 	}
 
 	public dispose(): void {
-		this.svgContainer.remove();
+
 	}
 }
 
@@ -1311,47 +1265,13 @@ class RectRender {
 /**焦点对象
  * 此对象是对一个Inode展现形态的映射
  */
-export class FocusRect extends EventDispatcher implements IRender {
-
-	public root: HTMLElement;
-	private border: HTMLElement;
-	protected ownerLayer: HTMLElement;
-	protected rectRender: RectRender;
-	private drawFocusRect: boolean = true;
-	private drawBorder: boolean = false;
-	constructor(ownerLayer: HTMLElement, drawBorder: boolean = true) {
+export class FocusRect extends EventDispatcher {
+	protected drawFocusRect: boolean = true;
+	constructor(protected flushDraw: Function) {
 		super();
-		this.ownerLayer = ownerLayer;
-		this.rectRender = new RectRender();
-		this.root = document.createElement('div');
-		this.root.style.position = 'absolute';
-		this.root.style.transformOrigin = 'top left';
-		this.root.style.left = '0px';
-		this.root.style.top = '0px';
-		if (drawBorder) {
-			this.rectRender.render(ownerLayer);
-		}
-
-		// if (drawBorder) {
-		// 	this.border = document.createElement('div');
-		// 	this.border.style.position = 'absolute';
-		// 	this.border.style.left = '-1px';
-		// 	this.border.style.right = '-1px';
-		// 	this.border.style.top = '-1px';
-		// 	this.border.style.bottom = '-1px';
-		// 	this.border.style.borderColor = 'rgba(255,255,255,0.6)';
-		// 	this.border.style.borderWidth = '1px';
-		// 	this.border.style.borderStyle = 'solid';
-		// 	this.border.style.outlineColor = 'rgba(0,0,0,0.6)'
-		// 	this.border.style.outlineWidth = '1px';
-		// 	this.border.style.outlineOffset = '0px';
-		// 	this.border.style.outlineStyle = 'solid';
-		// 	this.root.appendChild(this.border);
-		// }
 	}
 	public hide(): void {
 		if (this.drawFocusRect) {
-			this.root.style.visibility = 'hidden';
 			this.drawFocusRect = false;
 			const childList = this.getChildFocusRects();
 			for (const item of childList) {
@@ -1368,7 +1288,6 @@ export class FocusRect extends EventDispatcher implements IRender {
 				item.show();
 			}
 			this.refreshDisplay();
-			this.root.style.visibility = '';
 		}
 	}
 
@@ -1384,13 +1303,13 @@ export class FocusRect extends EventDispatcher implements IRender {
 		this._targetNode = v;
 		//移除所有焦点矩形
 		// this.removeAllFocusRects();
-		//刷新
-		this.registToUpdateDisplay();
 		//生成子集
 		this.makeChildFocusRects(v);
-
 		this.detachEvent();
 		this.attachEvent();
+		//刷新
+		this.refreshDisplay();
+		this.flushDraw();
 	}
 
 	private eventDispose: IDisposable[] = [];
@@ -1399,6 +1318,7 @@ export class FocusRect extends EventDispatcher implements IRender {
 		if (node) {
 			this.eventDispose.push(node.onPropertyChanged(this.nodeEventHandler, this));
 			this.eventDispose.push(node.onLockedChanged(this.nodeEventHandler, this));
+			this.eventDispose.push(node.onInstanceValueChanged(this.nodeEventHandler, this));
 			node.addEgretEventlistener('addedToStage', this.nodeEventHandler, this);
 			node.addEgretEventlistener('move', this.nodeEventHandler, this);
 			node.addEgretEventlistener('resize', this.nodeEventHandler, this);
@@ -1415,7 +1335,8 @@ export class FocusRect extends EventDispatcher implements IRender {
 		}
 	}
 	private nodeEventHandler(): void {
-		this.registToUpdateDisplay();
+		this.refreshDisplay();
+		this.flushDraw();
 	}
 
 	private _parentFocusRect: FocusRect;
@@ -1426,15 +1347,6 @@ export class FocusRect extends EventDispatcher implements IRender {
 	public set parentFocusRect(v: FocusRect) {
 		this._parentFocusRect = v;
 	}
-	public container: HTMLElement;
-	public render(container: HTMLElement, index: number = undefined): void {
-		this.container = container;
-		container.appendChild(this.root);
-		if (index !== undefined) {
-			this.root.style.zIndex = index.toString();
-		}
-	}
-
 	public setBounds(x: number, y: number, width: number, height: number) {
 
 	}
@@ -1461,13 +1373,12 @@ export class FocusRect extends EventDispatcher implements IRender {
 			if (index === undefined && v.targetNode) {
 				let node = v.targetNode as INode;
 				const i: number = node.getParent().getNodeIndex(node);
-				v.render(this.root, i);
+				v._ZIndex = i;
 			} else {
-				v.render(this.root, index);
+				v._ZIndex = index;
 			}
 		}
 		catch (e) {
-			v.render(this.root);
 		}
 		v.parentFocusRect = this;
 	}
@@ -1476,7 +1387,6 @@ export class FocusRect extends EventDispatcher implements IRender {
 		var index: number = this.childfocusRects.indexOf(v);
 		if (index !== -1) {
 			this.childfocusRects.splice(index, 1);
-			v.removeFromParent();
 			v.parentFocusRect = null;
 		}
 	}
@@ -1489,7 +1399,6 @@ export class FocusRect extends EventDispatcher implements IRender {
 	/**移除所有的焦点矩形对象 */
 	public removeAllFocusRects(): void {
 		this.childfocusRects.forEach(rect => {
-			rect.removeFromParent();
 			rect.parentFocusRect = null;
 		})
 		this.childfocusRects.length = 0;
@@ -1515,7 +1424,7 @@ export class FocusRect extends EventDispatcher implements IRender {
 					fr.targetNode = targetNode;
 					this.addFocusRect(fr, i);
 				} else {
-					fr.root.style.zIndex = i.toString();
+					fr._ZIndex = i;
 				}
 				currentRects.push(fr);
 			}
@@ -1545,24 +1454,51 @@ export class FocusRect extends EventDispatcher implements IRender {
 		return null;
 	}
 	protected getFocusRectInstance(): FocusRect {
-		return new FocusRect(this.ownerLayer);
+		return new FocusRect(this.flushDraw);
 	}
-	private registed: boolean = false;
-	private registToUpdateDisplay(): void {
-		if (!this.targetNode) {
-			return;
-		}
-		//todo 这里按理说不应该有这个延时，应该想办法检测到引擎最终的改变然后进行更新。 这里加这个延时是为了防止validenow进入死循环。
-		if (!this.registed) {
-			this.registed = true;
-			setTimeout(() => {
-				this.refreshDisplay();
-			}, 10);
-		}
+
+	private _Width: number;
+	public get Width(): number {
+		return this._Width;
 	}
-	private cacheInstanceWidth: number;
-	private cacheInstanceHeight: number;
-	private cacheMatrix: Matrix;
+	private _Height: number;
+	public get Height(): number {
+		return this._Height;
+	}
+	protected _ZIndex: number;
+	public get ZIndex(): number {
+		return this._ZIndex;
+	}
+	private _Matrix: Matrix = new Matrix(1, 0, 0, 1, 0, 0);
+	public get Matrix(): Matrix {
+		return this._Matrix;
+	}
+	protected _RootMatrix: Matrix = new Matrix(1, 0, 0, 1, 0, 0);
+	public get RootMatrix(): Matrix {
+		return this._RootMatrix;
+	}
+	public set RootMatrix(value: Matrix) {
+		this.childfocusRects.forEach(rect => {
+			rect.RootMatrix = value;
+		})
+		this._RootMatrix = value;
+	}
+	/**
+	 * 获取相对于舞台的matrix
+	 */
+	public getAbsoluteMatrix(): Matrix {
+		let m = this._Matrix.clone();
+		let parent = this.parentFocusRect;
+		while (parent) {
+			m.concat(parent.Matrix);
+			parent = parent.parentFocusRect;
+		}
+		return m;
+	}
+
+	private lastInstanceWidth: number;
+	private lastInstanceHeight: number;
+	private lastMatrix: Matrix = new Matrix(1, 0, 0, 1, 0, 0);
 	/**刷新展现形态 */
 	protected refreshDisplay(): void {
 		if (!this.drawFocusRect) {
@@ -1572,7 +1508,6 @@ export class FocusRect extends EventDispatcher implements IRender {
 			this.visible = false;
 			return;
 		}
-		this.registed = false;
 		let egretObj = this.targetNode.getInstance() as egret.DisplayObject;
 		this.visible = egretObj.visible
 
@@ -1584,19 +1519,18 @@ export class FocusRect extends EventDispatcher implements IRender {
 		var m: Matrix = new Matrix(1, 0, 0, 1, -egretObj.anchorOffsetX, -egretObj.anchorOffsetY);
 		m.concat(egretObj.matrix.clone() as any)
 		//由于相对布局的问题，如果自身发生变化可能会引起父级的变化，这里更新一下父级
-		if (this.parentFocusRect && this.cacheMatrix && (
-			!m.equals(this.cacheMatrix) ||
-			this.cacheInstanceWidth !== egretObj.width ||
-			this.cacheInstanceHeight !== egretObj.height)) {
-			this.cacheInstanceWidth = egretObj.width;
-			this.cacheInstanceHeight = egretObj.height;
+		if (this.parentFocusRect && this.lastMatrix && (
+			!m.equals(this.lastMatrix) ||
+			this.lastInstanceWidth !== egretObj.width ||
+			this.lastInstanceHeight !== egretObj.height)) {
+			this.lastInstanceWidth = egretObj.width;
+			this.lastInstanceHeight = egretObj.height;
 			this.parentFocusRect.refreshDisplay();
 		}
-		this.root.style.width = egretObj.width + 'px';
-		this.root.style.height = egretObj.height + 'px';
-		this.root.style.transform = 'matrix(' + m.a + ',' + m.b + ',' + m.c + ',' + m.d + ',' + m.tx + ',' + m.ty + ')';
-		this.cacheMatrix = m;
-		this.drawColorRange();
+		this._Width = egretObj.width;
+		this._Height = egretObj.height;
+		this._Matrix = m;
+		this.lastMatrix = m;
 		this.refreshRectRender();
 	}
 
@@ -1615,6 +1549,26 @@ export class FocusRect extends EventDispatcher implements IRender {
 	}
 
 	protected doRefreshRectRender(): void {
+
+	}
+
+	public draw(): void {
+		if (!this.drawFocusRect) {
+			return;
+		}
+		var childList = this.getChildFocusRects();
+		for (var i = 0; i < childList.length; i++) {
+			childList[i].drawColorRange();
+			childList[i].draw();
+		}
+		if (!this.targetNode) {
+			return;
+		}
+		this.drawColorRange();
+		this.drawRect();
+	}
+
+	protected drawRect(): void {
 
 	}
 
@@ -1674,13 +1628,7 @@ export class FocusRect extends EventDispatcher implements IRender {
 	private drawColorRange(): void {
 
 	}
-	public removeFromParent(): void {
-		this.root.remove();
-		this.dispose();
-	}
 	public dispose(): void {
-		this.ownerLayer = null;
-		this.rectRender.dispose();
 		var childs = this.getChildFocusRects();
 		for (var i = 0; i < childs.length; i++) {
 			childs[i].dispose();
@@ -1695,10 +1643,15 @@ export class FocusRect extends EventDispatcher implements IRender {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**拓展的焦点矩形 实现了IP9Target接口 */
 export class FocusRectExt extends FocusRect implements IP9TTarget {
-	constructor(ownerLayer: HTMLElement) {
-		super(ownerLayer);
+	protected rectRender: RectRender;
+	constructor(public container: HTMLElement,
+		private context2d: CanvasRenderingContext2D,
+		protected flushDraw: Function) {
+		super(flushDraw);
+		this.rectRender = new RectRender(context2d);
 		this.doUpdate = this.doUpdate.bind(this);
 	}
+
 	protected setTargetNode(v: INode): void {
 		super.setTargetNode(v);
 		if (v) {
@@ -1907,11 +1860,12 @@ export class FocusRectExt extends FocusRect implements IP9TTarget {
 			setTimeout(() => {
 				this.regist = false;
 				this.doUpdate();
+				this.dispatchEvent(new P9TTargetEvent(P9TTargetEvent.DISPLAYCHANGE));
 			}, 3);
 		}
 	}
 	protected getFocusRectInstance(): FocusRect {
-		return new FocusRectExt(this.ownerLayer);
+		return new FocusRectExt(this.container, this.context2d, this.flushDraw);
 	}
 	//此AABB信息是纪录即将更新数值后的预期AABB信息
 	//因为数值更新是单个设置的，这会导致再设置下一个属性时AABB框的信息会更新导致约束信息的计算错误
@@ -2101,7 +2055,7 @@ export class FocusRectExt extends FocusRect implements IP9TTarget {
 		return v / scale;
 	}
 	public getMatrix(): Matrix {
-		return MatrixUtil.getMatrix(this.root);
+		return this.getAbsoluteMatrix();
 	}
 	public getStageToParentMatrix(): Matrix {
 		return MatrixUtil.getMatrixToWindow(this.container);
@@ -2147,10 +2101,8 @@ export class FocusRectExt extends FocusRect implements IP9TTarget {
 		return { width: width, height: height };
 	}
 
+	private rectPoints: { p1: Point; p2: Point; p3: Point; p4: Point } = { p1: new Point(), p2: new Point(), p3: new Point(), p4: new Point() };
 	protected doRefreshRectRender(): void {
-		if (!this.ownerLayer) {
-			return
-		}
 		let egretObj = this.targetNode.getInstance() as egret.DisplayObject;
 		let objSize = this.getDisplayObjectSize(egretObj);
 		let p1 = new Point(0, 0);
@@ -2158,29 +2110,46 @@ export class FocusRectExt extends FocusRect implements IP9TTarget {
 		let p3 = new Point(objSize.width, objSize.height);
 		let p4 = new Point(0, objSize.height);
 
-		let targetGlobalMatix: Matrix = this.getMatrix();
-		targetGlobalMatix.concat(MatrixUtil.getMatrixToWindow(this.container));
+		// let targetGlobalMatix: Matrix = this.getAbsoluteMatrix();
+		// targetGlobalMatix.translate(this.RootMatrix.tx / this.RootMatrix.a, this.RootMatrix.ty / this.RootMatrix.d);
+		// targetGlobalMatix.concat(MatrixUtil.getMatrixToWindow(this.container));
 
-		let rootLocalMatrix: Matrix = MatrixUtil.getMatrixToWindow(this.ownerLayer);
-		rootLocalMatrix.invert();
+		// let rootLocalMatrix: Matrix = MatrixUtil.getMatrixToWindow(this.container);
+		// rootLocalMatrix.invert();
+
+		// p1 = targetGlobalMatix.transformPoint(p1.x, p1.y);
+		// p1 = rootLocalMatrix.transformPoint(p1.x, p1.y);
+
+		// p2 = targetGlobalMatix.transformPoint(p2.x, p2.y);
+		// p2 = rootLocalMatrix.transformPoint(p2.x, p2.y);
+
+		// p3 = targetGlobalMatix.transformPoint(p3.x, p3.y);
+		// p3 = rootLocalMatrix.transformPoint(p3.x, p3.y);
+
+		// p4 = targetGlobalMatix.transformPoint(p4.x, p4.y);
+		// p4 = rootLocalMatrix.transformPoint(p4.x, p4.y);
+
+		let targetGlobalMatix: Matrix = this.getAbsoluteMatrix();
+		targetGlobalMatix.translate(this.RootMatrix.tx / this.RootMatrix.a, this.RootMatrix.ty / this.RootMatrix.d);
 
 		p1 = targetGlobalMatix.transformPoint(p1.x, p1.y);
-		p1 = rootLocalMatrix.transformPoint(p1.x, p1.y);
-
 		p2 = targetGlobalMatix.transformPoint(p2.x, p2.y);
-		p2 = rootLocalMatrix.transformPoint(p2.x, p2.y);
-
 		p3 = targetGlobalMatix.transformPoint(p3.x, p3.y);
-		p3 = rootLocalMatrix.transformPoint(p3.x, p3.y);
-
 		p4 = targetGlobalMatix.transformPoint(p4.x, p4.y);
-		p4 = rootLocalMatrix.transformPoint(p4.x, p4.y);
 
-		this.rectRender.draw(p1, p2, p3, p4);
+		this.rectPoints.p1 = p1;
+		this.rectPoints.p2 = p2;
+		this.rectPoints.p3 = p3;
+		this.rectPoints.p4 = p4;
+	}
+
+	protected drawRect(): void {
+		this.rectRender.draw(this.rectPoints.p1, this.rectPoints.p2, this.rectPoints.p3, this.rectPoints.p4);
 	}
 
 
 	public dispose(): void {
+		this.rectRender.dispose();
 		super.dispose();
 	}
 }

@@ -56,7 +56,7 @@ class LegacyResizeHelper {
 	private static intervalTag: any;
 	private static startListen(): void {
 		this.stopListen();
-		this.intervalTag = setInterval(() => { this.checkSize(); }, 1);
+		this.intervalTag = setInterval(() => { this.checkSize(); }, 33);
 	}
 	private static stopListen(): void {
 		clearInterval(this.intervalTag);

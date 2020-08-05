@@ -20,6 +20,7 @@ import { Point2D, expandPolygon } from './utils/polygonUtils';
 import { isMacintosh } from 'egret/base/common/platform';
 import { Emitter, Event as VSEvent } from 'egret/base/common/event';
 import { pointInRect } from 'egret/base/common/numbers';
+import { OperateLayer } from './operatelayers/OperateLayer';
 
 
 
@@ -54,8 +55,10 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 	 * egretContentHost:舞台内容承载对象，此对象紧接于stage，
 	 * 编辑器中游戏场景的所有可视元素都是挂在此对象之下，（用来刷新焦点框）
 	 */
-	constructor() {
+	private operateLayer: OperateLayer;
+	constructor(operateLayer: OperateLayer) {
 		super();
+		this.operateLayer = operateLayer;
 		this._onScaleChanged = new Emitter<number>();
 		this._onVisibleChanged = new Emitter<boolean>();
 	}
@@ -279,6 +282,7 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 			parentFocusRect.addFocusRect(focusRect);
 			this.dispatchEvent(new Event(FocusRectLayerEvent.FOUCSRECT_ADDED, focusRect));
 		}
+		this.refreshRectRender();
 	}
 	//删除了一个节点
 	private nodeRemoved(e: NodeRemovedEvent): void {
@@ -288,6 +292,7 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 			focusRect.removeFromParentFocusRect();
 			this.dispatchEvent(new Event(FocusRectLayerEvent.FOUCSRECT_REMOVED, focusRect));
 		}
+		this.refreshRectRender();
 	}
 	//选中列表发生变化
 	private selectedChanged(e: SelectedListChangedEvent): void {
@@ -752,20 +757,50 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 		}
 	}
 
+	private startX: number;
+	private startY: number;
+	private rightMouseDown: boolean;
+	private leftMouseDown: boolean;
 	public notifyMouseEvent = (e) => {
 		let mouseEvent: MouseEvent = e;
 		switch (e.type) {
 			case 'mousedown':
-				if (e.button == 0) {
-					this.mouseDownHandler(e);//left
+				this.mouseDownHandler(e);
+				this.attachMouseEvent();
+				if(e.button === 0){
+					this.leftMouseDown = true;
+				}
+				if (e.button === 2) {
+					this.rightMouseDown = true;
+					this.startX = e.clientX;
+					this.startY = e.clientY;
 				}
 				break;
 			case 'mousemove':
+				if (this.rightMouseDown &&
+					!this.leftMouseDown &&
+					!this.moving) {
+					if (Math.abs(this.startX - e.clientX) >= 2 && Math.abs(this.startY - e.clientY) >= 2) {
+						this.startMove(e);
+						if (!this.dragEnabled) {
+							this.operateLayer.operatalbe = false;
+						}
+					}
+				}
 				this.mouseMoveHandler(e);
 				break;
 			case 'mouseup':
-				if (e.button == 0) {
-					this.mouseUpHandler(e);//left
+				if(e.button === 0){
+					this.leftMouseDown = false;
+				}
+				if(e.button === 2){
+					this.rightMouseDown = false;
+				}
+				if (!this.dragEnabled && this.moving) {
+					this.operateLayer.operatalbe = true;
+				}
+				if (this.moving) {
+					this.stopMove(e);
 				}
 				this.detachMouseEvent();
 				break;
@@ -825,7 +860,6 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 	}
 	private moving: boolean = false;
 	private startMove(event: MouseEvent): void {
-		this.attachMouseEvent();
 		event.preventDefault();
 		event.stopPropagation();
 		this.targetStartPos.x = event.clientX - this.egretContentHost.getTarget().x;
@@ -837,13 +871,15 @@ export class FocusRectLayer extends EventDispatcher implements IAbosrbLineProvid
 	}
 
 	private mouseMoveHandler(event: MouseEvent): void {
-		this.speed.x = event.clientX - this.mousePos.x;
-		this.speed.y = event.clientY - this.mousePos.y;
-		this.movePoint.x = event.clientX - this.targetStartPos.x;
-		this.movePoint.y = event.clientY - this.targetStartPos.y;
-		this.updateTargetPos();
-		this.mousePos.x = event.clientX;
-		this.mousePos.y = event.clientY;
+		if (this.moving) {
+			this.speed.x = event.clientX - this.mousePos.x;
+			this.speed.y = event.clientY - this.mousePos.y;
+			this.movePoint.x = event.clientX - this.targetStartPos.x;
+			this.movePoint.y = event.clientY - this.targetStartPos.y;
+			this.updateTargetPos();
+			this.mousePos.x = event.clientX;
+			this.mousePos.y = event.clientY;
+		}
 	}
 	private mouseUpHandler(event: MouseEvent): void {
 		this.stopMove(event);
@@ -1368,6 +1404,7 @@ export class FocusRect extends EventDispatcher {
 	 */
 	public addFocusRect(v: FocusRect, index: number = undefined) {
 		v.removeFromParentFocusRect();
+		v.RootMatrix = this.RootMatrix;
 		this.childfocusRects.push(v);
 		try {
 			if (index === undefined && v.targetNode) {

@@ -133,12 +133,12 @@ export class ExmlEditor extends EventDispatcher {
 		this.backgroundContainer = backgroundContainer;
 		this.initView();
 		this.focusRectContainer.addEventListener('resize', this.focusRectContainerSizeChange);
-		//添加节点映射层
-		this.focusRectLayer = new FocusRectLayer();
-		this.focusRectLayer.onVisibleChanged(this.onFocusRectLayerVisibleChanged, this);
-		this.focusRectLayer.render(this.focusRectContainer);
 		//操作层
 		this.operateLayer = new OperateLayer();
+		//添加节点映射层
+		this.focusRectLayer = new FocusRectLayer(this.operateLayer);
+		this.focusRectLayer.onVisibleChanged(this.onFocusRectLayerVisibleChanged, this);
+		this.focusRectLayer.render(this.focusRectContainer);
 		//添加变换层
 		this.transformLayer = new TransformLayer(this.operateLayer);
 		this.transformLayer.dragEnabled = this.dragEnabled;

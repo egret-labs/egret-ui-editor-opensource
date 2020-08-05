@@ -53,6 +53,7 @@ export class P9TTargetAdapter extends EventDispatcher implements IP9TTargetAdapt
 	public set enable(value: boolean) {
 		this._enable = value;
 		if (!value) {
+			this.lockCursor = false;
 			this.setCursor('');
 		}
 	}

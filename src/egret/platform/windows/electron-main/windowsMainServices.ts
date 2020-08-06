@@ -478,8 +478,8 @@ class Dialogs {
 			return paths;
 		}
 		return new Promise((resolve, reject) => {
-			dialog.showOpenDialog(window ? window.win : void 0, options, paths => {
-				resolve(normalizePaths(paths));
+			dialog.showOpenDialog(window ? window.win : void 0, options).then((value)=> {
+				resolve(normalizePaths(value.filePaths));
 			});
 		});
 	}

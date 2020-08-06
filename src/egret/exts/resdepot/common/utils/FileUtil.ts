@@ -415,12 +415,8 @@ export class FileUtil {
 			filters: _filters,
 			properties: pickerProperties
 		};
-		remote.dialog.showOpenDialog(win, openDialogOptions, (paths) => {
-			if (paths && paths.length > 0) {
-				callback(paths);
-			} else {
-				callback(void (0));
-			}
+		remote.dialog.showOpenDialog(win, openDialogOptions).then((value)=> {
+			callback(value.filePaths);
 		});
 	}
 

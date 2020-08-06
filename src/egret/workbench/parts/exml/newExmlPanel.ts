@@ -358,7 +358,9 @@ export class NewExmlPanel extends InnerBtnWindow {
 	}
 
 	private pathBrowser = () => {
-		remote.dialog.showOpenDialog({ defaultPath: this.projectPath, properties: ['openDirectory'] }, (filePaths) => this.pathHandle(filePaths));
+		remote.dialog.showOpenDialog(remote.getCurrentWindow(), { defaultPath: this.projectPath, properties: ['openDirectory'] }).then((value)=> {
+			this.pathHandle(value.filePaths);
+		});
 	}
 
 	/**

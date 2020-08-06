@@ -1,5 +1,5 @@
 import { Event, EventDispatcher } from './EventDispatcher';
-import { IP9TTargetRender, IP9TTarget } from './t9transformer/interfaces/IP9TTarget';
+import { IP9TTarget } from './t9transformer/interfaces/IP9TTarget';
 import { MatrixUtil } from './t9transformer/util/MatrixUtil';
 import { P9TTargetEvent } from './t9transformer/events/P9TTargetEvent';
 import { EgretContentHost, EgretContentHostEvent } from './EgretContentHost';
@@ -19,7 +19,6 @@ import { TweenLite } from "gsap";
 import { Point2D, expandPolygon } from './utils/polygonUtils';
 import { isMacintosh } from 'egret/base/common/platform';
 import { Emitter, Event as VSEvent } from 'egret/base/common/event';
-import { pointInRect } from 'egret/base/common/numbers';
 import { OperateLayer } from './operatelayers/OperateLayer';
 
 

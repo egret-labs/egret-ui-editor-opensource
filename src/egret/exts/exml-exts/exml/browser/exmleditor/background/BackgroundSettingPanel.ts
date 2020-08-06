@@ -363,15 +363,11 @@ export class BackgroundSettingPanel extends InnerBtnWindow {
 		} else {
 			pickerProperties = ['multiSelections', 'openFile', 'createDirectory'];
 		}
+		
 		remote.dialog.showOpenDialog(win, {
 			properties: pickerProperties
-		}, (paths) => {
-			if (paths && paths.length > 0) {
-				// Return
-				clb(paths);
-			} else {
-				clb(void (0));
-			}
+		}).then((value)=> {
+			clb(value.filePaths);
 		});
 	}
 

@@ -155,7 +155,7 @@ export class Watcher implements IWatcher {
  * - forEach() over the result to get the lines
  */
 class LineDecoder {
-	private stringDecoder: sd.NodeStringDecoder;
+	private stringDecoder: sd.StringDecoder;
 	private remaining: string;
 
 	constructor(encoding: string = 'utf8') {

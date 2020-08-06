@@ -41,7 +41,7 @@ module.exports = {
 		extensions: ['*', '.js', '.jsx', '.ts', '.tsx'],
 		modules: [
 			path.join(__dirname, './src'),
-			"node_modules" 
+			"node_modules"
 		]
 	},
 	entry: getEntry(),
@@ -51,7 +51,7 @@ module.exports = {
 	output: {
 		filename: '[name].js',
 		path: __dirname + '/out',
-		publicPath:'../../../../'
+		publicPath: '../../../../'
 	},
 	externals: externals,
 	module: {
@@ -61,26 +61,24 @@ module.exports = {
 				use: 'ts-loader',
 				exclude: /node_modules/
 			}, {
-				test: /\.js(x)$/, 
-				exclude: /node_modules/, 
-				loader: 'babel' 
-			}, {
 				test: /\.css$/,
 				use: [
 					MiniCssExtractPlugin.loader,
 					"css-loader"
 				]
-			},{
+			}, {
 				test: /\.less$/,
 				use: [MiniCssExtractPlugin.loader,
 					"css-loader",
 				{
 					loader: "less-loader",
 					options: {
-						paths: [
-							path.resolve(__dirname, "node_modules")
-						],
-						javascriptEnabled: true
+						lessOptions: {
+							paths: [
+								path.resolve(__dirname, "node_modules")
+							],
+							javascriptEnabled: true
+						}
 					}
 				}]
 			}, {
@@ -89,22 +87,32 @@ module.exports = {
 				exclude: /node_modules/
 			}, {
 				test: /\.(eot|woff|ttf|png|gif|svg|otf|exe)([\?]?.*)$/,
-				loader: 'file-loader?name=[path][name].[ext]',
-				exclude: /node_modules/
+				use: [{
+					loader: 'file-loader',
+					options: {
+						name: '[path][name].[ext]',
+						publicPath: function (url, resourcePath, _context) {
+							if(/node_modules\\monaco-editor/.test(resourcePath)){
+								return `../../../../../${url}`;
+							}
+							return `../../../../${url}`;
+						}
+					}
+				}]
 			}
 		]
 	},
 	plugins: [
-        new CleanWebpackPlugin({
+		new CleanWebpackPlugin({
 			cleanStaleWebpackAssets: false,
 			protectWebpackAssets: false,
 		}),
-        new MiniCssExtractPlugin({
-            // Options similar to the same options in webpackOptions.output
-            // both options are optional
-            filename: "[name].css",
-            chunkFilename: "[id].css"
-        }),
+		new MiniCssExtractPlugin({
+			// Options similar to the same options in webpackOptions.output
+			// both options are optional
+			filename: "[name].css",
+			chunkFilename: "[id].css"
+		}),
 		new htmlPlugin({
 			minify: false,
 			hash: false,
@@ -119,20 +127,22 @@ module.exports = {
 			template: './egret/workbench/electron-browser/bootstrap/resdepot.html',
 			chunks: []
 		}),
-		new CopyWebpackPlugin([
-			{ from: '../resources/',to:'./egret/workbench/electron-browser/bootstrap/resources/' },
-			{ from: './egret/workbench/services/files/watcher/win32/CodeHelper.exe',to:'./egret/workbench/services/files/watcher/win32/CodeHelper.exe' }
-		]),
+		new CopyWebpackPlugin({
+			patterns: [
+				{ from: '../resources/', to: './egret/workbench/electron-browser/bootstrap/resources/' },
+				{ from: './egret/workbench/services/files/watcher/win32/CodeHelper.exe', to: './egret/workbench/services/files/watcher/win32/CodeHelper.exe' }
+			]
+		}),
 		new TerserPlugin({
 			sourceMap: false,
-            terserOptions: {
-                compress: {
+			terserOptions: {
+				compress: {
 					drop_console: true,
 					drop_debugger: true,
-                }
-            },
-            extractComments: false
-        })
+				}
+			},
+			extractComments: false
+		})
 	],
 	watchOptions: {
 		poll: 200,//监测修改的时间(ms)
@@ -144,26 +154,26 @@ module.exports = {
 
 function _externals() {
 	var nameMap = {};
-	var pa = fs.readdirSync(path.join(__dirname,'node_modules'));
-	pa.forEach(function(ele,index){
+	var pa = fs.readdirSync(path.join(__dirname, 'node_modules'));
+	pa.forEach(function (ele, index) {
 		if (ele === "typescript") {
 			return;
 		}
 		nameMap[ele] = true;
 	})
-    let manifest = require('./package.json');
-    let dependencies = manifest.dependencies;
-    for (let p in dependencies) {
+	let manifest = require('./package.json');
+	let dependencies = manifest.dependencies;
+	for (let p in dependencies) {
 		nameMap[p] = true;
 	}
-	
+
 	let externals = {};
-	for(let name in nameMap){
+	for (let name in nameMap) {
 		if (nameMap[name] === true) {
 			// console.log('external: ' + 'commonjs ' + name);
 			externals[name] = 'commonjs ' + name;
 		}
 	}
 
-    return externals;
+	return externals;
 }

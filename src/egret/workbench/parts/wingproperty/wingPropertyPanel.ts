@@ -20,6 +20,7 @@ import URI from 'egret/base/common/uri';
 import { isEqual } from 'egret/base/common/resources';
 import * as paths from 'egret/base/common/paths';
 import { deepClone } from 'egret/base/common/objects';
+import { values } from 'egret/base/common/map';
 
 /**
  * 新建文件夹
@@ -197,13 +198,14 @@ export class WingPropertyPanel extends InnerBtnWindow {
 	}
 
 	private themeClick(e): void {
-		remote.dialog.showOpenDialog({
+		remote.dialog.showOpenDialog(remote.getCurrentWindow(), {
 			defaultPath: this.projectModel.project ? this.projectModel.project.fsPath : '',
 			properties: ['openFile'], filters: [{
 				name: 'Text',
 				extensions: ['json']
 			}]
-		}, (filePaths) => {
+		}).then((value) => {
+			const filePaths = value.filePaths;
 			let temp: string;
 			if (filePaths) {
 				if (filePaths.length === 1) {
@@ -226,13 +228,14 @@ export class WingPropertyPanel extends InnerBtnWindow {
 
 
 	private resClick(e): void {
-		remote.dialog.showOpenDialog({
+		remote.dialog.showOpenDialog(remote.getCurrentWindow(), {
 			defaultPath: this.projectModel.project ? this.projectModel.project.fsPath : '',
 			properties: ['openFile'], filters: [{
 				name: 'Text',
 				extensions: ['json']
 			}]
-		}, (filePaths) => {
+		}).then((value) => {
+			const filePaths = value.filePaths;
 			let temp: string;
 			if (filePaths) {
 				if (filePaths.length === 1) {
@@ -263,10 +266,11 @@ export class WingPropertyPanel extends InnerBtnWindow {
 	}
 
 	private skinClick(e): void {
-		remote.dialog.showOpenDialog({
+		remote.dialog.showOpenDialog(remote.getCurrentWindow(), {
 			defaultPath: this.projectModel.project ? this.projectModel.project.fsPath : '',
 			properties: ['openDirectory']
-		}, (filePaths) => {
+		}).then((value) => {
+			const filePaths = value.filePaths;
 			let temp: string;
 			if (filePaths) {
 				if (filePaths.length === 1) {

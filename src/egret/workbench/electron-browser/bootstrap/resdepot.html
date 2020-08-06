@@ -4,24 +4,16 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Res Editor</title>
-    <link type="text/css" rel="stylesheet" href="./monaco-editor/monaco-editor.css" />
+	<link type="text/css" rel="stylesheet" href="./monaco-editor/monaco-editor.css" />
 	<link rel="stylesheet" href="index.css" />
 	<link rel="stylesheet" href="../../../../../libs/boxlayout/theme.css" />
-	<script src="../../../../../libs/boxlayout/boxlayout.js"></script>
-	<script src="../../../../../libs/modules/egret/egret.js"></script>
-	<script src="../../../../../libs/modules/egret/egret.web.js"></script>
-	<script src="../../../../../libs/modules/eui/eui.js"></script>
-	<script src="../../../../../libs/modules/res/res.js"></script>
-	<script src="../../../../../libs/modules/tween/tween.js"></script>
-    <script src="./monaco-editor/monaco-editor.js"></script>
-	<script src="resdepot.js"></script>
-
 </head>
 <style>
 	html {
 		width: 100%;
 		height: 100%;
 	}
+
 	body {
 		width: 100%;
 		height: 100%;
@@ -30,31 +22,43 @@
 		color: #cbcbcb;
 		font-size: 13px;
 	}
+
 	.container {
 		width: 100%;
 		height: 100%;
 	}
 
 	body *::-webkit-scrollbar {
-	width: 4px;     /*高宽分别对应横竖滚动条的尺寸*/
-	height: 2px;
-	position: absolute;
+		width: 4px;
+		/*高宽分别对应横竖滚动条的尺寸*/
+		height: 2px;
+		position: absolute;
 	}
-	body *::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+
+	body *::-webkit-scrollbar-thumb {
+		/*滚动条里面小方块*/
 		border-radius: 5px;
 		background: rgba(214, 214, 214, 0.5);
 		position: absolute;
 	}
-	body *::-webkit-scrollbar-track {/*滚动条里面轨道*/
+
+	body *::-webkit-scrollbar-track {
+		/*滚动条里面轨道*/
 		border-radius: 0;
 		background: rgba(17, 17, 17, 0);
 		position: absolute;
 	}
-
-
 </style>
 
 <body class="eui-black">
 </body>
+<script src="../../../../../libs/boxlayout/boxlayout.js"></script>
+<script src="../../../../../libs/modules/egret/egret.js"></script>
+<script src="../../../../../libs/modules/egret/egret.web.js"></script>
+<script src="../../../../../libs/modules/eui/eui.js"></script>
+<script src="../../../../../libs/modules/res/res.js"></script>
+<script src="../../../../../libs/modules/tween/tween.js"></script>
+<script src="./monaco-editor/monaco-editor.js"></script>
+<script src="resdepot.js"></script>
 
 </html>

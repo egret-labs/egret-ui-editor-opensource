@@ -167,7 +167,6 @@ Egret UI Editor的布局直观简单，起包含一下几个主要部分：
 	* `drawin` —— mac 平台打包需要的相关文件，以及 mac 平台的的 `node_modules` 原生模块。
 	* `win` —— win 平台打包需要的相关文件，以及 mac 平台的的 `node_modules` 原生模块。
 	* `lib` —— tslint 语法检测工具，用于规范开发者书写的代码规范，其中对代码注释做了比较明确的要求。
-	* `gulpfile.*.js` —— app 打包，以及多语言打包的相关工具。
 * `docs` —— 文档相关文件夹
 * `euiruntime` —— 运行时相关文件夹，每一个eui编辑器实际上是真实跑了一个 `egret` 环境。这个文件夹中就是这个真实的 	`egret` 环境的 js 文件。
 * `libs` —— app 依赖的库，其中目前只有一个盒子布局的库。
@@ -199,7 +198,6 @@ Egret UI Editor的布局直观简单，起包含一下几个主要部分：
 		* `workbench` —— 构建起编辑器显示层的架构。如各面板的具体实现以及编辑器工作台的实现。
 	* `typings` —— 部分 `*.d.ts` 的文件声明。
 	* `vs` —— 目前仅需要用到原vscode代码中的 `list` `tree` 以及 滚动条控件。
-* `gulpfile.js` —— gulp命令，主要是打包和编译多语言相关。
 
 ## Egret UI Editor 服务机制
 

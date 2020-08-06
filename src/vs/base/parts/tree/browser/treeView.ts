@@ -521,8 +521,8 @@ export class TreeView extends HeightMap {
 		});
 
 		if (Browser.isIE) {
-			this.wrapper.style.msTouchAction = 'none';
-			this.wrapper.style.msContentZooming = 'none';
+			this.wrapper.style['msTouchAction'] = 'none';
+			this.wrapper.style['msContentZooming'] = 'none';
 		} else {
 			this.gestureDisposable = Touch.Gesture.addTarget(this.wrapper);
 		}

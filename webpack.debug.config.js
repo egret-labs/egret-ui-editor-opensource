@@ -30,6 +30,7 @@ function getEntry() {
 	return entry;
 }
 
+let monacoEditorFontRegex = /node_modules\/monaco-editor\/esm\/vs\/base\/browser\/ui\/codiconLabel\/codicon\/codicon.ttf/;
 let externals = _externals();
 
 module.exports = {
@@ -91,9 +92,15 @@ module.exports = {
 					loader: 'file-loader',
 					options: {
 						name: '[path][name].[ext]',
+						outputPath: function (url, resourcePath, _context) {
+							if(monacoEditorFontRegex.test(resourcePath.replace(/[\\/]/g, "/"))){
+								return `egret/workbench/electron-browser/bootstrap/monaco-editor/codicon.ttf`;
+							}
+							return url;
+						},
 						publicPath: function (url, resourcePath, _context) {
-							if(/node_modules\\monaco-editor/.test(resourcePath)){
-								return `../../../../../${url}`;
+							if(monacoEditorFontRegex.test(resourcePath.replace(/[\\/]/g, "/"))){
+								return `../../../../../egret/workbench/electron-browser/bootstrap/monaco-editor/codicon.ttf`;
 							}
 							return `../../../../${url}`;
 						}

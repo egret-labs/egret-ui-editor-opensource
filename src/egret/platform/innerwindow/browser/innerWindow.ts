@@ -3,7 +3,7 @@ import { Event, Emitter } from 'egret/base/common/event';
 import { innerWindowManager } from '../common/innerWindowManager';
 import { addClass, removeClass, invalidateReisizeCheck } from 'egret/base/common/dom';
 import { dispose, IDisposable } from 'egret/base/common/lifecycle';
-import '!style-loader!css-loader!./media/innerWindows.css';
+import './media/innerWindows.css';
 import { SystemButton, ButtonBase } from '../../../base/browser/ui/buttons';
 import { localize } from '../../../base/localization/nls';
 import { isMacintosh } from 'egret/base/common/platform';

@@ -67,6 +67,9 @@ MenuRegistry.getMenuItems = function (id) {
 	}
 	for (let i = 0; i < result.length; i++) {
 		const item = result[i];
+		if(!item.command){
+			continue;
+		}
 		// 从右键菜单中移除 Command Palette 和 Go to Symbol...
 		// https://github.com/Microsoft/monaco-editor/issues/1237
 		if (item.command.id === 'editor.action.quickCommand' ||

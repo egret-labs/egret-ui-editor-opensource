@@ -2002,8 +2002,9 @@ export class FocusRectExt extends FocusRect implements IP9TTarget {
 			var setWidth: boolean = true;
 			var setHeight: boolean = true;
 			if (AABB) {
-				var parentW: number = this.container.offsetWidth;
-				var parentH: number = this.container.offsetHeight;
+				const parent = this.targetNode.getInstance().parent;
+				var parentW: number = parent ? parent.width : 0;
+				var parentH: number = parent ? parent.height : 0;
 
 				var leftValue: IValue = this.targetNode.getProperty('left');
 				var rightValue: IValue = this.targetNode.getProperty('right');

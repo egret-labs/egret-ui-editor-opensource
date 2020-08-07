@@ -41,9 +41,12 @@ export class CodeEditor extends BaseTextEditor {
 	}
 
 	public async setActive(active: boolean): Promise<void> {
+		const preActive = this._isActive;
 		await super.setActive(active);
 		if (!active) {
-			await this.syncText();
+			if (preActive) {
+				await this.syncText();
+			}
 			this.updateSelectedNodeBySelection();
 		} else {
 			if (this._isActive && this.exmlFileModel && this.textChanged()) {

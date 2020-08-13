@@ -55,6 +55,7 @@ export class CodeEditor extends BaseTextEditor {
 					text: this.exmlFileModel.getModel().getText(),
 					forceMoveMarkers: true
 				}]);
+				this.resetState();
 			}
 			this.updateSelectionBySelectedNode();
 			this.editor.focus();

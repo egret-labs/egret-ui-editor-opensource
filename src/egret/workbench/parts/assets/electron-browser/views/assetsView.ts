@@ -40,6 +40,7 @@ export class AssetsView extends PanelContentDom implements IModelRequirePart, IF
 
 	// 图片展示区域容器
 	private displayArea: HTMLDivElement;
+	private sizeArea: HTMLDivElement;
 
 	// 当前view 高度
 	private totalHight: number;
@@ -109,6 +110,7 @@ export class AssetsView extends PanelContentDom implements IModelRequirePart, IF
 			return;
 		}
 		let ibg, psn = {};
+		let loadImage = true;
 		this.isSheet = false;
 		this.sheetData = null;
 
@@ -126,6 +128,8 @@ export class AssetsView extends PanelContentDom implements IModelRequirePart, IF
 				};
 				this.isSheet = true;
 				this.sheetData = svo.sheetData;
+				loadImage = false;
+				this.sizeArea.innerText = `${svo.sheetData.w} x ${svo.sheetData.h}`;
 			} else {
 				psn = {
 					'background-size': 'contain',
@@ -158,6 +162,14 @@ export class AssetsView extends PanelContentDom implements IModelRequirePart, IF
 		if (!this.displayContainer) {
 			this.displayContainer = document.createElement('div');
 			this.displayArea.appendChild(this.displayContainer);
+		}
+
+		if (loadImage) {
+			const img = new Image();
+			img.onload = () => {
+				this.sizeArea.innerText = `${img.naturalWidth} x ${img.naturalHeight}`;
+			};
+			img.src = ibg;
 		}
 
 		voluationToStyle(this.displayContainer.style, Object.assign({ 'background-image': `url("${ibg}")`, 'background-repeat': 'no-repeat', 'image-rendering': 'pixelated' }, psn));
@@ -202,7 +214,7 @@ export class AssetsView extends PanelContentDom implements IModelRequirePart, IF
 	}
 
 	private selectionChange(e: ISelectionEvent): void {
-		if(e.selection && e.selection.length > 0) {
+		if (e.selection && e.selection.length > 0) {
 			this.displayFun(e.selection[0]);
 		}
 	}
@@ -404,6 +416,15 @@ export class AssetsView extends PanelContentDom implements IModelRequirePart, IF
 		this.displayArea = document.createElement('div');
 		top.appendChild(this.displayArea);
 
+		this.sizeArea = document.createElement('div');
+		this.sizeArea.style.position = 'absolute';
+		this.sizeArea.style.bottom = '2px';
+		this.sizeArea.style.left = '6px';
+		this.sizeArea.style.backgroundColor = 'rgba(58, 58, 58, 0.34)';
+		this.sizeArea.style.paddingLeft = '6px';
+		this.sizeArea.style.paddingRight = '6px';
+		this.sizeArea.style.borderRadius = '2px';
+		this.displayArea.appendChild(this.sizeArea);
 
 		this.separatorLine = document.createElement('div');
 		this.separatorLine.className = 'assetsview separatorline';
@@ -506,7 +527,8 @@ export class AssetsView extends PanelContentDom implements IModelRequirePart, IF
 					display: 'flex',
 					justifyContent: 'center',
 					flexShrink: '0',
-					flexGrow: '0'
+					flexGrow: '0',
+					position: 'relative'
 				} :
 				{
 					width: '100%',
@@ -515,7 +537,8 @@ export class AssetsView extends PanelContentDom implements IModelRequirePart, IF
 					alignItems: null,
 					justifyContent: null,
 					flexShrink: '0',
-					flexGrow: '0'
+					flexGrow: '0',
+					position: 'relative'
 				});
 		if (this.sheetData && this.displayContainer) {
 			const scaleX = this.sheetData.sourceW / this.displayArea.clientWidth;

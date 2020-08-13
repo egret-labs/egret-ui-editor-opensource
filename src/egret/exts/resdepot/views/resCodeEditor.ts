@@ -41,6 +41,7 @@ export class ResCodeEditor extends BaseTextEditor {
 		} else {
 			if (this._isActive && this.textChanged()) {
 				this.executeEdits(this.resFileModel.getValue());
+				this.resetState();
 			}
 			this.editor.focus();
 		}

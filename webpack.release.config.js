@@ -134,12 +134,10 @@ module.exports = {
 			template: './egret/workbench/electron-browser/bootstrap/resdepot.html',
 			chunks: []
 		}),
-		new CopyWebpackPlugin({
-			patterns: [
-				{ from: '../resources/', to: './egret/workbench/electron-browser/bootstrap/resources/' },
-				{ from: './egret/workbench/services/files/watcher/win32/CodeHelper.exe', to: './egret/workbench/services/files/watcher/win32/CodeHelper.exe' }
-			]
-		}),
+		new CopyWebpackPlugin([
+			{ from: '../resources/', to: './egret/workbench/electron-browser/bootstrap/resources/' },
+			{ from: './egret/workbench/services/files/watcher/win32/CodeHelper.exe', to: './egret/workbench/services/files/watcher/win32/CodeHelper.exe' }
+		]),
 		new TerserPlugin({
 			sourceMap: false,
 			terserOptions: {

@@ -93,13 +93,13 @@ module.exports = {
 					options: {
 						name: '[path][name].[ext]',
 						outputPath: function (url, resourcePath, _context) {
-							if(monacoEditorFontRegex.test(resourcePath.replace(/[\\/]/g, "/"))){
+							if (monacoEditorFontRegex.test(resourcePath.replace(/[\\/]/g, "/"))) {
 								return `egret/workbench/electron-browser/bootstrap/monaco-editor/codicon.ttf`;
 							}
 							return url;
 						},
 						publicPath: function (url, resourcePath, _context) {
-							if(monacoEditorFontRegex.test(resourcePath.replace(/[\\/]/g, "/"))){
+							if (monacoEditorFontRegex.test(resourcePath.replace(/[\\/]/g, "/"))) {
 								return `../../../../../egret/workbench/electron-browser/bootstrap/monaco-editor/codicon.ttf`;
 							}
 							return `../../../../${url}`;
@@ -134,12 +134,10 @@ module.exports = {
 			template: './egret/workbench/electron-browser/bootstrap/resdepot.html',
 			chunks: []
 		}),
-		new CopyWebpackPlugin({
-			patterns: [
-				{ from: '../resources/', to: './egret/workbench/electron-browser/bootstrap/resources/' },
-				{ from: './egret/workbench/services/files/watcher/win32/CodeHelper.exe', to: './egret/workbench/services/files/watcher/win32/CodeHelper.exe' }
-			]
-		}),
+		new CopyWebpackPlugin([
+			{ from: '../resources/', to: './egret/workbench/electron-browser/bootstrap/resources/' },
+			{ from: './egret/workbench/services/files/watcher/win32/CodeHelper.exe', to: './egret/workbench/services/files/watcher/win32/CodeHelper.exe' }
+		]),
 	],
 	watchOptions: {
 		poll: 200,//监测修改的时间(ms)

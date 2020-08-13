@@ -154,7 +154,7 @@ export class BrowserWindowEx implements IBrowserWindowEx {
 		this._win.loadURL(url);
 		const webContents = this._win.webContents;
 		webContents.on('did-finish-load', () => {
-			webContents.setZoomFactor(1);
+			webContents.zoomFactor = 1; 
 			webContents.setVisualZoomLevelLimits(1, 1);
 			webContents.setLayoutZoomLevelLimits(0, 0);
 		});

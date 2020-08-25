@@ -567,6 +567,10 @@
 		"s": "Login",
 		"t": "Login"
 	},
+	"exml.editor.deleted": {
+		"s": "deleted",
+		"t": "deleted"
+	},
 	"exml.editor.adaptContent": {
 		"s": "Fit Content",
 		"t": "Fit Content"

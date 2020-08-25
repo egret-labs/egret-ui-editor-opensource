@@ -567,6 +567,10 @@
 		"s": "Login",
 		"t": "登录"
 	},
+	"exml.editor.deleted": {
+		"s": "deleted",
+		"t": "已删除"
+	},
 	"exml.editor.adaptContent": {
 		"s": "Fit Content",
 		"t": "适应内容"

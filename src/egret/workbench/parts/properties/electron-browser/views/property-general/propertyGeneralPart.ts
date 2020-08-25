@@ -614,7 +614,7 @@ export class PropertyGeneralPart extends PropertyBasePart {
 	}
 
 	private enableChanged_handler(value: IDropDownTextDataSource): void {
-		this.setPropertyBooleanByLabel('enable',value ? value.id : null);
+		this.setPropertyBooleanByLabel('enabled',value ? value.id : null);
 	}
 
 	private touchEnableChanged_handler(value: IDropDownTextDataSource): void {

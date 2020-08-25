@@ -7,6 +7,7 @@ import { IDisposable, dispose } from 'egret/base/common/lifecycle';
 import { IFileStat } from '../../platform/files/common/files';
 import { IWorkbenchEditorService } from '../../workbench/services/editor/common/ediors';
 import { Emitter, Event } from 'egret/base/common/event';
+import { localize } from 'egret/base/localization/nls';
 
 
 /**
@@ -133,7 +134,7 @@ export abstract class BaseEditor extends Panel implements IEditor {
 				this.setPreview(false);
 			}
 			if (this.fileRemoved) {
-				title += '(磁盘上已删除)';
+				title += `(${localize('exml.editor.deleted', 'deleted')})`;
 			}
 			this.setTitle(title);
 			this.refresh();

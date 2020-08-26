@@ -334,14 +334,14 @@ export class PropertyAllPart implements IUIBase, IDisposable {
 				}
 			case PropertyType.Color:
 				{
-					const colorPicker = existInput ? existInput as ColorPicker : new ColorPicker(container);
+					let color: string = null;
 					if (prop.user) {
-						colorPicker.setColor(toHexString(prop.user as any, '#'));
+						color = toHexString(prop.user as any, '#');
 					} else if (prop.default) {
-						colorPicker.setColor(toHexString(prop.default as any, '#'));
-					} else {
-						colorPicker.setColor(null);
+						color = toHexString(prop.default as any, '#');
 					}
+					const colorPicker = existInput ? existInput as ColorPicker : new ColorPicker(container, color);
+					colorPicker.setColor(color);
 					if (!existInput) {
 						this.inputDisposables.push(colorPicker);
 						this.inputDisposables.push(colorPicker.onDisplay(() => this.colorDisplay_handler(prop)));

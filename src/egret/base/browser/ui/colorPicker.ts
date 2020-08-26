@@ -25,7 +25,7 @@ export class ColorPicker implements IUIBase, IDisposable {
 	private _onCanceled: Emitter<void>;
 	private _onDisplay: Emitter<void>;
 
-	constructor(container: HTMLElement | IUIBase = null) {
+	constructor(container: HTMLElement | IUIBase = null, defaultColor?: string) {
 
 		this.changed_handle = this.changed_handle.bind(this);
 		this.saved_handle = this.saved_handle.bind(this);
@@ -34,7 +34,7 @@ export class ColorPicker implements IUIBase, IDisposable {
 		this.el = document.createElement('div');
 		this.content = document.createElement('div');
 		if (container) {
-			this.create(container);
+			this.create(container, defaultColor);
 		}
 		this._onChanged = new Emitter<HSVaColor>();
 		this._onSaved = new Emitter<HSVaColor>();

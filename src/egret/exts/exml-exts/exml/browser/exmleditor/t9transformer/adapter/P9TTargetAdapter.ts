@@ -234,7 +234,9 @@ export class P9TTargetAdapter extends EventDispatcher implements IP9TTargetAdapt
 		return MatrixUtil.getMatrixForIP9TTarget(this);
 	}
 	public getStageToParentMatrix(): Matrix {
-		let matrix: Matrix = MatrixUtil.getMatrixToWindow(this.container);
+		let matrix: Matrix = MatrixUtil.getMatrixToWindow(this.container);		
+		const target = this.operateTarget as FocusRectExt;
+		matrix.scale(target.RootMatrix.a, target.RootMatrix.d);
 		return matrix;
 	}
 	private targetDisplayChange(e: P9TTargetEvent): void {

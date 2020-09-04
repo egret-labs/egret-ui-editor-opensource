@@ -210,7 +210,7 @@ export class PropertyLayoutPart extends PropertyBasePart {
 			}else{
 				if(value.id.indexOf('eui.') == 0){
 					const id = value.id.slice(4);
-					const instance = this.model.getExmlConfig().getInstanceById(id, node.getNs());
+					const instance = this.model.getExmlConfig().getInstanceById(id, EUI);
 					if (instance) {
 						node.setProperty(PropertyTypes.LAYOUT, this.model.createIObject(id, EUI, instance));
 					}

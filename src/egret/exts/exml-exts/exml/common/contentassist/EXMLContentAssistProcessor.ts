@@ -13,6 +13,7 @@ import { Namespace } from '../sax/Namespace';
 import * as StringUtil from '../utils/strings';
 import { LabelStyleAssistUnit } from './labelStyleAssistUnit';
 import * as fs from 'fs';
+import * as path from 'path';
 
 // xml解析器
 import * as xml from '../sax/xml-tagUtils';
@@ -93,12 +94,12 @@ export class EXMLContentAssistProcessor {
 	 * 当前项目的主题路径
 	 */
 	public getthemePath(wingPropertiesPath: string): string {
-		if (!wingPropertiesPath) {
+		if (wingPropertiesPath) {
 			try {
 				let wingPropertyStr: string = FileUtil.openAsString(wingPropertiesPath);
 				const properties = JSON.parse(wingPropertyStr);
 				if (properties['theme']) {
-					return properties['theme'];
+					return path.join(this._projectModel.project.fsPath, properties['theme']);
 				}
 			} catch (error) { }
 		}

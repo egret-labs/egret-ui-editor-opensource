@@ -146,7 +146,7 @@ export class WindowsMainService implements IWindowsMainService {
 	 */
 	public open(options: IOpenBrowserWindowOptions, fromMainWindowId?: number): void {
 		if (!options.folderPath) {
-			// folderPath 为null说明是通过不带参数的code命令或鼠标点击打开的，此时应该打开一个空实例
+			// folderPath 为null说明是通过不带参数的eui命令或鼠标点击打开的，此时应该打开一个空实例
 			const emptyInstance = this.getEmptyWindowInstance();
 			if (emptyInstance) {
 				emptyInstance.mainWindow.focus();

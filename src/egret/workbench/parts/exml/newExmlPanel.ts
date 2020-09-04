@@ -426,7 +426,7 @@ export class NewExmlPanel extends InnerBtnWindow {
 		const width = trim(this.widthTextInput.text);
 		const height = trim(this.heightTextInput.text);
 		const templateStr = TemplateTool.createEUIExmlSkin(state, width, height, trim(this.nameInput.text));
-		const templateURI = URI.file(path.join(this.projectPath, trim(this.pathInput.text), trim(this.nameInput.text) + 'Skin.exml'));
+		const templateURI = URI.file(path.join(this.projectPath, trim(this.pathInput.text), trim(this.nameInput.text) + '.exml'));
 		const isExist = await fileService.existsFile(templateURI);
 		if (!isExist) {
 			const stat = await fileService.createFile(templateURI, templateStr, true);

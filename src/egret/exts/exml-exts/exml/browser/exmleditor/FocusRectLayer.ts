@@ -1962,11 +1962,11 @@ export class FocusRectExt extends FocusRect implements IP9TTarget {
 					anchorX = this._anchorX;
 				}
 				if (this.canSetAnchor) {
-					var existOffsetX = null;
+					let existOffsetX = 0;
 					if (this.targetNode.getProperty('anchorOffsetX')) {
 						existOffsetX = this.targetNode.getProperty('anchorOffsetX').getInstance();
 					}
-					var newOffsetX = this.rn(value * anchorX);
+					let newOffsetX = this.rn(value * anchorX);
 					if (existOffsetX !== newOffsetX && !(newOffsetX === 0 && isNaN(existOffsetX))) {
 						this.targetNode.setNumber('anchorOffsetX', newOffsetX);
 					}
@@ -1984,11 +1984,11 @@ export class FocusRectExt extends FocusRect implements IP9TTarget {
 				}
 				if (this.canSetAnchor) {
 
-					var existOffsetY = null;
+					let existOffsetY = 0;
 					if (this.targetNode.getProperty('anchorOffsetY')) {
 						existOffsetY = this.targetNode.getProperty('anchorOffsetY').getInstance();
 					}
-					var newOffsetY = this.rn(value * anchorY);
+					let newOffsetY = this.rn(value * anchorY);
 					if (existOffsetY !== newOffsetY && !(newOffsetY === 0 && isNaN(existOffsetY))) {
 						this.targetNode.setNumber('anchorOffsetY', newOffsetY);
 					}

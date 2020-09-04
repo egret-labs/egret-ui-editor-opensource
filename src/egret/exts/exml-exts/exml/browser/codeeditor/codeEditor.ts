@@ -76,9 +76,9 @@ export class CodeEditor extends BaseTextEditor {
 			const model = this.exmlFileModel.getModel();
 			if (model) {
 				await model.insertText(this.getText(), 0, 2147483647, true, true);
-				this.resetState();
 			}
 		}
+		this.resetState();
 	}
 
 	/**

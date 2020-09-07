@@ -92,39 +92,45 @@ function getIPCHandle(userDataPath: string, type: string): string {
 
 	return getNixIPCHandle(userDataPath, type);
 }
-
-export function getEUIProject(args: ParsedArgs): { folderPath: string | null, file: string | null } {
-	// console.log('args', args);
+export function getEUIProject(target: string): { folderPath: string | null, file: string | null };
+export function getEUIProject(target: ParsedArgs): { folderPath: string | null, file: string | null };
+export function getEUIProject(target: any): { folderPath: string | null, file: string | null } {
+	// console.log('target', target);
 	let folder: string;
-	if (args.folder) {
-		if (typeof args.folder === 'string') {
-			folder = args.folder;
-		} else if (isArray(args.folder)) {
-			folder = args.folder.length > 0 ? args.folder[0] : null;
+	if (typeof target === 'object') {
+		const args = target as ParsedArgs;
+		if (args.folder) {
+			if (typeof args.folder === 'string') {
+				folder = args.folder;
+			} else if (isArray(args.folder)) {
+				folder = args.folder.length > 0 ? args.folder[0] : null;
+			}
 		}
-	}
-	if (!folder) {
-		const arg_ = args._;
-		if (arg_ && arg_.length > 1) {
-			const first: string = arg_[0];
-			let target: string = null;
-			if (first.endsWith('electron.exe') ||
-				first.endsWith('Electron')) {
-				// DEBUG
-				// npm run start
-				// electron .
-				if (arg_.length > 2) {
-					target = arg_[2];
+		if (!folder) {
+			const arg_ = args._;
+			if (arg_ && arg_.length > 1) {
+				const first: string = arg_[0];
+				let target: string = null;
+				if (first.endsWith('electron.exe') ||
+					first.endsWith('Electron')) {
+					// DEBUG
+					// npm run start
+					// electron .
+					if (arg_.length > 2) {
+						target = arg_[2];
+					}
+				} else {
+					target = arg_[1];
 				}
-			} else {
-				target = arg_[1];
-			}
-			if (target === '.') {
-				folder = process.cwd();
-			} else {
-				folder = target;
+				if (target === '.') {
+					folder = process.cwd();
+				} else {
+					folder = target;
+				}
 			}
 		}
+	} else if(typeof target === 'string'){
+		folder = target;
 	}
 	// console.log(folder, process.env['EUI_FROM_SHELL']);
 	if (folder) {

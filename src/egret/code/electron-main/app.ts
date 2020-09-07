@@ -1,7 +1,7 @@
 import { IInstantiationService } from 'egret/platform/instantiation/common/instantiation';
-// import { ServiceCollection } from 'egret/platform/instantiation/common/serviceCollection';
-import { IWindowsMainService } from 'egret/platform/windows/common/windows';
-import { WindowsMainService } from 'egret/platform/windows/electron-main/windowsMainServices';
+import { app, dialog } from 'electron';
+import { IWindowsMainService, IOpenBrowserWindowOptions } from 'egret/platform/windows/common/windows';
+import { WindowsMainService, LAST_OPNED_FOLDER } from 'egret/platform/windows/electron-main/windowsMainServices';
 import { ILifecycleService } from 'egret/platform/lifecycle/electron-main/lifecycleMain';
 import { IOperationMainService } from 'egret/platform/operations/common/operations-main';
 import { AppMenu } from './menus';
@@ -9,6 +9,7 @@ import { OperationMainService } from '../../platform/operations/electron-main/op
 import { IStateService } from '../../platform/state/common/state';
 import { MainIPCServer, EUIPorject } from './mainIPC';
 import { IEnvironmentService } from 'egret/platform/environment/common/environment';
+import { getEUIProject } from 'egret/platform/environment/node/environmentService';
 /**
  * 应用程序主线程
  */
@@ -23,6 +24,7 @@ export class CodeApplication {
 		@IEnvironmentService private environmentService: IEnvironmentService,
 		@IStateService private stateService: IStateService
 	) {
+		this.registerListeners();
 		this.mainIPCServer.onOpenInstance(this.openInstance);
 		this.lifecycleService.ready();
 	}
@@ -34,6 +36,16 @@ export class CodeApplication {
 		console.log('Starting EUI Editor');
 		this.initServices();
 		this.instantiationService.createInstance(AppMenu);
+		if ((<any>global).macOpenFile) {
+			const euiProject = getEUIProject((<any>global).macOpenFile);
+			this.windowsMainService.open({
+				cli: this.environmentService.args,
+				folderPath: euiProject.folderPath,
+				file: euiProject.file
+			});
+		} else {
+			this.windowsMainService.open(this.getFistOpenWindowOptions());
+		}
 	}
 
 	private initServices(machineId: string = ''): void {
@@ -50,12 +62,39 @@ export class CodeApplication {
 
 	}
 
+	private getFistOpenWindowOptions(): IOpenBrowserWindowOptions {
+		const lastOpenedFolder: string = this.stateService.getItem<string>(LAST_OPNED_FOLDER, '');
+		const euiProject = getEUIProject(this.environmentService.args);
+		if (!euiProject.folderPath) {
+			euiProject.folderPath = lastOpenedFolder;
+		}
+		return {
+			cli: this.environmentService.args,
+			folderPath: euiProject.folderPath,
+			file: euiProject.file
+		};
+	}
+
 	private openInstance = (project: EUIPorject): void => {
 		console.log('open instance', project);
 		this.windowsMainService.open({
 			cli: this.environmentService.args,
 			folderPath: project ? project.folderPath : null,
 			file: project ? project.file : null
+		});
+	}
+
+	private registerListeners(): void {
+		app.on('open-file', (event: Event, path: string) => {
+			event.preventDefault();
+			const project = getEUIProject(path);
+			if (this.windowsMainService) {
+				this.windowsMainService.open({
+					cli: this.environmentService.args,
+					folderPath: project.folderPath,
+					file: project.file
+				});
+			}
 		});
 	}
 

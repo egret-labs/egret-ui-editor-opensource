@@ -16,7 +16,7 @@ import { ResdepotWindow } from './resdepotWindow';
 import URI from 'egret/base/common/uri';
 import { getEUIProject } from 'egret/platform/environment/node/environmentService';
 
-const LAST_OPNED_FOLDER: string = 'lastOpenedFolder';
+export const LAST_OPNED_FOLDER: string = 'lastOpenedFolder';
 
 class WindowInstance {
 	public openedFolderUri: URI | null;
@@ -95,7 +95,6 @@ export class WindowsMainService implements IWindowsMainService {
 		@IStateService private stateService: IStateService
 	) {
 		this.dialogs = new Dialogs(environmentService, stateService, this);
-		this.openMainWindow(this.getFistOpenWindowOptions());
 		this.registerListeners();
 	}
 	private registerListeners(): void {
@@ -126,20 +125,6 @@ export class WindowsMainService implements IWindowsMainService {
 			this.openResWindow(data.windowId, options);
 		});
 	}
-
-	private getFistOpenWindowOptions(): IOpenBrowserWindowOptions {
-		const lastOpenedFolder: string = this.stateService.getItem<string>(LAST_OPNED_FOLDER, '');
-		const euiProject = getEUIProject(this.environmentService.args);
-		if (!euiProject.folderPath) {
-			euiProject.folderPath = lastOpenedFolder;
-		}
-		return {
-			cli: this.environmentService.args,
-			folderPath: euiProject.folderPath,
-			file: euiProject.file
-		};
-	}
-
 
 	/**
 	 * 打开

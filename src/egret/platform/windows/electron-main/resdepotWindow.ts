@@ -13,14 +13,15 @@ export class ResdepotWindow extends BrowserWindowEx {
 	 *
 	 */
 	constructor(windowId: string,
+		newWindow: boolean,
 		@IInstantiationService private instantiationService: IInstantiationService,
 		@IEnvironmentService environmentService: IEnvironmentService) {
-		super(windowId, environmentService);
+		super(windowId, newWindow, environmentService);
 		this.instantiationService.createInstance(ResMenu, this._win);		
 	}
 	
-	protected initWindow(): void {
-		super.initWindow();
+	protected initWindow(newWindow: boolean): void {
+		super.initWindow(newWindow);
 		this._win.setTitle('Res Editor');
 		this._win.removeMenu();
 	}

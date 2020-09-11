@@ -47,7 +47,7 @@ class WindowInstance {
 			this.resWindow.focus();
 			return;
 		}
-		this.resWindow = this.instantiationService.createInstance(ResdepotWindow, 'res');
+		this.resWindow = this.instantiationService.createInstance(ResdepotWindow, 'res', false);
 		this.resWindow.load(configuration);
 		this.lifecycleService.registerWindow(this.resWindow);
 	}
@@ -172,6 +172,13 @@ export class WindowsMainService implements IWindowsMainService {
 			}
 		}
 	}
+
+	public openNewWindow(): void {
+		this.openMainWindow({
+			cli: this.environmentService.args
+		}, true);
+	}
+
 	/**
 	 * 重新加载当前激活的窗体
 	 */
@@ -197,11 +204,11 @@ export class WindowsMainService implements IWindowsMainService {
 		}
 	}
 
-	private openMainWindow(options: IOpenBrowserWindowOptions): void {
+	private openMainWindow(options: IOpenBrowserWindowOptions, newWindow: boolean = false): void {
 		this.stateService.setItem(LAST_OPNED_FOLDER, options.folderPath ? options.folderPath : '');
 		const configuration: IWindowConfiguration = this.getConfiguration(options);
 
-		const mainWindow = this.instantiationService.createInstance(BrowserWindowEx, 'main');
+		const mainWindow = this.instantiationService.createInstance(BrowserWindowEx, 'main', newWindow);
 		mainWindow.load(configuration);
 		mainWindow.focus();
 		this.lifecycleService.registerWindow(mainWindow);

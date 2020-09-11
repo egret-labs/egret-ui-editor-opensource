@@ -1,4 +1,6 @@
-export class Scale9GridItemEditor extends eui.GridItemEditor {
+// @ts-nocheck
+
+	export class Scale9GridItemEditor extends eui.GridItemEditor {
 
 	public constructor() {
 		super();

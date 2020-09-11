@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 export class TextInputGridItemEditor extends eui.GridItemEditor {
 

@@ -142,19 +142,19 @@ export interface IInnerWindow extends IDisposable {
 	/**
 	 * 窗口关闭事件
 	 */
-	readonly onClosed: Event<IInnerWindow>;
+	readonly onClosed: Event<this>;
 	/**
 	 * 窗口打开事件
 	 */
-	readonly onOpend: Event<IInnerWindow>;
+	readonly onOpend: Event<this>;
 	/**
 	 * 窗口激活事件
 	 */
-	readonly onActivated: Event<IInnerWindow>;
+	readonly onActivated: Event<this>;
 	/**
 	 * 窗口失活事件
 	 */
-	readonly onDeactivated: Event<IInnerWindow>;
+	readonly onDeactivated: Event<this>;
 	/**
 	 * 窗体是否已被激活
 	 */
@@ -256,22 +256,6 @@ export interface IInnerBtnWindow extends IInnerWindow {
 	 * 窗口关闭事件
 	 */
 	readonly onButtonClick: Event<InnerButtonType>;
-	/**
-	 * 窗口关闭事件
-	 */
-	readonly onClosed: Event<IInnerBtnWindow>;
-	/**
-	 * 窗口打开事件
-	 */
-	readonly onOpend: Event<IInnerBtnWindow>;
-	/**
-	 * 窗口激活事件
-	 */
-	readonly onActivated: Event<IInnerBtnWindow>;
-	/**
-	 * 窗口失活事件
-	 */
-	readonly onDeactivated: Event<IInnerBtnWindow>;
 
 	/**
 	 * 禁止使用头按钮关闭

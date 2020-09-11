@@ -7,7 +7,7 @@ import { IOperationMainService } from 'egret/platform/operations/common/operatio
 import { AppMenu } from './menus';
 import { OperationMainService } from '../../platform/operations/electron-main/operationMain';
 import { IStateService } from '../../platform/state/common/state';
-import { MainIPCServer, EUIPorject } from './mainIPC';
+import { MainIPCServer, NewInstanceArgs } from './mainIPC';
 import { IEnvironmentService } from 'egret/platform/environment/common/environment';
 import { getEUIProject } from 'egret/platform/environment/node/environmentService';
 /**
@@ -36,15 +36,19 @@ export class CodeApplication {
 		console.log('Starting EUI Editor');
 		this.initServices();
 		this.instantiationService.createInstance(AppMenu);
-		if ((<any>global).macOpenFile) {
-			const euiProject = getEUIProject((<any>global).macOpenFile);
-			this.windowsMainService.open({
-				cli: this.environmentService.args,
-				folderPath: euiProject.folderPath,
-				file: euiProject.file
-			});
+		if (this.environmentService.args['new-window']) {
+			this.windowsMainService.openNewWindow();
 		} else {
-			this.windowsMainService.open(this.getFistOpenWindowOptions());
+			if ((<any>global).macOpenFile) {
+				const euiProject = getEUIProject((<any>global).macOpenFile);
+				this.windowsMainService.open({
+					cli: this.environmentService.args,
+					folderPath: euiProject.folderPath,
+					file: euiProject.file
+				});
+			} else {
+				this.windowsMainService.open(this.getFistOpenWindowOptions());
+			}
 		}
 	}
 
@@ -75,13 +79,17 @@ export class CodeApplication {
 		};
 	}
 
-	private openInstance = (project: EUIPorject): void => {
-		console.log('open instance', project);
-		this.windowsMainService.open({
-			cli: this.environmentService.args,
-			folderPath: project ? project.folderPath : null,
-			file: project ? project.file : null
-		});
+	private openInstance = (instanceArgs: NewInstanceArgs): void => {
+		console.log('open instance', instanceArgs);
+		if (instanceArgs.forceNewWindow) {
+			this.windowsMainService.openNewWindow();
+		} else {
+			this.windowsMainService.open({
+				cli: this.environmentService.args,
+				folderPath: instanceArgs.project ? instanceArgs.project.folderPath : null,
+				file: instanceArgs.project ? instanceArgs.project.file : null
+			});
+		}
 	}
 
 	private registerListeners(): void {

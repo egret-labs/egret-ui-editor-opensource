@@ -1215,6 +1215,14 @@
 		"s": "Open Egret Project",
 		"t": "Open Egret Project"
 	},
+	"menus.setFileMenu.openNewWindow": {
+		"s": "New Window",
+		"t": "New Window"
+	},
+	"menus.setFileMenu.openNewWindowOpt": {
+		"s": "Opens a new window",
+		"t": "Opens a new window"
+	},
 	"menus.setFileMenu.quit": {
 		"s": "Quit(&&X)",
 		"t": "Quit(&&X)"

@@ -1,4 +1,4 @@
-import { Menu, MenuItem, BrowserWindow } from 'electron';
+import { app, Menu, MenuItem, BrowserWindow } from 'electron';
 import { isMacintosh, isWindows } from '../../base/common/platform';
 import { IWindowsMainService } from '../../platform/windows/common/windows';
 import { ILifecycleService } from '../../platform/lifecycle/electron-main/lifecycleMain';
@@ -170,6 +170,8 @@ export class AppMenu extends MenuBase {
 		menubar.append(helpMenuItem);
 
 		Menu.setApplicationMenu(menubar);
+		this.setUserTasks();
+		this.setDockMenu();
 	}
 
 	/**
@@ -210,6 +212,7 @@ export class AppMenu extends MenuBase {
 	 */
 	private setFileMenu(fileMenu: Electron.Menu): void {
 		const open = this.createMenuItem(mnemonicMenuLabel(localize('menus.setFileMenu.openFolder', 'Open Egret Project(&&P)')), 'CmdOrCtrl+O', RootCommands.OPEN_FOLDER, localize('menus.setFileMenu.openFolderTxt', 'Open Egret Project'), localize('menus.setFileMenu.openFolderOpt', 'Open egret project operation'));
+		const newWindow = new MenuItem({ label: mnemonicMenuLabel(localize('menus.setFileMenu.openNewWindow', 'New Window')), click: () => this.windowsMainService.openNewWindow() });
 		const createFolder = this.createMenuItem(mnemonicMenuLabel(localize('menus.setFileMenu.newFolder', 'Create Folder(&&F)')), 'Shift+CmdOrCtrl+N', FileRootCommands.NEW_FOLDER, localize('menus.setFileMenu.newFolderTxt', 'Create Folder'), localize('menus.setFileMenu.newFolderOpt', 'Create a folder in the currently selected directory'));
 		const createExml = this.createMenuItem(mnemonicMenuLabel(localize('menus.setFileMenu.newExml', 'Create EXML Skin(&&N)')), 'CmdOrCtrl+N', FileRootCommands.NEW_EXML_FILE, localize('menus.setFileMenu.newExmlTxt', 'Create EXML Skin'), localize('menus.setFileMenu.newExmlOpt', 'Create a new Exml skin in the currently selected directory'));
 
@@ -219,7 +222,7 @@ export class AppMenu extends MenuBase {
 		const closeCurrent = this.createMenuItem(mnemonicMenuLabel(localize('menus.setFileMenu.closeEditor', 'Close Editor(&&C)')), 'CmdOrCtrl+W', RootCommands.CLOSE_CURRENT, localize('menus.setFileMenu.closeEditorTxt', 'Close Editor'), localize('menus.setFileMenu.closeEditorOpt', 'Close the current editor'));
 
 		const reload = this.createMenuItem(mnemonicMenuLabel(localize('menus.setFileMenu.reload', 'Reload(&&R)')), '', FileRootCommands.RELOAD, null, null);
-		const memus = [open, __separator__(), createFolder, createExml, __separator__(), save, saveAll, __separator__(), closeCurrent, __separator__(), reload];
+		const memus = [open, newWindow, __separator__(), createFolder, createExml, __separator__(), save, saveAll, __separator__(), closeCurrent, __separator__(), reload];
 
 
 		if (isMacintosh) {
@@ -308,11 +311,9 @@ export class AppMenu extends MenuBase {
 	}
 
 	/**
-	 * 文件菜单
+	 * 查看菜单
 	 */
 	private setViewMenu(viewMenu: Electron.Menu): void {
-
-
 		const explorer = this.createMenuItem(mnemonicMenuLabel(localize('menus.viewMenu.explorer', 'Explorer(&&U)')), '', RootCommands.EXPLORER_PANEL, '', '');
 		const layer = this.createMenuItem(mnemonicMenuLabel(localize('menus.viewMenu.layer', 'Layer(&&L)')), '', RootCommands.LAYER_PANEL, '', '');
 		const output = this.createMenuItem(mnemonicMenuLabel(localize('menus.viewMenu.output', 'Output(&&O)')), '', RootCommands.OUTPUT_PANEL, '', '');
@@ -357,6 +358,42 @@ export class AppMenu extends MenuBase {
 			menus.push(about, checkUpdate);
 		}
 		menus.forEach(item => helpMenu.append(item));
+	}
+
+	/**
+	 * Windows 任务栏菜单
+	 */
+	private setUserTasks(): void {
+		if (isWindows) {
+			app.setUserTasks([
+				{
+					program: process.execPath,
+					arguments: '--new-window',
+					iconPath: process.execPath,
+					iconIndex: 0,
+					title: localize('menus.setFileMenu.openNewWindow', 'New Window'),
+					description: localize('menus.setFileMenu.openNewWindowOpt', 'Opens a new window')
+				}
+			]);
+		}
+	}
+
+	/**
+	 * macOS Dock菜单
+	 */
+	private setDockMenu(): void {
+		if (isMacintosh) {
+			const dockMenu = Menu.buildFromTemplate([
+				{
+					label: localize('menus.setFileMenu.openNewWindow', 'New Window'),
+					click: () => {
+						this.windowsMainService.openNewWindow();
+					}
+				}
+			]);
+
+			app.dock.setMenu(dockMenu);
+		}
 	}
 }
 

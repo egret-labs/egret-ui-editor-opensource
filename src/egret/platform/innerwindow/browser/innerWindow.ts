@@ -84,10 +84,10 @@ function handleVetos(vetos: (boolean | Promise<boolean>)[]): Promise<boolean> {
 class InnerWindowCls implements _IInnerWindow {
 
 	private _onClosing: Emitter<InnerWindowClosingEvent>;
-	private _onClosed: Emitter<IInnerWindow>;
-	private _onOpend: Emitter<IInnerWindow>;
-	private _onActivated: Emitter<IInnerWindow>;
-	private _onDeactivated: Emitter<IInnerWindow>;
+	private _onClosed: Emitter<this>;
+	private _onOpend: Emitter<this>;
+	private _onActivated: Emitter<this>;
+	private _onDeactivated: Emitter<this>;
 
 
 	private _windowElement: HTMLElement;
@@ -96,10 +96,10 @@ class InnerWindowCls implements _IInnerWindow {
 
 	constructor() {
 		this._onClosing = new Emitter<InnerWindowClosingEvent>();
-		this._onClosed = new Emitter<IInnerWindow>();
-		this._onOpend = new Emitter<IInnerWindow>();
-		this._onActivated = new Emitter<IInnerWindow>();
-		this._onDeactivated = new Emitter<IInnerWindow>();
+		this._onClosed = new Emitter<this>();
+		this._onOpend = new Emitter<this>();
+		this._onActivated = new Emitter<this>();
+		this._onDeactivated = new Emitter<this>();
 
 		this.titleBarMouseDown_handler = this.titleBarMouseDown_handler.bind(this);
 		this.titleBarMouseMove_handler = this.titleBarMouseMove_handler.bind(this);
@@ -357,25 +357,25 @@ class InnerWindowCls implements _IInnerWindow {
 	/**
 	 * 窗口关闭事件
 	 */
-	public get onClosed(): Event<IInnerWindow> {
+	public get onClosed(): Event<this> {
 		return this._onClosed.event;
 	}
 	/**
 	 * 窗口打开事件
 	 */
-	public get onOpend(): Event<IInnerWindow> {
+	public get onOpend(): Event<this> {
 		return this._onOpend.event;
 	}
 	/**
 	 * 窗口激活事件
 	 */
-	public get onActivated(): Event<IInnerWindow> {
+	public get onActivated(): Event<this> {
 		return this._onActivated.event;
 	}
 	/**
 	 * 窗口失活事件
 	 */
-	public get onDeactivated(): Event<IInnerWindow> {
+	public get onDeactivated(): Event<this> {
 		return this._onDeactivated.event;
 	}
 
@@ -705,14 +705,6 @@ class InnerBtnWindowCls extends InnerWindowCls implements IInnerBtnWindow {
 	 * 按钮点击事件
 	 */
 	private _onButtonClick: Emitter<InnerButtonType>;
-	/** 窗口关闭事件 */
-	readonly onClosed: Event<IInnerBtnWindow>;
-	/** 窗口打开事件 */
-	readonly onOpend: Event<IInnerBtnWindow>;
-	/** 窗口激活事件 */
-	readonly onActivated: Event<IInnerBtnWindow>;
-	/** 窗口失活事件 */
-	readonly onDeactivated: Event<IInnerBtnWindow>;
 
 	private toDisposes: IDisposable[] = [];
 

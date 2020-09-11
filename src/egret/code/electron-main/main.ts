@@ -106,7 +106,7 @@ export class ElectronMain {
 
 			// Send environment over...
 			console.log('Sending env to running instance...');
-			mainClient.openInstance(getEUIProject(environmentService.args));
+			mainClient.openInstance(!!args['new-window'], getEUIProject(environmentService.args));
 
 			// Cleanup
 			mainClient.close();

@@ -119,7 +119,11 @@ export interface IWindowsMainService {
 	 */
 	open(options:IOpenBrowserWindowOptions, fromWindowId?: number): void;
 	/**
-	 * 退出主窗体
+	 * 打开一个空的主窗体
+	 */
+	openNewWindow(): void;
+	/**
+	 * 退出并关闭所有打开的主窗体
 	 */
 	quit(): Promise<void>;
 	/**

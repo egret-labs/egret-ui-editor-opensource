@@ -1215,6 +1215,14 @@
 		"s": "OOpen Egret Project",
 		"t": "打开 Egret 项目"
 	},
+	"menus.setFileMenu.openNewWindow": {
+		"s": "New Window",
+		"t": "新窗口"
+	},
+	"menus.setFileMenu.openNewWindowOpt": {
+		"s": "Opens a new window",
+		"t": "打开新窗口"
+	},
 	"menus.setFileMenu.quit": {
 		"s": "Quit(&&X)",
 		"t": "退出(&&X)"

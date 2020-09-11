@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {AppStorage} from 'egret/exts/resdepot/common/storage/AppStorage';
 
 export class TypeGridItemEditor extends eui.GridItemEditor {

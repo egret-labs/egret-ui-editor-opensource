@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {GraphicsUtil} from 'egret/exts/resdepot/common/utils/GraphicsUtil';
 
 /**

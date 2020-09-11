@@ -3,14 +3,20 @@ import { Emitter, Event } from 'egret/base/common/event';
 
 export type EUIPorject = { folderPath: string, file?: string };
 
+export type NewInstanceArgs = {
+	forceNewWindow: boolean;
+	project?: EUIPorject;
+};
+
 export type ClientMessage = {
 	type: 'open' | 'status';
+	forceNewWindow: boolean;
 	data?: any;
 };
 
 export class MainIPCServer {
-	private readonly _onOpenInstance = new Emitter<EUIPorject>();
-	public readonly onOpenInstance: Event<EUIPorject> = this._onOpenInstance.event;
+	private readonly _onOpenInstance = new Emitter<NewInstanceArgs>();
+	public readonly onOpenInstance: Event<NewInstanceArgs> = this._onOpenInstance.event;
 	/**
 	 *
 	 */
@@ -39,7 +45,10 @@ export class MainIPCServer {
 		try {
 			const obj: ClientMessage = JSON.parse(data.toString('utf8'));
 			if(obj.type === 'open'){
-				this._onOpenInstance.fire(obj.data);
+				this._onOpenInstance.fire({
+					forceNewWindow: obj.forceNewWindow,
+					project: obj.data
+				});
 			}
 		} catch (error) {
 			console.log('client data error', error);
@@ -64,9 +73,10 @@ export class MainIPCClient {
 		});
 	}
 
-	public openInstance(project?: EUIPorject): void {
+	public openInstance(forceNewWindow: boolean, project?: EUIPorject): void {
 		const data: ClientMessage = {
 			type: 'open',
+			forceNewWindow: forceNewWindow,
 			data: project
 		};
 		this.socket.write(JSON.stringify(data), 'utf8');

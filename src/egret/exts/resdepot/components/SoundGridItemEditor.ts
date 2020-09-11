@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {ResType} from 'egret/exts/resdepot/common/consts/ResType';
 
 export class SoundGridItemEditor extends eui.GridItemEditor {

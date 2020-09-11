@@ -44,38 +44,54 @@ export class BrowserWindowEx implements IBrowserWindowEx {
 	protected _win: Electron.BrowserWindow;
 
 	constructor(protected windowId: string,
+		newWindow: boolean,
 		@IEnvironmentService private environmentService: IEnvironmentService) {
 		this.whenReadyCallbacks = [];
 		this._readyState = ReadyState.NONE;
-		this.initWindow();
+		this.initWindow(newWindow);
 	}
 
-	protected initWindow(): void {
-		const state = this.getWindowState();
-		this.normalBounds = {
-			x: state.x,
-			y: state.y,
-			width: state.width,
-			height: state.height
-		};
-		const options: BrowserWindowConstructorOptions = {
-			backgroundColor: '#3b3b3b',
-			width: state.width,
-			height: state.height,
-			x: state.x,
-			y: state.y,
-			disableAutoHideCursor: true,
-			title: 'EUI Editor',
-			webPreferences: {
-				webSecurity: false,
-				nodeIntegration: true
+	protected initWindow(newWindow: boolean): void {
+		if (newWindow) {
+			const options: BrowserWindowConstructorOptions = {
+				backgroundColor: '#3b3b3b',
+				width: 1144,
+				height: 690,
+				disableAutoHideCursor: true,
+				title: 'EUI Editor',
+				webPreferences: {
+					webSecurity: false,
+					nodeIntegration: true
+				}
+			};
+			this._win = new BrowserWindow(options);
+		} else {
+			const state = this.getWindowState();
+			this.normalBounds = {
+				x: state.x,
+				y: state.y,
+				width: state.width,
+				height: state.height
+			};
+			const options: BrowserWindowConstructorOptions = {
+				backgroundColor: '#3b3b3b',
+				width: state.width,
+				height: state.height,
+				x: state.x,
+				y: state.y,
+				disableAutoHideCursor: true,
+				title: 'EUI Editor',
+				webPreferences: {
+					webSecurity: false,
+					nodeIntegration: true
+				}
+			};
+			this._win = new BrowserWindow(options);
+			if (state.isMaximized) {
+				this._win.maximize();
 			}
-		};
-		this._win = new BrowserWindow(options);
-		if (state.isMaximized) {
-			this._win.maximize();
+			this.saveNormalBounds();
 		}
-		this.saveNormalBounds();
 		this._win.on('resize', this.onStateHandler);
 		this._win.on('move', this.onStateHandler);
 		this._win.on('close', this.onClosingHanlder);
@@ -154,7 +170,7 @@ export class BrowserWindowEx implements IBrowserWindowEx {
 		this._win.loadURL(url);
 		const webContents = this._win.webContents;
 		webContents.on('did-finish-load', () => {
-			webContents.zoomFactor = 1; 
+			webContents.zoomFactor = 1;
 			webContents.setVisualZoomLevelLimits(1, 1);
 			webContents.setLayoutZoomLevelLimits(0, 0);
 		});

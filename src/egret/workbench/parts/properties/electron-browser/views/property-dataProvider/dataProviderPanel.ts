@@ -151,7 +151,7 @@ export class DataProviderPanel extends InnerBtnWindow {
 	public setDataProviderEditorData(v: Object[]) {
 		const node: INode = this.node;
 		const instance = this.model.getExmlConfig().getInstanceById('ArrayCollection', EUI);
-		if (instance && v) {
+		if (instance && v?.length > 0) {
 			node.setProperty('dataProvider', this.model.createIObject('ArrayCollection', EUI, instance));
 			const arrayCollection: IObject = node.getProperty('dataProvider') as IObject;
 			const array: IArray = this.model.createIArray();
@@ -165,7 +165,7 @@ export class DataProviderPanel extends InnerBtnWindow {
 				}
 			}
 			arrayCollection.setProperty('source', array);
-		} else if (!v) {
+		} else {
 			node.setProperty('dataProvider', null);
 		}
 	}

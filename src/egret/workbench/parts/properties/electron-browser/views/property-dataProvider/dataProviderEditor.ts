@@ -201,6 +201,11 @@ export class DataProviderEditor {
 				item.deleteProperty(name);
 			}
 		}
+		// 属性全部被删除，则清空数据
+		if(this._properties.length === 0) {
+			this.dataMaps.clear();
+			this._data = [];
+		}
 	}
 
 	private renderDataItems(): void {

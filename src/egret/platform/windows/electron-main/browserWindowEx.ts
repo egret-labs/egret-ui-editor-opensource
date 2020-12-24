@@ -61,7 +61,8 @@ export class BrowserWindowEx implements IBrowserWindowEx {
 				title: 'EUI Editor',
 				webPreferences: {
 					webSecurity: false,
-					nodeIntegration: true
+					nodeIntegration: true,
+					enableRemoteModule: true
 				}
 			};
 			this._win = new BrowserWindow(options);
@@ -83,7 +84,8 @@ export class BrowserWindowEx implements IBrowserWindowEx {
 				title: 'EUI Editor',
 				webPreferences: {
 					webSecurity: false,
-					nodeIntegration: true
+					nodeIntegration: true,
+					enableRemoteModule: true
 				}
 			};
 			this._win = new BrowserWindow(options);
@@ -172,7 +174,6 @@ export class BrowserWindowEx implements IBrowserWindowEx {
 		webContents.on('did-finish-load', () => {
 			webContents.zoomFactor = 1;
 			webContents.setVisualZoomLevelLimits(1, 1);
-			webContents.setLayoutZoomLevelLimits(0, 0);
 		});
 		webContents.addListener('will-navigate', e => {
 			e.preventDefault();

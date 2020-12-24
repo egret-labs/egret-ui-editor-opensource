@@ -14,7 +14,6 @@ import { dirname, normalize, isEqual } from '../../../base/common/paths';
 import { localize } from '../../../base/localization/nls';
 import { ResdepotWindow } from './resdepotWindow';
 import URI from 'egret/base/common/uri';
-import { getEUIProject } from 'egret/platform/environment/node/environmentService';
 
 export const LAST_OPNED_FOLDER: string = 'lastOpenedFolder';
 

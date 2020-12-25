@@ -215,7 +215,7 @@ export class OperationBrowserService implements IOperationBrowserService {
 		}
 	}
 
-	private keyTigger_handler(e: ExtendedKeyboardEvent, combo: string): void {
+	private keyTigger_handler(e: Mousetrap.ExtendedKeyboardEvent, combo: string): void {
 		let command = '';
 		for (const curCommand in this.currentKeybingdingMap) {
 			if (

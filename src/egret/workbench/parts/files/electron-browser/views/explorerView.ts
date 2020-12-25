@@ -570,7 +570,7 @@ export class ExplorerView extends PanelContentDom implements IModelRequirePart, 
 			this.treeContainer.style.display = 'none';
 			return new Promise<any>((resolve, reject) => {
 				promise.then(() => {
-					resolve();
+					resolve(void 0);
 				}, error => {
 					reject(error);
 				});
@@ -592,7 +592,7 @@ export class ExplorerView extends PanelContentDom implements IModelRequirePart, 
 				this.explorerViewer.layout();
 				return new Promise<any>((resolve, reject) => {
 					promise.then(() => {
-						resolve();
+						resolve(void 0);
 					}, error => {
 						reject(error);
 					});

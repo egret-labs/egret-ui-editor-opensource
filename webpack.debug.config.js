@@ -30,14 +30,14 @@ function getEntry() {
 	return entry;
 }
 
-let monacoEditorFontRegex = /node_modules\/monaco-editor\/esm\/vs\/base\/browser\/ui\/codiconLabel\/codicon\/codicon.ttf/;
+let monacoEditorFontRegex = /node_modules\/monaco-editor\/esm\/vs\/base\/browser\/ui\/codicons\/codicon\/codicon.ttf/;
 let externals = _externals();
 
 module.exports = {
 	mode: 'development',
 	target: 'electron-renderer',
 	context: path.join(__dirname, 'src'),
-	devtool: 'cheap-module-eval-source-map',//默认source-map调试时无法查看ts源
+	devtool: 'eval-cheap-module-source-map',//默认source-map调试时无法查看ts源
 	resolve: {
 		extensions: ['*', '.js', '.jsx', '.ts', '.tsx'],
 		modules: [
@@ -149,13 +149,6 @@ module.exports = {
 
 function _externals() {
 	var nameMap = {};
-	var pa = fs.readdirSync(path.join(__dirname, 'node_modules'));
-	pa.forEach(function (ele, index) {
-		if (ele === "typescript") {
-			return;
-		}
-		nameMap[ele] = true;
-	})
 	let manifest = require('./package.json');
 	let dependencies = manifest.dependencies;
 	for (let p in dependencies) {

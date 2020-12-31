@@ -169,6 +169,7 @@ function _externals() {
 			externals[name] = 'commonjs ' + name;
 		}
 	}
+	externals["@egret/eui-compiler"] = 'commonjs ' + "@egret/eui-compiler";
 
 	return externals;
 }

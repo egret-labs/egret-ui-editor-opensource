@@ -17,7 +17,7 @@
         "@egret/eui-compiler": "^2.0.0",
         "chokidar": "^3.4.2",
         "fs-extra": "^9.0.1",
-        "gsap": "^3.5.1",
+        "gsap": "^3.6.0",
         "iconv-lite": "^0.6.2",
         "minimist": "^1.2.5",
         "mousetrap": "^1.6.5",

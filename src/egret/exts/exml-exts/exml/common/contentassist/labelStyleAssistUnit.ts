@@ -27,7 +27,7 @@ export class LabelStyleAssistUnit {
 					documentation: dataJson,
 					range: range,
 					kind: monaco.languages.CompletionItemKind.Value,
-					insertText: key
+					insertText: key + '"'
 				});
 			}
 		}

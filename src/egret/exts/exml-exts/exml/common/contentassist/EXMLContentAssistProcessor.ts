@@ -308,8 +308,9 @@ export class EXMLContentAssistProcessor {
 				detail: attr['className'],
 				kind: monaco.languages.CompletionItemKind.Property,
 				range: range,
-				insertText: `${attr['attribute']}="${value}"`,
-				command: { id: 'editor.action.moveCursorLeftAndTriggerSuggest', title: 'move cursor back...' },
+				insertText: `${attr['attribute']}="${value}$0"`,
+				insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+				command: { id: 'editor.action.triggerSuggest', title: 'move cursor back...' },
 			};
 			completions.push(completion);
 		}

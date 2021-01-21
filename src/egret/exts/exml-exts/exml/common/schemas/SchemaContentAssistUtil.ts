@@ -190,7 +190,7 @@ export class SchemaContentAssistUtil {
 
 					if (equalPos < 0) { // 如果没有等号
 						ret.pos = EXMLPos.AttributeName;
-						ret.editRange = { start: attr.start, end: attr.end };
+						ret.editRange = { start: attr.start, end: attr.end - 1 };
 					} else { // 如果有等号
 						// 获取属性值 {{
 						let quoteChar = '';

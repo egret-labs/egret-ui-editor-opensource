@@ -2,6 +2,7 @@ import * as sax from './sax';
 import * as objects from 'egret/base/common/objects';
 import { Namespace } from './Namespace';
 import { trim } from 'egret/base/common/strings';
+import { parser, typeInit } from '@egret/eui-compiler';
 
 /**
  * 得到命名空间列表
@@ -94,15 +95,15 @@ export function parse(xmlString, throwError = true, messageWithPos = true): sax.
 
 	saxparser.resume();
 	saxparser.onerror = function (err) {
-		let error: sax.Error = {
-			start: saxparser.startAttribPosition || saxparser.startTagPosition,
-			end: saxparser.position,
-			line: saxparser.line,
-			column: saxparser.column,
-			name: err.message,
-			message: err.message
-		};
-		errors.push(error);
+		// let error: sax.Error = {
+		// 	start: saxparser.startAttribPosition || saxparser.startTagPosition,
+		// 	end: saxparser.position,
+		// 	line: saxparser.line,
+		// 	column: saxparser.column,
+		// 	name: err.message,
+		// 	message: err.message
+		// };
+		// errors.push(error);
 	};
 	saxparser.onopentag = function (node: sax.Tag) {
 		let attribs = node.attributes;
@@ -258,9 +259,45 @@ export function parse(xmlString, throwError = true, messageWithPos = true): sax.
 	object = roots[0];
 
 	object.comments = comments;
-	object.errors = errors;
+	// object.errors = errors;
 	object.processingInstructions = processingInstructions;
 	object.roots = roots;
+
+
+
+	typeInit();
+	const skinNode = parser.generateAST(xmlString, '');
+	const errorInfo = skinNode.errors.shift();
+
+	if (errorInfo) {
+		const textArr = xmlString.split('\n');
+		let start = 0;
+		let end = 0;
+
+		for (let i = 0; i < errorInfo.startLine; i++) {
+			start += textArr[i].split('').length;
+		}
+		for (let i = 0; i < errorInfo.endLine; i++) {
+			end += textArr[i].split('').length;
+		}
+		start += errorInfo.startColumn - 1;
+		end += errorInfo.endColumn - 1;
+		let messageArr = errorInfo.message.split('\n');
+		messageArr.splice(4, messageArr.length - 4);
+		const message = messageArr.join('\n');
+		object.errors = [{
+			start,
+			end,
+			line: errorInfo.startLine - 1,
+			column: errorInfo.startColumn - 1,
+			name: message,
+			message
+		}];
+	}
+	else {
+		object.errors = [];
+	}
+
 	return object;
 }
 

@@ -230,7 +230,7 @@ export class KeybindingSettingOperation implements IOperation {
 			panel.open(null, true);
 			toDispose.push(panel.onClosed(() => {
 				dispose(toDispose);
-				resolve();
+				resolve(void 0);
 			}));
 		});
 	}

@@ -31,7 +31,7 @@ function getEntry() {
 	return entry;
 }
 
-let monacoEditorFontRegex = /node_modules\/monaco-editor\/esm\/vs\/base\/browser\/ui\/codiconLabel\/codicon\/codicon.ttf/;
+let monacoEditorFontRegex = /node_modules\/monaco-editor\/esm\/vs\/base\/browser\/ui\/codicons\/codicon\/codicon.ttf/;
 let externals = _externals();
 
 module.exports = {
@@ -139,7 +139,6 @@ module.exports = {
 			{ from: './egret/workbench/services/files/watcher/win32/CodeHelper.exe', to: './egret/workbench/services/files/watcher/win32/CodeHelper.exe' }
 		]),
 		new TerserPlugin({
-			sourceMap: false,
 			terserOptions: {
 				compress: {
 					drop_console: true,
@@ -159,13 +158,6 @@ module.exports = {
 
 function _externals() {
 	var nameMap = {};
-	var pa = fs.readdirSync(path.join(__dirname, 'node_modules'));
-	pa.forEach(function (ele, index) {
-		if (ele === "typescript") {
-			return;
-		}
-		nameMap[ele] = true;
-	})
 	let manifest = require('./package.json');
 	let dependencies = manifest.dependencies;
 	for (let p in dependencies) {

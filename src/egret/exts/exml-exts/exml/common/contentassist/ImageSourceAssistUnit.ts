@@ -25,7 +25,7 @@ export class ImageSourceAssistUnit {
 						documentation: resourcesArr[i].url,
 						kind: monaco.languages.CompletionItemKind.Value,
 						range: range,
-						insertText: resourcesArr[i].name
+						insertText: resourcesArr[i].name + '"'
 					});
 				}
 			}

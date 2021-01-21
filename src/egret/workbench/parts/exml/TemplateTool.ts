@@ -13,7 +13,7 @@ export default class TemplateTool {
 
 
 		const xml: string = `<?xml version='1.0' encoding='utf-8'?>
-<e:Skin class="${_className}Skin"
+<e:Skin class="${_className}"
 	${!states ? '' : 'states="' + states.toString() + '"'} width="${initWidth}"
 	height="${initHeight}" xmlns:e="http://ns.egret.com/eui">
 </e:Skin>`;

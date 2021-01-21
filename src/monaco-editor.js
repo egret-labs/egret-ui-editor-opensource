@@ -1,6 +1,7 @@
 // import 'monaco-editor/esm/vs/editor/editor.main.js';
 import 'monaco-editor/esm/vs/editor/edcore.main';
 import { MenuRegistry } from 'monaco-editor/esm/vs/platform/actions/common/actions';
+import { CommandsRegistry } from 'monaco-editor/esm/vs/platform/commands/common/commands';
 
 // (2) Desired languages:
 // import 'monaco-editor/esm/vs/language/typescript/monaco.contribution';
@@ -59,7 +60,13 @@ const nls_zh = {
 const iszh = remote.app.getLocale().startsWith('zh');
 
 MenuRegistry.getMenuItems = function (id) {
-	var result = (this._menuItems.get(id) || []).slice(0);
+	let result;
+	if (this._menuItems.has(id)) {
+		result = [...this._menuItems.get(id)];
+	}
+	else {
+		result = [];
+	}
 	if (id === 0 /* CommandPalette */ ) {
 		// CommandPalette is special because it shows
 		// all commands by default
@@ -114,3 +121,5 @@ self.MonacoEnvironment = {
 		return './monaco-editor/editor.worker.js';
 	}
 }
+
+monaco.CommandsRegistry = CommandsRegistry;

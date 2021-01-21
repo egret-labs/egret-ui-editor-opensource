@@ -119,7 +119,8 @@ export class CodeService implements ICodeService {
 
 	private registerCommand(editor: monaco.editor.IStandaloneCodeEditor): void {
 		// see https://github.com/microsoft/monaco-editor/issues/900
-		(editor as any)._commandService.addCommand({
+		// https://github.com/TypeFox/monaco-languageclient/blob/master/CHANGELOG.md
+		(monaco as any).CommandsRegistry.registerCommand({
 			id: 'editor.action.moveCursorLeftAndTriggerSuggest',
 			handler: (_: any, ...args: any[]) => {
 				// 把光标前移一格
@@ -135,7 +136,7 @@ export class CodeService implements ICodeService {
 			},
 		});
 
-		(editor as any)._commandService.addCommand({
+		(monaco as any).CommandsRegistry.registerCommand({
 			id: 'editor.action.egretEXmlInsertNamespace',
 			handler: (_: any, ...args: any[]) => {
 				console.log('-----------', args);

@@ -40,30 +40,31 @@ export class CodeService implements ICodeService {
 	}
 
 	private async errorCheck(uri: monaco.Uri) {
-		let model = monaco.editor.getModel(uri);
+		//TODO eui-compiler
+		// let model = monaco.editor.getModel(uri);
 
-		const text = model.getValue();
+		// const text = model.getValue();
 		
-		typeInit();
-		const skinNode = parser.generateAST(text, '');
-		const errorInfo = skinNode.errors.shift();
+		// typeInit();
+		// const skinNode = parser.generateAST(text, '');
+		// const errorInfo = skinNode.errors.shift();
 
-		if (errorInfo) {
-			monaco.editor.setModelMarkers(model, "owner", [
-				{
-					startLineNumber: errorInfo.startLine,
-					startColumn: errorInfo.startColumn,
-					endLineNumber: errorInfo.endLine,
-					endColumn: errorInfo.endColumn,
-					message: errorInfo.message.split('\n')[0],
-					severity: monaco.MarkerSeverity.Error
-				}
-			]);
-		}
-		else {
-			monaco.editor.setModelMarkers(model, "owner", [
-			]);
-		}
+		// if (errorInfo) {
+		// 	monaco.editor.setModelMarkers(model, 'owner', [
+		// 		{
+		// 			startLineNumber: errorInfo.startLine,
+		// 			startColumn: errorInfo.startColumn,
+		// 			endLineNumber: errorInfo.endLine,
+		// 			endColumn: errorInfo.endColumn,
+		// 			message: errorInfo.message.split('\n')[0],
+		// 			severity: monaco.MarkerSeverity.Error
+		// 		}
+		// 	]);
+		// }
+		// else {
+		// 	monaco.editor.setModelMarkers(model, 'owner', [
+		// 	]);
+		// }
 	}
 
 	private registerCompletionItemProvider(): void {

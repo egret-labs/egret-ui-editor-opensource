@@ -95,15 +95,16 @@ export function parse(xmlString, throwError = true, messageWithPos = true): sax.
 
 	saxparser.resume();
 	saxparser.onerror = function (err) {
-		// let error: sax.Error = {
-		// 	start: saxparser.startAttribPosition || saxparser.startTagPosition,
-		// 	end: saxparser.position,
-		// 	line: saxparser.line,
-		// 	column: saxparser.column,
-		// 	name: err.message,
-		// 	message: err.message
-		// };
-		// errors.push(error);
+		//TODO eui-compiler
+		let error: sax.Error = {
+			start: saxparser.startAttribPosition || saxparser.startTagPosition,
+			end: saxparser.position,
+			line: saxparser.line,
+			column: saxparser.column,
+			name: err.message,
+			message: err.message
+		};
+		errors.push(error);
 	};
 	saxparser.onopentag = function (node: sax.Tag) {
 		let attribs = node.attributes;
@@ -259,44 +260,44 @@ export function parse(xmlString, throwError = true, messageWithPos = true): sax.
 	object = roots[0];
 
 	object.comments = comments;
-	// object.errors = errors;
+	//TODO eui-compiler
+	object.errors = errors;
 	object.processingInstructions = processingInstructions;
 	object.roots = roots;
 
+	//TODO eui-compiler
+	// typeInit();
+	// const skinNode = parser.generateAST(xmlString, '');
+	// const errorInfo = skinNode.errors.shift();
 
+	// if (errorInfo) {
+	// 	const textArr = xmlString.split('\n');
+	// 	let start = 0;
+	// 	let end = 0;
 
-	typeInit();
-	const skinNode = parser.generateAST(xmlString, '');
-	const errorInfo = skinNode.errors.shift();
-
-	if (errorInfo) {
-		const textArr = xmlString.split('\n');
-		let start = 0;
-		let end = 0;
-
-		for (let i = 0; i < errorInfo.startLine; i++) {
-			start += textArr[i].split('').length;
-		}
-		for (let i = 0; i < errorInfo.endLine; i++) {
-			end += textArr[i].split('').length;
-		}
-		start += errorInfo.startColumn - 1;
-		end += errorInfo.endColumn - 1;
-		let messageArr = errorInfo.message.split('\n');
-		messageArr.splice(4, messageArr.length - 4);
-		const message = messageArr.join('\n');
-		object.errors = [{
-			start,
-			end,
-			line: errorInfo.startLine - 1,
-			column: errorInfo.startColumn - 1,
-			name: message,
-			message
-		}];
-	}
-	else {
-		object.errors = [];
-	}
+	// 	for (let i = 0; i < errorInfo.startLine; i++) {
+	// 		start += textArr[i].split('').length;
+	// 	}
+	// 	for (let i = 0; i < errorInfo.endLine; i++) {
+	// 		end += textArr[i].split('').length;
+	// 	}
+	// 	start += errorInfo.startColumn - 1;
+	// 	end += errorInfo.endColumn - 1;
+	// 	let messageArr = errorInfo.message.split('\n');
+	// 	messageArr.splice(4, messageArr.length - 4);
+	// 	const message = messageArr.join('\n');
+	// 	object.errors = [{
+	// 		start,
+	// 		end,
+	// 		line: errorInfo.startLine - 1,
+	// 		column: errorInfo.startColumn - 1,
+	// 		name: message,
+	// 		message
+	// 	}];
+	// }
+	// else {
+	// 	object.errors = [];
+	// }
 
 	return object;
 }

@@ -18,7 +18,7 @@
         "fs-extra": "^9.1.0",
         "gsap": "^3.6.0",
         "iconv-lite": "^0.6.2",
-        "minimist": "^1.2.5",
+        "minimist": "^1.2.6",
         "mousetrap": "^1.6.5",
         "semver": "^7.3.4",
         "@egret/eui-compiler": "^2.0.0"

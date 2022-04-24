@@ -2304,9 +2304,11 @@ export class ExmlModel implements IExmlModel {
 			value._readOnly = false;
 		}
 		let valueRange: number[] = xmlStrUtil.getValueIndex(nodeText, prop);
+		var oldValue = "";
 		if (valueRange) {
 			var startIndex: number = range[0] + valueRange[1];
 			var endIndex: number = range[0] + valueRange[2];
+			oldValue = this._text.substring(startIndex, endIndex);
 			this.pushTextChange(newValue, startIndex, endIndex);
 		} else if (!hostInMultiState) {
 			/*
@@ -2317,7 +2319,17 @@ export class ExmlModel implements IExmlModel {
 			if (valueRange) {
 				var startIndex: number = range[0] + valueRange[1];
 				var endIndex: number = range[0] + valueRange[2];
+				oldValue = this._text.substring(startIndex, endIndex);
 				this.pushTextChange(newValue, startIndex, endIndex);
+			}
+		}
+		
+		// 控件id变更时要更新TweenItem的target
+		if (property == "id") {
+			if (oldValue) {
+				this._text = this._text.replace(new RegExp(`<tween:TweenItem target="\\{${oldValue}\\}">`, 'g'), function(substring, ...args) {
+					return `<tween:TweenItem target="{${newValue}}">`;
+				});
 			}
 		}
 	}
